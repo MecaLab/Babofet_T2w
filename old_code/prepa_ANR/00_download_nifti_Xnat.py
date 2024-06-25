@@ -5,7 +5,9 @@ import datetime
 import os
 
 ####### connect session
-session = xnat.connect('http://xnat.int.univ-amu.fr:8080', user='coulon.o')
+session = xnat.connect('http://xnat.int.univ-amu.fr:8080', user='BaptBat')
+print(session.projects["LoFeBa"])
+exit()
 
 if __name__ == "__main__":
     nifti_data_path = '/home/patty/Documents/babofet_DB/nifti_from_Xnat'
