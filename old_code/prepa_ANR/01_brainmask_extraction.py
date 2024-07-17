@@ -1,6 +1,7 @@
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.curdir))
+print(sys.path)
 import shutil
 import subprocess
 print('Python %s on %s' % (sys.version, sys.platform))
