@@ -93,7 +93,7 @@ if __name__ == "__main__":
             cmd2 = [' --segment_output_names']
             already_done = list()
             for f in truefisp_files:
-                nifti_file_name, nifti_full_path = tdo.file_name_from_path(cfg.DATA_PATH, subject_ID, f)
+                nifti_file_name, nifti_full_path = tdo.file_name_from_path(input_path, subject_ID, f)
                 s_nifti_file_name = nifti_file_name.split('.')
                 bm_nifti_file_name = s_nifti_file_name[0] + '_brainmask.nii'
                 bm_output_file = os.path.join(bm_truefisp_subj_output_dir, bm_nifti_file_name)
