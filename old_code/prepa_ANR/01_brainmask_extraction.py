@@ -11,7 +11,10 @@ from tools import data_organization as tdo
 
 if __name__ == "__main__":
 
-    subject_IDs = os.listdir(cfg.DATA_PATH)
+    input_path = cfg.MESO_PATH
+    output_path = cfg.MESO_OUTPUT_PATH
+
+    subject_IDs = os.listdir(input_path)
     subject_IDs.sort()
     print('subjects to be processed')
     print(subject_IDs)
@@ -19,7 +22,7 @@ if __name__ == "__main__":
     subject_processed_truefisp = list()
 
     for subject_ID in subject_IDs:  #on parcourt tous les sujets
-        subj_output_dir = os.path.join(cfg.OUTPUT_PATH, subject_ID)
+        subj_output_dir = os.path.join(output_path, subject_ID)
         # create output directory if it does not exist
         if not os.path.exists(subj_output_dir):
             os.mkdir(subj_output_dir)
@@ -27,7 +30,7 @@ if __name__ == "__main__":
         print('--------------' + subject_ID)
 
         # check nifti data present for this subject
-        dir_list = os.listdir(os.path.join(cfg.DATA_PATH, subject_ID, 'scans'))
+        dir_list = os.listdir(os.path.join(input_path, subject_ID, 'scans'))
         haste_files = list()
         truefisp_files = list()
         for d in dir_list:
@@ -51,7 +54,7 @@ if __name__ == "__main__":
             cmd2 = [' --segment_output_names']
             already_done = list()
             for f in haste_files:
-                nifti_file_name, nifti_full_path = tdo.file_name_from_path(cfg.DATA_PATH, subject_ID, f)
+                nifti_file_name, nifti_full_path = tdo.file_name_from_path(input_path, subject_ID, f)
                 s_nifti_file_name = nifti_file_name.split('.')
                 bm_nifti_file_name = s_nifti_file_name[0] + '_brainmask.nii'
                 bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_file_name)
