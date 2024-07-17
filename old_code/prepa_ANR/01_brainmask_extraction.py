@@ -11,7 +11,7 @@ from tools import data_organization as tdo
 
 if __name__ == "__main__":
 
-    input_path = cfg.MESO_PATH
+    input_path = cfg.MESO_DATA_PATH
     output_path = cfg.MESO_OUTPUT_PATH
 
     subject_IDs = os.listdir(input_path)
