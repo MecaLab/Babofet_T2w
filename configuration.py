@@ -5,6 +5,16 @@
 import os
 # REPOSITORY DATA ORGANISATION
 # -----------------------------------------------------------------------------/
+
+# LOCAL PATH
+MAIN_PATH = "W:/meca/data/Fetus/datasets/Babofet"
+DATA_PATH = os.path.join(MAIN_PATH, "subjects")
+OUTPUT_PATH = os.path.join(MAIN_PATH, "processing")
+
+
+# MESOCENTRE PATH
+MESO_PATH = "/scratch/lbaptiste/data/dataset/babofet"
+"""
 # paths for MESOCENTRE
 # DATA_PATH = "/scratch/gauzias/data/datasets"
 # CODE_PATH = "/scratch/gauzias/code_gui/dHCP_fetal"
@@ -82,3 +92,4 @@ BOUNTI_NOMENCLATURE = {
     19: "Fourth Ventricle",
     20: "Corpus_Callosum"
 }
+"""

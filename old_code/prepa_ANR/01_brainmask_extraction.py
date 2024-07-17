@@ -1,37 +1,32 @@
-import sys; print('Python %s on %s' % (sys.version, sys.platform))
-sys.path.extend(['/home/patty/Documents/babofet', '/home/patty/Documents/marsFet'])
-
+import sys
 import os
+sys.path.insert(0, os.path.abspath(os.curdir))
 import shutil
 import subprocess
+print('Python %s on %s' % (sys.version, sys.platform))
+import configuration as cfg
 
 from tools import data_organization as tdo
 
 if __name__ == "__main__":
-    # chemin vers le repertoire contenant les images HASTE et TRUEFISP
-    input_DB_path = '/home/patty/Documents/babofet_DB/nifti_from_Xnat'
-    # chemin vers le répertoire qui contiendra les bonnes images avec un masque precis
-    output_DB_path = '/home/patty/Documents/babofet_DB/processing'
 
-#    table_check = os.path.join('/home/patty/Documents', 'subjects_with_mask.csv')  #table qui indiquera le nombre d'images HASTE et TRUEFISP correctes avec masque precis
-
-#    txt_common = 'subject_ID; haste_file_nb;truefisp_file_nb' + '\n' #chaine qui constituera la table table_check
-    subject_IDs = os.listdir(input_DB_path)
+    subject_IDs = os.listdir(cfg.DATA_PATH)
     subject_IDs.sort()
     print('subjects to be processed')
     print(subject_IDs)
     subject_processed_haste = list()
     subject_processed_truefisp = list()
 
-    for subject_ID in subject_IDs: #on parcourt tous les sujets
-        subj_output_dir = os.path.join(output_DB_path, subject_ID)
+    for subject_ID in subject_IDs:  #on parcourt tous les sujets
+        subj_output_dir = os.path.join(cfg.OUTPUT_PATH, subject_ID)
         # create output directory if it does not exist
         if not os.path.exists(subj_output_dir):
             os.mkdir(subj_output_dir)
 
-        print('--------------'+subject_ID)
+        print('--------------' + subject_ID)
+
         # check nifti data present for this subject
-        dir_list = os.listdir(os.path.join(input_DB_path, subject_ID, 'scans'))
+        dir_list = os.listdir(os.path.join(cfg.DATA_PATH, subject_ID, 'scans'))
         haste_files = list()
         truefisp_files = list()
         for d in dir_list:
@@ -42,7 +37,7 @@ if __name__ == "__main__":
                 truefisp_files.append(d)
 
         # process HASTE images if data exist
-        if len(haste_files)>0:
+        if len(haste_files) > 0:
             haste_subj_output_dir = os.path.join(subj_output_dir, 'haste')
             bm_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'brainmask')
             # create output directories for haste if it does not exist
@@ -55,16 +50,16 @@ if __name__ == "__main__":
             cmd2 = [' --segment_output_names']
             already_done = list()
             for f in haste_files:
-                nifti_file_name, nifti_full_path = tdo.file_name_from_path(input_DB_path, subject_ID, f)
+                nifti_file_name, nifti_full_path = tdo.file_name_from_path(cfg.DATA_PATH, subject_ID, f)
                 s_nifti_file_name = nifti_file_name.split('.')
-                bm_nifti_file_name = s_nifti_file_name[0]+'_brainmask.nii'
+                bm_nifti_file_name = s_nifti_file_name[0] + '_brainmask.nii'
                 bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_file_name)
                 if os.path.exists(bm_output_file):
                     already_done.append(True)
                 else:
                     cmd1.append(nifti_full_path)
                     cmd2.append(bm_output_file)
-            if sum(already_done)<len(haste_files):
+            if sum(already_done) < len(haste_files):
                 subject_processed_haste.append(subject_ID)
                 #cmd = ['/home/patty/miniconda3/bin/python', '/usr/local/fetal_brain_seg/fetal_brain_seg.py']
                 cmd = ['python', '/usr/local/fetal_brain_seg/fetal_brain_seg.py']
@@ -74,14 +69,14 @@ if __name__ == "__main__":
                 #subprocess.run(cmd, shell=True)#, capture_output=True)
                 cmd_os = 'cd /usr/local/fetal_brain_seg;'
                 for v in cmd:
-                    cmd_os+=v+' '
+                    cmd_os += v + ' '
                 print(cmd_os)
                 subprocess.run(cmd_os, shell=True)
             else:
                 print('-------brainmask already done for haste series')
 
         # process TRUEFIST images if data exist
-        if len(truefisp_files)>0:
+        if len(truefisp_files) > 0:
             truefisp_subj_output_dir = os.path.join(subj_output_dir, 'truefisp')
             bm_truefisp_subj_output_dir = os.path.join(truefisp_subj_output_dir, 'brainmask')
             # create output directories for haste if it does not exist
@@ -94,16 +89,16 @@ if __name__ == "__main__":
             cmd2 = [' --segment_output_names']
             already_done = list()
             for f in truefisp_files:
-                nifti_file_name, nifti_full_path = tdo.file_name_from_path(input_DB_path, subject_ID, f)
+                nifti_file_name, nifti_full_path = tdo.file_name_from_path(cfg.DATA_PATH, subject_ID, f)
                 s_nifti_file_name = nifti_file_name.split('.')
-                bm_nifti_file_name = s_nifti_file_name[0]+'_brainmask.nii'
+                bm_nifti_file_name = s_nifti_file_name[0] + '_brainmask.nii'
                 bm_output_file = os.path.join(bm_truefisp_subj_output_dir, bm_nifti_file_name)
                 if os.path.exists(bm_output_file):
                     already_done.append(True)
                 else:
                     cmd1.append(nifti_full_path)
                     cmd2.append(bm_output_file)
-            if sum(already_done)<len(truefisp_files):
+            if sum(already_done) < len(truefisp_files):
                 subject_processed_truefisp.append(subject_ID)
                 #cmd = ['/home/patty/miniconda3/bin/python', '/usr/local/fetal_brain_seg/fetal_brain_seg.py']
                 cmd = ['python', '/usr/local/fetal_brain_seg/fetal_brain_seg.py']
@@ -113,7 +108,7 @@ if __name__ == "__main__":
                 #subprocess.run(cmd, shell=True)#, capture_output=True)
                 cmd_os = 'cd /usr/local/fetal_brain_seg;'
                 for v in cmd:
-                    cmd_os+=v+' '
+                    cmd_os += v + ' '
                 print(cmd_os)
                 subprocess.run(cmd_os, shell=True)
             else:
@@ -123,8 +118,6 @@ if __name__ == "__main__":
     print(subject_processed_truefisp)
     print('-----------------------------------------------------------subject_processed_haste')
     print(subject_processed_haste)
-
-
 
 """
 old version when the nifti files are not organized in the 'scans' directory
