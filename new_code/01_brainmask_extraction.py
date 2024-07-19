@@ -50,10 +50,16 @@ if __name__ == "__main__":
 
             already_done = list()
             for f in haste_files:
-                nifti_file_name, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
-                print(nifti_file_name)
-                print(nifti_full_path)
-                break
+                nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
+                s_nifti_filename = nifti_filename.split(".")
+                bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
+                bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
+
+                if os.path.exists(bm_output_file):
+                    already_done.append(True)
+                else:
+                    cmd1.append(nifti_full_path)
+                    cmd2.append(bm_output_file)
 
             break
 
