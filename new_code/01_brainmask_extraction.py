@@ -7,7 +7,30 @@ import subprocess
 from tools import data_organization as tdo
 
 
+def write_slurm_file(path):
+
+    base_slurm_file = f"""#!/bin/sh
+    #
+    # #SBATCH --account='a391'
+    # #SBATCH --partition=volta
+    # #SBATCH --gres=gpu:1
+    # #SBATCH --time=00:30:00
+    # #SBATCH -o tmp.out
+    # #SBATCH -e tmp.err
+    #
+    # module load userspace/all
+    # module load cuda/11.6
+    """
+
+    print(base_slurm_file)
+
+
+
 if __name__ == "__main__":
+
+    write_slurm_file("nesvor_slurm.sh")
+
+    exit()
     base_path = cfg.MESO_DATA_PATH
 
     subject_IDs = os.listdir(base_path)
@@ -44,7 +67,6 @@ if __name__ == "__main__":
             if not os.path.exists(bm_haste_subj_output_dir):
                 os.mkdir(bm_haste_subj_output_dir)
 
-
             cmd1 = ["--input-stacks"]
             cmd2 = ["--output-stack-masks"]
 
@@ -60,6 +82,9 @@ if __name__ == "__main__":
                 else:
                     cmd1.append(nifti_full_path)
                     cmd2.append(bm_output_file)
+
+            if sum(already_done) < len(haste_files):
+                subject_processed_haste.extend(subject)
 
             break
 
