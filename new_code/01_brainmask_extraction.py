@@ -15,6 +15,10 @@ if __name__ == "__main__":
     subject_processed_haste = list()
     subject_processed_truefisp = list()
 
+    for subject in subject_IDs:
+        subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
+        print(subj_output_dir)
+        break
 
 # input_path = "/scratch/lbaptiste/data/dataset/babofet/subjects/sub-Aziza_ses-01/scans/10-T2_HASTE_AX2/resources/NIFTI/files"
 # output_path = "/scratch/lbaptiste/data/dataset/babofet/output"
