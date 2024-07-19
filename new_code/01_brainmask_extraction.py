@@ -21,7 +21,7 @@ def write_slurm_file(input_path, output_path, input_file, output_file):
 module load userspace/all
 module load cuda/11.6
 
-singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output softs/nesvor_latest.sif nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
+singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output /scratch/lbaptiste/softs/nesvor_latest.sif nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
 echo "Running on: $SLURM_NODELIST"
     """
 
