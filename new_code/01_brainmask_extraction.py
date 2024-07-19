@@ -88,9 +88,10 @@ if __name__ == "__main__":
 
             print(nifti_full_path)
             print(bm_haste_subj_output_dir)
+            print(bm_output_file)
             for input, output in zip(cmd1, cmd2):
                 pass
-            
+
             break
 
 
