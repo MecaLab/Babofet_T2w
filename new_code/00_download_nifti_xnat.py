@@ -10,7 +10,7 @@ session = xnat.connect('http://xnat.intlocal.univ-amu.fr:8080/', user='BaptBat')
 
 
 if __name__ == "__main__":
-    nifti_data_path = cfg.DATA_PATH
+    nifti_data_path = cfg.MESO_DATA_PATH
     project_name = "LoFeBa"
     proj_data = session.projects[project_name]
 
