@@ -8,6 +8,7 @@ from tools import data_organization as tdo
 
 
 def write_slurm_file(input_path, output_path, input_file, output_file):
+    filename = "nesvor.slurm"
     slurm_content = f"""#!/bin/sh
 
 #SBATCH --account='a391'
@@ -24,8 +25,10 @@ singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output softs/n
 echo "Running on: $SLURM_NODELIST"
     """
 
-    with open("nesvor.slurm", "w", encoding="utf-8") as slurm_file:
+    with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
+
+    os.chmod(filename, 0o700)
 
 
 if __name__ == "__main__":
