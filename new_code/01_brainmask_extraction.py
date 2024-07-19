@@ -11,7 +11,10 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
     subject_IDs.sort()
     print('subjects to be processed')
-    
+    print(subject_IDs)
+    subject_processed_haste = list()
+    subject_processed_truefisp = list()
+
 
 # input_path = "/scratch/lbaptiste/data/dataset/babofet/subjects/sub-Aziza_ses-01/scans/10-T2_HASTE_AX2/resources/NIFTI/files"
 # output_path = "/scratch/lbaptiste/data/dataset/babofet/output"
