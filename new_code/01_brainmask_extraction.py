@@ -34,8 +34,8 @@ if __name__ == "__main__":
                 truefisp_files.append(d)
 
         if len(haste_files) > 0:
-            haste_subj_output_dir = os.path.join(subj_output_dir, subject, "haste")
-            bm_haste_subj_output_dir = os.path.join(subj_output_dir, subject, "brainmask")
+            haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
+            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
 
             if not os.path.exists(haste_subj_output_dir):
                 os.mkdir(haste_subj_output_dir)
