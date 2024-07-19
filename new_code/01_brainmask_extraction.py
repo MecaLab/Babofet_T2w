@@ -17,8 +17,40 @@ if __name__ == "__main__":
 
     for subject in subject_IDs:
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
-        print(subj_output_dir)
-        break
+        if not os.path.exists(subj_output_dir):
+            os.makedirs(subj_output_dir)
+
+        print("----------------------" + subject)
+
+        dir_list = os.listdir(os.path.join(base_path, subject, "scans"))
+        haste_files = list()
+        truefisp_files = list()
+
+        for d in dir_list:
+            d_lower = d.lower()
+            if "haste" in d_lower:
+                haste_files.append(d)
+            if "trufi" in d_lower:
+                truefisp_files.append(d)
+
+        if len(haste_files) > 0:
+            haste_subj_output_dir = os.path.join(subj_output_dir, subject, "haste")
+            bm_haste_subj_output_dir = os.path.join(haste_subj_output_dir, "brainmask")
+
+            if not os.path.exists(bm_haste_subj_output_dir):
+                os.mkdir(bm_haste_subj_output_dir)
+            if not os.path.exists(haste_subj_output_dir):
+                os.mkdir(haste_subj_output_dir)
+
+            cmd1 = ["--input-stacks"]
+            cmd2 = ["--output-stack-masks"]
+
+            already_done = list()
+            for f in haste_files:
+                print(f)
+            break
+
+
 
 # input_path = "/scratch/lbaptiste/data/dataset/babofet/subjects/sub-Aziza_ses-01/scans/10-T2_HASTE_AX2/resources/NIFTI/files"
 # output_path = "/scratch/lbaptiste/data/dataset/babofet/output"
