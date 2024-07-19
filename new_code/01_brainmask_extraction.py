@@ -86,6 +86,10 @@ if __name__ == "__main__":
                     cmd1.append(nifti_filename)
                     cmd2.append(bm_nifti_filename)
 
+
+            print(nifti_full_path)
+            print(bm_haste_subj_output_dir)
+
             for input, output in zip(cmd1, cmd2):
                 print(input, output)
 
