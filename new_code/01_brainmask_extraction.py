@@ -7,30 +7,30 @@ import subprocess
 from tools import data_organization as tdo
 
 
-def write_slurm_file(path):
-
-    base_slurm_file = f"""#!/bin/sh
+def write_slurm_file(file_path, input_path, output_path):
+    slurm_content = f"""#!/bin/sh
 #
 # #SBATCH --account='a391'
 # #SBATCH --partition=volta
 # #SBATCH --gres=gpu:1
-# #SBATCH --time=00:30:00
+# #SBATCH --time=00:05:00
 # #SBATCH -o tmp.out
 # #SBATCH -e tmp.err
 
 # module load userspace/all
 # module load cuda/11.6
+
+# singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output softs/nesvor_latest.sif nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
     """
 
-    print(base_slurm_file)
+    print(slurm_content)
 
 
 
 if __name__ == "__main__":
 
-    write_slurm_file("nesvor_slurm.sh")
-
-    exit()
+    # write_slurm_file("nesvor_slurm.sh")
+    
     base_path = cfg.MESO_DATA_PATH
 
     subject_IDs = os.listdir(base_path)
@@ -85,6 +85,7 @@ if __name__ == "__main__":
 
             if sum(already_done) < len(haste_files):
                 subject_processed_haste.extend(subject)
+                print(cmd1)
 
             break
 
