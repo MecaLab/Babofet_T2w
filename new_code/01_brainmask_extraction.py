@@ -83,10 +83,7 @@ if __name__ == "__main__":
                     cmd1.append(nifti_full_path)
                     cmd2.append(bm_output_file)
 
-            if sum(already_done) < len(haste_files):
-                subject_processed_haste.extend(subject)
-                print(cmd1)
-                print(cmd2)
+            print(len(cmd1), len(cmd2))
 
             break
 
