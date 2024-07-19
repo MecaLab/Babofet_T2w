@@ -83,14 +83,11 @@ if __name__ == "__main__":
                 if os.path.exists(bm_output_file):
                     already_done.append(True)
                 else:
-                    cmd1.append(nifti_full_path)
-                    cmd2.append(bm_output_file)
+                    cmd1.append(nifti_filename)
+                    cmd2.append(bm_nifti_filename)
 
-            print(nifti_full_path)
-            print(bm_haste_subj_output_dir)
-            print(bm_output_file)
             for input, output in zip(cmd1, cmd2):
-                pass
+                print(input, output)
 
             break
 
