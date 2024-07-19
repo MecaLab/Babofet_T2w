@@ -67,8 +67,11 @@ if __name__ == "__main__":
             if not os.path.exists(bm_haste_subj_output_dir):
                 os.mkdir(bm_haste_subj_output_dir)
 
-            cmd1 = ["--input-stacks"]
-            cmd2 = ["--output-stack-masks"]
+            # cmd1 = ["--input-stacks"]
+            # cmd2 = ["--output-stack-masks"]
+
+            cmd1 = list()
+            cmd2 = list()
 
             already_done = list()
             for f in haste_files:
@@ -83,8 +86,11 @@ if __name__ == "__main__":
                     cmd1.append(nifti_full_path)
                     cmd2.append(bm_output_file)
 
-            print(len(cmd1), len(cmd2))
-
+            print(nifti_full_path)
+            print(bm_haste_subj_output_dir)
+            for input, output in zip(cmd1, cmd2):
+                pass
+            
             break
 
 
