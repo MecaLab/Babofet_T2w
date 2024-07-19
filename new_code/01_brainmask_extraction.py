@@ -10,16 +10,16 @@ from tools import data_organization as tdo
 def write_slurm_file(path):
 
     base_slurm_file = f"""#!/bin/sh
-    #
-    # #SBATCH --account='a391'
-    # #SBATCH --partition=volta
-    # #SBATCH --gres=gpu:1
-    # #SBATCH --time=00:30:00
-    # #SBATCH -o tmp.out
-    # #SBATCH -e tmp.err
-    #
-    # module load userspace/all
-    # module load cuda/11.6
+#
+# #SBATCH --account='a391'
+# #SBATCH --partition=volta
+# #SBATCH --gres=gpu:1
+# #SBATCH --time=00:30:00
+# #SBATCH -o tmp.out
+# #SBATCH -e tmp.err
+
+# module load userspace/all
+# module load cuda/11.6
     """
 
     print(base_slurm_file)
