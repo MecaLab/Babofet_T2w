@@ -4,6 +4,8 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
 
+from tools import data_organization as tdo
+
 
 if __name__ == "__main__":
     base_path = cfg.MESO_DATA_PATH
@@ -48,9 +50,12 @@ if __name__ == "__main__":
 
             already_done = list()
             for f in haste_files:
-                print(f)
-            break
+                nifti_file_name, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
+                print(nifti_file_name)
+                print(nifti_full_path)
+                break
 
+            break
 
 
 # input_path = "/scratch/lbaptiste/data/dataset/babofet/subjects/sub-Aziza_ses-01/scans/10-T2_HASTE_AX2/resources/NIFTI/files"
