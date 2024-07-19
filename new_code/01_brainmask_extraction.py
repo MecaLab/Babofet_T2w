@@ -9,8 +9,7 @@ from tools import data_organization as tdo
 
 def write_slurm_file(input_path, output_path, input_file, output_file):
     filename = "nesvor.slurm"
-    slurm_content = f"""
-#!/bin/sh
+    slurm_content = f"""#!/bin/sh
 
 #SBATCH --account='a391'
 #SBATCH --partition=volta
