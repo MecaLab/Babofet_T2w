@@ -30,7 +30,7 @@ def write_slurm_file(file_path, input_path, output_path):
 if __name__ == "__main__":
 
     # write_slurm_file("nesvor_slurm.sh")
-    
+
     base_path = cfg.MESO_DATA_PATH
 
     subject_IDs = os.listdir(base_path)
@@ -86,6 +86,7 @@ if __name__ == "__main__":
             if sum(already_done) < len(haste_files):
                 subject_processed_haste.extend(subject)
                 print(cmd1)
+                print(cmd2)
 
             break
 
