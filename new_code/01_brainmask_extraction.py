@@ -9,7 +9,7 @@ from tools import data_organization as tdo
 
 def write_slurm_file(input_path, output_path, input_file, output_file):
     slurm_content = f"""#!/bin/sh
-#
+
 # #SBATCH --account='a391'
 # #SBATCH --partition=volta
 # #SBATCH --gres=gpu:1
@@ -17,10 +17,10 @@ def write_slurm_file(input_path, output_path, input_file, output_file):
 # #SBATCH -o tmp.out
 # #SBATCH -e tmp.err
 
-# module load userspace/all
-# module load cuda/11.6
+module load userspace/all
+module load cuda/11.6
 
-# singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output softs/nesvor_latest.sif nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
+singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output softs/nesvor_latest.sif nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
 echo "Running on: $SLURM_NODELIST"
     """
 
