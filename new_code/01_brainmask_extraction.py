@@ -7,7 +7,7 @@ import subprocess
 from tools import data_organization as tdo
 
 
-def write_slurm_file(file_path, input_path, output_path):
+def write_slurm_file(input_path, output_path, input_file, output_file):
     slurm_content = f"""#!/bin/sh
 #
 # #SBATCH --account='a391'
@@ -21,15 +21,14 @@ def write_slurm_file(file_path, input_path, output_path):
 # module load cuda/11.6
 
 # singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output softs/nesvor_latest.sif nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
+# echo "Running on: $SLURM_NODELIST"
     """
 
-    print(slurm_content)
-
+    with open("nesvor.slurm", "w", encoding="utf-8") as slurm_file:
+        slurm_file.write(slurm_content)
 
 
 if __name__ == "__main__":
-
-    # write_slurm_file("nesvor_slurm.sh")
 
     base_path = cfg.MESO_DATA_PATH
 
@@ -86,12 +85,12 @@ if __name__ == "__main__":
                     cmd1.append(nifti_filename)
                     cmd2.append(bm_nifti_filename)
 
-
-            print(nifti_full_path)
-            print(bm_haste_subj_output_dir)
-
             for input, output in zip(cmd1, cmd2):
                 print(input, output)
+
+                write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
+                                 input_file=input, output_file=output)
+                break
 
             break
 
