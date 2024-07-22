@@ -20,7 +20,7 @@ if __name__ == '__main__':
         if not os.path.exists(subj_output_dir):
             os.mkdir(subj_output_dir)
 
-        print("\tStarting {}".format(subject))
+        print("Starting {}".format(subject))
 
         dir_list = os.listdir(os.path.join(base_path, subject, "scans"))
         haste_files = list()
@@ -53,13 +53,9 @@ if __name__ == '__main__':
                 cmd.append("-o")
                 cmd.append(bm_full_path)
 
-                s = time.time()
                 subprocess.run(cmd)
-                e = time.time()
 
-                print(e-s)
-                print("End {}".format(nifti_filename))
-                break
+                print("\tEnd {}".format(nifti_filename))
 
-            print("\tEnding {}".format(subject))
+            print("Ending {}".format(subject))
             break
