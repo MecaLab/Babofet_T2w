@@ -16,7 +16,7 @@ if __name__ == '__main__':
     subject_processed_truefisp = list()
 
     for subject in subject_IDs:
-        subj_output_dir = os.path.join(base_path, subject)
+        subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
         if not os.path.exists(subj_output_dir):
             os.mkdir(subj_output_dir)
 
