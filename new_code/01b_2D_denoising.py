@@ -48,13 +48,19 @@ if __name__ == '__main__':
                 bm_nifti_filename = s_nifti_filename[0] + "_denoised.nii"
                 bm_full_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
-                cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
-                cmd.append(os.path.join(nifti_full_path, nifti_filename))
-                cmd.append("-o")
-                cmd.append(bm_full_path)
+                input_full_path = os.path.join(nifti_full_path, nifti_filename)
 
-                subprocess.run(cmd)
+                if os.path.exists(bm_full_path):
+                    print("\tSkipped {}".format(nifti_filename))
+                    continue
+                else:
+                    cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
+                    cmd.append(input_full_path)
+                    cmd.append("-o")
+                    cmd.append(bm_full_path)
 
-                print("\tEnd {}".format(nifti_filename))
+                    subprocess.run(cmd)
+
+                    print("\tEnd {}".format(nifti_filename))
 
             print("Ending {}".format(subject))
