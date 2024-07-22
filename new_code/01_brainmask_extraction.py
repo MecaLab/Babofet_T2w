@@ -78,17 +78,10 @@ if __name__ == "__main__":
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
-                bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
-                print(bm_output_file)
 
-                if os.path.exists(bm_output_file):
-                    already_done.append(True)
-                else:
-                    cmd1.append(nifti_filename)
-                    cmd2.append(bm_nifti_filename)
 
                 write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
-                                 input_file=nifti_filename, output_file=bm_output_file)
+                                 input_file=nifti_filename, output_file=bm_nifti_filename)
 
                 break
             break
