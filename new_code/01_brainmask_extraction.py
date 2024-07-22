@@ -38,7 +38,6 @@ if __name__ == "__main__":
     base_path = cfg.MESO_DATA_PATH
 
     subject_IDs = os.listdir(base_path)
-    subject_IDs.sort()
     print('subjects to be processed')
     print(subject_IDs)
     subject_processed_haste = list()
