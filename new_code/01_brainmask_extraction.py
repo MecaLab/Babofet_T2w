@@ -3,6 +3,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
+import time
 
 from tools import data_organization as tdo
 
@@ -14,7 +15,7 @@ def write_slurm_file(input_path, output_path, input_file, output_file):
 #SBATCH --account='a391'
 #SBATCH --partition=volta
 #SBATCH --gres=gpu:1
-#SBATCH --time=00:05:00
+#SBATCH --time=00:02:00
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
 
@@ -43,11 +44,10 @@ if __name__ == "__main__":
 
     for subject in subject_IDs:
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
-        print(subj_output_dir)
         if not os.path.exists(subj_output_dir):
             os.makedirs(subj_output_dir)
 
-        print("----------------------" + subject)
+        print("\tStarting {}".format(subject))
 
         dir_list = os.listdir(os.path.join(base_path, subject, "scans"))
         haste_files = list()
@@ -63,17 +63,12 @@ if __name__ == "__main__":
         if len(haste_files) > 0:
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
-            print(bm_haste_subj_output_dir)
 
             if not os.path.exists(haste_subj_output_dir):
                 os.mkdir(haste_subj_output_dir)
             if not os.path.exists(bm_haste_subj_output_dir):
                 os.mkdir(bm_haste_subj_output_dir)
 
-            cmd1 = list()
-            cmd2 = list()
-
-            already_done = list()
             for f in haste_files:
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
                 s_nifti_filename = nifti_filename.split(".")
@@ -83,3 +78,9 @@ if __name__ == "__main__":
                                  input_file=nifti_filename, output_file=bm_nifti_filename)
 
                 subprocess.run(["sbatch", "nesvor.slurm"])
+
+                # 35 sec before each run the SLURM file.
+                # Might be long but to avoid multiple run on same GPU
+                time.sleep(35)
+
+            print("\tEnding {}".format(subject))
