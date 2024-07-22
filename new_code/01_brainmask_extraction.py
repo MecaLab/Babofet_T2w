@@ -70,9 +70,6 @@ if __name__ == "__main__":
             if not os.path.exists(bm_haste_subj_output_dir):
                 os.mkdir(bm_haste_subj_output_dir)
 
-            # cmd1 = ["--input-stacks"]
-            # cmd2 = ["--output-stack-masks"]
-
             cmd1 = list()
             cmd2 = list()
 
@@ -88,17 +85,16 @@ if __name__ == "__main__":
                 else:
                     cmd1.append(nifti_filename)
                     cmd2.append(bm_nifti_filename)
-
-            print(cmd1)
-            print(cmd2)
-
-            for input, output in zip(cmd1, cmd2):
-                print(input, output)
+                    
+                print(subject)
+                print(f)
+                print(nifti_filename)
+                print(bm_output_file)
 
                 write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
-                                 input_file=input, output_file=output)
-                break
+                                 input_file=nifti_filename, output_file=bm_output_file)
 
+                break
             break
 
 
