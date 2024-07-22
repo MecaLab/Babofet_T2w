@@ -35,16 +35,15 @@ echo "Running on: $SLURM_NODELIST"
 
 if __name__ == "__main__":
 
-    base_path = cfg.MESO_DATA_PATH
+    base_path = cfg.DATA_PATH
 
     subject_IDs = os.listdir(base_path)
-    print('subjects to be processed')
-    print(subject_IDs)
     subject_processed_haste = list()
     subject_processed_truefisp = list()
 
     for subject in subject_IDs:
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
+        print(subj_output_dir)
         if not os.path.exists(subj_output_dir):
             os.makedirs(subj_output_dir)
 
@@ -64,6 +63,7 @@ if __name__ == "__main__":
         if len(haste_files) > 0:
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
+            print(bm_haste_subj_output_dir)
 
             if not os.path.exists(haste_subj_output_dir):
                 os.mkdir(haste_subj_output_dir)
@@ -79,17 +79,13 @@ if __name__ == "__main__":
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
                 bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
+                print(bm_output_file)
 
                 if os.path.exists(bm_output_file):
                     already_done.append(True)
                 else:
                     cmd1.append(nifti_filename)
                     cmd2.append(bm_nifti_filename)
-                    
-                print(subject)
-                print(f)
-                print(nifti_filename)
-                print(bm_output_file)
 
                 write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
                                  input_file=nifti_filename, output_file=bm_output_file)
