@@ -58,4 +58,3 @@ if __name__ == '__main__':
                 print("\tEnd {}".format(nifti_filename))
 
             print("Ending {}".format(subject))
-            break
