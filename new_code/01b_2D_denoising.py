@@ -49,7 +49,7 @@ if __name__ == '__main__':
                 bm_full_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
                 cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
-                cmd.append(nifti_full_path)
+                cmd.append(os.path.join(nifti_full_path, nifti_filename))
                 cmd.append("-o")
                 cmd.append(bm_full_path)
 
