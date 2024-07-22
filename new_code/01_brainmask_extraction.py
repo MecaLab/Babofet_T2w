@@ -35,7 +35,7 @@ echo "Running on: $SLURM_NODELIST"
 
 if __name__ == "__main__":
 
-    base_path = cfg.DATA_PATH
+    base_path = cfg.MESO_DATA_PATH
 
     subject_IDs = os.listdir(base_path)
     subject_processed_haste = list()
