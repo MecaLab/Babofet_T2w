@@ -22,7 +22,7 @@ module load userspace/all
 module load cuda/11.6
 
 singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output softs/nesvor_latest.sif \
-nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
+nesvor /scratch/lbaptiste/segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
 echo "Running on: $SLURM_NODELIST"
     """
 
