@@ -53,6 +53,6 @@ if __name__ == '__main__':
                 cmd.append("-o")
                 cmd.append(bm_full_path)
 
-                print(cmd)
+                subprocess.run(cmd)
                 break
             break
