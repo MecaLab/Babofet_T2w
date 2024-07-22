@@ -53,6 +53,13 @@ if __name__ == '__main__':
                 cmd.append("-o")
                 cmd.append(bm_full_path)
 
+                s = time.time()
                 subprocess.run(cmd)
+                e = time.time()
+
+                print(e-s)
+                print("End {}".format(nifti_filename))
                 break
+
+            print("\tEnding {}".format(subject))
             break
