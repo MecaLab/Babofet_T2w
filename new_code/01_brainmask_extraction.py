@@ -22,10 +22,10 @@ def write_slurm_file(input_path, output_path, input_file, output_file):
 module load userspace/all
 module load cuda/11.6
 
+echo "Running on: $SLURM_NODELIST"
+
 singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output /scratch/lbaptiste/softs/nesvor_latest.sif \
 nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
-
-echo "Running on: $SLURM_NODELIST"
     """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -83,10 +83,7 @@ if __name__ == "__main__":
                                      input_file=nifti_filename, output_file=bm_nifti_filename)
 
                     subprocess.run(["sbatch", "nesvor.slurm"])
-
-                    # 35 sec before each run the SLURM file.
-                    # Might be long but to avoid multiple run on same GPU
-                    print("\t\tFinished HASTE {}".format(bm_nifti_filename))
+                    print("\t\tComputing HASTE {}".format(bm_nifti_filename))
                 else:
                     print("\t\tSkiped {}".format(bm_nifti_filename))
 
@@ -114,11 +111,7 @@ if __name__ == "__main__":
                                      input_file=nifti_filename, output_file=bm_nifti_filename)
 
                     subprocess.run(["sbatch", "nesvor.slurm"])
-
-                    # 35 sec before each run the SLURM file.
-                    # Might be long but to avoid multiple run on same GPU
-                    time.sleep(35)
-                    print("\t\tFinished TRUEFISP {}".format(bm_nifti_filename))
+                    print("\t\tComputing TRUEFISP {}".format(bm_nifti_filename))
                 else:
                     print("\t\tSkiped {}".format(bm_nifti_filename))
             print("\tEnding TRUEFISP {}".format(subject))
