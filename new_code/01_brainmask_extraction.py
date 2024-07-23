@@ -60,6 +60,7 @@ if __name__ == "__main__":
             if "trufi" in d_lower:
                 truefisp_files.append(d)
 
+        # Haste files
         if len(haste_files) > 0:
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
@@ -74,13 +75,45 @@ if __name__ == "__main__":
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
 
-                write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
-                                 input_file=nifti_filename, output_file=bm_nifti_filename)
+                if not os.path.exists(bm_nifti_filename):
 
-                subprocess.run(["sbatch", "nesvor.slurm"])
+                    write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
+                                     input_file=nifti_filename, output_file=bm_nifti_filename)
 
-                # 35 sec before each run the SLURM file.
-                # Might be long but to avoid multiple run on same GPU
-                time.sleep(35)
+                    subprocess.run(["sbatch", "nesvor.slurm"])
+
+                    # 35 sec before each run the SLURM file.
+                    # Might be long but to avoid multiple run on same GPU
+                    time.sleep(35)
+                else:
+                    print("Skiped {}".format(bm_nifti_filename))
 
             print("\tEnding {}".format(subject))
+
+        # Truefisp files
+        if len(truefisp_files) > 0:
+            truefisp_subj_output_dir = os.path.join(subj_output_dir, "truefisp")
+            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
+
+            if not os.path.exists(truefisp_subj_output_dir):
+                os.mkdir(truefisp_subj_output_dir)
+            if not os.path.exists(bm_haste_subj_output_dir):
+                os.mkdir(bm_haste_subj_output_dir)
+
+            for f in haste_files:
+                nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
+                s_nifti_filename = nifti_filename.split(".")
+                bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
+
+                if not os.path.exists(bm_nifti_filename):
+
+                    write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
+                                     input_file=nifti_filename, output_file=bm_nifti_filename)
+
+                    subprocess.run(["sbatch", "nesvor.slurm"])
+
+                    # 35 sec before each run the SLURM file.
+                    # Might be long but to avoid multiple run on same GPU
+                    time.sleep(35)
+                else:
+                    print("Skiped {}".format(bm_nifti_filename))
