@@ -75,7 +75,7 @@ if __name__ == "__main__":
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
 
-                if not os.path.exists(bm_nifti_filename):
+                if not os.path.exists(os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)):
 
                     write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
                                      input_file=nifti_filename, output_file=bm_nifti_filename)
@@ -93,21 +93,21 @@ if __name__ == "__main__":
         # Truefisp files
         if len(truefisp_files) > 0:
             truefisp_subj_output_dir = os.path.join(subj_output_dir, "truefisp")
-            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
+            bm_truefisp_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
 
             if not os.path.exists(truefisp_subj_output_dir):
                 os.mkdir(truefisp_subj_output_dir)
-            if not os.path.exists(bm_haste_subj_output_dir):
-                os.mkdir(bm_haste_subj_output_dir)
+            if not os.path.exists(bm_truefisp_subj_output_dir):
+                os.mkdir(bm_truefisp_subj_output_dir)
 
-            for f in haste_files:
+            for f in truefisp_files:
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
 
-                if not os.path.exists(bm_nifti_filename):
+                if not os.path.exists(os.path.join(bm_truefisp_subj_output_dir, bm_nifti_filename)):
 
-                    write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
+                    write_slurm_file(input_path=nifti_full_path, output_path=bm_truefisp_subj_output_dir,
                                      input_file=nifti_filename, output_file=bm_nifti_filename)
 
                     subprocess.run(["sbatch", "nesvor.slurm"])
