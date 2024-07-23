@@ -62,6 +62,7 @@ if __name__ == "__main__":
 
         # Haste files
         if len(haste_files) > 0:
+            print("Starting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
 
@@ -88,10 +89,11 @@ if __name__ == "__main__":
                 else:
                     print("Skiped {}".format(bm_nifti_filename))
 
-            print("\tEnding {}".format(subject))
+            print("\tEnding HASTE {}".format(subject))
 
         # Truefisp files
         if len(truefisp_files) > 0:
+            print("Starting TRUEFISP {}".format(subject))
             truefisp_subj_output_dir = os.path.join(subj_output_dir, "truefisp")
             bm_truefisp_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
 
@@ -117,3 +119,4 @@ if __name__ == "__main__":
                     time.sleep(35)
                 else:
                     print("Skiped {}".format(bm_nifti_filename))
+            print("\tEnding TRUEFISP {}".format(subject))
