@@ -47,7 +47,7 @@ if __name__ == "__main__":
         if not os.path.exists(subj_output_dir):
             os.makedirs(subj_output_dir)
 
-        print("\tStarting {}".format(subject))
+        print("Starting {}".format(subject))
 
         dir_list = os.listdir(os.path.join(base_path, subject, "scans"))
         haste_files = list()
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
         # Haste files
         if len(haste_files) > 0:
-            print("Starting HASTE {}".format(subject))
+            print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
                     # Might be long but to avoid multiple run on same GPU
                     time.sleep(35)
                 else:
-                    print("Skiped {}".format(bm_nifti_filename))
+                    print("\tSkiped {}".format(bm_nifti_filename))
 
             print("\tEnding HASTE {}".format(subject))
 
@@ -118,5 +118,7 @@ if __name__ == "__main__":
                     # Might be long but to avoid multiple run on same GPU
                     time.sleep(35)
                 else:
-                    print("Skiped {}".format(bm_nifti_filename))
+                    print("\tSkiped {}".format(bm_nifti_filename))
             print("\tEnding TRUEFISP {}".format(subject))
+
+        print("Ending {}".format(subject))
