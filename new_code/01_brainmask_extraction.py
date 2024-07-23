@@ -86,14 +86,15 @@ if __name__ == "__main__":
                     # 35 sec before each run the SLURM file.
                     # Might be long but to avoid multiple run on same GPU
                     time.sleep(35)
+                    print("\t\tFinished HASTE {}".format(bm_nifti_filename))
                 else:
-                    print("\tSkiped {}".format(bm_nifti_filename))
+                    print("\t\tSkiped {}".format(bm_nifti_filename))
 
             print("\tEnding HASTE {}".format(subject))
 
         # Truefisp files
         if len(truefisp_files) > 0:
-            print("Starting TRUEFISP {}".format(subject))
+            print("\tStarting TRUEFISP {}".format(subject))
             truefisp_subj_output_dir = os.path.join(subj_output_dir, "truefisp")
             bm_truefisp_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
 
@@ -117,8 +118,9 @@ if __name__ == "__main__":
                     # 35 sec before each run the SLURM file.
                     # Might be long but to avoid multiple run on same GPU
                     time.sleep(35)
+                    print("\t\tFinished TRUEFISP {}".format(bm_nifti_filename))
                 else:
-                    print("\tSkiped {}".format(bm_nifti_filename))
+                    print("\t\tSkiped {}".format(bm_nifti_filename))
             print("\tEnding TRUEFISP {}".format(subject))
 
-        print("Ending {}".format(subject))
+        print("Ending {}\n".format(subject))
