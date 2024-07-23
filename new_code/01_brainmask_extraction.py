@@ -18,6 +18,8 @@ def write_slurm_file(input_path, output_path, input_file, output_file):
 #SBATCH --time=00:05:00
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
+#SBATCH --mail-type=BEGIN,END
+#SBATCH --mail-user=baptiste.leroux@univ-amu.fr
 
 module load userspace/all
 module load cuda/11.6
