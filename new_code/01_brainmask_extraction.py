@@ -15,7 +15,7 @@ def write_slurm_file(input_path, output_path, input_file, output_file):
 #SBATCH --account='a391'
 #SBATCH --partition=volta
 #SBATCH --gres=gpu:1
-#SBATCH --time=00:02:00
+#SBATCH --time=00:05:00
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
 
