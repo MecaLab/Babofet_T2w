@@ -86,7 +86,6 @@ if __name__ == "__main__":
 
                     # 35 sec before each run the SLURM file.
                     # Might be long but to avoid multiple run on same GPU
-                    time.sleep(35)
                     print("\t\tFinished HASTE {}".format(bm_nifti_filename))
                 else:
                     print("\t\tSkiped {}".format(bm_nifti_filename))
