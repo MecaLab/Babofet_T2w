@@ -52,7 +52,6 @@ if __name__ == '__main__':
 
                 if os.path.exists(bm_full_path):
                     print("\tSkipped {}".format(nifti_filename))
-                    continue
                 else:
                     cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
                     cmd.append(input_full_path)
