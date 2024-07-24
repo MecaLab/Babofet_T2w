@@ -32,7 +32,7 @@ def check_haste_files(origin_path, destination_path):
         print("Number of failed files: ", cpt_fail)
         print(files_failed)
     else:
-        print("Everything OK")
+        print("Everything OK for HASTE")
 
 
 def check_truefisp_files(origin_path, destination_path):
@@ -61,7 +61,7 @@ def check_truefisp_files(origin_path, destination_path):
         print("Number of failed files: ", cpt_fail)
         print(files_failed)
     else:
-        print("Everything OK")
+        print("Everything OK for TRUEFISP")
 
 
 if __name__ == "__main__":
