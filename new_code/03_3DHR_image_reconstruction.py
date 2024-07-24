@@ -84,12 +84,8 @@ if __name__ == '__main__':
 
                         print(cmd_os)
 
-                        try:
-                            re = subprocess.run(cmd_os)
-                            re.check_returncode()
-                        except:
-                            print("Error")
-                            exit()
+                        re = subprocess.run(cmd_os)
+                        re.check_returncode()
 
 """
 niftymic_reconstruct_volume 
