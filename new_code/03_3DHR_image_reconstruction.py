@@ -80,5 +80,28 @@ if __name__ == '__main__':
                         cmd_os += ' --subfolder-motion-correction ' + motion_subfolder
                         cmd_os += ' --use-masks-srr 1'
 
-                        print(cmd_os)
-                        exit()
+                        try:
+                            re = subprocess.run(cmd_os, shell=True)
+                            re.check_returncode()
+                        except:
+                            print("Error")
+                            exit()
+
+"""
+niftymic_reconstruct_volume 
+    --filenames 
+        /scratch/lbaptiste/data/dataset/babofet/subjects/sub-Formule_ses-08/scans/9-T2_HASTE_COR/resources/NIFTI/files 
+        /scratch/lbaptiste/data/dataset/babofet/subjects/sub-Formule_ses-08/scans/10-T2_HASTE_AX2/resources/NIFTI/files 
+        /scratch/lbaptiste/data/dataset/babofet/subjects/sub-Formule_ses-08/scans/8-T2_HASTE_SAG/resources/NIFTI/files  
+    --filenames-masks 
+        /scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_COR_9_brainmask.nii 
+        /scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_AX2_10_brainmask.nii 
+        /scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_SAG_8_brainmask.nii  
+    --output 
+    /scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/haste/reconstruction_ebner/sub-Formule_ses-08_haste_3DHR.nii.gz 
+    
+    --alpha 0.01 --threshold-first 0.6 --threshold 0.7 --intensity-correction 1 --bias-field-correction 1 
+    --isotropic-resolution 0.5 --dilation-radius 5 
+    --subfolder-motion-correction 
+        /scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/haste/reconstruction_ebner/motion_correction --use-masks-srr 1
+"""
