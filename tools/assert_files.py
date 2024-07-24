@@ -29,4 +29,4 @@ def check_haste_files(origin_path, destination_path):
 if __name__ == "__main__":
     input_path = cfg.MESO_DATA_PATH
     dst_path = cfg.MESO_OUTPUT_PATH
-    check_haste_files(input_path, "")
+    check_haste_files(input_path, dst_path)
