@@ -7,6 +7,8 @@ from tools import data_organization as tdo
 
 
 def check_haste_files(origin_path, destination_path):
+    cpt_fail = 0
+    files_failed = list()
     for subj in os.listdir(origin_path):
 
         dir_list = os.listdir(os.path.join(origin_path, subj, "scans"))
@@ -22,9 +24,12 @@ def check_haste_files(origin_path, destination_path):
             brainmask_filename = nifti_filename.replace(".nii", "_brainmask.nii")
 
             brainmask_full_path = os.path.join(destination_path, subj, "brainmask", brainmask_filename)
-            print(brainmask_full_path)
+            if not os.path.exists(brainmask_full_path):
+                cpt_fail += 1
+                files_failed.append(os.path.join(nifti_full_path, nifti_filename))
 
-        break
+    print(cpt_fail)
+    print(files_failed)
 
 if __name__ == "__main__":
     input_path = cfg.MESO_DATA_PATH
