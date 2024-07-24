@@ -28,8 +28,12 @@ def check_haste_files(origin_path, destination_path):
                 cpt_fail += 1
                 files_failed.append(os.path.join(nifti_full_path, nifti_filename))
 
-    print(cpt_fail)
-    print(files_failed)
+    if cpt_fail != 0:
+        print("Number of failed files: ", cpt_fail)
+        print(files_failed)
+    else:
+        print("Everything OK")
+
 
 if __name__ == "__main__":
     input_path = cfg.MESO_DATA_PATH
