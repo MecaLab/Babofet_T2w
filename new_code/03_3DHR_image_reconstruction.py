@@ -82,8 +82,10 @@ if __name__ == '__main__':
                         cmd_os += ' --subfolder-motion-correction ' + motion_subfolder
                         cmd_os += ' --use-masks-srr 1'
 
+                        print(cmd_os)
+
                         try:
-                            re = subprocess.run(cmd_os, shell=True)
+                            re = subprocess.run(cmd_os)
                             re.check_returncode()
                         except:
                             print("Error")
