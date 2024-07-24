@@ -3,7 +3,6 @@ import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
-import time
 
 from tools import data_organization as tdo
 
@@ -56,8 +55,7 @@ if __name__ == "__main__":
         for d in dir_list:
             d_lower = d.lower()
             if "haste" in d_lower:
-                # haste_files.append(d)
-                pass
+                haste_files.append(d)
             if "trufi" in d_lower:
                 truefisp_files.append(d)
 
