@@ -67,6 +67,8 @@ if __name__ == '__main__':
                     else:
                         if not os.path.exists(motion_subfolder):
                             os.mkdir(motion_subfolder)
+
+                        cmd_os = "singularity run /scratch/lbaptiste/softs/niftymic.multifact_latest.sif"
                         cmd_os = 'niftymic_reconstruct_volume --filenames '
                         for v in anat_img:
                             cmd_os += v + ' '
