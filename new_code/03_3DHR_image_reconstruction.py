@@ -45,3 +45,41 @@ if __name__ == '__main__':
                 os.mkdir(bm_haste_subj_output_dir)
             if not os.path.exists(recons_haste_subj_output_dir):
                 os.mkdir(recons_haste_subj_output_dir)
+
+            anat_img = list()
+            bm_img = list()
+            for f in haste_files:
+                nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
+                s_nifti_filename = nifti_filename.split(".")
+                bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
+                bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
+
+                if os.path.exists(nifti_full_path) and os.path.exists(bm_output_file):
+                    anat_img.append(nifti_full_path)
+                    bm_img.append(bm_output_file)
+
+                if len(bm_img) > 2:
+                    recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir, subject + '_haste_3DHR.nii.gz')
+                    motion_subfolder = os.path.join(recons_haste_subj_output_dir, 'motion_correction')
+
+                    if os.path.exists(recons_haste_subj_output):
+                        print('\t\tSkipped reconstruction HASTE for {}'.format(subject))
+                    else:
+                        if not os.path.exists(motion_subfolder):
+                            os.mkdir(motion_subfolder)
+                        cmd_os = 'niftymic_reconstruct_volume --filenames '
+                        for v in anat_img:
+                            cmd_os += v + ' '
+                        cmd_os += " --filenames-masks "
+                        for v in bm_img:
+                            cmd_os += v + ' '
+
+                        cmd_os += ' --output ' + recons_haste_subj_output
+                        cmd_os += ' --alpha 0.01 --threshold-first 0.6 --threshold 0.7 --intensity-correction 1 --bias-field-correction 1 --isotropic-resolution 0.5'
+                        cmd_os += ' --dilation-radius 5'
+                        cmd_os += ' --subfolder-motion-correction ' + motion_subfolder
+                        cmd_os += ' --use-masks-srr 1'
+
+                        print(cmd_os)
+            break
+        break
