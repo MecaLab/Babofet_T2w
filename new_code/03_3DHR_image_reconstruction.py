@@ -81,6 +81,4 @@ if __name__ == '__main__':
                         cmd_os += ' --use-masks-srr 1'
 
                         print(cmd_os)
-                break
-            break
-        break
+                        exit()
