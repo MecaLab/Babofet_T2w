@@ -21,6 +21,9 @@ def check_haste_files(origin_path, destination_path):
             nifti_filename, nifti_full_path = tdo.file_name_from_path(origin_path, subj, f)
             brainmask_filename = nifti_filename.replace(".nii", "_brainmask.nii")
 
+            brainmask_full_path = os.path.join(destination_path, subj, "brainmask", brainmask_filename)
+            print(brainmask_full_path)
+
         break
 
 if __name__ == "__main__":
