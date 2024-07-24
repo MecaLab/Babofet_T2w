@@ -34,6 +34,7 @@ if __name__ == '__main__':
                 truefisp_files.append(d)
 
         if len(haste_files) > 0:
+            print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, "denoising")
 
@@ -51,7 +52,7 @@ if __name__ == '__main__':
                 input_full_path = os.path.join(nifti_full_path, nifti_filename)
 
                 if os.path.exists(bm_full_path):
-                    print("\tSkipped {}".format(nifti_filename))
+                    print("\t\tSkipped {}".format(nifti_filename))
                 else:
                     cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
                     cmd.append(input_full_path)
@@ -60,6 +61,39 @@ if __name__ == '__main__':
 
                     subprocess.run(cmd)
 
-                    print("\tEnd {}".format(nifti_filename))
+                    print("\t\tEnd {}".format(nifti_filename))
 
-            print("Ending {}".format(subject))
+            print("\tEnding HASTE {}".format(subject))
+
+        if len(truefisp_files) > 0:
+            print("\tStarting TRUEFISP {}".format(subject))
+            truefisp_subj_output_dir = os.path.join(subj_output_dir, "truefisp")
+            bm_truefisp_subj_output_dir = os.path.join(subj_output_dir, "denoising")
+
+            if not os.path.exists(truefisp_subj_output_dir):
+                os.mkdir(truefisp_subj_output_dir)
+            if not os.path.exists(bm_truefisp_subj_output_dir):
+                os.mkdir(bm_truefisp_subj_output_dir)
+
+            for f in truefisp_files:
+                nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
+                s_nifti_filename = nifti_filename.split(".")
+                bm_nifti_filename = s_nifti_filename[0] + "_denoised.nii"
+                bm_full_path = os.path.join(bm_truefisp_subj_output_dir, bm_nifti_filename)
+
+                input_full_path = os.path.join(nifti_full_path, nifti_filename)
+
+                if os.path.exists(bm_full_path):
+                    print("\t\tSkipped {}".format(nifti_filename))
+                else:
+                    cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
+                    cmd.append(input_full_path)
+                    cmd.append("-o")
+                    cmd.append(bm_full_path)
+
+                    subprocess.run(cmd)
+
+                    print("\t\tEnd {}".format(nifti_filename))
+            print("\tEnding TRUEFISP {}".format(subject))
+
+        print("Ending {}\n".format(subject))
