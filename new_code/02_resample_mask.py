@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
                     nb.save(resampled_img, os.path.join(bm_haste_subj_output_dir, output_filename))
                 else:
-                    print("\t\tSkiped HASTE {}".format(bm_nifti_filename))
+                    print("\t\tSkiped HASTE {}".format(output_filename))
 
             print("\tEnding HASTE {}".format(subject))
 
@@ -64,7 +64,7 @@ if __name__ == '__main__':
             truefisp_subj_output_dir = os.path.join(subj_output_dir, "truefisp")
             bm_truefisp_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
 
-            for f in haste_files:
+            for f in truefisp_files:
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
