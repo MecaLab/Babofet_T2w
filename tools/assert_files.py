@@ -64,7 +64,6 @@ def check_size(origin_path, destination_path):
     files_failed_truefisp = list()
 
     for subj in os.listdir(origin_path):
-
         dir_list = os.listdir(os.path.join(origin_path, subj, "scans"))
         haste_files = list()
         truefisp_files = list()
@@ -88,6 +87,9 @@ def check_size(origin_path, destination_path):
             if img_src.shape != img_dst.shape:
                 files_failed_haste.append([img_src, img_dst])
                 cpt_fail_haste += 1
+
+            print(img_src.affine, img_dst.affine)
+            exit()
 
         for f in truefisp_files:
             nifti_filename, nifti_full_path = tdo.file_name_from_path(origin_path, subj, f)
