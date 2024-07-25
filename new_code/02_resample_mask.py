@@ -4,6 +4,9 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
 import time
+import nibabel as nb
+import numpy as np
+from nilearn.image import resample_to_img
 
 from tools import data_organization as tdo
 
@@ -43,6 +46,12 @@ if __name__ == '__main__':
 
                 output_filename = s_nifti_filename[0] + "_brainmask_resampled.nii"
 
+                if not os.path.exists(os.path.join(bm_haste_subj_output_dir, output_filename)):
+                    img_src = nb.load(os.path.join(nifti_full_path, nifti_filename))
+                    img_mask = nb.load(os.path.join(bm_haste_subj_output_dir, bm_nifti_filename))
 
-                print(bm_nifti_filename, nifti_filename, output_filename)
-                exit()
+                    resampled_img = resample_to_img(img_mask, img_src)
+
+                    nb.save(resampled_img, os.path.join(bm_haste_subj_output_dir, output_filename))
+
+                    exit()
