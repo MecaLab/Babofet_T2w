@@ -51,7 +51,7 @@ if __name__ == '__main__':
                     img_src = nb.load(os.path.join(nifti_full_path, nifti_filename))
                     img_mask = nb.load(os.path.join(bm_haste_subj_output_dir, bm_nifti_filename))
 
-                    resampled_img = resample_to_img(img_mask, img_src)
+                    resampled_img = resample_to_img(img_mask, img_src, interpolation='nearest')
 
                     nb.save(resampled_img, os.path.join(bm_haste_subj_output_dir, output_filename))
                 else:
@@ -76,7 +76,7 @@ if __name__ == '__main__':
                     img_src = nb.load(os.path.join(nifti_full_path, nifti_filename))
                     img_mask = nb.load(os.path.join(bm_truefisp_subj_output_dir, bm_nifti_filename))
 
-                    resampled_img = resample_to_img(img_mask, img_src)
+                    resampled_img = resample_to_img(img_mask, img_src, interpolation='nearest')
 
                     nb.save(resampled_img, os.path.join(bm_truefisp_subj_output_dir, output_filename))
                 else:
