@@ -8,7 +8,7 @@ from tools import data_organization as tdo
 
 
 def write_slurm_file(input_path, output_path, input_file, output_file):
-    filename = "nesvor.slurm"
+    filename = "nesvor_bm_extraction.slurm"
     slurm_content = f"""#!/bin/sh
 
 #SBATCH --account='a391'

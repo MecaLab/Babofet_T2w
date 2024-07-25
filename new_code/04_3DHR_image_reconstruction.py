@@ -7,6 +7,34 @@ import subprocess
 from tools import data_organization as tdo
 
 
+def write_slurm_file(input_path, output_path, input_file, output_file):
+    filename = "nesvor_reconstruction.slurm"
+    slurm_content = f"""#!/bin/sh
+
+#SBATCH --account='a391'
+#SBATCH --partition=volta
+#SBATCH --gres=gpu:1
+#SBATCH --time=00:10:00
+#SBATCH -o tmp.out
+#SBATCH -e tmp.err
+
+module load userspace/all
+module load cuda/11.6
+
+echo "Running on: $SLURM_NODELIST"
+
+
+
+singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output /scratch/lbaptiste/softs/nesvor_latest.sif \
+nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
+    """
+
+    with open(filename, "w", encoding="utf-8") as slurm_file:
+        slurm_file.write(slurm_content)
+
+    os.chmod(filename, 0o700)
+
+
 if __name__ == '__main__':
     base_path = cfg.MESO_DATA_PATH
 
