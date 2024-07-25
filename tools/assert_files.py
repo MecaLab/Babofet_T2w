@@ -1,5 +1,6 @@
 import sys
 import os
+import nibabel as nb
 
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
@@ -75,12 +76,13 @@ def check_size(origin_path, destination_path):
             brainmask_filename = nifti_filename.replace(".nii", "_brainmask.nii")
 
             brainmask_full_path = os.path.join(destination_path, subj, "brainmask", brainmask_filename)
-            print(os.path.join(nifti_full_path, nifti_filename))
-            print(brainmask_full_path)
+
+            img_src = nb.load(os.path.join(nifti_full_path, nifti_filename))
+            img_dst = nb.load(brainmask_full_path, brainmask_filename)
+
+            print(img_src.shape, img_dst.shape)
             break
         break
-
-
 
 
 if __name__ == "__main__":
@@ -90,5 +92,5 @@ if __name__ == "__main__":
     check_files(input_path, dst_path)
 
     print("\n")
-    
+
     check_size(input_path, dst_path)
