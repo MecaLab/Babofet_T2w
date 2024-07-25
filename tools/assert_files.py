@@ -80,7 +80,7 @@ def check_size(origin_path, destination_path):
             img_src = nb.load(os.path.join(nifti_full_path, nifti_filename))
             img_dst = nb.load(brainmask_full_path)
 
-            print(img_src.shape, img_dst.shape)
+            print(img_src.shape == img_dst.shape)
             break
         break
 
