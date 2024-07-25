@@ -1,6 +1,7 @@
 import sys
 import os
 import nibabel as nb
+import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
@@ -88,8 +89,10 @@ def check_size(origin_path, destination_path):
                 files_failed_haste.append([img_src, img_dst])
                 cpt_fail_haste += 1
 
-            print(img_src.affine, img_dst.affine)
-            exit()
+            if not np.allclose(img_src.affine, img_dst.affine):
+                print("Error all close")
+                exit()
+
 
         for f in truefisp_files:
             nifti_filename, nifti_full_path = tdo.file_name_from_path(origin_path, subj, f)
