@@ -71,6 +71,9 @@ if __name__ == '__main__':
 
                 output_filename = s_nifti_filename[0] + "_brainmask_resampled.nii"
 
+                print(nifti_filename, bm_nifti_filename, output_filename)
+                exit()
+
                 if not os.path.exists(os.path.join(bm_truefisp_subj_output_dir, output_filename)):
                     print("\t\tComputing resampling TRUEFISP {}".format(bm_nifti_filename))
                     img_src = nb.load(os.path.join(nifti_full_path, nifti_filename))
