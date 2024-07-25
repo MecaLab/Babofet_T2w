@@ -61,8 +61,8 @@ if __name__ == '__main__':
 
         if len(truefisp_files) > 0:
             print("\tStarting TRUEFISP {}".format(subject))
-            haste_subj_output_dir = os.path.join(subj_output_dir, "truefisp")
-            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
+            truefisp_subj_output_dir = os.path.join(subj_output_dir, "truefisp")
+            bm_truefisp_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
 
             for f in haste_files:
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
@@ -71,14 +71,14 @@ if __name__ == '__main__':
 
                 output_filename = s_nifti_filename[0] + "_brainmask_resampled.nii"
 
-                if not os.path.exists(os.path.join(bm_haste_subj_output_dir, output_filename)):
+                if not os.path.exists(os.path.join(bm_truefisp_subj_output_dir, output_filename)):
                     print("\t\tComputing resampling TRUEFISP {}".format(bm_nifti_filename))
                     img_src = nb.load(os.path.join(nifti_full_path, nifti_filename))
-                    img_mask = nb.load(os.path.join(bm_haste_subj_output_dir, bm_nifti_filename))
+                    img_mask = nb.load(os.path.join(bm_truefisp_subj_output_dir, bm_nifti_filename))
 
                     resampled_img = resample_to_img(img_mask, img_src)
 
-                    nb.save(resampled_img, os.path.join(bm_haste_subj_output_dir, output_filename))
+                    nb.save(resampled_img, os.path.join(bm_truefisp_subj_output_dir, output_filename))
                 else:
                     print("\t\tSkiped TRUEFISP {}".format(bm_nifti_filename))
             print("\tEnding TRUEFISP {}".format(subject))
