@@ -78,7 +78,7 @@ def check_size(origin_path, destination_path):
             brainmask_full_path = os.path.join(destination_path, subj, "brainmask", brainmask_filename)
 
             img_src = nb.load(os.path.join(nifti_full_path, nifti_filename))
-            img_dst = nb.load(brainmask_full_path, brainmask_filename)
+            img_dst = nb.load(brainmask_full_path)
 
             print(img_src.shape, img_dst.shape)
             break
@@ -89,8 +89,6 @@ if __name__ == "__main__":
     input_path = cfg.MESO_DATA_PATH
     dst_path = cfg.MESO_OUTPUT_PATH
 
-    check_files(input_path, dst_path)
-
-    print("\n")
+    # check_files(input_path, dst_path)
 
     check_size(input_path, dst_path)
