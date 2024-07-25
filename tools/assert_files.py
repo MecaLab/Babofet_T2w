@@ -90,7 +90,10 @@ def check_size(origin_path, destination_path):
                 cpt_fail_haste += 1
 
             if not np.allclose(img_src.affine, img_dst.affine):
-                print("Error all close")
+                files_failed_haste.append([img_src, img_dst])
+                cpt_fail_haste += 1
+
+                print(os.path.join(nifti_full_path, nifti_filename), brainmask_full_path)
                 exit()
 
 
