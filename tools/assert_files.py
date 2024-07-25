@@ -93,9 +93,6 @@ def check_size(origin_path, destination_path):
                 files_failed_haste.append([img_src, img_dst])
                 cpt_fail_haste += 1
 
-                print(os.path.join(nifti_full_path, nifti_filename), brainmask_full_path)
-                exit()
-
 
         for f in truefisp_files:
             nifti_filename, nifti_full_path = tdo.file_name_from_path(origin_path, subj, f)
@@ -107,6 +104,10 @@ def check_size(origin_path, destination_path):
             img_dst = nb.load(brainmask_full_path)
 
             if img_src.shape != img_dst.shape:
+                files_failed_truefisp.append([img_src, img_dst])
+                cpt_fail_truefisp += 1
+
+            if not np.allclose(img_src.affine, img_dst.affine):
                 files_failed_truefisp.append([img_src, img_dst])
                 cpt_fail_truefisp += 1
 
