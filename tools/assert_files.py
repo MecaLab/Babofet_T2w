@@ -123,13 +123,13 @@ def resample_to_reference():
     img_src = nb.load(src)
     img_dst = nb.load(dst)
 
-    resampled_img = resample_to_img(img_dst, img_src)
+    resampled_img = resample_to_img(img_dst, img_src, interpolation='nearest')
 
     print(resampled_img.affine)
     print(img_src.affine)
     print(img_dst.affine)
 
-    nb.save(resampled_img, "/scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_COR_9_brainmask_resampled.nii")
+    nb.save(resampled_img, "/scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_COR_9_brainmask_resampled_bis.nii")
 
 
 if __name__ == "__main__":
