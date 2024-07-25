@@ -2,6 +2,7 @@ import sys
 import os
 import nibabel as nb
 import numpy as np
+from nilearn.image import resample_to_img
 
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
@@ -61,8 +62,6 @@ def check_files(origin_path, destination_path):
 def check_size(origin_path, destination_path):
     cpt_fail_haste = 0
     cpt_fail_truefisp = 0
-    files_failed_haste = list()
-    files_failed_truefisp = list()
 
     for subj in os.listdir(origin_path):
         dir_list = os.listdir(os.path.join(origin_path, subj, "scans"))
@@ -86,11 +85,9 @@ def check_size(origin_path, destination_path):
             img_dst = nb.load(brainmask_full_path)
 
             if img_src.shape != img_dst.shape:
-                files_failed_haste.append([img_src, img_dst])
                 cpt_fail_haste += 1
 
             if not np.allclose(img_src.affine, img_dst.affine):
-                files_failed_haste.append([img_src, img_dst])
                 cpt_fail_haste += 1
 
         for f in truefisp_files:
@@ -103,24 +100,32 @@ def check_size(origin_path, destination_path):
             img_dst = nb.load(brainmask_full_path)
 
             if img_src.shape != img_dst.shape:
-                files_failed_truefisp.append([os.path.join(nifti_full_path, nifti_filename), brainmask_full_path])
                 cpt_fail_truefisp += 1
 
             if not np.allclose(img_src.affine, img_dst.affine):
-                files_failed_truefisp.append([os.path.join(nifti_full_path, nifti_filename), brainmask_full_path])
                 cpt_fail_truefisp += 1
 
     if cpt_fail_haste != 0:
         print("Number of failed HASTE files: ", cpt_fail_haste)
-        print(files_failed_haste)
     else:
         print("Everything OK for HASTE")
 
     if cpt_fail_truefisp != 0:
         print("Number of failed TRUEFISP files: ", cpt_fail_truefisp)
-        print(files_failed_truefisp)
     else:
         print("Everything OK for TRUEFISP")
+
+
+def resample_to_reference():
+    src = "/scratch/lbaptiste/data/dataset/babofet/subjects/sub-Formule_ses-08/scans/9-T2_HASTE_COR/resources/NIFTI/files/sub-Formule_ses-08_T2_HASTE_COR_9.nii"
+    dst = "/scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_COR_9_brainmask.nii"
+
+    img_src = nb.load(src)
+    img_dst = nb.load(dst)
+
+
+
+
 
 
 if __name__ == "__main__":
@@ -129,4 +134,6 @@ if __name__ == "__main__":
 
     # check_files(input_path, dst_path)
 
-    check_size(input_path, dst_path)
+    # check_size(input_path, dst_path)
+
+    resample_to_reference()
