@@ -123,6 +123,11 @@ def resample_to_reference():
     img_src = nb.load(src)
     img_dst = nb.load(dst)
 
+    print(img_src.shape, img_dst.shape)
+    print(img_src.affine, img_dst.affine)
+
+    resample_to_img(img_src, img_dst)
+
 
 
 
