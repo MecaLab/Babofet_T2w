@@ -41,5 +41,8 @@ if __name__ == '__main__':
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
 
-                print(bm_nifti_filename, nifti_filename)
+                output_filename = s_nifti_filename[0] + "_brainmask_resampled.nii"
+
+
+                print(bm_nifti_filename, nifti_filename, output_filename)
                 exit()
