@@ -56,7 +56,6 @@ def check_files(origin_path, destination_path):
         print("Everything OK for TRUEFISP")
 
 
-
 def check_size(origin_path, destination_path):
     for subj in os.listdir(origin_path):
 
@@ -89,3 +88,7 @@ if __name__ == "__main__":
     dst_path = cfg.MESO_OUTPUT_PATH
 
     check_files(input_path, dst_path)
+
+    print("\n")
+    
+    check_size(input_path, dst_path)
