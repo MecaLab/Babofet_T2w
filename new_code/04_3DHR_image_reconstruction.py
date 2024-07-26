@@ -56,12 +56,13 @@ singularity exec --nv \\
         --input-stacks {input_stacks} \\
         --stack-masks {mask_stacks} \\
         --output-volum /outpout/$OUTPUT_FILE \\
+        --output-resolution 0.8 \\
+        --registration svort \\
+        --segmentation \\
+        --bias-field-correction 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
-    
-
-
 
     os.chmod(filename, 0o700)
 
