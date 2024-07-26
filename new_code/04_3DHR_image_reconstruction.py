@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
         print("Starting {}".format(subject))
 
-       subj_denoised_path = os.path.join(subj_output_dir, "denoising")
+        subj_denoised_path = os.path.join(subj_output_dir, "denoising")
         haste_files = list()
         truefisp_files = list()
 
