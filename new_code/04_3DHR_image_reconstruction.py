@@ -7,7 +7,7 @@ import subprocess
 from tools import data_organization as tdo
 
 
-def write_slurm_file(input_path, output_path, input_file, output_file):
+def write_slurm_file(main_path):
     filename = "nesvor_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
 
@@ -24,9 +24,6 @@ module load cuda/11.6
 echo "Running on: $SLURM_NODELIST"
 
 
-
-singularity exec --nv -B "{input_path}":/data -B "{output_path}":/output /scratch/lbaptiste/softs/nesvor_latest.sif \
-nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/output/{output_file}"
     """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -110,10 +107,7 @@ if __name__ == '__main__':
                         cmd_os += ' --subfolder-motion-correction ' + motion_subfolder
                         cmd_os += ' --use-masks-srr 1'
 
-                        print(cmd_os)
-
-                        re = subprocess.run(cmd_os)
-                        re.check_returncode()
+                        write_slurm_file(subj_output_dir)
 
 """
 niftymic_reconstruct_volume 
