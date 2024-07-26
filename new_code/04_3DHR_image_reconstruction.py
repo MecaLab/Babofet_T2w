@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
                 if os.path.exists(nifti_filename) and os.path.exists(bm_nifti_filename):
                     anat_img.append(nifti_filename)
-                    bm_img.append(bm_img)
+                    bm_img.append(bm_nifti_filename)
 
             recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir, subject + '_haste_3DHR.nii.gz')
             motion_subfolder = os.path.join(recons_haste_subj_output_dir, 'motion_correction')
