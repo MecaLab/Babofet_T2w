@@ -32,9 +32,9 @@ MASK_PATH="$MAIN_PATH/brainmask"
 
 OUTPUT_PATH="$MAIN_PATH/haste/reconstruction_ebner"
 MOTION_CORRECTION="$OUTPUT_PATH/motion_correction"""
-    
+
     slurm_content += f"""
-OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
+OUTPUT_FILE="$OUTPUT_PATH/{output_file}"
     """
     slurm_content += "\n"
     for i, file in enumerate(denoised_files, start=1):
@@ -48,7 +48,8 @@ OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
     slurm_content += "\n"
 
     input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
-    print(input_stacks)
+    mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
+
     slurm_content += f"""
 singularity exec --nv \\
     -B "$INPUT_PATH":/data \\
@@ -57,6 +58,7 @@ singularity exec --nv \\
     /scratch/lbaptiste/softs/nesvor_latest.sif \\
     nesvor reconstruct \\
         --input-stacks {input_stacks} \\
+        --stack-masks {mask_stacks} \\
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
