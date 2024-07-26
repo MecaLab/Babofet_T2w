@@ -7,7 +7,7 @@ import subprocess
 from tools import data_organization as tdo
 
 
-def write_slurm_file(main_path, denoised_files, mask_files):
+def write_slurm_file(main_path, denoised_files, mask_files, output_file):
     filename = "nesvor_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
 
@@ -41,9 +41,14 @@ MASK_PATH="${{MAIN_PATH}}/brainmask"
     slurm_content += "\n\n"
 
     slurm_content += """
-singularity exec --nv \
-    -B coucou \
-    -B salut 
+OUTPUT_FILE="{output_file}"
+"""
+
+    slurm_content += """
+singularity exec --nv \\
+    -B "$INPUT_PATH":/data \\
+    -B "MASK_PATH":/masks \\
+    -B "OUTPUT_PATH":/output \\
     """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
