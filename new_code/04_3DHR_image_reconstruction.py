@@ -69,22 +69,12 @@ if __name__ == '__main__':
             if "trufi" in d_lower:
                 truefisp_files.append(d)
 
-        print(haste_files)
-        print(truefisp_files)
-        
         if len(haste_files) > 0:
             print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
             denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising")
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_' + recon_approach)
-
-            if not os.path.exists(haste_subj_output_dir):
-                os.mkdir(haste_subj_output_dir)
-            if not os.path.exists(bm_haste_subj_output_dir):
-                os.mkdir(bm_haste_subj_output_dir)
-            if not os.path.exists(recons_haste_subj_output_dir):
-                os.mkdir(recons_haste_subj_output_dir)
 
             anat_img = list()
             bm_img = list()
@@ -93,6 +83,11 @@ if __name__ == '__main__':
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_brainmask_resampled.nii"
                 bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
+
+                print(nifti_filename)
+                print(os.path.join(nifti_full_path, nifti_filename))
+                print(bm_output_file)
+                exit()
 
                 if os.path.exists(nifti_full_path) and os.path.exists(bm_output_file):
                     anat_img.append(nifti_full_path)
