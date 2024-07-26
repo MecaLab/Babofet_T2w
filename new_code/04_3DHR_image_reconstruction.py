@@ -24,10 +24,14 @@ module load cuda/11.6
 echo "Running on: $SLURM_NODELIST"
 
 MAIN_PATH="{main_path}"
+
 INPUT_PATH="${{MAIN_PATH}}/denoising"
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
-MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 MASK_PATH="${{MAIN_PATH}}/brainmask"
+
+MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
+
+OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
+OUTPUT_FILE="{output_file}"
     """
     slurm_content += "\n\n"
     for i, file in enumerate(denoised_files, start=1):
@@ -39,10 +43,6 @@ MASK_PATH="${{MAIN_PATH}}/brainmask"
         slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
 
     slurm_content += "\n\n"
-
-    slurm_content += """
-OUTPUT_FILE="{output_file}"
-"""
 
     slurm_content += """
 singularity exec --nv \\
