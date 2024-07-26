@@ -41,6 +41,9 @@ MASK_PATH="${{MAIN_PATH}}/brainmask"
     slurm_content += "\n\n"
 
     slurm_content += """
+singularity exec --nv \
+    -B coucou \
+    -B salut 
     """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
