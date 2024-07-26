@@ -58,21 +58,27 @@ if __name__ == '__main__':
 
         print("Starting {}".format(subject))
 
-        dir_list = os.listdir(os.path.join(base_path, subject, "scans"))
+       subj_denoised_path = os.path.join(subj_output_dir, "denoising")
         haste_files = list()
         truefisp_files = list()
 
-        for d in dir_list:
+        for d in subj_denoised_path:
             d_lower = d.lower()
             if "haste" in d_lower:
                 haste_files.append(d)
             if "trufi" in d_lower:
                 truefisp_files.append(d)
 
+        print(haste_files)
+
+"""
+
+
         if len(haste_files) > 0:
             print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
+            denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising")
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_' + recon_approach)
 
             if not os.path.exists(haste_subj_output_dir):
@@ -103,8 +109,7 @@ if __name__ == '__main__':
                     else:
                         if not os.path.exists(motion_subfolder):
                             os.mkdir(motion_subfolder)
-
-                        cmd_os = "singularity run /scratch/lbaptiste/softs/niftymic.multifact_latest.sif"
+cmd_os = "singularity run /scratch/lbaptiste/softs/niftymic.multifact_latest.sif"
                         cmd_os = 'niftymic_reconstruct_volume --filenames '
                         for v in anat_img:
                             cmd_os += v + ' '
@@ -117,11 +122,8 @@ if __name__ == '__main__':
                         cmd_os += ' --dilation-radius 5'
                         cmd_os += ' --subfolder-motion-correction ' + motion_subfolder
                         cmd_os += ' --use-masks-srr 1'
-
-                        write_slurm_file(subj_output_dir)
-                        exit()
-
-"""
+                        
+                        
 niftymic_reconstruct_volume 
     --filenames 
         /scratch/lbaptiste/data/dataset/babofet/subjects/sub-Formule_ses-08/scans/9-T2_HASTE_COR/resources/NIFTI/files 
