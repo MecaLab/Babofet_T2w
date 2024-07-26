@@ -23,14 +23,17 @@ module load cuda/11.6
 
 echo "Running on: $SLURM_NODELIST"
 
-MAIN_PATH="{main_path}"
+MAIN_PATH="{main_path}"""
 
-INPUT_PATH="${{MAIN_PATH}}/denoising"
-MASK_PATH="${{MAIN_PATH}}/brainmask"
+    slurm_content += """
 
-MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
+INPUT_PATH="$MAIN_PATH/denoising"
+MASK_PATH="$MAIN_PATH/brainmask"
 
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
+OUTPUT_PATH="$MAIN_PATH/haste/reconstruction_ebner"
+MOTION_CORRECTION="$OUTPUT_PATH/motion_correction"""
+    
+    slurm_content += f"""
 OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
     """
     slurm_content += "\n"
