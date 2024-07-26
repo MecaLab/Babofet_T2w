@@ -31,7 +31,7 @@ MASK_PATH=${{MAIN_PATH}}/brainmask"
     """
 
     for i, file in enumerate(denoised_files, start=1):
-        slurm_content += f"INPUT_FILE{i}={file}\n"
+        slurm_content += f"\"INPUT_FILE{i}={file}\n\""
 
     slurm_content += """
     
