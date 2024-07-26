@@ -31,7 +31,7 @@ MASK_PATH="${{MAIN_PATH}}/brainmask"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
-OUTPUT_FILE="{output_file}"
+OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
     """
     slurm_content += "\n\n"
     for i, file in enumerate(denoised_files, start=1):
@@ -109,8 +109,7 @@ if __name__ == '__main__':
                 if not os.path.exists(motion_subfolder):
                     os.mkdir(motion_subfolder)
 
-                recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir,
-                                                        subject + '_haste_3DHR.nii.gz')
+                recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
                 print(recons_haste_subj_output)
 
                 write_slurm_file(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
