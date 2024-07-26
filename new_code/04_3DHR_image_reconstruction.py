@@ -33,7 +33,7 @@ MASK_PATH=${{MAIN_PATH}}/brainmask"
     for i, file in enumerate(denoised_files, start=1):
         slurm_content += f"INPUT_FILE{i}={file}\n"
 
-    slurm_content+= """
+    slurm_content += """
     
     """
 
@@ -81,29 +81,22 @@ if __name__ == '__main__':
             for f in haste_files:
                 nifti_filename = os.path.join(denoised_subj_output_dir, f)
                 bm_nifti_filename = os.path.join(bm_haste_subj_output_dir, f.replace("_denoised.nii", "_brainmask_resampled.nii"))
-                print(bm_nifti_filename)
-                print(nifti_filename)
 
+                if os.path.exists(nifti_filename) and os.path.exists(bm_nifti_filename):
+                    anat_img.append(nifti_filename)
+                    bm_img.append(bm_img)
+
+            recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir, subject + '_haste_3DHR.nii.gz')
+            motion_subfolder = os.path.join(recons_haste_subj_output_dir, 'motion_correction')
+
+            if os.path.exists(recons_haste_subj_output):
+                print('\t\tSkipped reconstruction HASTE for {}'.format(subject))
+            else:
+                if not os.path.exists(motion_subfolder):
+                    os.mkdir(motion_subfolder)
+
+                write_slurm_file(subj_output_dir, anat_img, bm_img)
                 exit()
-
-                if os.path.exists(nifti_full_path) and os.path.exists(bm_output_file):
-                    anat_img.append(nifti_full_path)
-                    bm_img.append(bm_output_file)
-
-                if len(bm_img) > 2:
-                    recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir, subject + '_haste_3DHR.nii.gz')
-                    motion_subfolder = os.path.join(recons_haste_subj_output_dir, 'motion_correction')
-
-                    if os.path.exists(recons_haste_subj_output):
-                        print('\t\tSkipped reconstruction HASTE for {}'.format(subject))
-                    else:
-                        if not os.path.exists(motion_subfolder):
-                            os.mkdir(motion_subfolder)
-
-
-
-                        # write_slurm_file(subj_output_dir)
-                        exit()
 
 """
 cmd_os = "singularity run /scratch/lbaptiste/softs/niftymic.multifact_latest.sif"
