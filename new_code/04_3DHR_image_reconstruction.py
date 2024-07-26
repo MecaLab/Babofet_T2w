@@ -27,9 +27,9 @@ MAIN_PATH="{main_path}"
 INPUT_PATH="${{MAIN_PATH}}/denoising"
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
-MASK_PATH=${{MAIN_PATH}}/brainmask"
+MASK_PATH="${{MAIN_PATH}}/brainmask"
     """
-
+    slurm_content += "\n\n"
     for i, file in enumerate(denoised_files, start=1):
         slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
 
