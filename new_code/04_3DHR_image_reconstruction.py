@@ -44,7 +44,7 @@ OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
 
     slurm_content += "\n"
 
-    input_stacks = " ".join([f"/data/${{INPUT_FILE{i}}}" for i in range(1, len(denoised_files) + 1)])
+    input_stacks = " ".join([f"/data/${{{{INPUT_FILE{i}}}}}" for i in range(1, len(denoised_files) + 1)])
 
     slurm_content += f"""
 singularity exec --nv \\
