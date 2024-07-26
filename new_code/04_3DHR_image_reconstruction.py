@@ -109,7 +109,11 @@ if __name__ == '__main__':
                 if not os.path.exists(motion_subfolder):
                     os.mkdir(motion_subfolder)
 
-                write_slurm_file(subj_output_dir, anat_img, bm_img)
+                recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir,
+                                                        subject + '_haste_3DHR.nii.gz')
+                print(recons_haste_subj_output)
+
+                write_slurm_file(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
                 exit()
 
 """
