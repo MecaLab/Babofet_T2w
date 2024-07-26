@@ -59,6 +59,8 @@ echo $OUTPUT_FILE \n
     input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
     mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
 
+    with open(filename, "w", encoding="utf-8") as slurm_file:
+        slurm_file.write(slurm_content)
     exit()
     slurm_content += f"""
 singularity exec --nv \\
@@ -72,8 +74,7 @@ singularity exec --nv \\
         --output-volum /outpout/$OUTPUT_FILE \\
 """
 
-    with open(filename, "w", encoding="utf-8") as slurm_file:
-        slurm_file.write(slurm_content)
+
 
     os.chmod(filename, 0o700)
 
