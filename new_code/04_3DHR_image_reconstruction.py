@@ -23,7 +23,7 @@ module load cuda/11.6
 
 echo "Running on: $SLURM_NODELIST"
 
-MAIN_PATH={main_path}
+MAIN_PATH="{main_path}"
 
 
     """
