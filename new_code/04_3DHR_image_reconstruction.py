@@ -31,14 +31,6 @@ MASK_PATH="${{MAIN_PATH}}/brainmask"
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
-
-echo $MAIN_PATH \n 
-echo $INPUT_PATH \n 
-echo $MASK_PATH \n 
-echo $OUTPUT_PATH \n 
-echo $MOTION_CORRECTION \n 
-echo $OUTPUT_FILE \n  
-
 """
     slurm_content += "\n"
     for i, file in enumerate(denoised_files, start=1):
@@ -54,9 +46,6 @@ echo $OUTPUT_FILE \n
     input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
     mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
 
-    with open(filename, "w", encoding="utf-8") as slurm_file:
-        slurm_file.write(slurm_content)
-    exit()
     slurm_content += f"""
 singularity exec --nv \\
     -B "$INPUT_PATH":/data \\
@@ -68,6 +57,9 @@ singularity exec --nv \\
         --stack-masks {mask_stacks} \\
         --output-volum /outpout/$OUTPUT_FILE \\
 """
+    with open(filename, "w", encoding="utf-8") as slurm_file:
+        slurm_file.write(slurm_content)
+    
 
 
 
