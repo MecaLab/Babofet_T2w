@@ -29,10 +29,8 @@ INPUT_PATH="${{MAIN_PATH}}/denoising"
 MASK_PATH="${{MAIN_PATH}}/brainmask"
 
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
-MOTION_CORRECTION="$OUTPUT_PATH/motion_correction"""
-
-    slurm_content += f"""
-OUTPUT_FILE="$OUTPUT_PATH/{output_file}"
+MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction
+OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
 
 echo $MAIN_PATH \n 
 echo $INPUT_PATH \n 
