@@ -29,7 +29,7 @@ INPUT_PATH="${{MAIN_PATH}}/denoising"
 MASK_PATH="${{MAIN_PATH}}/brainmask"
 
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
-MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction
+MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
 
 echo $MAIN_PATH \n 
@@ -39,7 +39,7 @@ echo $OUTPUT_PATH \n
 echo $MOTION_CORRECTION \n 
 echo $OUTPUT_FILE \n  
 
-    """
+"""
     slurm_content += "\n"
     for i, file in enumerate(denoised_files, start=1):
         slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
