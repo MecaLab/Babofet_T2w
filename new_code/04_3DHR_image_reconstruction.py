@@ -23,6 +23,8 @@ module load cuda/11.6
 
 echo "Running on: $SLURM_NODELIST"
 
+MAIN_PATH={main_path}
+
 
     """
 
@@ -108,6 +110,7 @@ if __name__ == '__main__':
                         cmd_os += ' --use-masks-srr 1'
 
                         write_slurm_file(subj_output_dir)
+                        exit()
 
 """
 niftymic_reconstruct_volume 
