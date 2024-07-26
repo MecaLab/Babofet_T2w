@@ -79,11 +79,10 @@ if __name__ == '__main__':
             anat_img = list()
             bm_img = list()
             for f in haste_files:
-                niftif_filename = os.path.join(denoised_subj_output_dir, f)
+                nifti_filename = os.path.join(denoised_subj_output_dir, f)
                 bm_nifti_filename = os.path.join(bm_haste_subj_output_dir, f.replace("_denoised.nii", "_brainmask_resampled.nii"))
                 print(bm_nifti_filename)
-                """bm_nifti_filename = s_nifti_filename[0] + "_brainmask_resampled.nii"
-                bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)"""
+                print(nifti_filename)
 
                 exit()
 
