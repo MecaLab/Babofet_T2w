@@ -85,11 +85,10 @@ if __name__ == '__main__':
             anat_img = list()
             bm_img = list()
             for f in haste_files:
-                # nifti_filename = os.path.join(denoised_subj_output_dir, f)
                 nifti_filename = f
-                bm_nifti_filename = os.path.join(bm_haste_subj_output_dir, f.replace("_denoised.nii", "_brainmask_resampled.nii"))
+                bm_nifti_filename = f.replace("_denoised.nii", "_brainmask_resampled.nii")
 
-                if os.path.exists(os.path.join(denoised_subj_output_dir, f)) and os.path.exists(bm_nifti_filename):
+                if os.path.exists(os.path.join(denoised_subj_output_dir, f)) and os.path.exists(os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)):
                     anat_img.append(nifti_filename)
                     bm_img.append(bm_nifti_filename)
 
