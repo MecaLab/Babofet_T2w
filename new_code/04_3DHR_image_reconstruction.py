@@ -33,23 +33,27 @@ MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
 OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
     """
-    slurm_content += "\n\n"
+    slurm_content += "\n"
     for i, file in enumerate(denoised_files, start=1):
         slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
 
-    slurm_content += "\n\n"
+    slurm_content += "\n"
 
     for i, file in enumerate(mask_files, start=1):
         slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
 
-    slurm_content += "\n\n"
+    slurm_content += "\n"
 
     slurm_content += """
 singularity exec --nv \\
     -B "$INPUT_PATH":/data \\
     -B "MASK_PATH":/masks \\
     -B "OUTPUT_PATH":/output \\
-    """
+    /scratch/lbaptiste/softs/nesvor_latest.sif \\
+    nesvor reconstruct \\
+        --input-stacks {" ".join([f"/data/${{INPUT_FILE{i}}}" for i in range(1, len(file_list) + 1)])} \\
+    
+"""
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
