@@ -24,6 +24,7 @@ module load cuda/11.6
 echo "Running on: $SLURM_NODELIST"
 
 MAIN_PATH="{main_path}"
+INPUT_PATH="${MAIN_PATH}/denoising
 
 
     """
