@@ -80,14 +80,11 @@ if __name__ == '__main__':
             bm_img = list()
             for f in haste_files:
                 niftif_filename = os.path.join(denoised_subj_output_dir, f)
-                print(niftif_filename)
-                exit()
-                bm_nifti_filename = s_nifti_filename[0] + "_brainmask_resampled.nii"
-                bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
+                bm_nifti_filename = os.path.join(bm_haste_subj_output_dir, f.replace(".nii", "_brainmask_resampled.nii"))
+                print(bm_nifti_filename)
+                """bm_nifti_filename = s_nifti_filename[0] + "_brainmask_resampled.nii"
+                bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)"""
 
-                print(nifti_filename)
-                print(os.path.join(nifti_full_path, nifti_filename))
-                print(bm_output_file)
                 exit()
 
                 if os.path.exists(nifti_full_path) and os.path.exists(bm_output_file):
