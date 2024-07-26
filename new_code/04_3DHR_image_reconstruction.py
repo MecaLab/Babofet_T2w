@@ -62,7 +62,7 @@ if __name__ == '__main__':
         haste_files = list()
         truefisp_files = list()
 
-        for d in subj_denoised_path:
+        for d in os.listdir(subj_denoised_path):
             d_lower = d.lower()
             if "haste" in d_lower:
                 haste_files.append(d)
@@ -70,6 +70,7 @@ if __name__ == '__main__':
                 truefisp_files.append(d)
 
         print(haste_files)
+        exit()
 
 """
 
