@@ -46,7 +46,7 @@ OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
 
     input_stacks = " ".join([f"/data/${{INPUT_FILE{i}}}" for i in range(1, len(denoised_files) + 1)])
 
-    slurm_content += """
+    slurm_content += f"""
 singularity exec --nv \\
     -B "$INPUT_PATH":/data \\
     -B "MASK_PATH":/masks \\
