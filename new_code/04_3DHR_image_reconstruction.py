@@ -35,6 +35,14 @@ MOTION_CORRECTION="$OUTPUT_PATH/motion_correction"""
 
     slurm_content += f"""
 OUTPUT_FILE="$OUTPUT_PATH/{output_file}"
+
+echo $MAIN_PATH
+echo $INPUT_PATH
+echo $MASK_PATH
+echo $OUTPUT_PATH
+echo $MOTION_CORRECTION
+echo $OUTPUT_FILE
+
     """
     slurm_content += "\n"
     for i, file in enumerate(denoised_files, start=1):
@@ -48,7 +56,7 @@ OUTPUT_FILE="$OUTPUT_PATH/{output_file}"
     slurm_content += "\n"
 
     input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
-    mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
+    mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
 
     slurm_content += f"""
 singularity exec --nv \\
@@ -59,6 +67,7 @@ singularity exec --nv \\
     nesvor reconstruct \\
         --input-stacks {input_stacks} \\
         --stack-masks {mask_stacks} \\
+        --output-volum /outpout/$OUTPUT_FILE \\
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
