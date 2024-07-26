@@ -49,8 +49,8 @@ OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
     slurm_content += f"""
 singularity exec --nv \\
     -B "$INPUT_PATH":/data \\
-    -B "MASK_PATH":/masks \\
-    -B "OUTPUT_PATH":/output \\
+    -B "$MASK_PATH":/masks \\
+    -B "$OUTPUT_PATH":/output \\
     /scratch/lbaptiste/softs/nesvor_latest.sif \\
     nesvor reconstruct \\
         --input-stacks {input_stacks} \\
