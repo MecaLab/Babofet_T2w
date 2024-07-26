@@ -7,7 +7,7 @@ import subprocess
 from tools import data_organization as tdo
 
 
-def write_slurm_file(main_path):
+def write_slurm_file(main_path, denoised_files, mask_files):
     filename = "nesvor_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
 
@@ -28,8 +28,13 @@ INPUT_PATH="${{MAIN_PATH}}/denoising"
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 MASK_PATH=${{MAIN_PATH}}/brainmask"
+    """
 
+    for i, file in enumerate(denoised_files, start=1):
+        slurm_content += f"INPUT_FILE{i}={file}\n"
 
+    slurm_content+= """
+    
     """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
