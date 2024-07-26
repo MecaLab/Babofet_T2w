@@ -23,7 +23,8 @@ module load cuda/11.6
 
 echo "Running on: $SLURM_NODELIST"
 
-MAIN_PATH="{main_path}"""
+MAIN_PATH="{main_path}
+"""
 
     slurm_content += """
 
@@ -36,12 +37,12 @@ MOTION_CORRECTION="$OUTPUT_PATH/motion_correction"""
     slurm_content += f"""
 OUTPUT_FILE="$OUTPUT_PATH/{output_file}"
 
-echo $MAIN_PATH
-echo $INPUT_PATH
-echo $MASK_PATH
-echo $OUTPUT_PATH
-echo $MOTION_CORRECTION
-echo $OUTPUT_FILE
+echo $MAIN_PATH \n 
+echo $INPUT_PATH \n 
+echo $MASK_PATH \n 
+echo $OUTPUT_PATH \n 
+echo $MOTION_CORRECTION \n 
+echo $OUTPUT_FILE \n  
 
     """
     slurm_content += "\n"
@@ -58,6 +59,7 @@ echo $OUTPUT_FILE
     input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
     mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
 
+    exit()
     slurm_content += f"""
 singularity exec --nv \\
     -B "$INPUT_PATH":/data \\
