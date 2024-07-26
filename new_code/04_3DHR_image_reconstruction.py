@@ -58,11 +58,11 @@ if __name__ == '__main__':
 
         print("Starting {}".format(subject))
 
-        subj_denoised_path = os.path.join(subj_output_dir, "denoising")
+        dir_list = os.listdir(os.path.join(subj_output_dir, "denoising"))
         haste_files = list()
         truefisp_files = list()
 
-        for d in os.listdir(subj_denoised_path):
+        for d in dir_list:
             d_lower = d.lower()
             if "haste" in d_lower:
                 haste_files.append(d)
@@ -70,11 +70,8 @@ if __name__ == '__main__':
                 truefisp_files.append(d)
 
         print(haste_files)
-        exit()
-
-"""
-
-
+        print(truefisp_files)
+        
         if len(haste_files) > 0:
             print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
@@ -94,7 +91,7 @@ if __name__ == '__main__':
             for f in haste_files:
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
                 s_nifti_filename = nifti_filename.split(".")
-                bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
+                bm_nifti_filename = s_nifti_filename[0] + "_brainmask_resampled.nii"
                 bm_output_file = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
                 if os.path.exists(nifti_full_path) and os.path.exists(bm_output_file):
@@ -110,6 +107,13 @@ if __name__ == '__main__':
                     else:
                         if not os.path.exists(motion_subfolder):
                             os.mkdir(motion_subfolder)
+
+
+
+                        # write_slurm_file(subj_output_dir)
+                        exit()
+
+"""
 cmd_os = "singularity run /scratch/lbaptiste/softs/niftymic.multifact_latest.sif"
                         cmd_os = 'niftymic_reconstruct_volume --filenames '
                         for v in anat_img:
