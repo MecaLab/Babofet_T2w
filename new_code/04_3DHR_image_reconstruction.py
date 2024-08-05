@@ -47,11 +47,21 @@ singularity exec \\
     -B "$INPUT_PATH":/data \\
     -B "$MASK_PATH":/masks \\
     -B "$OUTPUT_PATH":/output \\
+    -B "MOTION_CORRECTION":/motion_correction \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
      niftymic_reconstruct_volume \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --output /output/$OUTPUT_FILE
+        --output /output/$OUTPUT_FILE \\
+        --alpha 0.01 \\
+        --threshold-first 0.6 \\
+        --threshold 0.7 \\
+        --intensity-correction 1 \\
+        --bias-field-correction 1 \\
+        --isotropic-resolution 0.5 \\
+        --dilation-radius 5 \\
+        --subfolder-motion-correction /motion_correction \\
+         --use-masks-srr 1
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
@@ -157,8 +167,7 @@ if __name__ == '__main__':
             bm_img = list()
             for f in haste_files:
                 nifti_filename = f
-                # bm_nifti_filename = f.replace("_denoised.nii", "_brainmask_resampled.nii")
-                bm_nifti_filename = f.replace("_denoised.nii", "_brainmask.nii")
+                bm_nifti_filename = f.replace("_denoised.nii", "_brainmask_resampled.nii")
 
                 if os.path.exists(os.path.join(denoised_subj_output_dir, f)) and os.path.exists(os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)):
                     anat_img.append(nifti_filename)
