@@ -126,7 +126,6 @@ if __name__ == '__main__':
                 print(recons_haste_subj_output)
 
                 print(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
-                exit()
 
                 write_slurm_file(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
                 exit()
