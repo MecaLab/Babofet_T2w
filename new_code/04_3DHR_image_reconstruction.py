@@ -22,7 +22,10 @@ echo "Running on: $SLURM_NODELIST"
 
 MAIN_PATH="{main_path}"
 
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
+INPUT_PATH="${{MAIN_PATH}}/denoising"
+MASK_PATH="${{MAIN_PATH}}/brainmask"
+
+OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_nifty"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
 
