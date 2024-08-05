@@ -7,7 +7,59 @@ import subprocess
 from tools import data_organization as tdo
 
 
-def write_slurm_file(main_path, denoised_files, mask_files, output_file):
+def write_slurm_file_nifty(main_path, denoised_files, mask_files, output_file):
+    filename = "nifty_reconstruction.slurm"
+    slurm_content = f"""#!/bin/sh
+    
+#SBATCH --account='a391'
+#SBATCH --partition=volta
+#SBATCH --gres=gpu:1
+#SBATCH --time=00:10:00
+#SBATCH -o tmp.out
+#SBATCH -e tmp.err
+
+echo "Running on: $SLURM_NODELIST"
+
+MAIN_PATH="{main_path}"
+
+OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
+MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
+OUTPUT_FILE="{output_file}"
+
+"""
+
+    slurm_content += "\n"
+    for i, file in enumerate(denoised_files, start=1):
+        slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
+
+    slurm_content += "\n"
+
+    for i, file in enumerate(mask_files, start=1):
+        slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
+
+    slurm_content += "\n"
+
+    input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
+    mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
+
+    slurm_content += f"""
+        
+singularity exec \\
+    -B "$INPUT_PATH":/data \\
+    -B "$MASK_PATH":/masks \\
+    -B "$OUTPUT_PATH":/output \\
+    /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
+     niftymic_reconstruct_volume \\
+        --filenames {input_stacks} \\
+        --filenames-masks {mask_stacks}
+"""
+    with open(filename, "w", encoding="utf-8") as slurm_file:
+        slurm_file.write(slurm_content)
+
+    os.chmod(filename, 0o700)
+
+
+def write_slurm_file_nesvor(main_path, denoised_files, mask_files, output_file):
     filename = "nesvor_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
 
@@ -31,9 +83,6 @@ MASK_PATH="${{MAIN_PATH}}/brainmask"
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
-
-echo $OUTPUT_PATH
-echo $OUTPUT_FILE
 
 """
     slurm_content += "\n"
@@ -77,7 +126,7 @@ if __name__ == '__main__':
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    recon_approach = "ebner"
+    recon_approach = "nesvor"
 
     for subject in subject_IDs:
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
@@ -125,7 +174,8 @@ if __name__ == '__main__':
 
                 recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
 
-                write_slurm_file(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
+                # write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
+                write_slurm_file_nifty(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
                 exit()
 
 """
