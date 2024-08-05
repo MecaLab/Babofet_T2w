@@ -28,11 +28,9 @@ MAIN_PATH="{main_path}"
 INPUT_PATH="${{MAIN_PATH}}/denoising"
 MASK_PATH="${{MAIN_PATH}}/brainmask"
 
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
-OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
+OUTPUT_FILE="${{MAIN_PATH}}/haste/reconstruction_ebner/{output_file}"
 
-echo $OUTPUT_PATH
 echo $OUTPUT_FILE
 
 """
@@ -124,9 +122,6 @@ if __name__ == '__main__':
                     os.mkdir(motion_subfolder)
 
                 recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
-                print(recons_haste_subj_output)
-
-                print(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
 
                 write_slurm_file(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
                 exit()
