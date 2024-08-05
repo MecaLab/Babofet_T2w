@@ -28,7 +28,6 @@ MASK_PATH="${{MAIN_PATH}}/brainmask"
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_nifty"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
-
 """
 
     slurm_content += "\n"
@@ -39,8 +38,6 @@ OUTPUT_FILE="{output_file}"
 
     for i, file in enumerate(mask_files, start=1):
         slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
-
-    slurm_content += "\n"
 
     input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
     mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
@@ -95,8 +92,6 @@ OUTPUT_FILE="{output_file}"
 
     for i, file in enumerate(mask_files, start=1):
         slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
-
-    slurm_content += "\n"
 
     input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
     mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
