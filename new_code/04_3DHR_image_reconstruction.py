@@ -126,7 +126,7 @@ if __name__ == '__main__':
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    recon_approach = "nesvor"
+    recon_approach = "nifty" # "nesvor"
 
     for subject in subject_IDs:
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
@@ -152,6 +152,9 @@ if __name__ == '__main__':
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
             denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising")
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_' + recon_approach)
+
+            if not os.path.exists(recons_haste_subj_output_dir):
+                os.mkdir(recons_haste_subj_output_dir)
 
             anat_img = list()
             bm_img = list()
