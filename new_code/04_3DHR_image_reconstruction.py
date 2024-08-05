@@ -28,9 +28,11 @@ MAIN_PATH="{main_path}"
 INPUT_PATH="${{MAIN_PATH}}/denoising"
 MASK_PATH="${{MAIN_PATH}}/brainmask"
 
+OUTPUT_PATH="${{MAIN_PATH}}/haste/"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
-OUTPUT_FILE="${{MAIN_PATH}}/haste/reconstruction_ebner/{output_file}"
+OUTPUT_FILE="${{OUTPUT_PATH}}/reconstruction_ebner/{output_file}"
 
+echo $OUTPUT_PATH
 echo $OUTPUT_FILE
 
 """
