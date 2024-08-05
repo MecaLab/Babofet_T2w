@@ -47,7 +47,7 @@ singularity exec \\
     -B "$INPUT_PATH":/data \\
     -B "$MASK_PATH":/masks \\
     -B "$OUTPUT_PATH":/output \\
-    -B "MOTION_CORRECTION":/motion_correction \\
+    -B "$MOTION_CORRECTION":/motion_correction \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
      niftymic_reconstruct_volume \\
         --filenames {input_stacks} \\
