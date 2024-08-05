@@ -54,7 +54,7 @@ singularity exec \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
      niftymic_reconstruct_volume \\
         --filenames {input_stacks} \\
-        --filenames-masks {mask_stacks}
+        --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
