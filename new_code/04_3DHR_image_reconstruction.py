@@ -33,6 +33,7 @@ MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
 
 echo $OUTPUT_PATH
+echo $OUTPUT_FILE
 
 """
     slurm_content += "\n"
