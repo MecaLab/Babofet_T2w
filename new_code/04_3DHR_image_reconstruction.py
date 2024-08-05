@@ -46,7 +46,6 @@ OUTPUT_FILE="{output_file}"
     mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
 
     slurm_content += f"""
-        
 singularity exec \\
     -B "$INPUT_PATH":/data \\
     -B "$MASK_PATH":/masks \\
@@ -87,7 +86,6 @@ MASK_PATH="${{MAIN_PATH}}/brainmask"
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
-
 """
     slurm_content += "\n"
     for i, file in enumerate(denoised_files, start=1):
