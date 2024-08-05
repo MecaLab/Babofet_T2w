@@ -55,7 +55,7 @@ singularity exec --nv \\
     nesvor reconstruct \\
         --input-stacks {input_stacks} \\
         --stack-masks {mask_stacks} \\
-        --output-volum /outpout/$OUTPUT_FILE \\
+        --output-volum /output/$OUTPUT_FILE \\
         --output-resolution 0.8 \\
         --registration svort \\
         --segmentation \\
