@@ -123,7 +123,7 @@ if __name__ == '__main__':
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    recon_approach = "nifty" # "nesvor"
+    recon_approach = "nifty"  # "nesvor"
 
     for subject in subject_IDs:
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
@@ -157,7 +157,8 @@ if __name__ == '__main__':
             bm_img = list()
             for f in haste_files:
                 nifti_filename = f
-                bm_nifti_filename = f.replace("_denoised.nii", "_brainmask_resampled.nii")
+                # bm_nifti_filename = f.replace("_denoised.nii", "_brainmask_resampled.nii")
+                bm_nifti_filename = f.replace("_denoised.nii", "_brainmask.nii")
 
                 if os.path.exists(os.path.join(denoised_subj_output_dir, f)) and os.path.exists(os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)):
                     anat_img.append(nifti_filename)
