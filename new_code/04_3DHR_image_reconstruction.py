@@ -31,6 +31,9 @@ MASK_PATH="${{MAIN_PATH}}/brainmask"
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_ebner"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="${{OUTPUT_PATH}}/{output_file}"
+
+echo $OUTPUT_PATH
+
 """
     slurm_content += "\n"
     for i, file in enumerate(denoised_files, start=1):
