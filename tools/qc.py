@@ -43,11 +43,10 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         mask_slice = brain_mask_data[:, slice_index, :]
 
         # Afficher la coupe du cerveau
-
         plt.figure(figsize=(6, 6))
         plt.title(f"Superposition de la coupe COR")
-        plt.imshow(np.rot90(brain_slice), cmap='gray')
-        plt.imshow(np.rot90(mask_slice), cmap='hot', alpha=0.5)  # Ajuster l'alpha pour la transparence
+        plt.imshow(brain_slice, cmap='gray')
+        plt.imshow(mask_slice, cmap='hot', alpha=0.5)
         plt.axis('off')
 
         plt.savefig(file_figure_out)
