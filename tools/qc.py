@@ -47,8 +47,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
                     done = 1
                 except Exception as e:
                     print(e)
+                    print(slices)
                     d_max = d_max - 20
-                    step = step -5
+                    step = step - 5
                     print("d_max is now set to ", d_max)
 
 
