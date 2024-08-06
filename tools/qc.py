@@ -26,16 +26,26 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             print(file_figure_out + " already exists, skip!")
         else:
 
+            anat_img = nib.load(path_anat_vol)
+            bm_img = nib.load(path_brainmask_vol)
+
+            dims_anat = anat_img.shape
+            dim_bm = bm_img.shape
+
+            print(dims_anat, dim_bm)
+            exit()
+
             done = 0
-            d_max = 240
+            d_max = 320
             step = 30
             while (done < 1) and (d_max > 20):
                 try:
                     nisnap.plot_segment(
                         path_brainmask_vol,
                         bg=path_anat_vol,
-                        axes="xyz",
-                        opacity=30,
+                        axes="x",
+                        figsize=figsize,
+                        opacity=50,
                         samebox=True,
                         # labels=[1],
                         # contours=True,
@@ -44,6 +54,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
                     done = 1
                 except Exception as e:
                     print(e)
+                    print(slices)
                     d_max = d_max - 20
                     step = step - 5
                     print("d_max is now set to ", d_max)
