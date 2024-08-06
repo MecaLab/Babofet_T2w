@@ -40,20 +40,14 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             slice_index = brain_data.shape[2] // 2
 
             # Afficher la coupe du cerveau
-            plt.figure(figsize=(12, 6))
+            plt.figure(figsize=(6, 6))
 
-            plt.subplot(1, 2, 1)
-            plt.title("Coupe de cerveau")
+            plt.title("Superposition de la coupe de cerveau et du brainmask")
             plt.imshow(brain_data[:, :, slice_index], cmap='gray')
+            plt.imshow(brain_mask_data[:, :, slice_index], cmap='hot',
+                       alpha=0.3)  # Ajuster l'alpha pour la transparence
             plt.axis('off')
 
-            # Afficher le brainmask
-            plt.subplot(1, 2, 2)
-            plt.title("Brainmask")
-            plt.imshow(brain_mask_data[:, :, slice_index], cmap='gray')
-            plt.axis('off')
-
-            plt.show()
             plt.savefig(file_figure_out)
 
             """nisnap.plot_segment(
