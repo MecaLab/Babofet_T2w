@@ -165,7 +165,7 @@ if __name__ == '__main__':
             bm_img = list()
             for f in haste_files:
                 nifti_filename = f
-                bm_nifti_filename = f.replace("_denoised.nii", "_brainmask_resampled.nii")
+                bm_nifti_filename = f.replace("_denoised.nii", "_denoised_brainmask.nii")
 
                 if os.path.exists(os.path.join(denoised_subj_output_dir, f)) and os.path.exists(os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)):
                     anat_img.append(nifti_filename)
@@ -182,8 +182,9 @@ if __name__ == '__main__':
 
                 recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
 
-                # write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
+                write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
                 # write_slurm_file_nifty(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
+                exit()
 
 
 """
