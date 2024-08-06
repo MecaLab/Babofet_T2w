@@ -69,7 +69,8 @@ if __name__ == "__main__":
                 os.mkdir(bm_haste_subj_output_dir)
 
             for f in haste_files:
-                nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
+                print(f) 
+                # nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
 
