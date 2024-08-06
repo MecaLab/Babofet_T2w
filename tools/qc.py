@@ -17,6 +17,10 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
     :return:
     """
 
+    print(path_anat_vol)
+    print(path_brainmask_vol)
+    print(file_figure_out)
+    
     figsize = {'x': (18, 4), 'y': (18, 4), 'z': (18, 5)}
 
     if not os.path.exists(path_brainmask_vol):
