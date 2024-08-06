@@ -84,9 +84,7 @@ if __name__ == "__main__":
                     write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
                                      input_file=nifti_filename, output_file=bm_nifti_filename)
 
-                    exit()
-
-                    subprocess.run(["sbatch", "nesvor.slurm"])
+                    subprocess.run(["sbatch", "nesvor_bm_extraction.slurm"])
                     print("\t\tComputing HASTE {}".format(bm_nifti_filename))
                 else:
                     print("\t\tSkiped {}".format(bm_nifti_filename))
@@ -105,7 +103,8 @@ if __name__ == "__main__":
                 os.mkdir(bm_truefisp_subj_output_dir)
 
             for f in truefisp_files:
-                nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
+                nifti_filename, nifti_full_path = f, os.path.join(subj_output_dir, "denoising")
+
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_brainmask.nii"
 
@@ -114,7 +113,7 @@ if __name__ == "__main__":
                     write_slurm_file(input_path=nifti_full_path, output_path=bm_truefisp_subj_output_dir,
                                      input_file=nifti_filename, output_file=bm_nifti_filename)
 
-                    subprocess.run(["sbatch", "nesvor.slurm"])
+                    subprocess.run(["sbatch", "nesvor_bm_extraction.slurm"])
                     print("\t\tComputing TRUEFISP {}".format(bm_nifti_filename))
                 else:
                     print("\t\tSkiped {}".format(bm_nifti_filename))
