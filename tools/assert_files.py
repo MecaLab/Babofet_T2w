@@ -116,22 +116,6 @@ def check_size(origin_path, destination_path):
         print("Everything OK for TRUEFISP")
 
 
-def resample_to_reference():
-    src = "/scratch/lbaptiste/data/dataset/babofet/subjects/sub-Formule_ses-08/scans/9-T2_HASTE_COR/resources/NIFTI/files/sub-Formule_ses-08_T2_HASTE_COR_9.nii"
-    dst = "/scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_COR_9_brainmask.nii"
-
-    img_src = nb.load(src)
-    img_dst = nb.load(dst)
-
-    resampled_img = resample_to_img(img_dst, img_src, interpolation='nearest')
-
-    print(resampled_img.affine)
-    print(img_src.affine)
-    print(img_dst.affine)
-
-    nb.save(resampled_img, "/scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_COR_9_brainmask_resampled_bis.nii")
-
-
 if __name__ == "__main__":
     input_path = cfg.MESO_DATA_PATH
     dst_path = cfg.MESO_OUTPUT_PATH
