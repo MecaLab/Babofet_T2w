@@ -13,10 +13,12 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
 
     for subject in subject_IDs:
+        dir_denoised = os.path.join(base_path, subject, "denoising")
+        dir_brainmask = os.path.join(base_path, subject, "brainmask")
         print("Starting {}".format(subject))
 
-        dir_list_denoised = os.listdir(os.path.join(base_path, subject, "denoising"))
-        dir_list_bm = os.listdir(os.path.join(base_path, subject, "denoising"))
+        dir_list_denoised = os.listdir(dir_denoised)
+        dir_list_bm = os.listdir(dir_brainmask)
 
         dir_out = os.path.join(dir_snapshots, subject)
 
@@ -31,8 +33,8 @@ if __name__ == "__main__":
             file_figure_out = os.path.join(dir_out, filename[0] + "_bounti_seg.png")
 
             qc.qc_brainmask(
-                os.path.join(dir_list_denoised, f),
-                os.path.join(dir_list_bm, bm_nifti_filename),
+                os.path.join(dir_denoised, f),
+                os.path.join(dir_brainmask, bm_nifti_filename),
                 file_figure_out
             )
             exit()
