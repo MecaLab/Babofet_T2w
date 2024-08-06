@@ -17,10 +17,6 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
     :return:
     """
 
-    print(path_anat_vol)
-    print(path_brainmask_vol)
-    print(file_figure_out)
-    
     figsize = {'x': (18, 4), 'y': (18, 4), 'z': (18, 5)}
 
     if not os.path.exists(path_brainmask_vol):
@@ -32,21 +28,29 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             done = 0
             d_max = 240
             step = 30
+            while (done < 1) and (d_max > 20):
+                try:
+                    slices = {'x': list(range(30, d_max, step)),
+                              'y': list(range(60, d_max, step)),
+                              'z': list(range(40, d_max, step))}
+                    nisnap.plot_segment(
+                        path_brainmask_vol,
+                        bg=path_anat_vol,
+                        slices=range(160, 174, 2),
+                        figsize=figsize,
+                        # opacity=0,
+                        samebox=True,
+                        # labels=[1],
+                        contours=True,
+                        savefig=file_figure_out,
+                    )
+                    done = 1
+                except Exception as e:
+                    print(e)
+                    d_max = d_max - 20
+                    step = step-5
+                    print("d_max is now set to ", d_max)
 
-            slices = {'x': list(range(30, d_max, step)),
-                      'y': list(range(60, d_max, step)),
-                      'z': list(range(40, d_max, step))}
-            nisnap.plot_segment(
-                path_brainmask_vol,
-                bg=path_anat_vol,
-                slices=slices,
-                figsize=figsize,
-                # opacity=0,
-                samebox=True,
-                # labels=[1],
-                contours=True,
-                savefig=file_figure_out,
-            )
 
 def qc_recontructed_3DHRvolume(path_anat_vol, file_figure_out):
     pass
