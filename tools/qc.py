@@ -6,6 +6,7 @@ import os
 import numpy as np
 import nibabel as nib
 import nisnap
+import matplotlib.pyplot as plt
 
 
 def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
@@ -28,12 +29,34 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
 
             anat_img = nib.load(path_anat_vol)
             bm_img = nib.load(path_brainmask_vol)
-
+            """
             dims_anat = anat_img.shape
             dim_bm = bm_img.shape
+            """
 
-            print(dims_anat, dim_bm)
-            nisnap.plot_segment(
+            brain_data = anat_img.get_fdata()
+            brain_mask_data = bm_img.get_fdata()
+
+            slice_index = brain_data.shape[2] // 2
+
+            # Afficher la coupe du cerveau
+            plt.figure(figsize=(12, 6))
+
+            plt.subplot(1, 2, 1)
+            plt.title("Coupe de cerveau")
+            plt.imshow(brain_data[:, :, slice_index], cmap='gray')
+            plt.axis('off')
+
+            # Afficher le brainmask
+            plt.subplot(1, 2, 2)
+            plt.title("Brainmask")
+            plt.imshow(brain_mask_data[:, :, slice_index], cmap='gray')
+            plt.axis('off')
+
+            plt.show()
+            plt.savefig(file_figure_out)
+
+            """nisnap.plot_segment(
                 path_brainmask_vol,
                 bg=path_anat_vol,
                 axes="x",
@@ -43,7 +66,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
                 # labels=[1],
                 # contours=True,
                 savefig=file_figure_out,
-            )
+            )"""
 
 
 def qc_recontructed_3DHRvolume(path_anat_vol, file_figure_out):
