@@ -27,6 +27,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             print(file_figure_out + " already exists, skip!")
         else:
 
+            print(path_brainmask_vol)
+            print(path_anat_vol)
+
             anat_img = nib.load(path_anat_vol)
             bm_img = nib.load(path_brainmask_vol)
             """
