@@ -23,9 +23,10 @@ if __name__ == "__main__":
             os.mkdir(dir_out)
 
         for f in dir_list:
-            print(f)
 
-            file_figure_out = os.path.join(dir_out, f + "_bounti_seg.png")
+            filename = f.split(".")
+
+            file_figure_out = os.path.join(dir_out, f[0] + "_bounti_seg.png")
 
             print(file_figure_out)
 
