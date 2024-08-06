@@ -30,7 +30,7 @@ def check_files(origin_path, destination_path):
 
         for f in haste_files:
             nifti_filename, nifti_full_path = tdo.file_name_from_path(origin_path, subj, f)
-            brainmask_filename = nifti_filename.replace(".nii", "_brainmask.nii")
+            brainmask_filename = nifti_filename.replace(".nii", "_denoised_brainmask.nii")
 
             brainmask_full_path = os.path.join(destination_path, subj, "brainmask", brainmask_filename)
             if not os.path.exists(brainmask_full_path):
@@ -39,7 +39,7 @@ def check_files(origin_path, destination_path):
 
         for f in truefisp_files:
             nifti_filename, nifti_full_path = tdo.file_name_from_path(origin_path, subj, f)
-            brainmask_filename = nifti_filename.replace(".nii", "_brainmask.nii")
+            brainmask_filename = nifti_filename.replace(".nii", "_denoised_brainmask.nii")
 
             brainmask_full_path = os.path.join(destination_path, subj, "brainmask", brainmask_filename)
             if not os.path.exists(brainmask_full_path):
