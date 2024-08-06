@@ -32,7 +32,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
                 figsize=figsize,
                 opacity=50,
                 samebox=True,
-                axes="x",
+                axes="xy",
                 # labels=[1],
                 # contours=True,
                 savefig=file_figure_out,
