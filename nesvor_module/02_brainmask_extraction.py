@@ -35,17 +35,16 @@ nesvor segment-stack --input-stacks "/data/{input_file}" --output-stack-masks "/
 
 if __name__ == "__main__":
 
-    base_path = cfg.MESO_DATA_PATH
+    base_path = cfg.MESO_OUTPUT_PATH
 
     subject_IDs = os.listdir(base_path)
     subject_processed_haste = list()
     subject_processed_truefisp = list()
 
     for subject in subject_IDs:
-        subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
-        if not os.path.exists(subj_output_dir):
-            os.makedirs(subj_output_dir)
+        print(subject)
 
+        exit()
         print("Starting {}".format(subject))
 
         dir_list = os.listdir(os.path.join(base_path, subject, "scans"))

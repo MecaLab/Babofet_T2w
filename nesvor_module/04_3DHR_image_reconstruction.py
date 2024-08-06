@@ -133,8 +133,6 @@ if __name__ == '__main__':
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    recon_approach = "nifty"  # "nesvor"
-
     for subject in subject_IDs:
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
         if not os.path.exists(subj_output_dir):
@@ -158,7 +156,7 @@ if __name__ == '__main__':
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
             denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising")
-            recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_' + recon_approach)
+            recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_nesvor')
 
             if not os.path.exists(recons_haste_subj_output_dir):
                 os.mkdir(recons_haste_subj_output_dir)
@@ -184,8 +182,8 @@ if __name__ == '__main__':
 
                 recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
 
-                # write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
-                write_slurm_file_nifty(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
+                write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
+                # write_slurm_file_nifty(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
                 exit()
 
 """

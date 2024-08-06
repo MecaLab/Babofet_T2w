@@ -1,22 +1,18 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
-import configuration as cfg
 import subprocess
-import time
 
 from tools import data_organization as tdo
 
 
-if __name__ == '__main__':
-    base_path = cfg.MESO_DATA_PATH
+def denoising_data(input_path, output_path):
+    base_path = input_path
 
     subject_IDs = os.listdir(base_path)
-    subject_processed_haste = list()
-    subject_processed_truefisp = list()
 
     for subject in subject_IDs:
-        subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
+        subj_output_dir = os.path.join(output_path, subject)
         if not os.path.exists(subj_output_dir):
             os.mkdir(subj_output_dir)
 
