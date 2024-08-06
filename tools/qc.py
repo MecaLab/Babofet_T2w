@@ -26,26 +26,15 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             print(file_figure_out + " already exists, skip!")
         else:
 
-            img = nib.load(path_anat_vol)
-            # Obtenir les dimensions de l'image
-            dimensions = img.shape
-
-            # Vérifier que chaque axe a au moins une tranche
-            if all(dim > 0 for dim in dimensions):
-                print("Chaque axe a au moins une tranche.")
-
             done = 0
             d_max = 320
             step = 30
             while (done < 1) and (d_max > 20):
                 try:
-                    slices = {'x': list(range(30, d_max, step)),
-                              'y': list(range(60, d_max, step)),
-                              'z': list(range(40, d_max, step))}
                     nisnap.plot_segment(
                         path_brainmask_vol,
                         bg=path_anat_vol,
-                        slices=slices,
+                        axes="x",
                         figsize=figsize,
                         opacity=50,
                         samebox=True,
@@ -56,7 +45,6 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
                     done = 1
                 except Exception as e:
                     print(e)
-                    print(slices)
                     d_max = d_max - 20
                     step = step - 5
                     print("d_max is now set to ", d_max)
