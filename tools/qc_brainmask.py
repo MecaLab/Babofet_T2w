@@ -1,11 +1,25 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.curdir))
 from tools import qc
+import configuration as cfg
 
 
 if __name__ == "__main__":
-    dir_snapshots = "/envau/work/meca/data/Fetus/datasets/dhcp_neonatal/output/svrtk_BOUNTI/segmentation_snapshots"
-    file_type = "_desc-restore_T2w.nii.gz"
+    dir_snapshots = "snapshots"
 
+    base_path = cfg.MESO_OUTPUT_PATH
 
-    file_figure_out = os.path.join(dir_snapshots, subject + "_" + session + "_bounti_seg.png")
+    subject_IDs = os.listdir(base_path)
 
-    qc.qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out)
+    for subject in subject_IDs:
+        print("Starting {}".format(subject))
+
+        dir_list = os.listdir(os.path.join(base_path, subject, "denoising"))
+
+        file_figure_out = os.path.join(dir_snapshots, subject + "_bounti_seg.png")
+
+        print(file_figure_out)
+        exit()
+
+        # qc.qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out)
