@@ -28,6 +28,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             anat_img = nib.load(path_anat_vol)
             anat_data = anat_img.get_fdata()
             dims = anat_data.shape
+
+            print(dims)
+
             done = 0
             d_max = min(240, dims[2]) #  d_max = 240
             step = 30
