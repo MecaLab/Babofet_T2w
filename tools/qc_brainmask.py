@@ -17,9 +17,18 @@ if __name__ == "__main__":
 
         dir_list = os.listdir(os.path.join(base_path, subject, "denoising"))
 
-        file_figure_out = os.path.join(dir_snapshots, subject + "_bounti_seg.png")
+        dir_out = os.path.join(dir_snapshots, subject)
 
-        print(file_figure_out)
+        if not os.path.exists(dir_out):
+            os.mkdir(dir_out)
+
+        for f in dir_list:
+            print(f)
+
+            file_figure_out = os.path.join(dir_out, f + "_bounti_seg.png")
+
+            print(file_figure_out)
+
         exit()
 
         # qc.qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out)
