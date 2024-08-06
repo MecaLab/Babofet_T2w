@@ -36,7 +36,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
                     nisnap.plot_segment(
                         path_brainmask_vol,
                         bg=path_anat_vol,
-                        slices=range(160, 174, 2),
+                        slices=slices,
                         figsize=figsize,
                         # opacity=0,
                         samebox=True,
@@ -48,9 +48,8 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
                 except Exception as e:
                     print(e)
                     d_max = d_max - 20
-                    step = step-5
+                    step = step - 5
                     print("d_max is now set to ", d_max)
-                    exit()
 
 
 def qc_recontructed_3DHRvolume(path_anat_vol, file_figure_out):
