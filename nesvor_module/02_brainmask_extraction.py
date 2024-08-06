@@ -48,15 +48,14 @@ if __name__ == "__main__":
         haste_files = list()
         truefisp_files = list()
 
-        print(dir_list)
-        exit()
-
         for d in dir_list:
             d_lower = d.lower()
             if "haste" in d_lower:
                 haste_files.append(d)
             if "trufi" in d_lower:
                 truefisp_files.append(d)
+
+        subj_output_dir = os.path.join(base_path, subject)
 
         # Haste files
         if len(haste_files) > 0:
@@ -78,6 +77,8 @@ if __name__ == "__main__":
 
                     write_slurm_file(input_path=nifti_full_path, output_path=bm_haste_subj_output_dir,
                                      input_file=nifti_filename, output_file=bm_nifti_filename)
+
+                    exit()
 
                     subprocess.run(["sbatch", "nesvor.slurm"])
                     print("\t\tComputing HASTE {}".format(bm_nifti_filename))
