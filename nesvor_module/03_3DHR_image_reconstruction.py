@@ -116,7 +116,7 @@ singularity exec --nv \\
         --input-stacks {input_stacks} \\
         --stack-masks {mask_stacks} \\
         --output-volum /output/$OUTPUT_FILE \\
-        --output-resolution 0.8 \\
+        --output-resolution 0.5 \\  # As done for human fetuses
         --registration svort \\
         --segmentation \\
         --bias-field-correction 
