@@ -26,6 +26,14 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             print(file_figure_out + " already exists, skip!")
         else:
 
+            img = nib.load(path_anat_vol)
+            # Obtenir les dimensions de l'image
+            dimensions = img.shape
+
+            # Vérifier que chaque axe a au moins une tranche
+            if all(dim > 0 for dim in dimensions):
+                print("Chaque axe a au moins une tranche.")
+
             done = 0
             d_max = 320
             step = 30
