@@ -136,8 +136,6 @@ if __name__ == "__main__":
     input_path = cfg.MESO_DATA_PATH
     dst_path = cfg.MESO_OUTPUT_PATH
 
-    # check_files(input_path, dst_path)
+    check_files(input_path, dst_path)
 
     # check_size(input_path, dst_path)
-
-    resample_to_reference()
