@@ -31,7 +31,7 @@ if __name__ == "__main__":
             file_figure_out = os.path.join(dir_out, filename[0] + "_bounti_seg.png")
 
             qc.qc_brainmask(
-                os.path.join(dir_list_denoised, filename),
+                os.path.join(dir_list_denoised, f),
                 os.path.join(dir_list_bm, bm_nifti_filename),
                 file_figure_out
             )
