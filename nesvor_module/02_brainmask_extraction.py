@@ -42,14 +42,14 @@ if __name__ == "__main__":
     subject_processed_truefisp = list()
 
     for subject in subject_IDs:
-        print(subject)
-
-        exit()
         print("Starting {}".format(subject))
 
-        dir_list = os.listdir(os.path.join(base_path, subject, "scans"))
+        dir_list = os.listdir(os.path.join(base_path, subject, "denoising"))
         haste_files = list()
         truefisp_files = list()
+
+        print(dir_list)
+        exit()
 
         for d in dir_list:
             d_lower = d.lower()
