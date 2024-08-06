@@ -15,24 +15,24 @@ if __name__ == "__main__":
     for subject in subject_IDs:
         print("Starting {}".format(subject))
 
-        dir_list = os.listdir(os.path.join(base_path, subject, "denoising"))
+        dir_list_denoised = os.listdir(os.path.join(base_path, subject, "denoising"))
+        dir_list_bm = os.listdir(os.path.join(base_path, subject, "denoising"))
 
         dir_out = os.path.join(dir_snapshots, subject)
 
         if not os.path.exists(dir_out):
             os.mkdir(dir_out)
 
-        for f in dir_list:
+        for f in dir_list_denoised:
 
             filename = f.split(".")
             bm_nifti_filename = filename[0] + "_brainmask.nii"
 
-            print(bm_nifti_filename)
-
             file_figure_out = os.path.join(dir_out, filename[0] + "_bounti_seg.png")
 
-            print(file_figure_out)
-
-        exit()
-
-        # qc.qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out)
+            qc.qc_brainmask(
+                os.path.join(dir_list_denoised, filename),
+                os.path.join(dir_list_bm, bm_nifti_filename),
+                file_figure_out
+            )
+            exit()
