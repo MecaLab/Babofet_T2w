@@ -182,9 +182,9 @@ if __name__ == '__main__':
 
                 recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
 
-                write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
+                # write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
                 # write_slurm_file_nifty(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
-                exit()
+
 
 """
 cmd_os = "singularity run /scratch/lbaptiste/softs/niftymic.multifact_latest.sif"
