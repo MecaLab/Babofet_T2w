@@ -44,7 +44,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
 
         plt.title("Superposition de la coupe de cerveau et du brainmask")
         plt.imshow(brain_data[slice_index, :, :], cmap='gray')
-        plt.imshow(brain_mask_data[:, :, slice_index], cmap='hot',
+        plt.imshow(brain_mask_data[slice_index, :, :], cmap='hot',
                    alpha=0.3)  # Ajuster l'alpha pour la transparence
         plt.axis('off')
 
