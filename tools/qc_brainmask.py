@@ -25,6 +25,7 @@ if __name__ == "__main__":
         for f in dir_list:
 
             filename = f.split(".")
+            print(f, filename)
 
             file_figure_out = os.path.join(dir_out, f[0] + "_bounti_seg.png")
 
