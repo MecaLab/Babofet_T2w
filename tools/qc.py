@@ -27,12 +27,12 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         else:
 
             nisnap.plot_segment(
-                path_anat_vol,
-                bg=path_brainmask_vol,
+                [path_brainmask_vol],
+                bg=path_anat_vol,
                 figsize=figsize,
-                # opacity=0,
+                opacity=50,
                 samebox=True,
-                axes="xyz",
+                axes="x",
                 # labels=[1],
                 # contours=True,
                 savefig=file_figure_out,
