@@ -66,7 +66,7 @@ if __name__ == "__main__":
                 s_nifti_filename = nifti_filename.split(".")
                 output_path = os.path.join(bm_haste_subj_output_dir, s_nifti_filename[0])
 
-                print(nifti_full_path)
+                print(os.path.join(nifti_full_path, nifti_filename))
                 exit()
 
             """if not os.path.exists(output_path):
