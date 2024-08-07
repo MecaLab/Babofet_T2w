@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
 
-def write_slurm_file(input_path, output_path, input_file, output_file):
+def write_slurm_file(main_path, denoised_files, mask_files, output_file):
     filename = "nifty_bm_extraction.slurm"
     slurm_content = f"""#!/bin/sh
     
@@ -16,6 +16,8 @@ def write_slurm_file(input_path, output_path, input_file, output_file):
 module load userspace/all
 
 echo "Running on: $SLURM_NODELIST"
+
+MAIN_PATH="{main_path}"
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -62,7 +64,14 @@ if __name__ == "__main__":
                 nifti_filename, nifti_full_path = f, os.path.join(subj_output_dir, "denoising")
 
                 s_nifti_filename = nifti_filename.split(".")
-                print(os.path.join(bm_haste_subj_output_dir, s_nifti_filename[0]))
-                if not os.path.exists(os.path.join(bm_haste_subj_output_dir, s_nifti_filename[0])):
-                    print("not exist")
+                output_path = os.path.join(bm_haste_subj_output_dir, s_nifti_filename[0])
+
+                print(nifti_full_path)
                 exit()
+
+            """if not os.path.exists(output_path):
+                write_slurm_file(
+                    main_path=subj_output_dir,
+
+                )
+            exit()"""
