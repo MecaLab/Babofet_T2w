@@ -40,7 +40,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         if brain_data.shape != brain_mask_data.shape:
             raise ValueError("Error shape")
 
-        slice_indices = np.random.randint(0, brain_data.shape[2], size=6)
+        """slice_indices = np.random.randint(0, brain_data.shape[2], size=6)
 
         fig, axes = plt.subplots(2, 3, figsize=(12, 8))
 
@@ -53,21 +53,20 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             ax.axis('off')
 
         plt.tight_layout()
-        plt.savefig(file_figure_out)
+        plt.savefig(file_figure_out)"""
 
         # Afficher la coupe du cerveau
 
-        """nisnap.plot_segment(
+        nisnap.plot_segment(
             [path_brainmask_vol],
             bg=path_anat_vol,
             axes="x",
-            figsize=figsize,
             opacity=50,
             samebox=True,
             # labels=[1],
             # contours=True,
             savefig=file_figure_out,
-        )"""
+        )
 
 
 def qc_recontructed_3DHRvolume(path_anat_vol, file_figure_out):
