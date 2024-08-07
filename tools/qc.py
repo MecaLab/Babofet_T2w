@@ -41,14 +41,15 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         if brain_data.shape != brain_mask_data.shape:
             raise ValueError("Error shape")
 
-        slice_indices = np.random.randint(0, brain_data.shape[2], size=5)
+        slice_indices = np.random.randint(0, brain_data.shape[2], size=6)
         # slice_indices = [18, 21, 24, 27, 30, 33]  # Indices de coupes à afficher
-        fig, axes = plt.subplots(1, len(slice_indices), figsize=(15, 5))
+        fig, axes = plt.subplots(2, 3, figsize=(12, 8))
 
+        # Afficher les images
         for i, slice_idx in enumerate(slice_indices):
-            ax = axes[i]
-            ax.imshow(brain_data[:, :, slice_idx], cmap='gray')
-            ax.imshow(aligned_seg_data[:, :, slice_idx], cmap='Reds', alpha=0.5)
+            ax = axes[i // 3, i % 3]
+            ax.imshow(brain_data[:, slice_idx, :], cmap='gray')
+            ax.imshow(aligned_seg_data[:, slice_idx, :], cmap='Reds', alpha=0.5)
             ax.set_title(f'Slice {slice_idx}')
             ax.axis('off')
 
