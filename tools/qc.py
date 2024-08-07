@@ -7,6 +7,7 @@ import numpy as np
 import nibabel as nib
 import nisnap
 import matplotlib.pyplot as plt
+from scipy.ndimage import affine_transform
 
 
 def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
@@ -38,6 +39,16 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         print(f"En-tête anat:\n{anat_header}")
         print(f"En-tête brainmask:\n{seg_header}")
 
+        anat_affine = anat_img.affine
+        seg_affine = bm_img.affine
+
+        # Calculer la transformation nécessaire pour aligner les volumes
+        transform = np.linalg.inv(seg_affine).dot(anat_affine)
+
+        # Appliquer la transformation au volume de segmentation
+        aligned_seg_data = affine_transform(brain_mask_data, transform[:3, :3], offset=transform[:3, 3],
+                                            output_shape=brain_data.shape)
+
         if brain_data.shape != brain_mask_data.shape:
             raise ValueError("Error shape")
 
@@ -47,7 +58,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         for i, slice_idx in enumerate(slice_indices):
             ax = axes[i]
             ax.imshow(brain_data[:, :, slice_idx], cmap='gray')
-            ax.imshow(brain_mask_data[:, :, slice_idx], cmap='Reds', alpha=0.5)
+            ax.imshow(aligned_seg_data[:, :, slice_idx], cmap='Reds', alpha=0.5)
             ax.set_title(f'Slice {slice_idx}')
             ax.axis('off')
 
