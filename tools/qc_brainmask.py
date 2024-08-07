@@ -15,6 +15,10 @@ if __name__ == "__main__":
     denoised_file = os.path.join(base_path, "/sub-Formule_ses-08/denoising/sub-Formule_ses-08_T2_HASTE_COR2_12_denoised.nii")
     bm_file = os.path.join(base_path, "/sub-Formule_ses-08/brainmask_niftymic/sub-Formule_ses-08_T2_HASTE_COR2_12_denoised/sub-Formule_ses-08_T2_HASTE_COR2_12_denoised_seg.nii.gz")
 
+    print(bm_file)
+    print(denoised_file)
+
+    
     qc.qc_brainmask(
         denoised_file,
         bm_file,
