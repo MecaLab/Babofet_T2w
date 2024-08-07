@@ -91,8 +91,12 @@ if __name__ == "__main__":
                     anat_img.append(nifti_filename)
 
             if not os.path.exists(output_path):
+                print(f"\t\tComputing HASTE {subject}")
                 write_slurm_file(
                     main_path=subj_output_dir,
                     denoised_files=anat_img,
                 )
-            exit()
+                subprocess.run(["sbatch", "nifty_bm_extraction.slurm"])
+            else:
+                print(f"\t\tSkipped Brainmask Extraction for {subject}")
+        print(f"\tEnding {subject}")
