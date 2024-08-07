@@ -30,13 +30,12 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape[:-1]
 
-        print(f"{anat_img.header}")
+        print(f"ANAT header: {anat_img.header}")
         print(f"BM header: {bm_img.header}")
 
         if brain_shape != bm_shape:
             raise ValueError(f"Error shape: {brain_shape} | {bm_shape}")
 
-        """
         anat_affine = anat_img.affine
         seg_affine = bm_img.affine
         
@@ -60,8 +59,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             ax.axis('off')
 
         plt.tight_layout()
-        plt.savefig(file_figure_out)"""
+        plt.savefig(file_figure_out)
 
+        """
         # Afficher la coupe du cerveau
         done = 0
         d_max = max(brain_shape)
@@ -87,7 +87,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
                 d_max = d_max - 20
                 step = step - 5
                 print("d_max is now set to ", d_max)
-
+            """
 
 
 def qc_recontructed_3DHRvolume(path_anat_vol, file_figure_out):
