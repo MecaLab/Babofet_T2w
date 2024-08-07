@@ -26,11 +26,13 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
 
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
-
         anat_affine = anat_img.affine
         seg_affine = bm_img.affine
 
-        if brain_data.shape != brain_mask_data.shape[:-1]:
+        brain_shape = brain_data.shape
+        bm_shape = brain_mask_data.shape[:-1]
+
+        if brain_shape != bm_shape:
             raise ValueError(f"Error shape: {brain_data.shape} | {brain_mask_data.shape}")
 
         """# Calculer la transformation nécessaire pour aligner les volumes
@@ -57,7 +59,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
 
         # Afficher la coupe du cerveau
         done = 0
-        d_max = 240
+        d_max = max(brain_shape)
         step = 30
         while (done < 1) and (d_max > 20):
             try:
