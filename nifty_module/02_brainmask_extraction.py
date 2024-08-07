@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
 
-def write_slurm_file(main_path, denoised_files, mask_files, output_file):
+def write_slurm_file(main_path, denoised_files):
     filename = "nifty_bm_extraction.slurm"
     slurm_content = f"""#!/bin/sh
     
@@ -18,6 +18,26 @@ module load userspace/all
 echo "Running on: $SLURM_NODELIST"
 
 MAIN_PATH="{main_path}"
+
+INPUT_PATH="${{MAIN_PATH}}/denoising"
+OUTPUT_PATH=${{MAIN_PATH}}/brainmask_niftymic"
+"""
+
+    slurm_content += "\n"
+
+    for i, file in enumerate(denoised_files, start=1):
+        slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
+
+    input_stacks = " ".join([f"/data/$INPUT_FILE{i}" for i in range(1, len(denoised_files) + 1)])
+
+    slurm_content += f"""
+singularity exec \\
+    -B "$INPUT_PATH":/data \\
+    -B "$OUTPUT_PATH":/output \
+    /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
+    niftymic_segment_fetal_brains \\
+            --filenames {input_stacks} \\
+            --dir-output /output
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -60,18 +80,19 @@ if __name__ == "__main__":
             if not os.path.exists(bm_haste_subj_output_dir):
                 os.mkdir(bm_haste_subj_output_dir)
 
+            anat_img = list()
             for f in haste_files:
                 nifti_filename, nifti_full_path = f, os.path.join(subj_output_dir, "denoising")
 
                 s_nifti_filename = nifti_filename.split(".")
                 output_path = os.path.join(bm_haste_subj_output_dir, s_nifti_filename[0])
 
-                print(os.path.join(nifti_full_path, nifti_filename))
-                exit()
+                if os.path.exists(os.path.join(nifti_full_path, nifti_filename)):
+                    anat_img.append(nifti_filename)
 
-            """if not os.path.exists(output_path):
+            if not os.path.exists(output_path):
                 write_slurm_file(
                     main_path=subj_output_dir,
-
+                    denoised_files=anat_img,
                 )
-            exit()"""
+            exit()
