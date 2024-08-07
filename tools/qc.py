@@ -27,14 +27,14 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
-        brain_shape = anat_img.shape
-        bm_shape = bm_img.shape[:-1]
+        brain_shape = brain_data.shape
+        bm_shape = brain_mask_data.shape[:-1]
 
-        print(f"{brain_data.header}")
-        print(f"BM header: {brain_mask_data.header}")
+        print(f"{anat_img.header}")
+        print(f"BM header: {bm_img.header}")
 
         if brain_shape != bm_shape:
-            raise ValueError(f"Error shape: {brain_data.shape} | {brain_mask_data.shape}")
+            raise ValueError(f"Error shape: {brain_shape} | {bm_shape}")
 
         """
         anat_affine = anat_img.affine
