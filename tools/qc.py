@@ -30,12 +30,12 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         anat_affine = anat_img.affine
         seg_affine = bm_img.affine
 
-        # Calculer la transformation nécessaire pour aligner les volumes
+        """# Calculer la transformation nécessaire pour aligner les volumes
         transform = np.linalg.inv(seg_affine).dot(anat_affine)
 
         # Appliquer la transformation au volume de segmentation
         aligned_seg_data = affine_transform(brain_mask_data, transform[:3, :3], offset=transform[:3, 3],
-                                            output_shape=brain_data.shape)
+                                            output_shape=brain_data.shape)"""
 
         if brain_data.shape != brain_mask_data.shape:
             raise ValueError("Error shape")
