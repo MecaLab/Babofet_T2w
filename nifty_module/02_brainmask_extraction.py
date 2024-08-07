@@ -20,7 +20,7 @@ echo "Running on: $SLURM_NODELIST"
 MAIN_PATH="{main_path}"
 
 INPUT_PATH="${{MAIN_PATH}}/denoising"
-OUTPUT_PATH=${{MAIN_PATH}}/brainmask_niftymic"
+OUTPUT_PATH="${{MAIN_PATH}}/brainmask_niftymic"
 """
 
     slurm_content += "\n"
