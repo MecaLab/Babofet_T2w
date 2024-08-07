@@ -29,6 +29,15 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
+        anat_header = anat_img.header
+        seg_header = bm_img.header
+
+        print(f"En-tête anat:\n{anat_header}")
+        print(f"En-tête brainmask:\n{seg_header}")
+
+        print(f"En-tête anat:\n{anat_header}")
+        print(f"En-tête brainmask:\n{seg_header}")
+
         if brain_data.shape != brain_mask_data.shape:
             raise ValueError("Error shape")
 
