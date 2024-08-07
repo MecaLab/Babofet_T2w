@@ -30,17 +30,17 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         anat_affine = anat_img.affine
         seg_affine = bm_img.affine
 
+        if brain_data.shape != brain_mask_data.shape[:-1]:
+            raise ValueError(f"Error shape: {brain_data.shape} | {brain_mask_data.shape}")
+
         """# Calculer la transformation nécessaire pour aligner les volumes
         transform = np.linalg.inv(seg_affine).dot(anat_affine)
 
         # Appliquer la transformation au volume de segmentation
         aligned_seg_data = affine_transform(brain_mask_data, transform[:3, :3], offset=transform[:3, 3],
-                                            output_shape=brain_data.shape)"""
+                                            output_shape=brain_data.shape)
 
-        if brain_data.shape != brain_mask_data.shape[:-1]:
-            raise ValueError(f"Error shape: {brain_data.shape} | {brain_mask_data.shape}")
-
-        """slice_indices = np.random.randint(0, brain_data.shape[2], size=6)
+        slice_indices = np.random.randint(0, brain_data.shape[2], size=6)
 
         fig, axes = plt.subplots(2, 3, figsize=(12, 8))
 
@@ -56,16 +56,31 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         plt.savefig(file_figure_out)"""
 
         # Afficher la coupe du cerveau
+        done = 0
+        d_max = 240
+        step = 30
+        while (done < 1) and (d_max > 20):
+            try:
+                slices = {'x': list(range(30, d_max, step)),
+                          'y': list(range(60, d_max, step)),
+                          'z': list(range(40, d_max, step))}
+                nisnap.plot_segment(
+                    [path_brainmask_vol],
+                    bg=path_anat_vol,
+                    slices=slices,
+                    opacity=50,
+                    samebox=True,
+                    # labels=[1],
+                    # contours=True,
+                    savefig=file_figure_out,
+                )
+                done = 1
+            except Exception as e:
+                print(e)
+                d_max = d_max - 20
+                step = step - 5
+                print("d_max is now set to ", d_max)
 
-        nisnap.plot_segment(
-            [path_brainmask_vol],
-            bg=path_anat_vol,
-            opacity=50,
-            samebox=True,
-            # labels=[1],
-            # contours=True,
-            savefig=file_figure_out,
-        )
 
 
 def qc_recontructed_3DHRvolume(path_anat_vol, file_figure_out):
