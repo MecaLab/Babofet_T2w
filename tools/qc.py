@@ -54,7 +54,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         for i, slice_idx in enumerate(slice_indices):
             ax = axes[i // 3, i % 3]
             ax.imshow(brain_data[:, :, slice_idx], cmap='gray')
-            ax.imshow(aligned_seg_data[:, :, slice_idx], cmap='Reds', alpha=0.3)
+            ax.imshow(brain_mask_data[:, :, slice_idx], cmap='Reds', alpha=0.3)
             ax.set_title(f'Slice {slice_idx}')
             ax.axis('off')
 

@@ -21,7 +21,6 @@ if __name__ == "__main__":
         "sub-Formule_ses-08/brainmask_niftymic/sub-Formule_ses-08_T2_HASTE_COR2_12_denoised/sub-Formule_ses-08_T2_HASTE_COR2_12_denoised_seg.nii.gz"
     )
 
-
     qc.qc_brainmask(
         denoised_file,
         bm_file,
