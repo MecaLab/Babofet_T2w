@@ -18,7 +18,6 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
     :param file_figure_out:
     :return:
     """
-
     if not os.path.exists(path_brainmask_vol):
         print(path_brainmask_vol + " not found, skip!")
     else:
