@@ -37,7 +37,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         aligned_seg_data = affine_transform(brain_mask_data, transform[:3, :3], offset=transform[:3, 3],
                                             output_shape=brain_data.shape)"""
 
-        if brain_data.shape != brain_mask_data.shape:
+        if brain_data.shape != brain_mask_data.shape[:-1]:
             raise ValueError(f"Error shape: {brain_data.shape} | {brain_mask_data.shape}")
 
         """slice_indices = np.random.randint(0, brain_data.shape[2], size=6)
