@@ -27,16 +27,11 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         anat_img = nib.load(path_anat_vol)
         bm_img = nib.load(path_brainmask_vol)
 
-        dims_anat = anat_img.shape
-        dims_bm = bm_img.shape
-
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
-        print(brain_data.shape, dims_anat)
-        print(brain_mask_data.shape, dims_bm)
-
-        exit()
+        if brain_data.shape != brain_mask_data.shape:
+            raise ValueError("Error shape")
 
         slice_index = brain_data.shape[1] // 2
 
@@ -44,17 +39,10 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         mask_slice = brain_mask_data[:, slice_index, :]
 
         # Afficher la coupe du cerveau
-        plt.figure(figsize=(6, 6))
-        plt.title(f"Superposition de la coupe COR")
-        plt.imshow(brain_slice, cmap='gray')
-        plt.imshow(mask_slice, cmap='hot', alpha=0.5)
-        plt.axis('off')
 
-        plt.savefig(file_figure_out)
-
-        """nisnap.plot_segment(
-            path_brainmask_vol,
-            bg=path_anat_vol,
+        nisnap.plot_segment(
+            brain_mask_data,
+            bg=brain_data,
             axes="x",
             figsize=figsize,
             opacity=50,
@@ -62,7 +50,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             # labels=[1],
             # contours=True,
             savefig=file_figure_out,
-        )"""
+        )
 
 
 def qc_recontructed_3DHRvolume(path_anat_vol, file_figure_out):
