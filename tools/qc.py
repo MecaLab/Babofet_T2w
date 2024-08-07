@@ -38,7 +38,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
                                             output_shape=brain_data.shape)"""
 
         if brain_data.shape != brain_mask_data.shape:
-            raise ValueError("Error shape")
+            raise ValueError(f"Error shape: {brain_data.shape} | {brain_mask_data.shape}")
 
         """slice_indices = np.random.randint(0, brain_data.shape[2], size=6)
 
