@@ -30,12 +30,11 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         dims_anat = anat_img.shape
         dims_bm = bm_img.shape
 
-
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
-        print(brain_data.shape, dims_anat.shape)
-        print(brain_mask_data.shape, dims_bm.shape)
+        print(brain_data.shape, dims_anat)
+        print(brain_mask_data.shape, dims_bm)
 
         exit()
 
