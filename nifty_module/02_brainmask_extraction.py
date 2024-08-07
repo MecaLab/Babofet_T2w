@@ -62,6 +62,5 @@ if __name__ == "__main__":
                 nifti_filename, nifti_full_path = f, os.path.join(subj_output_dir, "denoising")
 
                 s_nifti_filename = nifti_filename.split(".")
-                print(nifti_filename)
-
-                exit()
+                if not os.path.exists(os.path.join(bm_haste_subj_output_dir, s_nifti_filename[0])):
+                    print("not exist")
