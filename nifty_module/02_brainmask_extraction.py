@@ -33,7 +33,7 @@ OUTPUT_PATH="${{MAIN_PATH}}/brainmask_niftymic"
     slurm_content += f"""
 singularity exec \\
     -B "$INPUT_PATH":/data \\
-    -B "$OUTPUT_PATH":/output \
+    -B "$OUTPUT_PATH":/output \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
     niftymic_segment_fetal_brains \\
             --filenames {input_stacks} \\
