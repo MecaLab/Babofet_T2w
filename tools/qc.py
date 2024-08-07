@@ -68,11 +68,13 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         step = 30
         while (done < 1) and (d_max > 20):
             try:
-
+                slices = {'x': list(range(0, brain_shape.shape[2], step)),
+                          'y': list(range(0, brain_shape.shape[1], step)),
+                          'z': list(range(0, brain_shape.shape[0], step))}
                 nisnap.plot_segment(
                     [path_brainmask_vol],
                     bg=path_anat_vol,
-                    axes="x",
+                    slices=slices,
                     opacity=50,
                     samebox=True,
                     # labels=[1],
