@@ -19,8 +19,6 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
     :return:
     """
 
-    figsize = {'x': (18, 4), 'y': (18, 4), 'z': (18, 5)}
-
     if not os.path.exists(path_brainmask_vol):
         print(path_brainmask_vol + " not found, skip!")
     else:
@@ -29,9 +27,6 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
 
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
-
-        anat_header = anat_img.header
-        seg_header = bm_img.header
 
         anat_affine = anat_img.affine
         seg_affine = bm_img.affine
@@ -46,7 +41,8 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         if brain_data.shape != brain_mask_data.shape:
             raise ValueError("Error shape")
 
-        """slice_indices = [18, 21, 24, 27, 30, 33]  # Indices de coupes à afficher
+        slice_indices = np.random.randint(0, brain_data.shape[2], size=5)
+        # slice_indices = [18, 21, 24, 27, 30, 33]  # Indices de coupes à afficher
         fig, axes = plt.subplots(1, len(slice_indices), figsize=(15, 5))
 
         for i, slice_idx in enumerate(slice_indices):
@@ -57,16 +53,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
             ax.axis('off')
 
         plt.tight_layout()
-        plt.savefig(file_figure_out)"""
+        plt.savefig(file_figure_out)
 
         # Afficher la coupe du cerveau
-
-        nisnap.plot(
-            anat_img,
-            [bm_img],
-            display_mode="ortho",
-            output_file=file_figure_out
-        )
 
         """nisnap.plot_segment(
             [path_brainmask_vol],
