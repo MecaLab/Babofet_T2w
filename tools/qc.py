@@ -24,18 +24,20 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         print(path_brainmask_vol + " not found, skip!")
     else:
 
-        print(path_brainmask_vol)
-        print(path_anat_vol)
-
         anat_img = nib.load(path_anat_vol)
         bm_img = nib.load(path_brainmask_vol)
-        """
+
         dims_anat = anat_img.shape
-        dim_bm = bm_img.shape
-        """
+        dims_bm = bm_img.shape
+
 
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
+
+        print(brain_data.shape, dims_anat.shape)
+        print(brain_mask_data.shape, dims_bm.shape)
+
+        exit()
 
         slice_index = brain_data.shape[1] // 2
 
