@@ -78,10 +78,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         step = 30
         while (done < 1) and (d_max > 20):
             try:
-                slices = {'x': list(range(30, brain_shape[2], step)),
-                          'y': list(range(60, brain_shape[1], step)),
-                          'z': list(range(40, brain_shape[0], step))}
-
+                slices = {'x': list(range(0, brain_shape[0], step)),
+                          'y': list(range(0, brain_shape[1], step)),
+                          'z': list(range(0, brain_shape[2], step))}
                 print(slices)
                 nisnap.plot_segment(
                     [path_brainmask_vol],
@@ -95,8 +94,8 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 )
                 done = 1
             except Exception as e:
-                d_max = d_max - 20
-                step = step - 5
+                d_max -= 20
+                step = max(step - 5, 1)
                 print(f"Error: {e} | d_max is now set to {d_max}")
 
 
