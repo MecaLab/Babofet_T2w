@@ -39,5 +39,5 @@ if __name__ == "__main__":
             )
             print(f"End {f} for {subject}")
 
-            exit()
+        exit()
 
