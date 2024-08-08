@@ -27,13 +27,10 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
+        # From (320, 320, 30) to (30, 320, 320)
         brain_data = np.transpose(brain_data, (2, 0, 1))
         brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
-
         brain_mask_data = np.squeeze(brain_mask_data)
-
-        print(brain_mask_data.shape, brain_data.shape)
-        exit()
 
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape
@@ -76,8 +73,12 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         """
         # Afficher la coupe du cerveau
 
-        new_bm_img = nib.Nifti1Image(brain_mask_data, bm_img.affine, bm_img.header)
-        nib.save(new_bm_img, path_brainmask_vol)
+        anat_img_reoriented = nib.Nifti1Image(brain_data, anat_img.affine, anat_img.header)
+        bm_img_reoriented = nib.Nifti1Image(brain_mask_data, bm_img.affine, bm_img.header)
+
+        # Sauvegarde des fichiers réorganisés
+        nib.save(anat_img_reoriented, path_anat_vol)
+        nib.save(bm_img_reoriented, path_brainmask_vol)
 
         done = 0
         d_max = max(brain_shape)
@@ -85,11 +86,10 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         while (done < 1) and (d_max > 20):
             try:
                 slices = {
-                    'x': [i for i in range(0, brain_shape[0], step) if i < brain_shape[0]],
-                    'y': [i for i in range(0, brain_shape[1], step) if i < brain_shape[1]],
-                    'z': [i for i in range(0, brain_shape[2], step) if i < brain_shape[2]],
+                    'x': list(range(0, brain_shape[2], step)),
+                    'y': list(range(0, brain_shape[1], step)),
+                    'z': list(range(0, brain_shape[0], step))
                 }
-                print(slices["z"])
                 nisnap.plot_segment(
                     [path_brainmask_vol],
                     bg=path_anat_vol,
