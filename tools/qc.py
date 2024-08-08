@@ -36,7 +36,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
 
         brain_mask_data = np.squeeze(brain_mask_data)
         if brain_mask_data.shape != brain_data.shape:
-            brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
+            if debug:
+                brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
+                print(f"ANAT shape after Transpose: {brain_data.shape}")
 
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape
@@ -62,12 +64,12 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
 
         done = 0
         d_max = max(brain_shape)
-        step = 15
+        step = 4
         while (done < 1) and (d_max > 20):
             try:
                 slices = {
-                    'x': list(range(0, brain_shape[2], step)),
-                    'y': list(range(0, brain_shape[1], step)),
+                    'x': list(range(0, brain_shape[2], 4)),
+                    # 'y': list(range(0, brain_shape[1], step)),
                     'z': list(range(0, brain_shape[0], step))
                 }
                 nisnap.plot_segment(
