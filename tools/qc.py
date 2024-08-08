@@ -28,6 +28,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         brain_mask_data = bm_img.get_fdata()
 
         print(brain_data.shape)
+        brain_mask_data = np.squeeze(brain_mask_data)
         print(brain_mask_data.shape)
         exit()
 
