@@ -30,10 +30,11 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape[:-1]
 
-        print(brain_shape, brain_mask_data.shape)
-
         print(f"ANAT header: {anat_img.header}")
         print(f"BM header: {bm_img.header}")
+
+        print(f"ANAT shape: {brain_shape}")
+        print(f"BM shape: {brain_mask_data.shape}")
 
         if brain_shape != bm_shape:
             raise ValueError(f"Error shape: {brain_shape} | {bm_shape}")
@@ -70,9 +71,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         step = 30
         while (done < 1) and (d_max > 20):
             try:
-                slices = {'x': list(range(0, brain_shape[0], step)),
-                          'y': list(range(60, brain_shape[1], step)),
-                          'z': list(range(40, brain_shape[2], step))}
+                slices = {'x': list(range(0, d_max, step)),
+                          'y': list(range(60, d_max, step)),
+                          'z': list(range(40, d_max, step))}
                 nisnap.plot_segment(
                     [path_brainmask_vol],
                     bg=path_anat_vol,
