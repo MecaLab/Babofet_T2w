@@ -31,12 +31,14 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape
 
+        debug = True
+
         if debug:
             print(f"ANAT header: {anat_img.header}")
             print(f"BM header: {bm_img.header}")
 
             print(f"ANAT shape: {brain_shape}")
-            print(f"BM shape: {brain_mask_data.shape}")
+            print(f"BM shape: {bm_shape}")
 
         exit()
 
