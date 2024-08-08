@@ -12,21 +12,7 @@ if __name__ == "__main__":
 
     subject_IDs = os.listdir(base_path)
 
-    denoised_file = os.path.join(
-        base_path,
-        "sub-Fabienne_ses-01/denoising/sub-Fabienne_ses-01_T2_HASTE_SAG_23_denoised.nii"
-    )
-    bm_file = os.path.join(
-        base_path,
-        "sub-Fabienne_ses-01/brainmask_niftymic/sub-Fabienne_ses-01_T2_HASTE_SAG_23_denoised/sub-Fabienne_ses-01_T2_HASTE_SAG_23_denoised_seg.nii.gz"
-    )
-
-    qc.qc_brainmask(
-        denoised_file,
-        bm_file,
-        file_figure_out=os.path.join(os.path.join(dir_snapshots, "test.png"))
-    )
-    """for subject in subject_IDs:
+    for subject in subject_IDs:
         
         dir_denoised = os.path.join(base_path, subject, "denoising")
         dir_brainmask = os.path.join(base_path, subject, "brainmask")
@@ -51,6 +37,7 @@ if __name__ == "__main__":
                 os.path.join(dir_brainmask, bm_nifti_filename),
                 file_figure_out
             )
-            print(f"\tEnd {f} for {subject}")
-            exit()"""
+            print(f"End {f} for {subject}")
+
+        exit()
 

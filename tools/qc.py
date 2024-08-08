@@ -28,7 +28,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
-        # From (320, 320, 30) to (30, 320, 320)
+        # From (x, y, z) to (z, x, y)
         brain_data = np.transpose(brain_data, (2, 0, 1))
         brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
         brain_mask_data = np.squeeze(brain_mask_data)
@@ -103,7 +103,6 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                     savefig=file_figure_out,
                 )
                 done = 1
-                print(f"Fichier sauvegardé à {file_figure_out}")
             except Exception as e:
                 d_max -= 20
                 step = max(step - 5, 1)
