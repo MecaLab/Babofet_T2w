@@ -27,7 +27,13 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
+        brain_data = np.transpose(brain_data, (2, 0, 1))
+        brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
+
         brain_mask_data = np.squeeze(brain_mask_data)
+
+        print(brain_mask_data.shape, brain_data.shape)
+        exit()
 
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape
