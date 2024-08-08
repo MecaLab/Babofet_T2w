@@ -31,15 +31,14 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         # From (x, y, z) to (z, x, y)
         if brain_data.shape[0] > brain_data.shape[-1]:
             brain_data = np.transpose(brain_data, (2, 0, 1))
-            print(f"ANAT shape after Transpose: {brain_data.shape}")
+            if debug:
+                print(f"ANAT shape after Transpose: {brain_data.shape}")
 
         brain_mask_data = np.squeeze(brain_mask_data)
         brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
 
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape
-
-        debug = True
 
         if debug:
             print(f"ANAT header: {anat_img.header}")
@@ -48,36 +47,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             print(f"ANAT shape: {brain_shape}")
             print(f"BM shape: {bm_shape}")
 
-        exit()
         if brain_shape != bm_shape:
             raise ValueError(f"Error shape: {brain_shape} | {bm_shape}")
-        """
-        anat_affine = anat_img.affine
-        seg_affine = bm_img.affine
-        
-        # Calculer la transformation nécessaire pour aligner les volumes
-        transform = np.linalg.inv(seg_affine).dot(anat_affine)
 
-        # Appliquer la transformation au volume de segmentation
-        # aligned_seg_data = affine_transform(brain_mask_data, transform[:3, :3], offset=transform[:3, 3],
-        #                                    output_shape=brain_data.shape)
-
-        slice_indices = np.random.randint(0, brain_data.shape[2], size=6)
-
-        fig, axes = plt.subplots(2, 3, figsize=(12, 8))
-
-        # Afficher les images
-        for i, slice_idx in enumerate(slice_indices):
-            ax = axes[i // 3, i % 3]
-            ax.imshow(brain_data[:, :, slice_idx], cmap='gray')
-            ax.imshow(brain_mask_data[:, :, slice_idx], cmap='Reds', alpha=0.3)
-            ax.set_title(f'Slice {slice_idx}')
-            ax.axis('off')
-
-        plt.tight_layout()
-        plt.savefig(file_figure_out)
-
-        """
         # Afficher la coupe du cerveau
 
         anat_img_reoriented = nib.Nifti1Image(brain_data, anat_img.affine, anat_img.header)
