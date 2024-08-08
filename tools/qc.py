@@ -27,8 +27,8 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
-        print(brain_data)
-        print(brain_mask_data)
+        print(brain_data.shape)
+        print(brain_mask_data.shape)
         exit()
 
         brain_shape = brain_data.shape
