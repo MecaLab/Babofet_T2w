@@ -98,7 +98,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 done = 1
             except Exception as e:
                 d_max -= 20
-                step = max(step - 5, 1)
+                step -= 5
                 print(f"Error: {e} | d_max is now set to {d_max}")
 
 
