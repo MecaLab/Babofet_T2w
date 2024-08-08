@@ -95,7 +95,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                     [path_brainmask_vol],
                     bg=path_anat_vol,
                     slices=slices,
-                    opacity=30,
+                    opacity=50,
                     figsize=figsize,
                     samebox=True,
                     # labels=[1],
@@ -103,6 +103,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                     savefig=file_figure_out,
                 )
                 done = 1
+                print(f"Fichier sauvegardé à {file_figure_out}")
             except Exception as e:
                 d_max -= 20
                 step = max(step - 5, 1)
