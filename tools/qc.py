@@ -70,11 +70,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         # Afficher la coupe du cerveau
 
         new_bm_img = nib.Nifti1Image(brain_mask_data, bm_img.affine, bm_img.header)
-        new_path_bm_img = 'new_' + path_brainmask_vol
-
-        print(new_path_bm_img)
-        exit()
-        nib.save(new_bm_img, new_path_bm_img)
+        nib.save(new_bm_img, path_brainmask_vol)
 
         done = 0
         d_max = max(brain_shape)
