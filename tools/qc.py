@@ -27,13 +27,10 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
-        print(brain_data.shape)
         brain_mask_data = np.squeeze(brain_mask_data)
-        print(brain_mask_data.shape)
-        exit()
 
         brain_shape = brain_data.shape
-        bm_shape = brain_mask_data.shape[:-1]
+        bm_shape = brain_mask_data
 
         print(f"ANAT header: {anat_img.header}")
         print(f"BM header: {bm_img.header}")
@@ -71,6 +68,14 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
 
         """
         # Afficher la coupe du cerveau
+
+        new_bm_img = nib.Nifti1Image(brain_mask_data, bm_img.affine, bm_img.header)
+        new_path_bm_img = 'new_' + path_brainmask_vol
+
+        print(new_path_bm_img)
+        exit()
+        nib.save(new_bm_img, new_path_bm_img)
+
         done = 0
         d_max = max(brain_shape)
         step = 30
