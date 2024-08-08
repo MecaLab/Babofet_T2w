@@ -99,7 +99,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                     figsize=figsize,
                     samebox=True,
                     # labels=[1],
-                    contours=True,
+                    # contours=True,
                     savefig=file_figure_out,
                 )
                 done = 1
