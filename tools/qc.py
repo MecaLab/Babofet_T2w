@@ -21,6 +21,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
     if not os.path.exists(path_brainmask_vol):
         print(path_brainmask_vol + " not found, skip!")
     else:
+        figsize = {'x': (18, 4), 'y': (18, 4), 'z': (18, 5)}
         anat_img = nib.load(path_anat_vol)
         bm_img = nib.load(path_brainmask_vol)
 
@@ -94,10 +95,11 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                     [path_brainmask_vol],
                     bg=path_anat_vol,
                     slices=slices,
-                    opacity=50,
+                    opacity=30,
+                    figsize=figsize,
                     samebox=True,
                     # labels=[1],
-                    # contours=True,
+                    contours=True,
                     savefig=file_figure_out,
                 )
                 done = 1
