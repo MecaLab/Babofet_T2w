@@ -42,7 +42,8 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
 
 
         # From (x, y, z) to (z, x, y)
-        brain_data = np.transpose(brain_data, (2, 0, 1))
+        if brain_shape[0] > brain_shape[-1]:
+            brain_data = np.transpose(brain_data, (2, 0, 1))
 
         print(f"ANAT shape after Transpose: {brain_data.shape}")
 
