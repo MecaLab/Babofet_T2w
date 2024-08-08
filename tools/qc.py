@@ -28,10 +28,16 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
+        # From (x, y, z) to (z, x, y)
+        if brain_data.shape[0] > brain_data.shape[-1]:
+            brain_data = np.transpose(brain_data, (2, 0, 1))
+            print(f"ANAT shape after Transpose: {brain_data.shape}")
+
+        brain_mask_data = np.squeeze(brain_mask_data)
+        brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
+
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape
-
-        debug = True
 
         if debug:
             print(f"ANAT header: {anat_img.header}")
@@ -39,16 +45,6 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
 
             print(f"ANAT shape: {brain_shape}")
             print(f"BM shape: {bm_shape}")
-
-
-        # From (x, y, z) to (z, x, y)
-        if brain_shape[0] > brain_shape[-1]:
-            brain_data = np.transpose(brain_data, (2, 0, 1))
-
-        print(f"ANAT shape after Transpose: {brain_data.shape}")
-
-        brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
-        brain_mask_data = np.squeeze(brain_mask_data)
 
         exit()
         if brain_shape != bm_shape:
