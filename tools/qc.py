@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from scipy.ndimage import affine_transform
 
 
-def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
+def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False):
     """
 
     :param path_anat_vol: path of the nifty file
@@ -32,11 +32,12 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape
 
-        print(f"ANAT header: {anat_img.header}")
-        print(f"BM header: {bm_img.header}")
+        if debug:
+            print(f"ANAT header: {anat_img.header}")
+            print(f"BM header: {bm_img.header}")
 
-        print(f"ANAT shape: {brain_shape}")
-        print(f"BM shape: {brain_mask_data.shape}")
+            print(f"ANAT shape: {brain_shape}")
+            print(f"BM shape: {brain_mask_data.shape}")
 
         if brain_shape != bm_shape:
             raise ValueError(f"Error shape: {brain_shape} | {bm_shape}")
