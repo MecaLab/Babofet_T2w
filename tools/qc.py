@@ -30,7 +30,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out):
         brain_mask_data = np.squeeze(brain_mask_data)
 
         brain_shape = brain_data.shape
-        bm_shape = brain_mask_data
+        bm_shape = brain_mask_data.shape
 
         print(f"ANAT header: {anat_img.header}")
         print(f"BM header: {bm_img.header}")
