@@ -75,7 +75,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 nisnap.plot_segment(
                     [path_brainmask_vol],
                     bg=path_anat_vol,
-                    slices=range(160, 174, 2),
+                    # slices=range(160, 174, 2),
                     opacity=50,
                     axes="AS",
                     figsize=figsize,
