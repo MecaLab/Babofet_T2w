@@ -83,6 +83,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                     'y': [i for i in range(0, brain_shape[1], step) if i < brain_shape[1]],
                     'z': [i for i in range(0, brain_shape[2], step) if i < brain_shape[2]],
                 }
+                print(slices["z"])
                 nisnap.plot_segment(
                     [path_brainmask_vol],
                     bg=path_anat_vol,
