@@ -22,7 +22,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
     if not os.path.exists(path_brainmask_vol):
         print(path_brainmask_vol + " not found, skip!")
     else:
-        figsize = {'x': (18, 4), 'y': (18, 4), 'z': (18, 5)}
+        figsize = {'z': (10, 7)}
         anat_img = nib.load(path_anat_vol)
         bm_img = nib.load(path_brainmask_vol)
 
