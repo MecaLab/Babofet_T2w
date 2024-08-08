@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
         for f in dir_list_denoised:
             filename = f.split(".")
-            bm_nifti_filename = filename[0] + "_brainmask.nii"
+            bm_nifti_filename = filename[0] + "_seg.nii.gz"
 
             file_figure_out = os.path.join(dir_out, filename[0] + "_bounti_seg.png")
 
