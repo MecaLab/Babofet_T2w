@@ -14,11 +14,11 @@ if __name__ == "__main__":
 
     denoised_file = os.path.join(
         base_path,
-        "sub-Formule_ses-08/denoising/sub-Formule_ses-08_T2_HASTE_COR2_12_denoised.nii"
+        "sub-Fabienne_ses-01/denoising/sub-Fabienne_ses-01_T2_HASTE_SAG_23_denoised.nii"
     )
     bm_file = os.path.join(
         base_path,
-        "sub-Formule_ses-08/brainmask_niftymic/sub-Formule_ses-08_T2_HASTE_COR2_12_denoised/sub-Formule_ses-08_T2_HASTE_COR2_12_denoised_seg.nii.gz"
+        "sub-Fabienne_ses-01/brainmask_niftymic/sub-Fabienne_ses-01_T2_HASTE_SAG_23_denoised/sub-Fabienne_ses-01_T2_HASTE_SAG_23_denoised_seg.nii.gz"
     )
 
     qc.qc_brainmask(
