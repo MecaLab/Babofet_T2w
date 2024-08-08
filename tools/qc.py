@@ -6,6 +6,7 @@ import os
 import numpy as np
 import nibabel as nib
 import nisnap
+import tempfile
 import matplotlib.pyplot as plt
 from scipy.ndimage import affine_transform
 
@@ -61,34 +62,42 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         # Sauvegarde des fichiers réorganisés
         nib.save(anat_img_reoriented, path_anat_vol)
         nib.save(bm_img_reoriented, path_brainmask_vol)
-
-        done = 0
-        d_max = max(brain_shape)
-        step = 4
-        while (done < 1) and (d_max > 20):
-            try:
-                slices = {
-                    'x': list(range(0, brain_shape[2], 4)),
-                    'y': list(range(0, brain_shape[1], step)),
-                    'z': list(range(0, brain_shape[0], step))
-                }
-                nisnap.plot_segment(
-                    [path_brainmask_vol],
-                    bg=path_anat_vol,
-                    # slices=range(160, 174, 2),
-                    opacity=50,
-                    axes="z",
-                    figsize=figsize,
-                    samebox=True,
-                    # labels=[1],
-                    # contours=True,
-                    savefig=file_figure_out,
-                )
-                done = 1
-            except Exception as e:
-                d_max -= 20
-                step = max(step - 5, 1)
-                print(f"Error: {e} | d_max is now set to {d_max}")
+        with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
+            data = 2 * np.ones_like(brain_mask_data)
+            data[brain_mask_data == 1] = 1
+            fake_mask = nib.Nifti1Image(
+                np.ones_like(data),
+                affine=bm_img.affine,
+                header=bm_img.header,
+            )
+            nib.save(fake_mask, tmpfile_mask.name)
+            done = 0
+            d_max = max(brain_shape)
+            step = 4
+            while (done < 1) and (d_max > 20):
+                try:
+                    slices = {
+                        'x': list(range(0, brain_shape[2], 4)),
+                        'y': list(range(0, brain_shape[1], step)),
+                        'z': list(range(0, brain_shape[0], step))
+                    }
+                    nisnap.plot_segment(
+                        tmpfile_mask.name,
+                        bg=path_anat_vol,
+                        # slices=range(160, 174, 2),
+                        opacity=50,
+                        axes="z",
+                        figsize=figsize,
+                        samebox=True,
+                        # labels=[1],
+                        # contours=True,
+                        savefig=file_figure_out,
+                    )
+                    done = 1
+                except Exception as e:
+                    d_max -= 20
+                    step = max(step - 5, 1)
+                    print(f"Error: {e} | d_max is now set to {d_max}")
 
 
 
