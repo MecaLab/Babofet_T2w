@@ -78,7 +78,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 header=bm_img.header,
             )
             if not np.array_equal(anat_img.affine, fake_mask.affine):
-                fake_mask = nib.Nifti1Image(fake_mask.get_fdata(), anat_img_reoriented.affine,
+                fake_mask = nib.Nifti1Image(bm_img_reoriented.get_fdata(), anat_img_reoriented.affine,
                                                     fake_mask.header)
 
             nib.save(fake_mask, tmpfile_mask.name)
