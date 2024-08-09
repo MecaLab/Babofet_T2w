@@ -49,13 +49,14 @@ singularity exec \\
     niftymic_reconstruct_volume \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --output /output/$OUTPUT_FILE \\
+        --output /output/$OUTPUT_FILE
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
     os.chmod(filename, 0o700)
+
 
 if __name__ == "__main__":
     base_path = cfg.MESO_DATA_PATH
