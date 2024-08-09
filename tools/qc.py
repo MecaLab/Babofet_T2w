@@ -42,6 +42,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 print(f"ANAT shape after Transpose: {brain_data.shape}")
 
         brain_mask_data = np.squeeze(brain_mask_data)
+        
         if brain_mask_data.shape != brain_data.shape:
             brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
             if debug:
@@ -74,11 +75,10 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             data[brain_mask_data == 1] = 2
             fake_mask = nib.Nifti1Image(
                 data,
-                affine=bm_img_reoriented.affine,
+                affine=bm_img.affine,
                 header=bm_img.header,
             )
             nib.save(fake_mask, tmpfile_mask.name)
-            
             nisnap.plot_segment(
                 tmpfile_mask.name,
                 bg=path_anat_vol,
