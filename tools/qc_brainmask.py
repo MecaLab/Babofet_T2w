@@ -58,15 +58,11 @@ if __name__ == "__main__":
 
                 file_figure_out = os.path.join(dir_out, filename[0] + "_bounti_seg.png")
 
-                print(os.path.join(dir_brainmask, filename[0], bm_nifti_filename))
-                print(os.path.exists(os.path.join(dir_brainmask, bm_nifti_filename)))
-                print(file_figure_out)
-
-                exit()
-
                 qc.qc_brainmask(
                     os.path.join(dir_denoised, f),
                     os.path.join(dir_brainmask, filename[0], bm_nifti_filename),
                     file_figure_out
                 )
                 print(f"End {f} for {subject}")
+
+                exit()
