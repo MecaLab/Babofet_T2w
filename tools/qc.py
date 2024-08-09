@@ -13,10 +13,9 @@ from scipy.ndimage import affine_transform
 
 def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False):
     """
-
     :param path_anat_vol: path of the nifty file
-    :param path_brainmask_vol:
-    :param file_figure_out:
+    :param path_brainmask_vol: path of the nifty file (brainmask)
+    :param file_figure_out: path of the output file
     :return:
     """
     if not os.path.exists(path_brainmask_vol):

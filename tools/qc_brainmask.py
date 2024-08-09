@@ -6,7 +6,10 @@ import configuration as cfg
 
 
 if __name__ == "__main__":
+    MODE = "nesvor"  # "niftymic" | "nesvor"
     dir_snapshots = "snapshots"
+
+    full_dir_snapshots = os.path.join(dir_snapshots, MODE)
 
     base_path = cfg.MESO_OUTPUT_PATH
 
@@ -15,27 +18,55 @@ if __name__ == "__main__":
     for subject in subject_IDs:
         
         dir_denoised = os.path.join(base_path, subject, "denoising")
-        dir_brainmask = os.path.join(base_path, subject, "brainmask_niftymic")
-        print("Starting {}".format(subject))
-
         dir_list_denoised = os.listdir(dir_denoised)
-        dir_list_bm = os.listdir(dir_brainmask)
 
-        dir_out = os.path.join(dir_snapshots, subject)
+        if MODE == "niftymic":
+            dir_brainmask = os.path.join(base_path, subject, "brainmask_niftymic")
+            print(f"Starting {subject}")
+            dir_list_bm = os.listdir(dir_brainmask)
 
-        if not os.path.exists(dir_out):
-            os.mkdir(dir_out)
+            dir_out = os.path.join(full_dir_snapshots, subject)
 
-        for f in dir_list_denoised:
-            filename = f.split(".")
-            bm_nifti_filename = filename[0] + "_seg.nii.gz"
+            if not os.path.exists(dir_out):
+                os.mkdir(dir_out)
 
-            file_figure_out = os.path.join(dir_out, filename[0] + "_bounti_seg.png")
+            for f in dir_list_denoised:
+                filename = f.split(".")
+                bm_nifti_filename = filename[0] + "_seg.nii.gz"
 
-            qc.qc_brainmask(
-                os.path.join(dir_denoised, f),
-                os.path.join(dir_brainmask, filename[0], bm_nifti_filename),
-                file_figure_out
-            )
-            print(f"End {f} for {subject}")
+                file_figure_out = os.path.join(dir_out, filename[0] + "_bounti_seg.png")
 
+                qc.qc_brainmask(
+                    os.path.join(dir_denoised, f),
+                    os.path.join(dir_brainmask, filename[0], bm_nifti_filename),
+                    file_figure_out
+                )
+                print(f"End {f} for {subject}")
+        elif MODE == "nesvor":
+            dir_brainmask = os.path.join(base_path, subject, "brainmask")
+            print(f"Starting {subject}")
+            dir_list_bm = os.listdir(dir_brainmask)
+
+            dir_out = os.path.join(full_dir_snapshots, subject)
+
+            if not os.path.exists(dir_out):
+                os.mkdir(dir_out)
+
+            for f in dir_list_denoised:
+                filename = f.split(".")
+                bm_nifti_filename = filename[0] + "_denoised_brainmask.nii"
+
+                file_figure_out = os.path.join(dir_out, filename[0] + "_bounti_seg.png")
+
+                print(os.path.join(dir_brainmask, filename[0], bm_nifti_filename))
+                print(os.path.exists(os.path.join(dir_brainmask, filename[0], bm_nifti_filename)))
+                print(file_figure_out)
+
+                exit()
+
+                qc.qc_brainmask(
+                    os.path.join(dir_denoised, f),
+                    os.path.join(dir_brainmask, filename[0], bm_nifti_filename),
+                    file_figure_out
+                )
+                print(f"End {f} for {subject}")
