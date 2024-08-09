@@ -73,6 +73,8 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 print("Affine de l'image anatomique :\n", anat_img.affine)
                 print("Affine du masque du cerveau :\n", bm_img.affine)
 
+        exit()
+
         # Sauvegarde des fichiers réorganisés
         nib.save(anat_img_reoriented, path_anat_vol)
         nib.save(bm_img_reoriented, path_brainmask_vol)

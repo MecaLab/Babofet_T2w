@@ -6,7 +6,7 @@ import configuration as cfg
 
 
 if __name__ == "__main__":
-    MODE = "nesvor"  # "niftymic" | "nesvor"
+    MODE = "niftymic"  # "niftymic" | "nesvor"
     dir_snapshots = "snapshots"
 
     full_dir_snapshots = os.path.join(dir_snapshots, MODE)
