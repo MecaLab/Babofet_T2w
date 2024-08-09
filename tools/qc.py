@@ -21,7 +21,8 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
     if not os.path.exists(path_brainmask_vol):
         print(path_brainmask_vol + " not found, skip!")
     elif os.path.exists(file_figure_out):
-        print(f"{file_figure_out} already exist, skip!")
+        pass
+        # print(f"{file_figure_out} already exist, skip!")
     else:
         figsize = {'z': (10, 7)}
         anat_img = nib.load(path_anat_vol)
