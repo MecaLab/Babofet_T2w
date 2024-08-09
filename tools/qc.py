@@ -65,19 +65,14 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         anat_img_reoriented = nib.Nifti1Image(brain_data, anat_img.affine, anat_img.header)
         bm_img_reoriented = nib.Nifti1Image(brain_mask_data, bm_img.affine, bm_img.header)
 
-        if debug:
-            if np.array_equal(anat_img.affine, bm_img.affine):
-                print("Les matrices affines sont identiques.")
-            else:
-                print("Les matrices affines sont différentes.")
-                print("Affine de l'image anatomique :\n", anat_img.affine)
-                print("Affine du masque du cerveau :\n", bm_img.affine)
-
-        exit()
+        if not np.array_equal(anat_img.affine, bm_img.affine):
+            bm_img_reoriented = nib.Nifti1Image(bm_img_reoriented.get_fdata(), anat_img_reoriented.affine,
+                                               bm_img_reoriented.header)
 
         # Sauvegarde des fichiers réorganisés
         nib.save(anat_img_reoriented, path_anat_vol)
         nib.save(bm_img_reoriented, path_brainmask_vol)
+
         with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
             data = np.ones_like(brain_mask_data)
             data[brain_mask_data == 1] = 2
@@ -87,34 +82,18 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 header=bm_img.header,
             )
             nib.save(fake_mask, tmpfile_mask.name)
-            done = 0
-            d_max = max(brain_shape)
-            step = 4
-            while (done < 1) and (d_max > 20):
-                try:
-                    slices = {
-                        'x': list(range(0, brain_shape[2], 4)),
-                        'y': list(range(0, brain_shape[1], step)),
-                        'z': list(range(0, brain_shape[0], step))
-                    }
-                    nisnap.plot_segment(
-                        tmpfile_mask.name,
-                        bg=path_anat_vol,
-                        slices=range(0, brain_shape[0]),
-                        opacity=50,
-                        axes="z",
-                        figsize=figsize,
-                        samebox=True,
-                        # labels=[1],
-                        # contours=True,
-                        savefig=file_figure_out,
-                    )
-                    done = 1
-                except Exception as e:
-                    d_max -= 20
-                    step = max(step - 5, 1)
-                    print(f"Error: {e} | d_max is now set to {d_max}")
-
+            nisnap.plot_segment(
+                tmpfile_mask.name,
+                bg=path_anat_vol,
+                slices=range(0, brain_shape[0]),
+                opacity=50,
+                axes="z",
+                figsize=figsize,
+                samebox=True,
+                # labels=[1],
+                # contours=True,
+                savefig=file_figure_out,
+            )
 
 
 def qc_recontructed_3DHRvolume(path_anat_vol, file_figure_out):
