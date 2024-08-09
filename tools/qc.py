@@ -65,6 +65,14 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         anat_img_reoriented = nib.Nifti1Image(brain_data, anat_img.affine, anat_img.header)
         bm_img_reoriented = nib.Nifti1Image(brain_mask_data, bm_img.affine, bm_img.header)
 
+        if debug:
+            if np.array_equal(anat_img.affine, bm_img.affine):
+                print("Les matrices affines sont identiques.")
+            else:
+                print("Les matrices affines sont différentes.")
+                print("Affine de l'image anatomique :\n", anat_img.affine)
+                print("Affine du masque du cerveau :\n", bm_img.affine)
+
         # Sauvegarde des fichiers réorganisés
         nib.save(anat_img_reoriented, path_anat_vol)
         nib.save(bm_img_reoriented, path_brainmask_vol)
