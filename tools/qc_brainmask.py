@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
                 qc.qc_brainmask(
                     os.path.join(dir_denoised, f),
-                    os.path.join(dir_brainmask, filename[0], bm_nifti_filename),
+                    os.path.join(dir_brainmask, bm_nifti_filename),
                     file_figure_out
                 )
                 print(f"End {f} for {subject}")
