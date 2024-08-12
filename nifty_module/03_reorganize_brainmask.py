@@ -26,7 +26,9 @@ if __name__ == "__main__":
                     shutil.copy(input_full_path, output_full)
                 except FileNotFoundError:
                     if os.path.exists(output_full):
-                        print(f"\tOK for {d}")
+                        print(f"\tAlready exist, OK for {d}")
                     else:
                         print(f"\tError from {d}")
                         exit()
+            print(f"\tOK for {d}")
+        exit()
