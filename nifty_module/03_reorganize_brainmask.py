@@ -15,9 +15,15 @@ if __name__ == "__main__":
     for subject in subject_IDs:
         print("Starting {}".format(subject))
 
-        dir_list = os.listdir(os.path.join(base_path, subject, "brainmask_niftymic"))
+        dir_list = os.path.join(base_path, subject, "brainmask_niftymic")
 
-        for d in dir_list:
-            print(d)
+        for d in os.listdir(dir_list):
+            if os.path.isdir(os.path.join(dir_list, d)):
+                input_full_path = os.path.join(dir_list, d, d + "_seg.nii.gz")
+                output_full = os.path.join(dir_list, d + "_seg.nii.gz")
+
+                print(input_full_path)
+                print(output_full)
+                exit()
 
         exit()
