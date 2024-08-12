@@ -22,9 +22,6 @@ if __name__ == "__main__":
             if os.path.isdir(os.path.join(dir_list, d)):
                 input_full_path = os.path.join(dir_list, d, d + "_seg.nii.gz")
                 output_full = os.path.join(dir_list, d + "_seg.nii.gz")
-
-                print(input_full_path)
-                print(output_full)
                 try:
                     shutil.copy(input_full_path, output_full)
                 except FileNotFoundError:
