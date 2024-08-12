@@ -20,15 +20,16 @@ if __name__ == "__main__":
 
         for d in os.listdir(dir_list):
             if os.path.isdir(os.path.join(dir_list, d)):
-                input_full_path = os.path.join(dir_list, d, d + "_seg.nii.gz")
-                output_full = os.path.join(dir_list, d + "_seg.nii.gz")
+                filename = d + "_seg.nii.gz"
+                input_full_path = os.path.join(dir_list, d, filename)
+                output_full = os.path.join(dir_list, filename)
                 try:
                     shutil.copy(input_full_path, output_full)
                 except FileNotFoundError:
                     if os.path.exists(output_full):
-                        print(f"\tAlready exist, OK for {d}")
+                        print(f"\tAlready exist, OK for {filename}")
                     else:
-                        print(f"\tError from {d}")
+                        print(f"\tError from {filename}")
                         exit()
-            print(f"\tOK for {d}")
-        exit()
+                        
+                print(f"\tOK for {filename}")
