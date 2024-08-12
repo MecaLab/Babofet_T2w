@@ -2,6 +2,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
+import shutil
 
 
 if __name__ == "__main__":
@@ -24,6 +25,7 @@ if __name__ == "__main__":
 
                 print(input_full_path)
                 print(output_full)
-                exit()
+                shutil.copy(input_full_path, output_full)
+                print(f"\tOK for {d}")
 
         exit()
