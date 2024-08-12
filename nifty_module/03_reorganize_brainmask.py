@@ -25,7 +25,13 @@ if __name__ == "__main__":
 
                 print(input_full_path)
                 print(output_full)
-                shutil.copy(input_full_path, output_full)
-                print(f"\tOK for {d}")
+                try:
+                    shutil.copy(input_full_path, output_full)
+                except FileNotFoundError:
+                    if os.path.exists(output_full):
+                        print(f"\tOK for {d}")
+                    else:
+                        print(f"\tError from {d}")
+                        exit()
 
         exit()
