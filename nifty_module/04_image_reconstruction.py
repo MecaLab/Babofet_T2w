@@ -9,8 +9,7 @@ def write_slurm_file_nifty(main_path, denoised_files, bm_files, output_file):
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='a391'
-#SBATCH --partition=volta
-#SBATCH --gres=gpu:1
+#SBATCH --partition=skylake
 #SBATCH --time=00:10:00
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
