@@ -30,5 +30,3 @@ if __name__ == "__main__":
                     else:
                         print(f"\tError from {d}")
                         exit()
-
-        exit()
