@@ -8,7 +8,6 @@ import shutil
 if __name__ == "__main__":
     base_path = cfg.MESO_OUTPUT_PATH
 
-
     subject_IDs = os.listdir(base_path)
     subject_processed_haste = list()
     subject_processed_truefisp = list()
@@ -31,5 +30,5 @@ if __name__ == "__main__":
                     else:
                         print(f"\tError from {filename}")
                         exit()
-                        
+
                 print(f"\tOK for {filename}")

@@ -2,6 +2,7 @@ import sys
 import os
 import nibabel as nb
 import numpy as np
+import tempfile
 from nilearn.image import resample_to_img
 
 sys.path.insert(0, os.path.abspath(os.curdir))
@@ -116,10 +117,42 @@ def check_size(origin_path, destination_path):
         print("Everything OK for TRUEFISP")
 
 
+def check_intersection(img_anat, img_bm):
+    anat_img = nb.load(img_anat)
+    brainmask_img = nb.load(img_bm)
+
+    anat_data = anat_img.get_fdata()
+    brainmask_data = brainmask_img.get_fdata()
+
+    with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
+        data = np.ones_like(brainmask_data)
+        data[brainmask_data == 1] = 2
+        fake_mask = nb.Nifti1Image(
+            data,
+            affine=brainmask_img.affine,
+            header=brainmask_img.header,
+        )
+        nb.save(fake_mask, tmpfile_mask.name)
+
+        intersection = np.logical_and(anat_data > 0, fake_mask > 0)
+
+        n_voxel = np.sum(intersection)
+
+        if n_voxel > 0:
+            print(f"Il y a {n_voxel} voxels où l'intersection est non nulle")
+        else:
+            print("Il n'y a pas d'intersection non nulle entre le brainmask et l'image anat")
+
+
 if __name__ == "__main__":
     input_path = cfg.MESO_DATA_PATH
     dst_path = cfg.MESO_OUTPUT_PATH
 
-    check_files(input_path, dst_path)
+    # check_files(input_path, dst_path)
 
     # check_size(input_path, dst_path)
+
+    check_intersection(
+        img_anat="/scratch/lbaptiste/data/dataset/babofet/processing/sub-Aziza_ses-04/denoising/sub-Aziza_ses-04_T2_HASTE_AX2_9_denoised.nii",
+        img_bm="/scratch/lbaptiste/data/dataset/babofet/processing/sub-Aziza_ses-04/brainmask_niftymic/sub-Aziza_ses-04_T2_HASTE_AX2_9_denoised_seg.nii.gz"
+    )
