@@ -132,6 +132,9 @@ def check_intersection(img_anat, img_bm):
 
         n_voxel = np.sum(intersection)
 
+        total_voxels = np.prod(anat_data.shape)
+        print(f"Nombre total de voxels dans l'image : {total_voxels}")
+
         if n_voxel > 0:
             print(f"Il y a {n_voxel} voxels où l'intersection est non nulle")
         else:
