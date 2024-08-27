@@ -127,14 +127,8 @@ def check_intersection(img_anat, img_bm):
     with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
         data = np.ones_like(brainmask_data)
         data[brainmask_data == 1] = 2
-        fake_mask = nb.Nifti1Image(
-            data,
-            affine=brainmask_img.affine,
-            header=brainmask_img.header,
-        )
-        nb.save(fake_mask, tmpfile_mask.name)
 
-        intersection = np.logical_and(anat_data > 0, fake_mask > 0)
+        intersection = np.logical_and(anat_data > 0, data > 0)
 
         n_voxel = np.sum(intersection)
 
