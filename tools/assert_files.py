@@ -128,34 +128,35 @@ def check_intersection(path, look_for="sub-Aziza_ses-04"):
 
             for file in os.listdir(denoised_path):
                 if "HASTE" in file:
-                    brainmask_pattern = file.replace(".nii", "_seg.nii.gz")
-                    print(brainmask_pattern)
-                    exit()
+                    brainmask_file = file.replace(".nii", "_seg.nii.gz")
+
+                    anat_img = nb.load(os.path.join(denoised_path, file))
+                    brainmask_img = nb.load(os.path.join(brainmask_path, brainmask_file))
+
+                    anat_data = anat_img.get_fdata()
+                    brainmask_data = brainmask_img.get_fdata()
+
+                    with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
+                        print(f"Computing {file}")
+                        data = np.ones_like(brainmask_data)
+                        data[brainmask_data == 1] = 2
+
+                        intersection = np.logical_and(anat_data > 0, data > 0)
+
+                        n_voxel = np.sum(intersection)
+
+                        total_voxels = np.prod(anat_data.shape)
+                        print(f"\tNombre total de voxels dans l'image : {total_voxels}")
+
+                        if n_voxel > 0:
+                            print(f"\tIl y a {n_voxel} voxels où l'intersection est non nulle")
+                        else:
+                            print("\tIl n'y a pas d'intersection non nulle entre le brainmask et l'image anat")
+
             exit()
 
 
-    return
-    anat_img = nb.load(img_anat)
-    brainmask_img = nb.load(img_bm)
 
-    anat_data = anat_img.get_fdata()
-    brainmask_data = brainmask_img.get_fdata()
-
-    with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
-        data = np.ones_like(brainmask_data)
-        data[brainmask_data == 1] = 2
-
-        intersection = np.logical_and(anat_data > 0, data > 0)
-
-        n_voxel = np.sum(intersection)
-
-        total_voxels = np.prod(anat_data.shape)
-        print(f"Nombre total de voxels dans l'image : {total_voxels}")
-
-        if n_voxel > 0:
-            print(f"Il y a {n_voxel} voxels où l'intersection est non nulle")
-        else:
-            print("Il n'y a pas d'intersection non nulle entre le brainmask et l'image anat")
 
 
 if __name__ == "__main__":
