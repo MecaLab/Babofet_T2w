@@ -9,8 +9,8 @@ def write_slurm_file_nesvor(main_path, denoised_files, mask_files, output_file):
     slurm_content = f"""#!/bin/sh
 
 #SBATCH --account='a391'
-#SBATCH --partition=skylake
-#SBATCH -n 6
+#SBATCH --partition=volta
+#SBATCH --gres=gpu:1
 #SBATCH --time=00:10:00
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
