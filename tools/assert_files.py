@@ -117,7 +117,15 @@ def check_size(origin_path, destination_path):
         print("Everything OK for TRUEFISP")
 
 
-def check_intersection(img_anat, img_bm):
+def check_intersection(path):
+
+    for subj in os.listdir(path):
+        subj_dir = os.path.join(path, subj)
+        print(subj_dir)
+        exit()
+
+
+    return
     anat_img = nb.load(img_anat)
     brainmask_img = nb.load(img_bm)
 
@@ -149,7 +157,9 @@ if __name__ == "__main__":
 
     # check_size(input_path, dst_path)
 
-    check_intersection(
+    check_intersection(cfg.MESO_OUTPUT_PATH)
+
+    """check_intersection(
         img_anat="/scratch/lbaptiste/data/dataset/babofet/processing/sub-Aziza_ses-04/denoising/sub-Aziza_ses-04_T2_HASTE_AX2_9_denoised.nii",
         img_bm="/scratch/lbaptiste/data/dataset/babofet/processing/sub-Aziza_ses-04/brainmask_niftymic/sub-Aziza_ses-04_T2_HASTE_AX2_9_denoised_seg.nii.gz"
-    )
+    )"""
