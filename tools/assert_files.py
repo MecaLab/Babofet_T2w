@@ -126,8 +126,11 @@ def check_intersection(path, look_for="sub-Aziza_ses-04"):
             denoised_path = os.path.join(subj_dir, "denoising")
             brainmask_path = os.path.join(subj_dir, "brainmask_niftymic")
 
-            for f1, f2 in zip(os.listdir(denoised_path), os.listdir(brainmask_path)):
-                print(f1, f2)
+            for file in os.listdir(denoised_path):
+                if "HASTE" in file:
+                    brainmask_pattern = file.replace(".nii", "_seg.nii.gz")
+                    print(brainmask_pattern)
+                    exit()
             exit()
 
 
