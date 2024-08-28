@@ -117,12 +117,18 @@ def check_size(origin_path, destination_path):
         print("Everything OK for TRUEFISP")
 
 
-def check_intersection(path):
+def check_intersection(path, look_for="sub-Aziza_ses-04"):
 
     for subj in os.listdir(path):
-        subj_dir = os.path.join(path, subj)
-        print(subj_dir)
-        exit()
+        if look_for == subj:
+            subj_dir = os.path.join(path, subj)
+
+            denoised_path = os.path.join(subj_dir, "denoising")
+            brainmask_path = os.path.join(subj_dir, "brainmask_niftymic")
+
+            for f1, f2 in zip(os.listdir(denoised_path), os.listdir(brainmask_path)):
+                print(f1, f2)
+            exit()
 
 
     return
