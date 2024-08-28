@@ -168,8 +168,3 @@ if __name__ == "__main__":
     # check_size(input_path, dst_path)
 
     check_intersection(cfg.MESO_OUTPUT_PATH)
-
-    """check_intersection(
-        img_anat="/scratch/lbaptiste/data/dataset/babofet/processing/sub-Aziza_ses-04/denoising/sub-Aziza_ses-04_T2_HASTE_AX2_9_denoised.nii",
-        img_bm="/scratch/lbaptiste/data/dataset/babofet/processing/sub-Aziza_ses-04/brainmask_niftymic/sub-Aziza_ses-04_T2_HASTE_AX2_9_denoised_seg.nii.gz"
-    )"""

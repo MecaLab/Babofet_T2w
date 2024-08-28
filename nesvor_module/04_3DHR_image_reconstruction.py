@@ -4,77 +4,12 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
 
-from tools import data_organization as tdo
-
-
-def write_slurm_file_nifty(main_path, denoised_files, mask_files, output_file):
-    filename = "nifty_reconstruction.slurm"
-    slurm_content = f"""#!/bin/sh
-    
-#SBATCH --account='a391'
-#SBATCH --partition=volta
-#SBATCH --gres=gpu:1
-#SBATCH --time=00:10:00
-#SBATCH -o tmp.out
-#SBATCH -e tmp.err
-
-echo "Running on: $SLURM_NODELIST"
-
-MAIN_PATH="{main_path}"
-
-INPUT_PATH="${{MAIN_PATH}}/denoising"
-MASK_PATH="${{MAIN_PATH}}/brainmask"
-
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_nifty"
-MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
-OUTPUT_FILE="{output_file}"
-"""
-
-    slurm_content += "\n"
-    for i, file in enumerate(denoised_files, start=1):
-        slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
-
-    slurm_content += "\n"
-
-    for i, file in enumerate(mask_files, start=1):
-        slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
-
-    input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
-    mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(mask_files) + 1)])
-
-    slurm_content += f"""
-singularity exec \\
-    -B "$INPUT_PATH":/data \\
-    -B "$MASK_PATH":/masks \\
-    -B "$OUTPUT_PATH":/output \\
-    -B "$MOTION_CORRECTION":/motion_correction \\
-    /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
-     niftymic_reconstruct_volume \\
-        --filenames {input_stacks} \\
-        --filenames-masks {mask_stacks} \\
-        --output /output/$OUTPUT_FILE \\
-        --alpha 0.01 \\
-        --threshold-first 0.6 \\
-        --threshold 0.7 \\
-        --intensity-correction 1 \\
-        --bias-field-correction 1 \\
-        --isotropic-resolution 0.5 \\
-        --dilation-radius 5 \\
-        --subfolder-motion-correction /motion_correction \\
-         --use-masks-srr 1
-"""
-    with open(filename, "w", encoding="utf-8") as slurm_file:
-        slurm_file.write(slurm_content)
-
-    os.chmod(filename, 0o700)
-
-
 def write_slurm_file_nesvor(main_path, denoised_files, mask_files, output_file):
     filename = "nesvor_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
 
 #SBATCH --account='a391'
-#SBATCH --partition=volta
+#SBATCH --partition=skylake
 #SBATCH --gres=gpu:1
 #SBATCH --time=00:10:00
 #SBATCH -o tmp.out
@@ -88,7 +23,7 @@ echo "Running on: $SLURM_NODELIST"
 MAIN_PATH="{main_path}"
 
 INPUT_PATH="${{MAIN_PATH}}/denoising"
-MASK_PATH="${{MAIN_PATH}}/brainmask"
+MASK_PATH="${{MAIN_PATH}}/brainmask_niftymic"
 
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_nesvor"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
@@ -135,6 +70,9 @@ if __name__ == '__main__':
 
     for subject in subject_IDs:
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
+
+        if subject != "sub-Aziza_ses-04":
+            continue
         if not os.path.exists(subj_output_dir):
             os.makedirs(subj_output_dir)
 
@@ -154,7 +92,7 @@ if __name__ == '__main__':
         if len(haste_files) > 0:
             print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
-            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask")
+            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask_niftymic")
             denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising")
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_nesvor')
 
@@ -165,7 +103,7 @@ if __name__ == '__main__':
             bm_img = list()
             for f in haste_files:
                 nifti_filename = f
-                bm_nifti_filename = f.replace("_denoised.nii", "_denoised_brainmask.nii")
+                bm_nifti_filename = f.replace("_denoised.nii", "_denoised_seg.nii.gz")
 
                 if os.path.exists(os.path.join(denoised_subj_output_dir, f)) and os.path.exists(os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)):
                     anat_img.append(nifti_filename)
@@ -183,40 +121,4 @@ if __name__ == '__main__':
                 recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
 
                 write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
-                # write_slurm_file_nifty(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
                 exit()
-
-
-"""
-cmd_os = "singularity run /scratch/lbaptiste/softs/niftymic.multifact_latest.sif"
-                        cmd_os = 'niftymic_reconstruct_volume --filenames '
-                        for v in anat_img:
-                            cmd_os += v + ' '
-                        cmd_os += " --filenames-masks "
-                        for v in bm_img:
-                            cmd_os += v + ' '
-
-                        cmd_os += ' --output ' + recons_haste_subj_output
-                        cmd_os += ' --alpha 0.01 --threshold-first 0.6 --threshold 0.7 --intensity-correction 1 --bias-field-correction 1 --isotropic-resolution 0.5'
-                        cmd_os += ' --dilation-radius 5'
-                        cmd_os += ' --subfolder-motion-correction ' + motion_subfolder
-                        cmd_os += ' --use-masks-srr 1'
-                        
-                        
-niftymic_reconstruct_volume 
-    --filenames 
-        /scratch/lbaptiste/data/dataset/babofet/subjects/sub-Formule_ses-08/scans/9-T2_HASTE_COR/resources/NIFTI/files 
-        /scratch/lbaptiste/data/dataset/babofet/subjects/sub-Formule_ses-08/scans/10-T2_HASTE_AX2/resources/NIFTI/files 
-        /scratch/lbaptiste/data/dataset/babofet/subjects/sub-Formule_ses-08/scans/8-T2_HASTE_SAG/resources/NIFTI/files  
-    --filenames-masks 
-        /scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_COR_9_brainmask.nii 
-        /scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_AX2_10_brainmask.nii 
-        /scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/brainmask/sub-Formule_ses-08_T2_HASTE_SAG_8_brainmask.nii  
-    --output 
-    /scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/haste/reconstruction_ebner/sub-Formule_ses-08_haste_3DHR.nii.gz 
-    
-    --alpha 0.01 --threshold-first 0.6 --threshold 0.7 --intensity-correction 1 --bias-field-correction 1 
-    --isotropic-resolution 0.5 --dilation-radius 5 
-    --subfolder-motion-correction 
-        /scratch/lbaptiste/data/dataset/babofet/processing/sub-Formule_ses-08/haste/reconstruction_ebner/motion_correction --use-masks-srr 1
-"""
