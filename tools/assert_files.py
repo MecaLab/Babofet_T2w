@@ -171,6 +171,8 @@ def check_data_img(path, subj):
             anat_data = anat_img.get_fdata()
             brainmask_data = brainmask_img.get_fdata()
 
+            print("OK")
+
 
 
 
