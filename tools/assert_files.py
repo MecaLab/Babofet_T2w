@@ -173,6 +173,9 @@ def check_data_img(path, subj):
             brainmask_data = brainmask_img.get_fdata()
 
             print(f"\tAnat shape: {anat_data.shape} | BM shape: {brainmask_data.shape}")
+            origin_ornt = nb.io_orientation(anat_data.affine)
+            print(origin_ornt)
+            exit()
 
 
 
