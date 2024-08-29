@@ -65,6 +65,9 @@ if __name__ == "__main__":
 
     for subject in subject_IDs:
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
+
+        if subject != "sub-Aziza_ses-04":
+            continue
         if not os.path.exists(subj_output_dir):
             os.makedirs(subj_output_dir)
 
