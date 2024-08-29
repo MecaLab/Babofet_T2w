@@ -163,6 +163,7 @@ def check_data_img(path, subj):
 
     for file in os.listdir(denoised_path):
         if "HASTE" in file:
+            print(file)
             brainmask_file = file.replace(".nii", "_seg.nii.gz")
 
             anat_img = nb.load(os.path.join(denoised_path, file))
@@ -171,7 +172,8 @@ def check_data_img(path, subj):
             anat_data = anat_img.get_fdata()
             brainmask_data = brainmask_img.get_fdata()
 
-            print("OK")
+            print(f"\tAnat shape: {anat_data.shape} | BM shape: {brainmask_data.shape}")
+
 
 
 
