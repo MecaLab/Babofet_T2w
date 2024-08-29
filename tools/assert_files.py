@@ -175,11 +175,17 @@ def check_data_img(path, subj):
             print(f"\tAnat shape: {anat_data.shape} | BM shape: {brainmask_data.shape}")
             anat_ornt = nb.io_orientation(anat_img.affine)
             bm_ornt = nb.io_orientation(brainmask_img.affine)
-            print(anat_ornt)
-            print(bm_ornt)
+            # print(anat_ornt)
+            # print(bm_ornt)
 
             targ_ornt = nb.orientations.axcodes2ornt("RAS")
-            print(targ_ornt)
+            # print(targ_ornt)
+            transfo = nb.orientations.ornt_transform(anat_ornt, targ_ornt)
+            vol_orient_anat = anat_img.as_reoriented(transfo)
+            vol_orient_bm = anat_img.as_reoriented(transfo)
+
+            nb.save(vol_orient_anat, os.path.join(denoised_path, "test_anat.nii"))
+            nb.save(vol_orient_bm, os.path.join(brainmask_path, "test_bm.nii.gzz"))
 
             exit()
 
