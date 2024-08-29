@@ -152,9 +152,24 @@ def check_intersection(path, look_for="sub-Aziza_ses-04"):
                             print(f"\tIl y a {n_voxel} voxels où l'intersection est non nulle")
                         else:
                             print("\tIl n'y a pas d'intersection non nulle entre le brainmask et l'image anat")
-
             exit()
 
+
+def check_data_img(path, subj):
+    subj_dir = os.path.join(path, subj)
+
+    denoised_path = os.path.join(subj_dir, "denoising")
+    brainmask_path = os.path.join(subj_dir, "brainmask_niftymic")
+
+    for file in os.listdir(denoised_path):
+        if "HASTE" in file:
+            brainmask_file = file.replace(".nii", "_seg.nii.gz")
+
+            anat_img = nb.load(os.path.join(denoised_path, file))
+            brainmask_img = nb.load(os.path.join(brainmask_path, brainmask_file))
+
+            anat_data = anat_img.get_fdata()
+            brainmask_data = brainmask_img.get_fdata()
 
 
 
@@ -167,4 +182,6 @@ if __name__ == "__main__":
 
     # check_size(input_path, dst_path)
 
-    check_intersection(cfg.MESO_OUTPUT_PATH)
+    #check_intersection(dst_path)
+
+    check_data_img(dst_path, "sub-Aziza_ses-04")
