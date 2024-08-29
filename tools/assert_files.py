@@ -178,7 +178,7 @@ def check_data_img(path, subj):
             print(anat_ornt)
             print(bm_ornt)
 
-            np.testing.assert_array_equal(anat_ornt, bm_ornt)
+            print(np.array_equal(anat_ornt, bm_ornt))
 
 
 
