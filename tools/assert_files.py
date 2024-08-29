@@ -177,6 +177,10 @@ def check_data_img(path, subj):
             bm_ornt = nb.io_orientation(brainmask_img.affine)
             print(anat_ornt)
             print(bm_ornt)
+
+            targ_ornt = nb.orientations.axcodes2ornt("RAS")
+            print(targ_ornt)
+
             exit()
 
 
