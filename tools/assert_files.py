@@ -155,7 +155,7 @@ def check_intersection(path, look_for="sub-Aziza_ses-04"):
             exit()
 
 
-def check_data_img(path, subj):
+def check_data_img(path: str, subj: str):
     subj_dir = os.path.join(path, subj)
 
     denoised_path = os.path.join(subj_dir, "denoising")
@@ -179,6 +179,12 @@ def check_data_img(path, subj):
                 print("Array not equal:")
                 print(anat_ornt)
                 print(bm_ornt)
+
+            if np.allclose(anat_img.affine, brainmask_img.affine):
+                print("Les matrices affine sont identiques. Les images sont correctement alignées dans l'espace.")
+            else:
+                print(
+                    "Les matrices affine diffèrent. Les images peuvent ne pas être parfaitement alignées dans l'espace.")
 
 
 
