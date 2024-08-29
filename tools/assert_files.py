@@ -180,8 +180,6 @@ def check_data_img(path, subj):
 
             np.testing.assert_array_equal(anat_ornt, bm_ornt)
 
-            exit()
-
 
 
 
