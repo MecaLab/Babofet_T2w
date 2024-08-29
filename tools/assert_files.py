@@ -176,14 +176,14 @@ def check_data_img(path: str, subj: str):
             anat_ornt = nb.io_orientation(anat_img.affine)
             bm_ornt = nb.io_orientation(brainmask_img.affine)
             if not np.array_equal(anat_ornt, bm_ornt):
-                print("Array not equal:")
-                print(anat_ornt)
-                print(bm_ornt)
+                print("\tArray not equal:")
+                print("\t", anat_ornt)
+                print("\t", bm_ornt)
 
             if np.allclose(anat_img.affine, brainmask_img.affine):
-                print("Les images sont correctement alignées dans l'espace.")
+                print("\tLes images sont correctement alignées dans l'espace.")
             else:
-                print("Les images peuvent ne pas être parfaitement alignées dans l'espace.")
+                print("\tLes images peuvent ne pas être parfaitement alignées dans l'espace.")
 
 
 if __name__ == "__main__":
