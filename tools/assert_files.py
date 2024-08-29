@@ -181,15 +181,9 @@ def check_data_img(path: str, subj: str):
                 print(bm_ornt)
 
             if np.allclose(anat_img.affine, brainmask_img.affine):
-                print("Les matrices affine sont identiques. Les images sont correctement alignées dans l'espace.")
+                print("Les images sont correctement alignées dans l'espace.")
             else:
-                print(
-                    "Les matrices affine diffèrent. Les images peuvent ne pas être parfaitement alignées dans l'espace.")
-
-
-
-
-
+                print("Les images peuvent ne pas être parfaitement alignées dans l'espace.")
 
 
 if __name__ == "__main__":
