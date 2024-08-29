@@ -185,7 +185,7 @@ def check_data_img(path, subj):
             vol_orient_bm = anat_img.as_reoriented(transfo)
 
             nb.save(vol_orient_anat, os.path.join(denoised_path, "test_anat.nii"))
-            nb.save(vol_orient_bm, os.path.join(brainmask_path, "test_bm.nii.gzz"))
+            nb.save(vol_orient_bm, os.path.join(brainmask_path, "test_bm.nii.gz"))
 
             exit()
 
