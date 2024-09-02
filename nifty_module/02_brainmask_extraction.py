@@ -42,7 +42,8 @@ singularity exec \\
     niftymic_segment_fetal_brains \\
             --filenames {input_stacks} \\
             --dir-output /output \\
-            --verbose 2
+            --verbose 2 \\
+            --log-file /output/niftymic_log.txt \\
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
