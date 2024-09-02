@@ -16,7 +16,7 @@ def write_slurm_file(main_path, denoised_files):
 #SBATCH -e tmp.err
 
 module load userspace/all
-module load cuda/11.6
+module load cuda/10.2
 
 echo "Running on: $SLURM_NODELIST"
 
