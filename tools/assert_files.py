@@ -167,13 +167,14 @@ def check_data_img(path: str, subj: str):
             brainmask_file = file.replace(".nii", "_seg.nii.gz")
 
             anat_img = nb.load(os.path.join(denoised_path, file))
-            brainmask_img = nb.load(os.path.join(brainmask_path, brainmask_file))
-
             anat_data = anat_img.get_fdata()
+            print(anat_data)
+
+            brainmask_img = nb.load(os.path.join(brainmask_path, brainmask_file))
             brainmask_data = brainmask_img.get_fdata()
 
             print(brainmask_data)
-            exit()  
+            exit()
 
             print(f"\tAnat shape: {anat_data.shape} | BM shape: {brainmask_data.shape}")
             anat_ornt = nb.io_orientation(anat_img.affine)
@@ -199,4 +200,4 @@ if __name__ == "__main__":
 
     #check_intersection(dst_path)
 
-    check_data_img(dst_path, "sub-Aziza_ses-04")
+    check_data_img(dst_path, "sub-Formule_ses-01")
