@@ -43,7 +43,7 @@ singularity exec \\
             --filenames {input_stacks} \\
             --dir-output /output \\
             --verbose 2 \\
-            --log-file /output/niftymic_log.txt \\
+            --log-file 1
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
