@@ -4,16 +4,19 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
 
+
 def write_slurm_file(main_path, denoised_files):
     filename = "nifty_bm_extraction.slurm"
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='a391'
 #SBATCH --partition=skylake
+#SBATCH --time=00:10:00
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
 
 module load userspace/all
+module load cuda/11.6
 
 echo "Running on: $SLURM_NODELIST"
 
