@@ -11,6 +11,7 @@ def write_slurm_file(main_path, denoised_files):
     
 #SBATCH --account='a391'
 #SBATCH --partition=kepler
+#SBATCH --gres=gpu:1
 #SBATCH --time=00:10:00
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
