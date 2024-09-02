@@ -168,13 +168,9 @@ def check_data_img(path: str, subj: str):
 
             anat_img = nb.load(os.path.join(denoised_path, file))
             anat_data = anat_img.get_fdata()
-            print(anat_data)
 
             brainmask_img = nb.load(os.path.join(brainmask_path, brainmask_file))
             brainmask_data = brainmask_img.get_fdata()
-
-            print(brainmask_data)
-            exit()
 
             print(f"\tAnat shape: {anat_data.shape} | BM shape: {brainmask_data.shape}")
             anat_ornt = nb.io_orientation(anat_img.affine)
