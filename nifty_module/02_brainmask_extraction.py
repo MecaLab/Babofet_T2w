@@ -97,6 +97,7 @@ if __name__ == "__main__":
                     denoised_files=anat_img,
                 )
                 subprocess.run(["sbatch", "nifty_bm_extraction.slurm"])
+                print(f"\t\tComputing Brainmask for {subject}")
             else:
                 print(f"\t\tSkipped Brainmask Extraction for {subject}")
         print(f"\tEnding {subject}")
