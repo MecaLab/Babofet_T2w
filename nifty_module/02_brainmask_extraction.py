@@ -12,7 +12,11 @@ def write_slurm_file(main_path, denoised_files):
 #SBATCH --account='a391'
 #SBATCH --partition=kepler
 #SBATCH --gres=gpu:1
-#SBATCH --time=00:10:00
+#SBATCH --time=01:00:00
+#SBATCH -c 1
+#SBATCH --mail-type=END
+#SBATCH --mail-user=baptiste.LEROUX@univ-amu.fr
+#SBATCH --mem-per-cpu=50G
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
 
@@ -43,7 +47,6 @@ singularity exec \\
             --filenames {input_stacks} \\
             --dir-output /output \\
             --verbose 2 \\
-            --log-file 1
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
