@@ -34,8 +34,6 @@ OUTPUT_PATH="${{MAIN_PATH}}/brainmask_niftymic"
     input_stacks = " ".join([f"/data/$INPUT_FILE{i}" for i in range(1, len(denoised_files) + 1)])
 
     slurm_content += f"""
-    
-sleep 5
 singularity exec \\
     -B "$INPUT_PATH":/data \\
     -B "$OUTPUT_PATH":/output \\
@@ -43,7 +41,7 @@ singularity exec \\
     niftymic_segment_fetal_brains \\
             --filenames {input_stacks} \\
             --dir-output /output \\
-            --verbose 1
+            --verbose 2
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
