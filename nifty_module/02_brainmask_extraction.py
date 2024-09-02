@@ -10,7 +10,7 @@ def write_slurm_file(main_path, denoised_files):
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='a391'
-#SBATCH --partition=skylake
+#SBATCH --partition=volta
 #SBATCH --time=00:10:00
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
