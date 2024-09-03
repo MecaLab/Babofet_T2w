@@ -7,8 +7,6 @@ import numpy as np
 import nibabel as nib
 import nisnap
 import tempfile
-import matplotlib.pyplot as plt
-from scipy.ndimage import affine_transform
 
 
 def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False):
@@ -71,12 +69,14 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             # Sauvegarde des fichiers réorganisés
             """nib.save(anat_img_reoriented, path_anat_vol)
             nib.save(bm_img_reoriented, path_brainmask_vol)"""
+            tmp_anat = "tmp.nii.gz"
+            nib.save(anat_img_reoriented, tmp_anat)
 
             data = np.ones_like(brain_mask_data)
             data[brain_mask_data == 1] = 2
 
-            print(data)
-            
+            print(brain_mask_data == 1)
+
             fake_mask = nib.Nifti1Image(
                 data,
                 affine=bm_img.affine,
@@ -85,7 +85,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             nib.save(fake_mask, tmpfile_mask.name)
             nisnap.plot_segment(
                 tmpfile_mask.name,
-                bg=path_anat_vol,
+                bg=tmp_anat,
                 slices=range(0, brain_shape[0]),
                 opacity=50,
                 axes="z",
