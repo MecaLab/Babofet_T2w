@@ -34,12 +34,49 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape
 
-        print(brain_shape, bm_shape)
-
         with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
-            brain_mask_data_tmp = np.squeeze(brain_mask_data)
-            data = np.ones_like(brain_mask_data_tmp)
-            data[brain_mask_data_tmp == 1] = 2
+
+            if debug:
+                print(f"ANAT shape start: {brain_data.shape}")
+                print(f"BM shape start: {brain_mask_data.shape}")
+
+            # From (x, y, z) to (z, x, y)
+            if brain_data.shape[0] > brain_data.shape[-1]:
+                brain_data = np.transpose(brain_data, (2, 0, 1))
+                if debug:
+                    print(f"ANAT shape after Transpose: {brain_data.shape}")
+
+            brain_mask_data = np.squeeze(brain_mask_data)
+
+            if brain_mask_data.shape != brain_data.shape:
+                brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
+                if debug:
+                    print(f"ANAT shape after Transpose: {brain_data.shape}")
+
+            brain_shape = brain_data.shape
+            bm_shape = brain_mask_data.shape
+
+            if debug:
+                print(f"ANAT header: {anat_img.header}")
+                print(f"BM header: {bm_img.header}")
+
+                print(f"ANAT shape: {brain_shape}")
+                print(f"BM shape: {bm_shape}")
+
+            if brain_shape != bm_shape:
+                raise ValueError(f"Error shape: {brain_shape} | {bm_shape}")
+
+            # Afficher la coupe du cerveau
+
+            anat_img_reoriented = nib.Nifti1Image(brain_data, anat_img.affine, anat_img.header)
+            bm_img_reoriented = nib.Nifti1Image(brain_mask_data, bm_img.affine, bm_img.header)
+
+            # Sauvegarde des fichiers réorganisés
+            nib.save(anat_img_reoriented, path_anat_vol)
+            nib.save(bm_img_reoriented, path_brainmask_vol)
+
+            data = np.ones_like(brain_mask_data)
+            data[brain_mask_data == 1] = 2
             fake_mask = nib.Nifti1Image(
                 data,
                 affine=bm_img.affine,
@@ -71,7 +108,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 print(f"ANAT shape after Transpose: {brain_data.shape}")
 
         brain_mask_data = np.squeeze(brain_mask_data)
-        
+
         if brain_mask_data.shape != brain_data.shape:
             brain_mask_data = np.transpose(brain_mask_data, (2, 0, 1))
             if debug:
