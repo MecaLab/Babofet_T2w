@@ -75,7 +75,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             data = np.ones_like(brain_mask_data)
             data[brain_mask_data == 1] = 2
 
-            print(brain_mask_data == 1)
+            print(np.sum(brain_mask_data == 1))
 
             fake_mask = nib.Nifti1Image(
                 data,
