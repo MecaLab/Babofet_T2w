@@ -43,7 +43,7 @@ if __name__ == "__main__":
                     debug=True
                 )
                 print(f"End {f} for {subject}")
-                exit()
+                
         elif MODE == "nesvor":
             dir_brainmask = os.path.join(base_path, subject, "brainmask")
             print(f"Starting {subject}")
