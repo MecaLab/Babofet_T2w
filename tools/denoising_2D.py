@@ -48,6 +48,7 @@ def denoising_data(input_path, output_path):
                 input_full_path = os.path.join(nifti_full_path, nifti_filename)
 
                 if os.path.exists(bm_full_path):
+                    pass
                     print("\t\tSkipped {}".format(nifti_filename))
                 else:
                     cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
