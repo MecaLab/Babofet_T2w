@@ -20,6 +20,7 @@ def write_slurm_file(main_path, denoised_files):
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
 
+module purge
 module load userspace/all
 module load cuda/10.2
 
