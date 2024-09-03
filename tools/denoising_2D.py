@@ -47,18 +47,14 @@ def denoising_data(input_path, output_path):
 
                 input_full_path = os.path.join(nifti_full_path, nifti_filename)
 
-                if os.path.exists(bm_full_path):
-                    pass
-                    print("\t\tSkipped {}".format(nifti_filename))
-                else:
-                    cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
-                    cmd.append(input_full_path)
-                    cmd.append("-o")
-                    cmd.append(bm_full_path)
+                cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
+                cmd.append(input_full_path)
+                cmd.append("-o")
+                cmd.append(bm_full_path)
 
-                    subprocess.run(cmd)
+                subprocess.run(cmd)
 
-                    print("\t\tEnd {}".format(nifti_filename))
+                print("\t\tEnd {}".format(nifti_filename))
 
             print("\tEnding HASTE {}".format(subject))
 
