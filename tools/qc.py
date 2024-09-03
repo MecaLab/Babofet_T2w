@@ -31,10 +31,10 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
-        print(brain_mask_data)
-
         brain_shape = brain_data.shape
         bm_shape = brain_mask_data.shape
+
+        print(brain_data, bm_shape)
 
         with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
             data = np.ones_like(brain_mask_data)
@@ -50,7 +50,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 bg=path_anat_vol,
                 slices=range(0, brain_shape[0]),
                 opacity=50,
-                axes="x",
+                axes="z",
                 figsize=figsize,
                 samebox=True,
                 # labels=[1],
