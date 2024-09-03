@@ -37,8 +37,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         print(brain_shape, bm_shape)
 
         with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
-            data = np.ones_like(brain_mask_data)
-            data[brain_mask_data == 1] = 2
+            brain_mask_data_tmp = np.squeeze(brain_mask_data)
+            data = np.ones_like(brain_mask_data_tmp)
+            data[brain_mask_data_tmp == 1] = 2
             fake_mask = nib.Nifti1Image(
                 data,
                 affine=bm_img.affine,
