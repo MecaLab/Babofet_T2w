@@ -31,6 +31,32 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
         brain_data = anat_img.get_fdata()
         brain_mask_data = bm_img.get_fdata()
 
+        brain_shape = brain_data.shape
+        bm_shape = brain_mask_data.shape
+
+        with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
+            data = np.ones_like(brain_mask_data)
+            data[brain_mask_data == 1] = 2
+            fake_mask = nib.Nifti1Image(
+                data,
+                affine=bm_img.affine,
+                header=bm_img.header,
+            )
+            nib.save(fake_mask, tmpfile_mask.name)
+            nisnap.plot_segment(
+                tmpfile_mask.name,
+                bg=path_anat_vol,
+                slices=range(0, brain_shape[0]),
+                opacity=50,
+                axes="z",
+                figsize=figsize,
+                samebox=True,
+                # labels=[1],
+                # contours=True,
+                savefig=file_figure_out,
+            )
+        return
+
         if debug:
             print(f"ANAT shape start: {brain_data.shape}")
             print(f"BM shape start: {brain_mask_data.shape}")
