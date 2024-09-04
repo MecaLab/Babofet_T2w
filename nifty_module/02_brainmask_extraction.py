@@ -10,7 +10,7 @@ def write_slurm_file(main_path, denoised_files):
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='a391'
-#SBATCH --partition=kepler
+#SBATCH --partition=pascal
 #SBATCH --gres=gpu:1
 #SBATCH --time=01:00:00
 #SBATCH -c 1
