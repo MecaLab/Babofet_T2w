@@ -54,7 +54,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             nisnap.plot_segment(
                 tmpfile_mask.name,
                 bg="tmp.nii.gz",
-                slices=range(0, brain_data.shape[-1]),
+                slices=range(0, brain_data.shape[0]),
                 opacity=50,
                 axes="z",
                 figsize=figsize,
