@@ -127,4 +127,10 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
 
 
 def qc_recontructed_3DHRvolume(path_anat_vol, file_figure_out):
-    pass
+    figsize = {'z': (10, 7)}
+    anat_img = nib.load(path_anat_vol)
+
+    brain_data = anat_img.get_fdata()
+
+    print(brain_data)
+    print(brain_data.shape)
