@@ -25,8 +25,18 @@ if __name__ == "__main__":
     if not os.path.exists(dir_out):
         os.mkdir(dir_out)
 
-    filename = subject + "_haste_3DHR.nii.gz"
-    anat_path = os.path.join(path_recons, filename)
-    print(os.path.exists(anat_path))
+    anat_filename = subject + "_haste_3DHR.nii.gz"
+    bm_filename = subject + "_haste_3DHR_mask.nii.gz"
+
+    anat_path = os.path.join(path_recons, anat_filename)
+    bm_path = os.path.join(path_recons, bm_filename)
+
+    file_figure_out = os.path.join(dir_out, subject + "_recons.png")
+
+    qc.qc_recontructed_3DHRvolume(
+        path_anat_vol=anat_path,
+        path_brainmask_vol=bm_path,
+        file_figure_out=file_figure_out
+    )
 
 
