@@ -49,6 +49,8 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, mode, debug
                 data = np.transpose(data, (2, 0, 1))
             elif mode == "nesvor":
                 brain_data = np.transpose(brain_data, (2, 0, 1))
+                if data.shape[0] > data.shape[-1]:
+                    data = np.transpose(data, (2, 0, 1))
 
             if debug:
                 print("After transpose: ", brain_data.shape, data.shape)
