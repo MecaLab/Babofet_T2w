@@ -2,6 +2,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
+import subprocess
 
 
 def write_slurm_file_nifty(main_path, denoised_files, bm_files, output_file):
@@ -129,4 +130,5 @@ if __name__ == "__main__":
                     output_file=recons_haste_subj_output
                 )
 
-                exit()
+                subprocess.run(["sbatch", "nifty_bm_extraction.slurm"])
+                print(f"\t\tComputing Brainmask for {subject}")
