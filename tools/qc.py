@@ -36,16 +36,22 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
 
             data = np.squeeze(data)
 
-            print(brain_data.shape, data.shape)
+            if debug:
+                print(brain_data.shape, data.shape)
 
+            # Convert shape form (dim1, dim2, nb_slice) to (nb_slice, dim1, dim2)
             brain_data = np.transpose(brain_data, (2, 0, 1))
             data = np.transpose(data, (2, 0, 1))
 
-            print(brain_data.shape, data.shape)
+            if debug:
+                print(brain_data.shape, data.shape)
 
             anat_img_reoriented = nib.Nifti1Image(brain_data, anat_img.affine, anat_img.header)
 
-            nib.save(anat_img_reoriented, "tmp1.nii.gz")
+            # Used to store the transposed anat img. This file will be deleted at the end of the function
+            tmp_filename = "tmp.nii.gz"
+
+            nib.save(anat_img_reoriented, tmp_filename)
 
             fake_mask = nib.Nifti1Image(
                 data,
@@ -65,6 +71,8 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 # contours=True,
                 savefig=file_figure_out,
             )
+
+            os.remove(tmp_filename)
 
     """
                 if debug:
