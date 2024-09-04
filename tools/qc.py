@@ -39,11 +39,13 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             print(brain_data.shape, data.shape)
 
             brain_data = np.transpose(brain_data, (2, 0, 1))
+            data = np.transpose(data, (2, 0, 1))
+
+            print(brain_data.shape, data.shape)
 
             anat_img_reoriented = nib.Nifti1Image(brain_data, anat_img.affine, anat_img.header)
-            bm_img_reoriented = nib.Nifti1Image(brain_mask_data, bm_img.affine, bm_img.header)
 
-            nib.save(anat_img_reoriented, "tmp.nii.gz")
+            nib.save(anat_img_reoriented, "tmp1.nii.gz")
 
             fake_mask = nib.Nifti1Image(
                 data,
@@ -53,8 +55,8 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             nib.save(fake_mask, tmpfile_mask.name)
             nisnap.plot_segment(
                 tmpfile_mask.name,
-                bg="tmp.nii.gz",
-                slices=range(0, brain_data.shape[0]),
+                bg="tmp1.nii.gz",
+                slices=range(0, data.shape[0]),
                 opacity=50,
                 axes="z",
                 figsize=figsize,
