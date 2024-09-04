@@ -34,18 +34,21 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             data = np.ones_like(brain_mask_data)
             data[brain_mask_data == 1] = 2
 
+            if debug:
+                print("Before squeeze: ", brain_data.shape, data.shape)
+
             # the mask have a unique last dim. Exemple: (320, 320, 32, 1))
             data = np.squeeze(data)
 
             if debug:
-                print(brain_data.shape, data.shape)
+                print("After squeeze: ", brain_data.shape, data.shape)
 
             # Convert shape form (dim1, dim2, nb_slice) to (nb_slice, dim1, dim2)
             brain_data = np.transpose(brain_data, (2, 0, 1))
             data = np.transpose(data, (2, 0, 1))
 
             if debug:
-                print(brain_data.shape, data.shape)
+                print("After transpose: ", brain_data.shape, data.shape)
 
             anat_img_reoriented = nib.Nifti1Image(brain_data, anat_img.affine, anat_img.header)
 
