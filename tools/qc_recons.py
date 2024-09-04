@@ -21,6 +21,8 @@ if __name__ == "__main__":
 
     path_recons = os.path.join(cfg.MESO_OUTPUT_PATH, subject, "haste", "reconstruction_niftymic")
 
-    dir_out = os.path.join
+    dir_out = os.path.join(mid_dir_snapshots, subject)
+    if not os.path.exists(dir_out):
+        os.mkdir(dir_out)
 
 
