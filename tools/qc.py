@@ -31,7 +31,30 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
 
         with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask:
 
-            if debug:
+            data = np.ones_like(brain_mask_data)
+            data[brain_mask_data == 1] = 2
+
+            fake_mask = nib.Nifti1Image(
+                data,
+                affine=bm_img.affine,
+                header=bm_img.header,
+            )
+            nib.save(fake_mask, tmpfile_mask.name)
+            nisnap.plot_segment(
+                tmpfile_mask.name,
+                bg=brain_data,
+                slices=range(0, brain_data.shape[0]),
+                opacity=50,
+                axes="z",
+                figsize=figsize,
+                samebox=True,
+                # labels=[1],
+                # contours=True,
+                savefig=file_figure_out,
+            )
+
+    """
+                if debug:
                 print(f"ANAT shape start: {brain_data.shape}")
                 print(f"BM shape start: {brain_mask_data.shape}")
 
@@ -67,37 +90,18 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             bm_img_reoriented = nib.Nifti1Image(brain_mask_data, bm_img.affine, bm_img.header)
 
             # Sauvegarde des fichiers réorganisés
-            """nib.save(anat_img_reoriented, path_anat_vol)
-            nib.save(bm_img_reoriented, path_brainmask_vol)"""
+            nib.save(anat_img_reoriented, path_anat_vol)
+            nib.save(bm_img_reoriented, path_brainmask_vol)
             tmp_anat = "tmp.nii.gz"
             nib.save(anat_img_reoriented, tmp_anat)
 
             data = np.ones_like(brain_mask_data)
-            data[brain_mask_data == 0] = 1
+            data[brain_mask_data == 1] = 2
 
             print(brain_mask_data.shape)
             print(np.sum(brain_mask_data == 1))
             print(np.sum(brain_mask_data == 0))
-
-            fake_mask = nib.Nifti1Image(
-                data,
-                affine=bm_img.affine,
-                header=bm_img.header,
-            )
-            nib.save(fake_mask, tmpfile_mask.name)
-            nisnap.plot_segment(
-                tmpfile_mask.name,
-                bg=tmp_anat,
-                slices=range(0, brain_shape[0]),
-                opacity=50,
-                axes="z",
-                figsize=figsize,
-                samebox=True,
-                # labels=[1],
-                # contours=True,
-                savefig=file_figure_out,
-            )
-
+    """
 
 
 

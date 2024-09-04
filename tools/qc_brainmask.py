@@ -21,6 +21,9 @@ if __name__ == "__main__":
         dir_list_denoised = os.listdir(dir_denoised)
 
         if MODE == "niftymic":
+            if subject != "sub-Formule_ses-01":
+                continue
+
             dir_brainmask = os.path.join(base_path, subject, "brainmask_niftymic")
             print(f"Starting {subject}")
             dir_list_bm = os.listdir(dir_brainmask)
