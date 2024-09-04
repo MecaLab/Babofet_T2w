@@ -14,8 +14,6 @@ def write_slurm_file(main_path, denoised_files):
 #SBATCH --gres=gpu:1
 #SBATCH --time=01:00:00
 #SBATCH -c 1
-#SBATCH --mail-type=END
-#SBATCH --mail-user=baptiste.LEROUX@univ-amu.fr
 #SBATCH --mem-per-cpu=50G
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
