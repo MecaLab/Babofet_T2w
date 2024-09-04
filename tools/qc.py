@@ -42,7 +42,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             nib.save(fake_mask, tmpfile_mask.name)
             nisnap.plot_segment(
                 tmpfile_mask.name,
-                bg=brain_data,
+                bg=path_anat_vol,
                 slices=range(0, brain_data.shape[0]),
                 opacity=50,
                 axes="z",
