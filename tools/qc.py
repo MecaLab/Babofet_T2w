@@ -9,7 +9,7 @@ import nisnap
 import tempfile
 
 
-def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False):
+def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, mode, debug=False):
     """
     :param path_anat_vol: path of the nifty file
     :param path_brainmask_vol: path of the nifty file (brainmask)
@@ -44,8 +44,11 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
                 print("After squeeze: ", brain_data.shape, data.shape)
 
             # Convert shape form (dim1, dim2, nb_slice) to (nb_slice, dim1, dim2)
-            brain_data = np.transpose(brain_data, (2, 0, 1))
-            data = np.transpose(data, (2, 0, 1))
+            if mode == "niftymic":
+                brain_data = np.transpose(brain_data, (2, 0, 1))
+                data = np.transpose(data, (2, 0, 1))
+            elif mode == "nesvor":
+                pass
 
             if debug:
                 print("After transpose: ", brain_data.shape, data.shape)
