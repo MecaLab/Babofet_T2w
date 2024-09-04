@@ -67,6 +67,6 @@ if __name__ == "__main__":
                         os.path.join(dir_brainmask, bm_nifti_filename),
                         file_figure_out,
                         mode=MODE,
-                        debug=False,
+                        debug=True,
                     )
                     print(f"End {f} for {subject}")
