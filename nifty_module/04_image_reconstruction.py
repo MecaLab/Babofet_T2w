@@ -14,8 +14,8 @@ def write_slurm_file_nifty(main_path, denoised_files, bm_files, output_file):
 #SBATCH --time=01:00:00
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=50G
-#SBATCH -o tmp.out
-#SBATCH -e tmp.err
+#SBATCH -o recon.out
+#SBATCH -e recon.err
 
 module purge
 module load userspace/all
