@@ -36,6 +36,9 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
 
             data = np.squeeze(data)
 
+            print(brain_data.shape, data.shape)
+            
+
             fake_mask = nib.Nifti1Image(
                 data,
                 affine=bm_img.affine,
