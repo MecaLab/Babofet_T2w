@@ -6,7 +6,7 @@ import configuration as cfg
 
 
 if __name__ == "__main__":
-    MODE = "niftymic"  # "niftymic" | "nesvor"
+    MODE = "nesvor"  # "niftymic" | "nesvor"
     dir_snapshots = "snapshots"
 
     full_dir_snapshots = os.path.join(dir_snapshots, MODE)
@@ -49,6 +49,9 @@ if __name__ == "__main__":
                     print(f"End {f} for {subject}")
                     exit()
         elif MODE == "nesvor":
+            if subject != "sub-Aziza_ses-04":
+                continue
+
             dir_brainmask = os.path.join(base_path, subject, "brainmask")
             print(f"Starting {subject}")
             dir_list_bm = os.listdir(dir_brainmask)
