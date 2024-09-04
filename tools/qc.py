@@ -34,6 +34,7 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, debug=False
             data = np.ones_like(brain_mask_data)
             data[brain_mask_data == 1] = 2
 
+            # the mask have a unique last dim. Exemple: (320, 320, 32, 1))
             data = np.squeeze(data)
 
             if debug:
