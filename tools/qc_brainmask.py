@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
                     file_figure_out = os.path.join(dir_out, filename[0] + "_bounti_seg.png")
 
-                    if os.path.exist(file_figure_out):
+                    if os.path.exists(file_figure_out):
                         print(f"\tSkipped {f} for {subject}")
                     else:
                         qc.qc_brainmask(
