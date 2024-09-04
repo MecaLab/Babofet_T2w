@@ -25,4 +25,8 @@ if __name__ == "__main__":
     if not os.path.exists(dir_out):
         os.mkdir(dir_out)
 
+    filename = subject + "_haste_3DHR.nii.gz"
+    anat_path = os.path.join(path_recons, filename)
+    print(os.path.exists(anat_path))
+
 
