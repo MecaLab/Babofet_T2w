@@ -8,8 +8,12 @@ import configuration as cfg
 if __name__ == "__main__":
     MODE = "niftymic"  # "niftymic" | "nesvor"
     dir_snapshots = "snapshots"
-    mid_dir_snapshots = os.path.join(dir_snapshots, "recons", MODE)
 
+    mid_dir_snapshots = os.path.join(dir_snapshots, "recons")
+    if not os.path.exists(mid_dir_snapshots):
+        os.mkdir(mid_dir_snapshots)
+
+    mid_dir_snapshots = os.path.join(mid_dir_snapshots, MODE)
     if not os.path.exists(mid_dir_snapshots):
         os.mkdir(mid_dir_snapshots)
 
