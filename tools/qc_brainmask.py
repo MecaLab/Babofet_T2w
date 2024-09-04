@@ -21,9 +21,6 @@ if __name__ == "__main__":
         dir_list_denoised = os.listdir(dir_denoised)
 
         if MODE == "niftymic":
-            if subject != "sub-Aziza_ses-04":
-                continue
-
             dir_brainmask = os.path.join(base_path, subject, "brainmask_niftymic")
             print(f"Starting {subject}")
             dir_list_bm = os.listdir(dir_brainmask)
@@ -44,14 +41,10 @@ if __name__ == "__main__":
                         os.path.join(dir_denoised, f),
                         os.path.join(dir_brainmask, filename[0], bm_nifti_filename),
                         file_figure_out,
-                        debug=True
+                        debug=False,
                     )
                     print(f"End {f} for {subject}")
-                    exit()
         elif MODE == "nesvor":
-            if subject != "sub-Aziza_ses-04":
-                continue
-
             dir_brainmask = os.path.join(base_path, subject, "brainmask")
             print(f"Starting {subject}")
             dir_list_bm = os.listdir(dir_brainmask)
@@ -75,5 +68,3 @@ if __name__ == "__main__":
                         debug=False,
                     )
                     print(f"End {f} for {subject}")
-
-                    exit()
