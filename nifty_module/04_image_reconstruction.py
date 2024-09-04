@@ -130,5 +130,5 @@ if __name__ == "__main__":
                     output_file=recons_haste_subj_output
                 )
 
-                subprocess.run(["sbatch", "nifty_bm_extraction.slurm"])
-                print(f"\t\tComputing Brainmask for {subject}")
+                subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+                print(f"\t\tComputing reconstruction for {subject}")
