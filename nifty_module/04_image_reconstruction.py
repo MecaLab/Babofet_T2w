@@ -9,13 +9,17 @@ def write_slurm_file_nifty(main_path, denoised_files, bm_files, output_file):
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='a391'
-#SBATCH --partition=skylake
-#SBATCH --time=00:10:00
+#SBATCH --partition=pascal
+#SBATCH --gres=gpu:1
+#SBATCH --time=01:00:00
+#SBATCH -c 1
+#SBATCH --mem-per-cpu=50G
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
 
+module purge
 module load userspace/all
-module load cuda/11.6
+module load cuda/10.2
 
 MAIN_PATH="{main_path}"
 
@@ -48,7 +52,8 @@ singularity exec \\
     niftymic_reconstruct_volume \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --output /output/$OUTPUT_FILE
+        --output /output/$OUTPUT_FILE \\
+        --threshold 0.5
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
