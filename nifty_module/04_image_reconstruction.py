@@ -55,6 +55,7 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --threshold 0.5
+        --isotropic-resolution 0.5
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -70,6 +71,8 @@ if __name__ == "__main__":
     subjects_failed = list()
 
     for subject in subject_IDs:
+        if "Aziza" not in subject:
+            pass
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
 
         if not os.path.exists(subj_output_dir):
@@ -111,7 +114,7 @@ if __name__ == "__main__":
                     anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
 
-            recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir, subject + '_haste_3DHR.nii.gz')
+            recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir, subject + '_haste_3DHR_tmp.nii.gz')
             motion_subfolder = os.path.join(recons_haste_subj_output_dir, 'motion_correction')
 
             if os.path.exists(recons_haste_subj_output):
@@ -120,7 +123,7 @@ if __name__ == "__main__":
                 if not os.path.exists(motion_subfolder):
                     os.mkdir(motion_subfolder)
 
-                recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
+                recons_haste_subj_output = subject + '_haste_3DHR_tmp.nii.gz'
                 write_slurm_file_nifty(
                     main_path=subj_output_dir,
                     denoised_files=anat_img,
