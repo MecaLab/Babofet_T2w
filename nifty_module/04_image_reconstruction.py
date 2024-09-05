@@ -71,6 +71,9 @@ if __name__ == "__main__":
     subjects_failed = list()
 
     for subject in subject_IDs:
+        print("Aziza" in subject)
+        print(subject)
+        exit()
         if "Aziza" not in subject:
             pass
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
