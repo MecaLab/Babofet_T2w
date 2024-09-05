@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     for subject in subject_IDs:
         if "Aziza" not in subject:
-            print(f"Skip {subject}")
+            print(f"Skip {subject}\n")
             continue
 
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
@@ -133,5 +133,5 @@ if __name__ == "__main__":
                     output_file=recons_haste_subj_output
                 )
 
-                # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
-                print(f"\t\tComputing reconstruction for {subject}")
+                subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+                print(f"\t\tComputing reconstruction for {subject}\n")
