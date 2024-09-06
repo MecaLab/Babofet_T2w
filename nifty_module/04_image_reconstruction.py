@@ -12,7 +12,7 @@ def write_slurm_file_nifty(main_path, denoised_files, bm_files, output_file):
 #SBATCH --account='a391'
 #SBATCH --partition=pascal
 #SBATCH --gres=gpu:1
-#SBATCH --time=01:00:00
+#SBATCH --time=02:00:00
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=50G
 #SBATCH -o recon.out
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     for subject in subject_IDs:
         if "Aziza" not in subject:
-            print(f"Skip {subject}\n")
+            # print(f"Skip {subject}\n")
             continue
 
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
