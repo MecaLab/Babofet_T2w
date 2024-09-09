@@ -41,7 +41,14 @@ def denoising_data(input_path, output_path):
 
             for f in haste_files:
                 print(f)
-                exit()
+                if "missfront" in f:
+                    continue
+                if "ND" in f:
+                    continue
+
+                print(f)
+                exit()  
+
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_denoised.nii"
