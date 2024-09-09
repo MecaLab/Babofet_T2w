@@ -177,7 +177,7 @@ def qc_recontructed_3DHRvolume(path_anat_vol, path_brainmask_vol, file_figure_ou
         if path_brainmask_vol is not None:
             fake_int = vol_intensity + 10
         else:
-            fake_int = vol_intensity
+            fake_int = vol_intensity * 700 + 10
             print("Multiplication by 700 bc values btwn 0 and 1 ")
         fake_vol = nib.Nifti1Image(
             fake_int,
