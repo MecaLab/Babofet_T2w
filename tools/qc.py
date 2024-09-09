@@ -135,24 +135,71 @@ def qc_brainmask(path_anat_vol, path_brainmask_vol, file_figure_out, mode, debug
 
 
 def qc_recontructed_3DHRvolume(path_anat_vol, path_brainmask_vol, file_figure_out):
-    figsize = {'z': (10, 7)}
-    anat_img = nib.load(path_anat_vol)
-    bm_img = nib.load(path_brainmask_vol)
+    if path_brainmask_vol is not None:
+        bm_img = nib.load(path_brainmask_vol)
+        brain_mask_data = bm_img.get_fdata()
+        brain_mask_data = np.squeeze(brain_mask_data)
 
-    brain_data = anat_img.get_fdata()
-    bm_data = bm_img.get_fdata()
+    vol = nib.load(path_anat_vol)
+    vol_intensity = vol.get_fdata()
+    brain_shape = vol_intensity.shape
+    figsize = {'x': (10, 7)}
 
-    print(brain_data.shape, bm_data.shape)
+    with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmpfile_mask, tempfile.NamedTemporaryFile(
+            suffix=".nii.gz") as tmpfile_vol:
 
-    nisnap.plot_segment(
-        path_brainmask_vol,
-        bg=path_anat_vol,
-        slices=range(0, brain_data.shape[-1]),
-        opacity=50,
-        axes="z",
-        figsize=figsize,
-        samebox=True,
-        # labels=[1],
-        # contours=True,
-        savefig=file_figure_out,
-    )
+        if path_brainmask_vol is not None:
+            data = np.ones_like(brain_mask_data, dtype=np.int16)
+            data[brain_mask_data.round() == 1] = 2
+            fake_header = bm_img.header
+            fake_header.set_data_dtype(np.int16)
+            fake_mask = nib.Nifti1Image(
+                data,
+                affine=bm_img.affine,
+                header=fake_header,
+            )
+        else:
+            data = np.ones_like(vol_intensity, dtype=np.int16)
+            # data[0,0,0] = 2
+            fake_header = vol.header
+            fake_header.set_data_dtype(np.int16)
+            fake_mask = nib.Nifti1Image(
+                data,
+                affine=vol.affine,
+                header=fake_header,
+            )
+
+        nib.save(fake_mask, tmpfile_mask.name)
+
+        # new_dtype = np.float32
+        # fake_int = vol_intensity.astype(new_dtype)
+        # fake_int = fake_vol + 10
+        if path_brainmask_vol is not None:
+            fake_int = vol_intensity + 10
+        else:
+            fake_int = vol_intensity
+            print("Multiplication by 700 bc values btwn 0 and 1 ")
+        fake_vol = nib.Nifti1Image(
+            fake_int,
+            affine=vol.affine,
+            header=vol.header,
+        )
+        nib.save(fake_vol, tmpfile_vol.name)
+
+        if path_brainmask_vol is None:
+            opacity = 0
+        else:
+            opacity = 50
+
+        nisnap.plot_segment(
+            tmpfile_mask.name,
+            bg=tmpfile_vol.name,  # path_anat_vol, #_fixed,
+            slices=range(0, brain_shape[2]),  # thick slice are at last
+            opacity=opacity,
+            axes="x",
+            figsize=figsize,
+            samebox=True,
+            # labels=[1],
+            # contours=True,
+            savefig=file_figure_out,
+        )

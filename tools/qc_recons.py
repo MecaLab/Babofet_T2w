@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     qc.qc_recontructed_3DHRvolume(
         path_anat_vol=anat_path,
-        path_brainmask_vol=bm_path,
+        path_brainmask_vol=None,
         file_figure_out=file_figure_out
     )
 
