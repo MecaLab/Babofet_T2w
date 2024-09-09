@@ -31,7 +31,8 @@ if __name__ == "__main__":
     anat_path = os.path.join(path_recons, anat_filename)
     bm_path = os.path.join(path_recons, bm_filename)
 
-    file_figure_out = os.path.join(dir_out, subject + "_recons.png")
+    #file_figure_out = os.path.join(dir_out, subject + "_recons.png")
+    file_figure_out = os.path.join(dir_out, "tmp.png")
 
     qc.qc_recontructed_3DHRvolume(
         path_anat_vol=anat_path,
