@@ -7,6 +7,7 @@ from tools import data_organization as tdo
 
 
 def denoising_data(input_path, output_path):
+    DENOISING_PATH_EXE = "/scratch/lbaptiste/softs/DenoiseImage"
     base_path = input_path
 
     subject_IDs = os.listdir(base_path)
@@ -44,7 +45,6 @@ def denoising_data(input_path, output_path):
                     continue
                 elif "ND" in f:
                     continue
-
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_denoised.nii"
@@ -52,11 +52,7 @@ def denoising_data(input_path, output_path):
 
                 input_full_path = os.path.join(nifti_full_path, nifti_filename)
 
-                cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
-                cmd.append(input_full_path)
-                cmd.append("-o")
-                cmd.append(bm_full_path)
-
+                cmd = [DENOISING_PATH_EXE, "-i", input_full_path, "-o", bm_full_path]
                 subprocess.run(cmd)
 
                 print("\t\tEnd {}".format(nifti_filename))
@@ -74,6 +70,10 @@ def denoising_data(input_path, output_path):
                 os.mkdir(bm_truefisp_subj_output_dir)
 
             for f in truefisp_files:
+                if "missfront" in f:
+                    continue
+                elif "ND" in f:
+                    continue
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_denoised.nii"
@@ -84,11 +84,7 @@ def denoising_data(input_path, output_path):
                 if os.path.exists(bm_full_path):
                     print("\t\tSkipped {}".format(nifti_filename))
                 else:
-                    cmd = ["/scratch/lbaptiste/softs/DenoiseImage", "-i"]
-                    cmd.append(input_full_path)
-                    cmd.append("-o")
-                    cmd.append(bm_full_path)
-
+                    cmd = [DENOISING_PATH_EXE, "-i", input_full_path, "-o", bm_full_path]
                     subprocess.run(cmd)
 
                     print("\t\tEnd {}".format(nifti_filename))
