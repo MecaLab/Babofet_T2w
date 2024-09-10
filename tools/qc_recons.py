@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     for subject in subject_IDs:
         if MODE == "niftymic":
-            if "Aziza" not in subject:
+            if "Fabienne" not in subject:
                 continue
 
             # from sub-SUBJECT_ses-XX to SUBJECT
