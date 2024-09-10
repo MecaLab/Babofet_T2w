@@ -15,7 +15,7 @@ OUTPUT_PATH = os.path.join(MAIN_PATH, "processing")
 # MESOCENTRE PATH
 MESO_PATH = "/scratch/lbaptiste/data/dataset/babofet"
 MESO_DATA_PATH = os.path.join(MESO_PATH, "subjects")
-MESO_OUTPUT_PATH = os.path.join(MESO_PATH, "processing")
+MESO_OUTPUT_PATH = os.path.join(MESO_PATH, "derivatives")
 
 
 """
