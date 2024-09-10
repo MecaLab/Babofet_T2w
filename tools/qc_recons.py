@@ -27,14 +27,13 @@ if __name__ == "__main__":
             if "Aziza" not in subject:
                 continue
 
+            # from sub-SUBJECT_ses-XX to SUBJECT
             subject_dir = subject.split("_")[0].split("-")[-1]
-            print(subject_dir)
-            exit()
 
             print(f"Snapshot for {subject}")
             path_recons = os.path.join(cfg.MESO_OUTPUT_PATH, subject, "haste", "reconstruction_niftymic")
 
-            dir_out = os.path.join(mid_dir_snapshots, subject)
+            dir_out = os.path.join(mid_dir_snapshots, subject_dir)
             if not os.path.exists(dir_out):
                 os.mkdir(dir_out)
 
@@ -45,11 +44,11 @@ if __name__ == "__main__":
             bm_path = os.path.join(path_recons, bm_filename)
 
             file_figure_out = os.path.join(dir_out, subject + "_recons.png")
-            qc.qc_recontructed_3DHRvolume(
+            """qc.qc_recontructed_3DHRvolume(
                 path_anat_vol=anat_path,
                 path_brainmask_vol=bm_path,
                 file_figure_out=file_figure_out
-            )
+            )"""
         elif MODE == "nesvor":
             pass
 
