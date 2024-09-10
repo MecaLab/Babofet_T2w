@@ -44,11 +44,22 @@ if __name__ == "__main__":
             bm_path = os.path.join(path_recons, bm_filename)
 
             file_figure_out = os.path.join(dir_out, subject + "_recons.png")
-            """qc.qc_recontructed_3DHRvolume(
-                path_anat_vol=anat_path,
-                path_brainmask_vol=bm_path,
-                file_figure_out=file_figure_out
-            )"""
+
+            if not os.path.exists(anat_path):
+                print(f"Skipping {anat_path} because missing")
+                continue
+            if not os.path.exists(bm_path):
+                qc.qc_recontructed_3DHRvolume(
+                    path_anat_vol=anat_path,
+                    path_brainmask_vol=None,
+                    file_figure_out=file_figure_out
+                )
+            else:
+                qc.qc_recontructed_3DHRvolume(
+                    path_anat_vol=anat_path,
+                    path_brainmask_vol=bm_path,
+                    file_figure_out=file_figure_out
+                )
         elif MODE == "nesvor":
             pass
 
