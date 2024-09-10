@@ -27,6 +27,10 @@ if __name__ == "__main__":
             if "Aziza" not in subject:
                 continue
 
+            subject_dir = subject.split("_")[0].split("-")[-1]
+            print(subject_dir)
+            exit()
+
             print(f"Snapshot for {subject}")
             path_recons = os.path.join(cfg.MESO_OUTPUT_PATH, subject, "haste", "reconstruction_niftymic")
 
