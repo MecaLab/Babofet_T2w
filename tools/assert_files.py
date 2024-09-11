@@ -18,19 +18,21 @@ def count_stack(origin_path):
         subject_name = base_name[0].split("-")[-1]
         session_id = base_name[1].split("-")[-1]
 
-        print(subject, subject_name, session_id)
-        exit()
-
-
         dir_list = os.listdir(os.path.join(subj_output_dir, "denoising"))
 
         for f in dir_list:
             if "haste" in f.lower():
                 if subject_name in dico_stack:
-                    pass
+                    if session_id in dico_stack[subject_name]:
+                        dico_stack[subject_name][session_id] += 1
+                    else:
+                        dico_stack[subject_name][session_id] = 1
+                else:
+                    dico_stack[subject_name] = {}
 
-    for subj, nb_stack in dico_stack.items():
-        print(f"{subj} has {nb_stack} stacks")
+    for name in dico_stack.keys():
+        for subj, nb_stack in dico_stack[name].items():
+            print(f"{subj} has {nb_stack} stacks")
 
 
 def check_files(origin_path, destination_path):
