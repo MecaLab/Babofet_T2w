@@ -52,16 +52,17 @@ singularity exec --nv \\
     nesvor reconstruct \\
         --input-stacks {input_stacks} \\
         --stack-masks {mask_stacks} \\
-        --output-volum /output/$OUTPUT_FILE \\
+        --output-volume /output/$OUTPUT_FILE \\
         --output-resolution 0.5 \\
         --registration svort \\
-        --segmentation \\
-        --bias-field-correction 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
     os.chmod(filename, 0o700)
+
+    # ajouter --output-model pour avoir peut-être les brainmask
+    # relancer
 
 
 if __name__ == '__main__':
