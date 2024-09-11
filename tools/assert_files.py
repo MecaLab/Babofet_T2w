@@ -14,7 +14,6 @@ def count_stack(origin_path):
     for subject in os.listdir(origin_path):
         subj_output_dir = os.path.join(origin_path, subject)
 
-        print(subject)
         dir_list = os.listdir(os.path.join(subj_output_dir, "denoising"))
 
         for f in dir_list:
@@ -23,10 +22,9 @@ def count_stack(origin_path):
                     dico_stack[subject] += 1
                 else:
                     dico_stack[subject] = 1
-        break
 
     for subj, nb_stack in dico_stack.items():
-        print(f"{subj} has {nb_stack}")
+        print(f"{subj} has {nb_stack} stacks")
 
 
 def check_files(origin_path, destination_path):
