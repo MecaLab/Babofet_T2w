@@ -23,7 +23,7 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
 
     for subject in subject_IDs:
-        if "sub-Aziza_ses-04" not in subject:
+        if "Aziza" not in subject:
             continue
         if MODE == "niftymic":
             # from sub-SUBJECT_ses-XX to SUBJECT
