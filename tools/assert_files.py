@@ -19,9 +19,14 @@ def count_stack(origin_path):
 
         for f in dir_list:
             if "haste" in f.lower():
-                pass
+                if subject in dico_stack:
+                    dico_stack[subject] += 1
+                else:
+                    dico_stack[subject] = 1
+        break
 
-        exit()
+    for subj, nb_stack in dico_stack.items():
+        print(f"{subj} has {nb_stack}")
 
 
 def check_files(origin_path, destination_path):
