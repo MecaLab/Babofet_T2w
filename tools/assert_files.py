@@ -10,6 +10,16 @@ import configuration as cfg
 from tools import data_organization as tdo
 
 
+def count_stack(origin_path):
+    for subject in os.listdir(origin_path):
+        subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
+
+        dir_list = os.listdir(os.path.join(subj_output_dir, "denoising"))
+
+        print(dir_list)
+        exit()
+
+
 def check_files(origin_path, destination_path):
     cpt_fail_haste = 0
     cpt_fail_truefisp = 0
@@ -194,6 +204,8 @@ if __name__ == "__main__":
 
     # check_size(input_path, dst_path)
 
-    #check_intersection(dst_path)
+    # check_intersection(dst_path)
 
-    check_data_img(dst_path, "sub-Formule_ses-01")
+    # check_data_img(dst_path, "sub-Formule_ses-01")
+
+    count_stack(cfg.MESO_OUTPUT_PATH)
