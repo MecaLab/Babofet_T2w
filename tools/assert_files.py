@@ -3,7 +3,6 @@ import os
 import nibabel as nb
 import numpy as np
 import tempfile
-from nilearn.image import resample_to_img
 
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
@@ -11,12 +10,17 @@ from tools import data_organization as tdo
 
 
 def count_stack(origin_path):
+    dico_stack = {}
     for subject in os.listdir(origin_path):
-        subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
+        subj_output_dir = os.path.join(origin_path, subject)
 
+        print(subject)
         dir_list = os.listdir(os.path.join(subj_output_dir, "denoising"))
 
-        print(dir_list)
+        for f in dir_list:
+            if "haste" in f.lower():
+                pass
+
         exit()
 
 
