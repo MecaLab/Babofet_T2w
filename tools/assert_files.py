@@ -27,7 +27,7 @@ def count_stack(origin_path):
         for f in dir_list:
             if "haste" in f.lower():
                 if subject_name in dico_stack:
-                    if
+                    pass
 
     for subj, nb_stack in dico_stack.items():
         print(f"{subj} has {nb_stack} stacks")
