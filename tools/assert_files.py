@@ -14,14 +14,20 @@ def count_stack(origin_path):
     for subject in os.listdir(origin_path):
         subj_output_dir = os.path.join(origin_path, subject)
 
+        base_name = subject.split("_")
+        subject_name = base_name[0].split("-")[-1]
+        session_id = base_name[1].split("-")[-1]
+
+        print(subject, subject_name, session_id)
+        exit()
+
+
         dir_list = os.listdir(os.path.join(subj_output_dir, "denoising"))
 
         for f in dir_list:
             if "haste" in f.lower():
-                if subject in dico_stack:
-                    dico_stack[subject] += 1
-                else:
-                    dico_stack[subject] = 1
+                if subject_name in dico_stack:
+                    if
 
     for subj, nb_stack in dico_stack.items():
         print(f"{subj} has {nb_stack} stacks")
