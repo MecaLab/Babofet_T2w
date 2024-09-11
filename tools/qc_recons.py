@@ -36,8 +36,8 @@ if __name__ == "__main__":
             if not os.path.exists(dir_out):
                 os.mkdir(dir_out)
 
-            anat_filename = subject + "_haste_3DHR.nii.gz"
-            bm_filename = subject + "_haste_3DHR_mask.nii.gz"
+            anat_filename = subject + "_haste_3DHR_tmp.nii.gz"
+            bm_filename = subject + "_haste_3DHR_mask_tmp.nii.gz"
 
             anat_path = os.path.join(path_recons, anat_filename)
             bm_path = os.path.join(path_recons, bm_filename)
