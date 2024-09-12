@@ -5,8 +5,15 @@ from tools import qc
 import configuration as cfg
 
 
-if __name__ == "__main__":
-    MODE = "nesvor"  # "niftymic" | "nesvor"
+def qc_recons(base_path, mode):
+    """
+    Function that use the anatomic and the brainmask data to snapshot them
+    The mode string is used to split between niftymic and nesvor
+
+    :param base_path: str, path to the list of the subjects
+    :param mode: str, nesvor or niftymic
+    :return: None
+    """
     dir_snapshots = "snapshots"
 
     mid_dir_snapshots = os.path.join(dir_snapshots, "recons")
@@ -14,18 +21,16 @@ if __name__ == "__main__":
     if not os.path.exists(mid_dir_snapshots):
         os.mkdir(mid_dir_snapshots)
 
-    mid_dir_snapshots = os.path.join(mid_dir_snapshots, MODE)
+    mid_dir_snapshots = os.path.join(mid_dir_snapshots, mode)
     if not os.path.exists(mid_dir_snapshots):
         os.mkdir(mid_dir_snapshots)
-
-    base_path = cfg.MESO_OUTPUT_PATH
 
     subject_IDs = os.listdir(base_path)
 
     for subject in subject_IDs:
         if "Aziza" not in subject:
             continue
-        if MODE == "niftymic":
+        if mode == "niftymic":
             # from sub-SUBJECT_ses-XX to SUBJECT
             subject_dir = subject.split("_")[0].split("-")[-1]
 
@@ -36,8 +41,8 @@ if __name__ == "__main__":
             if not os.path.exists(dir_out):
                 os.mkdir(dir_out)
 
-            anat_filename = subject + "_haste_3DHR_tmp.nii.gz"
-            bm_filename = subject + "_haste_3DHR_tmp_mask.nii.gz"
+            anat_filename = subject + "_haste_3DHR.nii.gz"
+            bm_filename = subject + "_haste_3DHR_mask.nii.gz"
 
             anat_path = os.path.join(path_recons, anat_filename)
             bm_path = os.path.join(path_recons, bm_filename)
@@ -47,6 +52,7 @@ if __name__ == "__main__":
             if not os.path.exists(anat_path):
                 print(f"Skipping {anat_path} because missing")
                 continue
+
             if not os.path.exists(bm_path):
                 qc.qc_recontructed_3DHRvolume(
                     path_anat_vol=anat_path,
@@ -59,7 +65,7 @@ if __name__ == "__main__":
                     path_brainmask_vol=bm_path,
                     file_figure_out=file_figure_out
                 )
-        elif MODE == "nesvor":
+        elif mode == "nesvor":
             # from sub-SUBJECT_ses-XX to SUBJECT
             subject_dir = subject.split("_")[0].split("-")[-1]
 

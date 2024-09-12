@@ -110,7 +110,6 @@ def qc_recontructed_3DHRvolume(path_anat_vol, path_brainmask_vol, file_figure_ou
             )
         else:
             data = np.ones_like(vol_intensity, dtype=np.int16)
-            # data[0,0,0] = 2
             fake_header = vol.header
             fake_header.set_data_dtype(np.int16)
             fake_mask = nib.Nifti1Image(
@@ -120,10 +119,6 @@ def qc_recontructed_3DHRvolume(path_anat_vol, path_brainmask_vol, file_figure_ou
             )
 
         nib.save(fake_mask, tmpfile_mask.name)
-
-        # new_dtype = np.float32
-        # fake_int = vol_intensity.astype(new_dtype)
-        # fake_int = fake_vol + 10
         if path_brainmask_vol is not None:
             fake_int = vol_intensity + 10
         else:
@@ -143,13 +138,11 @@ def qc_recontructed_3DHRvolume(path_anat_vol, path_brainmask_vol, file_figure_ou
 
         nisnap.plot_segment(
             tmpfile_mask.name,
-            bg=tmpfile_vol.name,  # path_anat_vol, #_fixed,
-            slices=range(0, brain_shape[2]),  # thick slice are at last
+            bg=tmpfile_vol.name,
+            slices=range(0, brain_shape[2]),
             opacity=opacity,
             axes="x",
             figsize=figsize,
             samebox=True,
-            # labels=[1],
-            # contours=True,
             savefig=file_figure_out,
         )
