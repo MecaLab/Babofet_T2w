@@ -33,6 +33,7 @@ def get_dicom_file_metadata(path_dicom, fields):
     try:
         dicom = dcmread(path_dicom, stop_before_pixels=True)
         metadata = {f: [get_field(dicom, f)] for f in fields}
+        print(dicom)
     except:
         metadata = {f: ["extraction_error"] for f in fields}
     finally:
