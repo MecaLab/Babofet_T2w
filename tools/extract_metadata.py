@@ -30,6 +30,8 @@ def get_dicom_file_metadata(path_dicom, fields):
     Object, value stored in the dicom field
     """
     # do not read the image (faster) and query the field
+    print(path_dicom)
+    print(fields)
     try:
         dicom = dcmread(path_dicom, stop_before_pixels=True)
         metadata = {f: [get_field(dicom, f)] for f in fields}
@@ -51,7 +53,6 @@ def get_dicom_directory_metadata(directory, fields, path_df):
 
     dfs = (get_dicom_file_metadata(f, fields) for f in only_dcm_files)
 
-    print(dfs)
 
 
 if __name__ == "__main__":
