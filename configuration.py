@@ -17,6 +17,28 @@ MESO_PATH = "/scratch/lbaptiste/data/dataset/babofet"
 MESO_DATA_PATH = os.path.join(MESO_PATH, "subjects")
 MESO_OUTPUT_PATH = os.path.join(MESO_PATH, "derivatives")
 
+DICOM_META_TO_EXTRACT = [
+    "PatientID",
+    "PatientName",
+    "PatientBirthDate",
+    "PatientAge",
+    "PatientSex",
+    "PatientSize",
+    "PatientWeight",
+    "StudyInstanceUID",
+    "StudyDescription",
+    "StudyDate",
+    "StudyTime",
+    "SeriesInstanceUID",
+    "SeriesDescription",
+    "SeriesNumber",
+    "InstanceNumber",
+    "Manufacturer",
+    "ManufacturerModelName",
+    "SoftwareVersions",
+    "MagneticFieldStrength",
+]
+
 
 """
 # paths for MESOCENTRE
