@@ -48,7 +48,7 @@ singularity exec --nv \\
     -B "$INPUT_PATH":/data \\
     -B "$MASK_PATH":/masks \\
     -B "$OUTPUT_PATH":/output \\
-    -B "/scratch/lbaptiste/tmp/:/tmp \\
+    -B "/scratch/lbaptiste/tmp/":/tmp \\
     /scratch/lbaptiste/softs/nesvor_latest.sif \\
     nesvor reconstruct \\
         --input-stacks {input_stacks} \\
