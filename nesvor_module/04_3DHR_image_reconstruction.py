@@ -55,6 +55,8 @@ singularity exec --nv \\
         --output-volume /output/$OUTPUT_FILE \\
         --output-resolution 0.5 \\
         --registration svort \\
+        --output-model /scratch/lbaptiste/tmp/model_nesvor_tmp.pt \\
+        
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
@@ -114,17 +116,14 @@ if __name__ == '__main__':
                     anat_img.append(nifti_filename)
                     bm_img.append(bm_nifti_filename)
 
-            recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir, subject + '_haste_3DHR_new.nii.gz')
+            recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir, subject + '_haste_3DHR.nii.gz')
             motion_subfolder = os.path.join(recons_haste_subj_output_dir, 'motion_correction')
 
-            if os.path.exists(recons_haste_subj_output):
-                print('\t\tSkipped reconstruction HASTE for {}'.format(subject))
-            else:
-                if not os.path.exists(motion_subfolder):
+            if not os.path.exists(motion_subfolder):
                     os.mkdir(motion_subfolder)
 
-                recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
+            recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
 
-                write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
-                subprocess.run(["sbatch", "nesvor_reconstruction.slurm"])
-                print(f"\t\tComputing reconstruction for {subject}\n")
+            write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
+            subprocess.run(["sbatch", "nesvor_reconstruction.slurm"])
+            print(f"\t\tComputing reconstruction for {subject}\n")
