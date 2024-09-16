@@ -48,7 +48,6 @@ singularity exec --nv \\
     -B "$INPUT_PATH":/data \\
     -B "$MASK_PATH":/masks \\
     -B "$OUTPUT_PATH":/output \\
-    -B "/scratch/lbaptiste/tmp/":/tmp \\
     /scratch/lbaptiste/softs/nesvor_latest.sif \\
     nesvor reconstruct \\
         --input-stacks {input_stacks} \\
@@ -56,7 +55,7 @@ singularity exec --nv \\
         --output-volume /output/$OUTPUT_FILE \\
         --output-resolution 0.5 \\
         --registration svort \\
-        --output-model /tmp/model_nesvor_tmp.pt \\
+        --with-background True \\
         
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
