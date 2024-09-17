@@ -16,7 +16,7 @@ def build_csv(dico_stacks, filename):
             new_row = {"subject-ses": full_name, "nb_stacks": nb_stack}
             df = df._append(new_row, ignore_index=True)
 
-    print(df)
+    df.to_csv(cfg.TABLE_CSV_DATA_INFO, index=False)
 
 
 if __name__ == "__main__":
