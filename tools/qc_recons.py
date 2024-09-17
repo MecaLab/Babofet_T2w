@@ -69,7 +69,6 @@ def qc_recons(base_path, mode):
             # from sub-SUBJECT_ses-XX to SUBJECT
             subject_dir = subject.split("_")[0].split("-")[-1]
 
-            print(f"Snapshot for {subject}")
             path_recons = os.path.join(cfg.MESO_OUTPUT_PATH, subject, "haste", "reconstruction_nesvor")
 
             dir_out = os.path.join(mid_dir_snapshots, subject_dir)
@@ -85,6 +84,9 @@ def qc_recons(base_path, mode):
             if not os.path.exists(anat_path):
                 print(f"Skipping {anat_path} because missing")
                 continue
+
+            print(f"Snapshot for {subject}")
+
             qc.qc_recontructed_3DHRvolume(
                 path_anat_vol=anat_path,
                 path_brainmask_vol=None,
