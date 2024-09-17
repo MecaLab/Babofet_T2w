@@ -55,16 +55,11 @@ singularity exec --nv \\
         --output-volume /output/$OUTPUT_FILE \\
         --output-resolution 0.5 \\
         --registration svort \\
-        --with-background \\
-        
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
     os.chmod(filename, 0o700)
-
-    # ajouter --output-model pour avoir peut-être les brainmask
-    # relancer
 
 
 if __name__ == '__main__':
