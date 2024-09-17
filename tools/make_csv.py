@@ -7,8 +7,15 @@ import configuration as cfg
 from tools import assert_files
 
 
-def build_csv(data, filename):
-    df = pd.DataFrame(data)
+def build_csv(dico_stacks, filename):
+    df = pd.DataFrame(columns=["subject-ses", "nb_stacks"])
+
+    for subject in dico_stacks.keys():
+        for sess_id, nb_stack in dico_stacks[subject].items():
+            full_name = f"{subject}-ses_{sess_id}"
+            print(full_name)
+            break
+        break
 
     print(df)
 
@@ -18,3 +25,8 @@ if __name__ == "__main__":
     dico_stacks = assert_files.count_stack(base_path)
 
     build_csv(dico_stacks, "")
+"""
+    for name in dico_stack.keys():
+        print(name)
+        for sess_id, nb_stack in dico_stack[name].items():
+            print(f"\t{sess_id} has {nb_stack} stacks")"""
