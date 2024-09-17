@@ -55,7 +55,7 @@ singularity exec --nv \\
         --output-volume /output/$OUTPUT_FILE \\
         --output-resolution 0.5 \\
         --registration svort \\
-        --with-background True \\
+        --with-background \\
         
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
