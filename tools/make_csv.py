@@ -13,7 +13,7 @@ def build_csv(dico_stacks, filename):
     for subject in dico_stacks.keys():
         for sess_id, nb_stack in dico_stacks[subject].items():
             full_name = f"{subject}-ses_{sess_id}"
-            new_row = {"subject": full_name, "nb_stacks": nb_stack}
+            new_row = {"subject-ses": full_name, "nb_stacks": nb_stack}
             df = df._append(new_row, ignore_index=True)
 
     print(df)
