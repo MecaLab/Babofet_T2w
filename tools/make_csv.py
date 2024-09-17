@@ -7,11 +7,14 @@ import configuration as cfg
 from tools import assert_files
 
 
+def build_csv(data, filename):
+    df = pd.DataFrame(data)
+
+    print(df)
+
+
 if __name__ == "__main__":
     base_path = cfg.MESO_OUTPUT_PATH
     dico_stacks = assert_files.count_stack(base_path)
 
-    for name in dico_stacks.keys():
-        print(name)
-        for sess_id, nb_stack in dico_stacks[name].items():
-            print(f"\t{sess_id} has {nb_stack} stacks")
+    build_csv(dico_stacks, "")
