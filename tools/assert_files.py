@@ -30,10 +30,7 @@ def count_stack(origin_path):
                 else:
                     dico_stack[subject_name] = {}
 
-    for name in dico_stack.keys():
-        print(name)
-        for sess_id, nb_stack in dico_stack[name].items():
-            print(f"\t{sess_id} has {nb_stack} stacks")
+    return dico_stack
 
 
 def check_files(origin_path, destination_path):
