@@ -28,7 +28,7 @@ def qc_recons(base_path, mode):
     subject_IDs = os.listdir(base_path)
 
     for subject in subject_IDs:
-        if "Aziza" not in subject:
+        if "Fabienne" not in subject:
             continue
         if mode == "niftymic":
             # from sub-SUBJECT_ses-XX to SUBJECT
