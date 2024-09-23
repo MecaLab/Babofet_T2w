@@ -50,10 +50,11 @@ singularity exec \\
     -B "$MASK_PATH":/masks \\
     -B "$OUTPUT_PATH":/output \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
-    niftymic_reconstruct_volume \\
+    niftymic_run_reconstruction_pipeline \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --output /output/$OUTPUT_FILE \\
+        --dir-output /output/$OUTPUT_FILE \\
+        --threshold-first 0.85 \\
         --threshold 0.5 \\
         --isotropic-resolution 0.5 \\
 """
@@ -71,7 +72,7 @@ if __name__ == "__main__":
     subjects_failed = list()
 
     for subject in subject_IDs:
-        if "sub-Fabienne_ses-01" not in subject:
+        if "sub-Aziza_ses-05" not in subject:
             # print(f"Skip {subject}\n")
             continue
 
