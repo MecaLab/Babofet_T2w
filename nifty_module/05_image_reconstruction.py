@@ -50,7 +50,7 @@ singularity exec \\
     -B "$MASK_PATH":/masks \\
     -B "$OUTPUT_PATH":/output \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
-    niftymic_run_reconstruction_pipeline \\
+    niftymic_reconstruct_volume \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
         --dir-output /output/$OUTPUT_FILE \\
