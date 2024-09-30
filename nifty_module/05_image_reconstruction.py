@@ -72,7 +72,7 @@ if __name__ == "__main__":
     subjects_failed = list()
 
     for subject in subject_IDs:
-        if "sub-Fabienne" not in subject:
+        if "sub-Fabienne_ses-01" not in subject:
             # print(f"Skip {subject}\n")
             continue
 
