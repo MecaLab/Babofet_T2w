@@ -9,7 +9,7 @@ def write_slurm_file_nifty(main_path, denoised_files, bm_files, output_file):
     filename = "nifty_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
     
-#SBATCH --account='a391'
+#SBATCH --account='b391'
 #SBATCH --partition=pascal
 #SBATCH --gres=gpu:1
 #SBATCH --time=02:00:00
