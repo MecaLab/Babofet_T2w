@@ -53,7 +53,7 @@ singularity exec \\
     niftymic_reconstruct_volume \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --dir-output /output/$OUTPUT_FILE \\
+        --output /output/$OUTPUT_FILE \\
         --threshold-first 0.85 \\
         --threshold 0.5 \\
         --isotropic-resolution 0.5 \\
