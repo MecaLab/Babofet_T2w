@@ -212,7 +212,7 @@ def check_data_img(path: str, subj: str):
 def check_brainmask(bm_path):
     img_bm = nb.load(bm_path)
 
-    print(np.unique(img_bm.get_fdata())
+    print(np.unique(img_bm.get_fdata()))
 
 
 
