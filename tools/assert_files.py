@@ -212,7 +212,7 @@ def check_data_img(path: str, subj: str):
 def check_brainmask(bm_path):
     img_bm = nb.load(bm_path)
 
-    for val in img_bm:
+    for val in img_bm.get_data():
         print(val)
 
 
