@@ -118,13 +118,13 @@ if __name__ == "__main__":
                 if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
                     anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
+                    print(f, "\n", bm_nifti_filename, end="\n\n")
 
             motion_subfolder = os.path.join(recons_haste_subj_output_dir, 'motion_correction')
 
             if not os.path.exists(motion_subfolder):
                 os.mkdir(motion_subfolder)
-            print(anat_img)
-            print(bm_img)
+
             recons_haste_subj_output = subject + '_haste_3DHR_pipeline.nii.gz'
             write_slurm_file_nifty(
                 main_path=subj_output_dir,
