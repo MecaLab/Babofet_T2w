@@ -213,10 +213,7 @@ def check_brainmask(bm_path):
     img_bm = nb.load(bm_path)
 
     img_data = img_bm.get_fdata()
-    print(np.unique(img_data))
-    print(np.min(img_data))
-    print(np.max(img_data))
-    print(np.mean(img_data))
+    print(img_data > 0)
 
 
 
