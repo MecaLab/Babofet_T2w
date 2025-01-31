@@ -97,7 +97,7 @@ if __name__ == "__main__":
         if len(haste_files) > 0:
             print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
-            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask_niftymic")
+            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "manual_masks")
             denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising")
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_niftymic')
 
