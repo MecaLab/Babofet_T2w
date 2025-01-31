@@ -209,6 +209,12 @@ def check_data_img(path: str, subj: str):
                 print("\tLes images peuvent ne pas être parfaitement alignées dans l'espace.")
 
 
+def check_brainmask(bm_path):
+    img_bm = nb.load(bm_path)
+
+    print(img_bm.shape)
+
+
 if __name__ == "__main__":
     input_path = cfg.MESO_DATA_PATH
     dst_path = cfg.MESO_OUTPUT_PATH
@@ -221,4 +227,6 @@ if __name__ == "__main__":
 
     # check_data_img(dst_path, "sub-Formule_ses-01")
 
-    count_stack(cfg.MESO_OUTPUT_PATH)
+    # count_stack(cfg.MESO_OUTPUT_PATH)
+
+    check_brainmask("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/sub-Fabienne_ses-01_T2_HASTE_AX_22_denoised_mask.nii.gz")
