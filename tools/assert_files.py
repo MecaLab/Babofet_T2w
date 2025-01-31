@@ -210,10 +210,11 @@ def check_data_img(path: str, subj: str):
 
 
 def check_brainmask(bm_path):
-    img_bm = nb.load(bm_path)
+    for bm_file in os.listdir(bm_path):
+        img_bm = nb.load(os.path.join(bm_path, bm_file))
 
-    img_data = img_bm.get_fdata()
-    print(img_data > 0)
+        img_data = img_bm.get_fdata()
+        print(bm_file, "\t", np.unique(img_data))
 
 
 
@@ -231,4 +232,4 @@ if __name__ == "__main__":
 
     # count_stack(cfg.MESO_OUTPUT_PATH)
 
-    check_brainmask("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/sub-Fabienne_ses-01_T2_HASTE_AX_22_denoised_mask.nii.gz")
+    check_brainmask("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/")
