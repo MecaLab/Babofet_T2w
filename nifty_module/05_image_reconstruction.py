@@ -94,6 +94,7 @@ if __name__ == "__main__":
             if "trufi" in d_lower:
                 truefisp_files.append(d)
 
+        print(haste_files)
         if len(haste_files) > 0:
             print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
