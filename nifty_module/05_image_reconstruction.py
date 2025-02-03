@@ -97,7 +97,7 @@ if __name__ == "__main__":
         if len(haste_files) > 0:
             print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
-            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "manual_masks")
+            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask_niftymic")
             denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising")
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_niftymic')
 
@@ -108,12 +108,12 @@ if __name__ == "__main__":
             bm_img = list()
             for f in haste_files:
                 filename = f.split(".")
-                # bm_nifti_filename = filename[0] + "_seg.nii.gz" # for brainmask_niftymic folder
-                bm_nifti_filename = filename[0] + "_mask.nii.gz"
+                bm_nifti_filename = filename[0] + "_seg.nii.gz" # for brainmask_niftymic folder
+                # bm_nifti_filename = filename[0] + "_mask.nii.gz"
 
                 anat_path_subj_path = os.path.join(denoised_subj_output_dir, f)
-                # bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, filename[0], bm_nifti_filename) # for brainmask_niftymic folder
-                bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
+                bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, filename[0], bm_nifti_filename) # for brainmask_niftymic folder
+                # bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)  # with manual brainmask
 
                 if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
                     anat_img.append(f)
