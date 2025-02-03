@@ -25,7 +25,7 @@ module load cuda/10.2
 MAIN_PATH="{main_path}"
 
 INPUT_PATH="${{MAIN_PATH}}/denoising"
-MASK_PATH="${{MAIN_PATH}}/manual_masks"
+MASK_PATH="${{MAIN_PATH}}/brainmask_niftymic"
 
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
