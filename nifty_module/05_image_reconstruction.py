@@ -116,8 +116,8 @@ if __name__ == "__main__":
                 # bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, filename[0], bm_nifti_filename) # for brainmask_niftymic folder
                 bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)  # with manual brainmask
 
-                print(anat_path_subj_path)
-                print(bm_path_subj_path)
+                print(anat_path_subj_path, os.path.exists(anat_path_subj_path))
+                print(bm_path_subj_path, os.path.exists(bm_path_subj_path))
                 if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
                     anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
