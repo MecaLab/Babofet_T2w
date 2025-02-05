@@ -78,7 +78,7 @@ if __name__ == "__main__":
         bm_folder = "brainmask_niftymic"
 
     for subject in subject_IDs:
-        if "sub-Fabienne_ses-09" not in subject:
+        if "sub-Fabienne_ses-05" not in subject:
             # print(f"Skip {subject}\n")
             continue
 
