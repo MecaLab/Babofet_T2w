@@ -139,7 +139,7 @@ def qc_recontructed_3DHRvolume(path_anat_vol, path_brainmask_vol, file_figure_ou
         nisnap.plot_segment(
             tmpfile_mask.name,
             bg=tmpfile_vol.name,
-            slices=range(0, brain_shape[2]),
+            slices=range(0, brain_shape[2], 3),
             opacity=opacity,
             axes="x",
             figsize=figsize,
