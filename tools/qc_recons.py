@@ -5,13 +5,13 @@ from tools import qc
 import configuration as cfg
 
 
-def qc_recons(base_path, mode):
+def qc_recons(base_path, model, mode):
     """
     Function that use the anatomic and the brainmask data to snapshot them
-    The mode string is used to split between niftymic and nesvor
+    The model string is used to split between niftymic and nesvor
 
     :param base_path: str, path to the list of the subjects
-    :param mode: str, nesvor or niftymic
+    :param model: str, nesvor or niftymic
     :return: None
     """
     dir_snapshots = "snapshots"
@@ -21,7 +21,7 @@ def qc_recons(base_path, mode):
     if not os.path.exists(mid_dir_snapshots):
         os.mkdir(mid_dir_snapshots)
 
-    mid_dir_snapshots = os.path.join(mid_dir_snapshots, mode)
+    mid_dir_snapshots = os.path.join(mid_dir_snapshots, model)
     if not os.path.exists(mid_dir_snapshots):
         os.mkdir(mid_dir_snapshots)
 
@@ -30,7 +30,7 @@ def qc_recons(base_path, mode):
     for subject in subject_IDs:
         if "Fabienne" not in subject:
             continue
-        if mode == "niftymic":
+        if model == "niftymic":
             # from sub-SUBJECT_ses-XX to SUBJECT
             subject_dir = subject.split("_")[0].split("-")[-1]
 
@@ -41,13 +41,17 @@ def qc_recons(base_path, mode):
             if not os.path.exists(dir_out):
                 os.mkdir(dir_out)
 
-            anat_filename = subject + "_haste_3DHR_nifty_bm_pipeline.nii.gz"
-            bm_filename = subject + "_haste_3DHR_nifty_bm_pipeline_mask.nii.gz"
+            dir_out = os.path.join(dir_out, mode)
+            if not os.path.exists(dir_out):
+                os.mkdir(dir_out)
+
+            anat_filename = subject + f"_haste_3DHR_{mode}_bm_pipeline.nii.gz"
+            bm_filename = subject + f"_haste_3DHR_{mode}_bm_pipeline_mask.nii.gz"
 
             anat_path = os.path.join(path_recons, anat_filename)
             bm_path = os.path.join(path_recons, bm_filename)
 
-            file_figure_out = os.path.join(dir_out, subject + "_recons.png")
+            file_figure_out = os.path.join(dir_out, subject + f"{mode}_recons.png")
 
             if not os.path.exists(anat_path):
                 print(f"Skipping {anat_path} because missing")
@@ -65,7 +69,7 @@ def qc_recons(base_path, mode):
                     path_brainmask_vol=bm_path,
                     file_figure_out=file_figure_out
                 )
-        elif mode == "nesvor":
+        elif model == "nesvor":
             # from sub-SUBJECT_ses-XX to SUBJECT
             subject_dir = subject.split("_")[0].split("-")[-1]
 
