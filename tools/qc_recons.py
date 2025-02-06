@@ -51,7 +51,7 @@ def qc_recons(base_path, model, mode):
             anat_path = os.path.join(path_recons, anat_filename)
             bm_path = os.path.join(path_recons, bm_filename)
 
-            file_figure_out = os.path.join(dir_out, subject + f"{mode}_recons.png")
+            file_figure_out = os.path.join(dir_out, subject + f"_{mode}_recons.png")
 
             if not os.path.exists(anat_path):
                 print(f"Skipping {anat_path} because missing")
