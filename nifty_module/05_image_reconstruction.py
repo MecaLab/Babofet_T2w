@@ -54,8 +54,6 @@ singularity exec \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
-        --threshold-first 0.5 \\
-        --threshold 0.8 \\
         --isotropic-resolution 0.5 \\
 """
 
@@ -65,20 +63,27 @@ singularity exec \\
     os.chmod(filename, 0o700)
 
 
+"""
+Parametres:
+- two-step-cycle: Changer le nombre de cycle (défault 3)
+- threshold(-first): est utilisé pour rejeter les slices (NCC). -first pour le premier cycle, rien pour le dernier 
+"""
+
+
 if __name__ == "__main__":
     base_path = cfg.MESO_DATA_PATH
 
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    manual_bm = True
+    manual_bm = False
     if manual_bm:
         bm_folder = "manual_masks"
     else:
         bm_folder = "brainmask_niftymic"
 
     for subject in subject_IDs:
-        if "sub-Fabienne_ses-09" not in subject:
+        if "sub-Fabienne_ses-01" not in subject:
             # print(f"Skip {subject}\n")
             continue
 
