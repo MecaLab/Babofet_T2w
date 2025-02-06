@@ -41,8 +41,8 @@ def qc_recons(base_path, mode):
             if not os.path.exists(dir_out):
                 os.mkdir(dir_out)
 
-            anat_filename = subject + "_haste_3DHR_pipeline.nii.gz"
-            bm_filename = subject + "_haste_3DHR_pipeline_mask.nii.gz"
+            anat_filename = subject + "_haste_3DHR_manual_bm_pipeline.nii.gz"
+            bm_filename = subject + "_haste_3DHR_manual_bm_pipeline_mask.nii.gz"
 
             anat_path = os.path.join(path_recons, anat_filename)
             bm_path = os.path.join(path_recons, bm_filename)
