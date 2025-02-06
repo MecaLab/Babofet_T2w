@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     manual_bm = True
     if manual_bm:
-        bm_folder = "manual_mask"
+        bm_folder = "manual_masks"
     else:
         bm_folder = "brainmask_niftymic"
 
