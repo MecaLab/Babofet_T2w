@@ -241,6 +241,6 @@ if __name__ == "__main__":
 
     # count_stack(cfg.MESO_OUTPUT_PATH)
 
-    # check_brainmask("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/")
+    check_brainmask("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/")
 
-    mask2binary("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/sub-Fabienne_ses-01_T2_HASTE_AX_6_denoised_mask.nii.gz")
+    # mask2binary("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/sub-Fabienne_ses-01_T2_HASTE_AX_6_denoised_mask.nii.gz")
