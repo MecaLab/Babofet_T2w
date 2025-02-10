@@ -55,8 +55,8 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
-        --threshold-first 1 \\
-        --threshold 1 \\
+        --threshold-first 0 \\
+        --threshold 0 \\
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
