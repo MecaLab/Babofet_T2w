@@ -10,7 +10,7 @@ def write_slurm_file_nifty(main_path, denoised_files, bm_folder, bm_files, outpu
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='b391'
-#SBATCH --partition=volta
+#SBATCH --partition=pascal
 #SBATCH --gres=gpu:1
 #SBATCH --time=02:00:00
 #SBATCH -c 1
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    manual_bm = True
+    manual_bm = False
     if manual_bm:
         bm_folder = "manual_masks"
     else:
