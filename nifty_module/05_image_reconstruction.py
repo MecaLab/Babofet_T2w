@@ -55,6 +55,7 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
+        --threshold-first 1 \\
         --threshold 1 \\
 """
 
