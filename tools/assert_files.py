@@ -217,6 +217,15 @@ def check_brainmask(bm_path):
         print(bm_file, "\t", np.unique(img_data))
 
 
+def mask2binary(prb_mask):
+    mask = nb.load(prb_mask)
+    mask_data = mask.get_fdata()
+    mask_data[mask_data == 2.] = 1.
+
+    corrected_mask = nb.Nifti1Image(mask_data, mask.affine, mask.header)
+    nb.save(corrected_mask, prb_mask)
+    print(f"Correction OK for {prb_mask}")
+
 
 if __name__ == "__main__":
     input_path = cfg.MESO_DATA_PATH
@@ -232,4 +241,6 @@ if __name__ == "__main__":
 
     # count_stack(cfg.MESO_OUTPUT_PATH)
 
-    check_brainmask("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/")
+    # check_brainmask("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/")
+
+    mask2binary("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/sub-Fabienne_ses-01_T2_HASTE_AX_6_denoised_mask.nii.gz")
