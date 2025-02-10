@@ -76,14 +76,14 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    manual_bm = False
+    manual_bm = True
     if manual_bm:
         bm_folder = "manual_masks"
     else:
         bm_folder = "brainmask_niftymic"
 
     for subject in subject_IDs:
-        if "sub-Fabienne_ses-09" not in subject:
+        if "sub-Fabienne_ses-01" not in subject:
             # print(f"Skip {subject}\n")
             continue
 
