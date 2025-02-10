@@ -232,4 +232,4 @@ if __name__ == "__main__":
 
     # count_stack(cfg.MESO_OUTPUT_PATH)
 
-    check_brainmask("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-09/manual_masks/")
+    check_brainmask("/scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Fabienne_ses-01/manual_masks/")
