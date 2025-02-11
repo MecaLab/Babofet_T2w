@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import nibabel as nib
 sys.path.insert(0, os.path.abspath(os.curdir))
 from tools import qc
 import configuration as cfg
@@ -105,8 +106,11 @@ def qc_rejected_slices(json_file, subj):
 
     for stack_name, rejected_idx in data.items():
         stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name + ".nii")
-        print(stack_path)
-        print(os.path.exists(stack_path))
+        img = nib.load(stack_path)
+        img_data = img.get_fdata()
+
+        bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "manual_masks", stack_name + "_mask.nii.gz")
+        print(os.path.exists(bm_path))
         break
 
 
