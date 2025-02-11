@@ -131,12 +131,12 @@ def qc_rejected_slices(json_file, subj):
             for i, ax in enumerate(axes.flatten()):
                 if i < n_slices:
                     if i in rejected_idx:
-                        ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
+                        ax.imshow(img_data[:, :, i].T, cmap="gray")
                         masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
-                        ax.imshow(masked_brainmask, alpha=0.3, origin='lower', color="red")
+                        ax.imshow(masked_brainmask, alpha=0.3, cmap="jets")
                         ax.set_title(f"Slice {i} rejected")
                     else:
-                        ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
+                        ax.imshow(img_data[:, :, i].T, cmap="gray")
                         ax.set_title(f"Slice {i}")
                     plt.axis("off")
                 else:
