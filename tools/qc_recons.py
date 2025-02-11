@@ -5,6 +5,7 @@ import nibabel as nib
 sys.path.insert(0, os.path.abspath(os.curdir))
 from tools import qc
 import configuration as cfg
+import matplotlib.pyplot as plt
 
 
 def qc_recons(base_path, model, mode):
@@ -116,9 +117,21 @@ def qc_rejected_slices(json_file, subj):
             except FileNotFoundError:
                 bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "manual_masks", stack_name + "_mask.nii")
                 bm = nib.load(bm_path)
+
             bm_data = bm.get_fdata()
-            print(img_data.shape)
-            print(bm_data.shape)
+
+            for i in range(img_data.shape[2]):
+                plt.figure()
+                if i in rejected_idx:
+                    slice_with_bm = img_data[:, :, i] * bm_data[:, :, i]
+                    plt.imshow(slice_with_bm.T, cmap="gray", origin="lower")
+                    plt.title(f"Slice {i} with BM")
+                else:
+                    plt.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
+                    plt.title(f"Slice {i}")
+                plt.axis("off")
+                plt.savefig("tmp.png")
+                exit()
 
 
 
