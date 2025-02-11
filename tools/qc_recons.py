@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 sys.path.insert(0, os.path.abspath(os.curdir))
 from tools import qc
 import configuration as cfg
@@ -99,7 +100,10 @@ def qc_recons(base_path, model, mode):
 
 
 def qc_rejected_slices(json_file):
-    print(json_file)
+    with open(json_file, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    print(data)
 
 
 if __name__ == "__main__":
