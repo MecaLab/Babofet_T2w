@@ -105,6 +105,7 @@ def qc_rejected_slices(json_file, subj):
 
     for stack_name, rejected_idx in data.items():
         stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name)
+        print(stack_path)
         print(os.path.exists(stack_path))
         break
 
