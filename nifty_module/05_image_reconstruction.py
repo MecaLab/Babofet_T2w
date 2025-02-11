@@ -5,18 +5,15 @@ import configuration as cfg
 import subprocess
 
 
-def write_slurm_file_nifty(main_path, denoised_files, bm_folder, bm_files, output_file):
+def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file):
     filename = "nifty_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='b391'
 #SBATCH --partition=pascal
 #SBATCH --gres=gpu:1
-#SBATCH --time=02:00:00
-#SBATCH -c 1
-#SBATCH --mem-per-cpu=50G
-#SBATCH -o recon.out
-#SBATCH -e recon.err
+#SBATCH -o recon_{subj}.out
+#SBATCH -e recon_{subj}.err
 
 module purge
 module load userspace/all
@@ -78,7 +75,7 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    manual_bm = True
+    manual_bm = False
     if manual_bm:
         bm_folder = "manual_masks"
     else:
@@ -152,6 +149,7 @@ if __name__ == "__main__":
                 recons_haste_subj_output = subject + '_haste_3DHR_manual_bm_pipeline.nii.gz'
 
             write_slurm_file_nifty(
+                subj=subject,
                 main_path=subj_output_dir,
                 denoised_files=anat_img,
                 bm_folder=bm_folder,
