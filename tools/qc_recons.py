@@ -108,6 +108,7 @@ def qc_rejected_slices(json_file, subj):
         data = json.load(f)
 
     red_cmap = mcolors.ListedColormap(['red'])
+    green_cmap = mcolors.ListedColormap(['green'])
 
     for stack_name, rejected_idx in data.items():
         if rejected_idx:
@@ -140,6 +141,8 @@ def qc_rejected_slices(json_file, subj):
                         ax.set_title(f"Slice {i} rejected", color="white")
                     else:
                         ax.imshow(img_data[:, :, i].T, cmap="gray")
+                        masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
+                        ax.imshow(masked_brainmask, alpha=0.5, cmap=green_cmap)
                         ax.set_title(f"Slice {i}", color="white")
                     plt.axis("off")
                 else:
