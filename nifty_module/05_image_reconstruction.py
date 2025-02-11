@@ -12,6 +12,9 @@ def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files,
 #SBATCH --account='b391'
 #SBATCH --partition=pascal
 #SBATCH --gres=gpu:1
+#SBATCH --time=02:00:00
+#SBATCH -c 1
+#SBATCH --mem-per-cpu=50G
 #SBATCH -o recon_{subj}.out
 #SBATCH -e recon_{subj}.err
 
@@ -52,8 +55,6 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
-        --threshold-first 0 \\
-        --threshold 0 \\
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -82,7 +83,7 @@ if __name__ == "__main__":
         bm_folder = "brainmask_niftymic"
 
     for subject in subject_IDs:
-        if "sub-Fabienne_ses-01" not in subject:
+        if "sub-Fabienne_ses-09" not in subject:
             # print(f"Skip {subject}\n")
             continue
 
