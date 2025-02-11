@@ -120,15 +120,15 @@ def qc_rejected_slices(json_file, subj):
                 bm = nib.load(bm_path)
 
             bm_data = bm.get_fdata()
-            fig = nisnap.Snap()
 
             for i in range(img_data.shape[2]):
+                plt.figure()
                 if i in rejected_idx:
                     slice_with_bm = img_data[:, :, i] * bm_data[:, :, i]
-                    plt.imshow(slice_with_bm.T, cmap="gray", origin="lower")
+                    plt.imshow(slice_with_bm, cmap="gray", origin="lower")
                     plt.title(f"Slice {i} with BM")
                 else:
-                    plt.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
+                    plt.imshow(img_data[:, :, i], cmap="gray", origin="lower")
                     plt.title(f"Slice {i}")
                 plt.axis("off")
                 plt.savefig("tmp.png")
