@@ -104,7 +104,10 @@ def qc_rejected_slices(json_file):
         data = json.load(f)
 
     for stack, rejected_idx in data.items():
-        print(stack, rejected_idx)
+        if len(rejected_idx) > 0:
+            print(stack)
+            for idx in rejected_idx:
+                print(f"\t{idx} ", end="")
 
 
 if __name__ == "__main__":
