@@ -120,20 +120,24 @@ def qc_rejected_slices(json_file, subj):
                 bm = nib.load(bm_path)
 
             bm_data = bm.get_fdata()
+            n_slices = img_data.shape[2]
+            n_cols = 5
+            n_rows = (n_slices + n_cols - 1) // n_cols
+            fig, axes = plt.subplots(n_rows, n_cols, figsize=(20, 4*n_rows))
 
-            fig, axes = plt.subplots(1, bm_data.shape[2], figsize=(20, 5))
-
-            for i in range(img_data.shape[2]):
-                ax = axes[i]
-                if i in rejected_idx:
-                    slice_with_bm = img_data[:, :, i] * bm_data[:, :, i]
-                    ax.imshow(slice_with_bm.T, cmap="gray", origin="lower")
-                    ax.set_title(f"Slice {i} with BM")
+            for i, ax in enumerate(axes.flatten()):
+                if i < n_slices:
+                    if i in rejected_idx:
+                        slice_with_bm = img_data[:, :, i] * bm_data[:, :, i]
+                        ax.imshow(slice_with_bm.T, cmap="gray", origin="lower")
+                        ax.set_title(f"Slice {i} with BM")
+                    else:
+                        ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
+                        ax.set_title(f"Slice {i}")
+                    plt.axis("off")
                 else:
-                    ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
-                    ax.set_title(f"Slice {i}")
-                plt.axis("off")
-                
+                    ax.axis("off")
+
             plt.savefig("tmp.png")
             exit()
 
