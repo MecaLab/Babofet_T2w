@@ -130,10 +130,9 @@ def qc_rejected_slices(json_file, subj):
             for i, ax in enumerate(axes.flatten()):
                 if i < n_slices:
                     if i in rejected_idx:
-                        #slice_with_bm = img_data[:, :, i] * bm_data[:, :, i]
                         ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
                         masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
-                        ax.imshow(masked_brainmask, cmap='jet', alpha=0.5, origin='lower')
+                        ax.imshow(masked_brainmask, cmap='jet', alpha=0.3, origin='lower')
                         ax.set_title(f"Slice {i} with BM")
                     else:
                         ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
@@ -144,9 +143,6 @@ def qc_rejected_slices(json_file, subj):
 
             plt.savefig("tmp.png")
             exit()
-
-
-
 
 
 if __name__ == "__main__":
