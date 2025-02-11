@@ -1,7 +1,6 @@
 import os
 import sys
 import json
-import numpy as np
 import nibabel as nib
 sys.path.insert(0, os.path.abspath(os.curdir))
 from tools import qc
@@ -129,15 +128,8 @@ def qc_rejected_slices(json_file, subj):
             for i, ax in enumerate(axes.flatten()):
                 if i < n_slices:
                     if i in rejected_idx:
-                        slice = img_data[:, :, i]
-                        brainmask = bm_data[:, :, i]
-
-                        slice_rgb = np.stack((slice, slice, slice), axis=-1)
-                        slice_rgb[..., 0][brainmask > 0] = 1
-                        slice_rgb[..., 1][brainmask > 0] *= 0.5
-                        slice_rgb[..., 2][brainmask > 0] *= 0.5
-
-                        ax.imshow(slice_rgb, cmap="gray", origin="lower")
+                        slice_with_bm = img_data[:, :, i] * bm_data[:, :, i]
+                        ax.imshow(slice_with_bm.T, cmap="gray", origin="lower")
                         ax.set_title(f"Slice {i} with BM")
                     else:
                         ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
