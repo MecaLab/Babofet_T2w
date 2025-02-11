@@ -129,7 +129,7 @@ def qc_rejected_slices(json_file, subj):
             n_slices = img_data.shape[2]
             n_cols = 5
             n_rows = (n_slices + n_cols - 1) // n_cols
-            fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 5*n_rows))
+            fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 5*n_rows), facecolor='black')
 
             for i, ax in enumerate(axes.flatten()):
                 if i < n_slices:
