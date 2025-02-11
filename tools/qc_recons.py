@@ -131,9 +131,6 @@ def qc_rejected_slices(json_file, subj):
             n_rows = (n_slices + n_cols - 1) // n_cols
             fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 5*n_rows), facecolor='#121212')  # almost full black
 
-            print(n_slices)
-            print(len(axes.flatten()))
-            exit()
             for i, ax in enumerate(axes.flatten()):
                 if i < n_slices:
                     masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
@@ -154,7 +151,7 @@ def qc_rejected_slices(json_file, subj):
 
 if __name__ == "__main__":
 
-    subj = "sub-Fabienne_ses-09"
-    json_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "haste", "reconstruction_niftymic", "motion_correction", "rejected_slices.json")
+    subj = "sub-Fabienne_ses-01"
+    json_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "haste", "reconstruction_niftymic", "motion_correction", "rejected_slices_bis.json")
     qc_rejected_slices(json_path, subj)
 
