@@ -98,4 +98,13 @@ def qc_recons(base_path, model, mode):
             )
 
 
+def qc_rejected_slices(json_file):
+    print(json_file)
+
+
+if __name__ == "__main__":
+
+    subj = "sub-Fabienne_ses-01"
+    json_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "haste", "reconstruction_niftymic", "motion_correction", "rejected_slices.json")
+    qc_rejected_slices(json_path)
 
