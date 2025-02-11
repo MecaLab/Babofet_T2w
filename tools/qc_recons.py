@@ -105,13 +105,18 @@ def qc_rejected_slices(json_file, subj):
         data = json.load(f)
 
     for stack_name, rejected_idx in data.items():
-        stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name + ".nii")
-        img = nib.load(stack_path)
-        img_data = img.get_fdata()
+        if rejected_idx:
+            stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name + ".nii")
+            img = nib.load(stack_path)
+            img_data = img.get_fdata()
 
-        bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "manual_masks", stack_name + "_mask.nii.gz")
-        print(os.path.exists(bm_path))
-        break
+            bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "manual_masks", stack_name + "_mask.nii.gz")
+            bm = nib.load(bm_path)
+            bm_data = bm.get_fdata()
+            print(img_data.shape)
+            print(bm_data.shape)
+
+
 
 
 
