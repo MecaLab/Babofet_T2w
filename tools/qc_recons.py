@@ -144,7 +144,7 @@ def qc_rejected_slices(json_file, subj):
                     plt.axis("off")
                 else:
                     ax.axis("off")
-            filename = f"{subj}_{stack_name}.png"
+            filename = f"{stack_name}.png"
             plt.savefig(filename)
             plt.close()
 
