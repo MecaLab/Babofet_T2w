@@ -99,20 +99,20 @@ def qc_recons(base_path, model, mode):
             )
 
 
-def qc_rejected_slices(json_file):
+def qc_rejected_slices(json_file, subj):
     with open(json_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    for stack, rejected_idx in data.items():
-        if len(rejected_idx) > 0:
-            print(stack)
-            for idx in rejected_idx:
-                print(f"\t{idx}", end="")
-            print("\n")
+    for stack_name, rejected_idx in data.items():
+        stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name)
+        print(os.path.exists(stack_path))
+        break
+
+
 
 if __name__ == "__main__":
 
     subj = "sub-Fabienne_ses-01"
     json_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "haste", "reconstruction_niftymic", "motion_correction", "rejected_slices.json")
-    qc_rejected_slices(json_path)
+    qc_rejected_slices(json_path, subj)
 
