@@ -7,6 +7,7 @@ from tools import qc
 import numpy as np
 import configuration as cfg
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 
 
 def qc_recons(base_path, model, mode):
@@ -106,6 +107,8 @@ def qc_rejected_slices(json_file, subj):
     with open(json_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
+    red_cmap = mcolors.ListedColormap(['red'])
+
     for stack_name, rejected_idx in data.items():
         if rejected_idx:
             stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name + ".nii")
@@ -133,7 +136,7 @@ def qc_rejected_slices(json_file, subj):
                     if i in rejected_idx:
                         ax.imshow(img_data[:, :, i].T, cmap="gray")
                         masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
-                        ax.imshow(masked_brainmask, alpha=0.5, cmap="Reds")
+                        ax.imshow(masked_brainmask, alpha=0.5, cmap=red_cmap)
                         ax.set_title(f"Slice {i} rejected")
                     else:
                         ax.imshow(img_data[:, :, i].T, cmap="gray")
