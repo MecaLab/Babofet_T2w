@@ -115,7 +115,7 @@ def qc_rejected_slices(json_file, subj):
             try:
                 bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "manual_masks", stack_name + "_mask.nii.gz")
                 bm = nib.load(bm_path)
-            except FileNotFoundError:
+            except nib.filebasedimages.ImageFileError:
                 bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "manual_masks", stack_name + "_mask.nii")
                 bm = nib.load(bm_path)
 
