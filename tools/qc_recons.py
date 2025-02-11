@@ -130,7 +130,7 @@ def qc_rejected_slices(json_file, subj):
                     if i in rejected_idx:
                         #slice_with_bm = img_data[:, :, i] * bm_data[:, :, i]
                         ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
-                        ax.imshow(bm_data[:, :, i], cmap="jet", alpha=0.3)
+                        ax.imshow(bm_data[:, :, i].T, cmap="jet", alpha=0.3)
                         ax.set_title(f"Slice {i} with BM")
                     else:
                         ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
