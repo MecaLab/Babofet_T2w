@@ -4,6 +4,7 @@ import json
 import nibabel as nib
 sys.path.insert(0, os.path.abspath(os.curdir))
 from tools import qc
+import nisnap
 import configuration as cfg
 import matplotlib.pyplot as plt
 
@@ -119,9 +120,9 @@ def qc_rejected_slices(json_file, subj):
                 bm = nib.load(bm_path)
 
             bm_data = bm.get_fdata()
+            fig = nisnap.Snap()
 
             for i in range(img_data.shape[2]):
-                plt.figure()
                 if i in rejected_idx:
                     slice_with_bm = img_data[:, :, i] * bm_data[:, :, i]
                     plt.imshow(slice_with_bm.T, cmap="gray", origin="lower")
