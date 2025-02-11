@@ -76,7 +76,7 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    manual_bm = False
+    manual_bm = True
     if manual_bm:
         bm_folder = "manual_masks"
     else:
