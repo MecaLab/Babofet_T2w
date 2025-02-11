@@ -108,7 +108,7 @@ def qc_rejected_slices(json_file):
             print(stack)
             for idx in rejected_idx:
                 print(f"\t{idx} ", end="")
-
+            print("\n")
 
 if __name__ == "__main__":
 
