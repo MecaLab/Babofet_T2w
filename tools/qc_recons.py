@@ -133,8 +133,8 @@ def qc_rejected_slices(json_file, subj):
                     if i in rejected_idx:
                         ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
                         masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
-                        ax.imshow(masked_brainmask, cmap='jet', alpha=0.3, origin='lower')
-                        ax.set_title(f"Slice {i} with BM")
+                        ax.imshow(masked_brainmask, cmap='Reds', alpha=0.3, origin='lower')
+                        ax.set_title(f"Slice {i} rejected")
                     else:
                         ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
                         ax.set_title(f"Slice {i}")
