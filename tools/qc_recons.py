@@ -123,15 +123,17 @@ def qc_rejected_slices(json_file, subj):
                 bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "manual_masks", stack_name + "_mask.nii")
                 bm = nib.load(bm_path)
 
-
             bm_data = bm.get_fdata()
             bm_data = (bm_data == 1).astype(int)
 
             n_slices = img_data.shape[2]
             n_cols = 5
             n_rows = (n_slices + n_cols - 1) // n_cols
-            fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 5*n_rows), facecolor='#121212')
+            fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 5*n_rows), facecolor='#121212')  # almost full black
 
+            print(n_slices)
+            print(len(axes.flatten()))
+            exit()
             for i, ax in enumerate(axes.flatten()):
                 if i < n_slices:
                     masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
@@ -141,7 +143,7 @@ def qc_rejected_slices(json_file, subj):
                         ax.set_title(f"Slice {i} rejected", color="white")
                     else:
                         ax.imshow(masked_brainmask, alpha=0.5, cmap=green_cmap)
-                        ax.set_title(f"Slice {i}", color="white")
+                        ax.set_title(f"Slice {i} included", color="white")
                     plt.axis("off")
                 else:
                     ax.axis("off")
