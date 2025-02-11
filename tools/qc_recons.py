@@ -4,7 +4,7 @@ import json
 import nibabel as nib
 sys.path.insert(0, os.path.abspath(os.curdir))
 from tools import qc
-import nisnap
+import numpy as np
 import configuration as cfg
 import matplotlib.pyplot as plt
 
@@ -120,6 +120,8 @@ def qc_rejected_slices(json_file, subj):
                 bm = nib.load(bm_path)
 
             bm_data = bm.get_fdata()
+            bm_data = (bm_data == 1).astype(int)
+
             n_slices = img_data.shape[2]
             n_cols = 5
             n_rows = (n_slices + n_cols - 1) // n_cols
@@ -130,7 +132,8 @@ def qc_rejected_slices(json_file, subj):
                     if i in rejected_idx:
                         #slice_with_bm = img_data[:, :, i] * bm_data[:, :, i]
                         ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
-                        ax.imshow(bm_data[:, :, i].T, cmap="jet", origin="lower", alpha=0.5)
+                        masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
+                        ax.imshow(masked_brainmask, cmap='jet', alpha=0.5, origin='lower')
                         ax.set_title(f"Slice {i} with BM")
                     else:
                         ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
