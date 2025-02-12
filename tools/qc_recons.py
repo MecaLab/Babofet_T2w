@@ -128,7 +128,7 @@ def qc_rejected_slices(json_file, subj):
     if not os.path.exists(dir_out):
         os.mkdir(dir_out)
 
-    dir_out = os.path.join(mid_dir_snapshots, "stacks")
+    dir_out = os.path.join(dir_out, "stacks")
     if not os.path.exists(dir_out):
         os.mkdir(dir_out)
 
@@ -137,7 +137,7 @@ def qc_rejected_slices(json_file, subj):
         os.mkdir(dir_out)
 
     exit()
-    
+
     for stack_name, rejected_idx in data.items():
         if rejected_idx:
             stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name + ".nii")
