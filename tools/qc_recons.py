@@ -110,6 +110,34 @@ def qc_rejected_slices(json_file, subj):
     red_cmap = mcolors.ListedColormap(['red'])
     green_cmap = mcolors.ListedColormap(['green'])
 
+    model = "niftymic"
+    dir_snapshots = "snapshots"
+    mode = "manual"
+    subject_name = subj.split("-")[1].split("_")[0]
+
+    mid_dir_snapshots = os.path.join(dir_snapshots, "recons")
+
+    if not os.path.exists(mid_dir_snapshots):
+        os.mkdir(mid_dir_snapshots)
+
+    mid_dir_snapshots = os.path.join(mid_dir_snapshots, model)
+    if not os.path.exists(mid_dir_snapshots):
+        os.mkdir(mid_dir_snapshots)
+
+    dir_out = os.path.join(mid_dir_snapshots, subject_name)
+    if not os.path.exists(dir_out):
+        os.mkdir(dir_out)
+
+    dir_out = os.path.join(mid_dir_snapshots, "stacks")
+    if not os.path.exists(dir_out):
+        os.mkdir(dir_out)
+
+    dir_out = os.path.join(dir_out, mode)
+    if not os.path.exists(dir_out):
+        os.mkdir(dir_out)
+
+    exit()
+    
     for stack_name, rejected_idx in data.items():
         if rejected_idx:
             stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name + ".nii")
@@ -151,7 +179,8 @@ def qc_rejected_slices(json_file, subj):
 
 if __name__ == "__main__":
 
-    subj = "sub-Fabienne_ses-09"
-    json_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "haste", "reconstruction_niftymic", "motion_correction", "rejected_slices.json")
-    qc_rejected_slices(json_path, subj)
+    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
+    for subj in list_subjs:
+        json_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "haste", "reconstruction_niftymic", "motion_correction", "rejected_slices.json")
+        qc_rejected_slices(json_path, subj)
 
