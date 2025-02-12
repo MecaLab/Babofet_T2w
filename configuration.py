@@ -12,9 +12,12 @@ DATA_PATH = os.path.join(MAIN_PATH, "subjects")
 OUTPUT_PATH = os.path.join(MAIN_PATH, "processing")
 
 # MESOCENTRE PATH
-MESO_PATH = "/scratch/lbaptiste/data/dataset/babofet"
-MESO_DATA_PATH = os.path.join(MESO_PATH, "subjects")
-MESO_OUTPUT_PATH = os.path.join(MESO_PATH, "derivatives")
+BASE_PATH = "/scratch/lbaptiste/"
+MESO_DATA_PATH = os.path.join(BASE_PATH, "data/dataset/babofet/subjects")
+MESO_OUTPUT_PATH = os.path.join(BASE_PATH, "data/dataset/babofet/derivatives")
+
+# DATA PATH
+DATA_PATH = os.path.join(MESO_DATA_PATH, "data/recons_folder")
 
 TABLE_CSV_DATA_INFO = os.path.join("table_data", "info_table.csv")
 
