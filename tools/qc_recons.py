@@ -112,7 +112,7 @@ def qc_rejected_slices(json_file, subj):
 
     model = "niftymic"
     dir_snapshots = "snapshots"
-    mode = "manual"
+    mode = "nifty"
     subject_name = subj.split("-")[1].split("_")[0]
 
     mid_dir_snapshots = os.path.join(dir_snapshots, "recons")
