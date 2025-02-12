@@ -76,13 +76,13 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    manual_bm = True
+    manual_bm = False
     if manual_bm:
         bm_folder = "manual_masks"
     else:
         bm_folder = "brainmask_niftymic"
 
-    list_subjs = ["sub-Fabienne_ses-01"] # , "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"
+    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
 
     for subject in subject_IDs:
         if subject not in list_subjs:
