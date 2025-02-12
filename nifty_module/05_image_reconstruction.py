@@ -77,16 +77,16 @@ if __name__ == "__main__":
 
     subject_IDs = os.listdir(base_path)
 
-    subjects_failed = list()
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
     # True mean it will use the manual corrected brainmask, False is the niftys one
     manual_bm = True
+    
     if manual_bm:
         bm_folder = "manual_masks"
     else:
         bm_folder = "brainmask_niftymic"
 
-    list_subjs = ["sub-Fabienne_ses-01"]  # "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"
+    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
 
     for subject in subject_IDs:
         if subject not in list_subjs:
