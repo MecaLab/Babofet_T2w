@@ -183,5 +183,3 @@ if __name__ == "__main__":
         json_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "haste", "reconstruction_niftymic", "motion_correction", "rejected_slices.json")
         qc_rejected_slices(json_path, subj)
 
-        exit()
-
