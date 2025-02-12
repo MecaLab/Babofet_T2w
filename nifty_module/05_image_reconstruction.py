@@ -87,6 +87,7 @@ if __name__ == "__main__":
             # print(f"Skip {subject}\n")
             continue
 
+        print(subject)
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
 
         if not os.path.exists(subj_output_dir):
