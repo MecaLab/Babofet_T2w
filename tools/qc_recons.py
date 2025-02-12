@@ -179,7 +179,12 @@ def qc_rejected_slices(json_file, subj):
 if __name__ == "__main__":
 
     list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
+    mode = "manual"  # mode of the brainmask: manual brainmask or nifty brainmask
+
     for subj in list_subjs:
-        json_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "haste", "reconstruction_niftymic", "motion_correction", "rejected_slices.json")
+        subject_name = subj.split("_")[0].split("-")[-1]
+        session_nb = "".join(subj.split("_")[1].split("-"))
+        # json_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "haste", "reconstruction_niftymic", "motion_correction", "rejected_slices.json")
+        json_path = os.path.join(cfg.DATA_PATH, subject_name, mode, session_nb, "rejected_slices.json")
         qc_rejected_slices(json_path, subj)
 
