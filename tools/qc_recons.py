@@ -136,8 +136,6 @@ def qc_rejected_slices(json_file, subj):
     if not os.path.exists(dir_out):
         os.mkdir(dir_out)
 
-    exit()
-
     for stack_name, rejected_idx in data.items():
         if rejected_idx:
             stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name + ".nii")
@@ -172,7 +170,8 @@ def qc_rejected_slices(json_file, subj):
                     plt.axis("off")
                 else:
                     ax.axis("off")
-            filename = f"{stack_name}.png"
+            filename = os.path.join(dir_out, f"{stack_name}.png")
+            print(f"Figure saved at {filename}")
             plt.savefig(filename)
             plt.close()
 
@@ -183,4 +182,6 @@ if __name__ == "__main__":
     for subj in list_subjs:
         json_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "haste", "reconstruction_niftymic", "motion_correction", "rejected_slices.json")
         qc_rejected_slices(json_path, subj)
+
+        exit()
 
