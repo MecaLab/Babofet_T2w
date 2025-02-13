@@ -163,12 +163,8 @@ def qc_rejected_slices(subj_path, subj, mode):
             bm_data = bm.get_fdata()
             bm_data = (bm_data == 1).astype(int)
 
-            print(bm_data.shape)
-            if len(bm_data.shape) == 4:
-                bm_data = np.squeeze(bm_data)
-
-            print(bm_data.shape)
-            exit()
+            if len(bm_data.shape) == 4:  # NiftyMIC brainmask has a 4D data: (M, M, nb_slices, 1)
+                bm_data = np.squeeze(bm_data)  # (M, M, nb_slices)
 
             n_slices = img_data.shape[2]
             n_cols = 5
