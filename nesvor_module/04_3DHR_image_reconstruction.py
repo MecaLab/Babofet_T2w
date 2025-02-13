@@ -68,7 +68,7 @@ if __name__ == '__main__':
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
-    list_subjs = ["sub-Fabienne_ses-01"]  #, "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
+    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
 
     for subject in subject_IDs:
         if subject not in list_subjs:
