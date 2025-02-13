@@ -75,8 +75,10 @@ def qc_recons(base_path, model, mode):
 
     subject_IDs = os.listdir(base_path)
 
+    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-09"]
+
     for subject in subject_IDs:
-        if "sub-Fabienne_ses-01" not in subject:
+        if subject not in list_subjs:
             continue
         if model == "niftymic":
             # from sub-SUBJECT_ses-XX to SUBJECT
