@@ -178,7 +178,7 @@ def qc_rejected_slices(json_file, subj, mode):
 if __name__ == "__main__":
 
     list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
-    mode = "manual"  # mode of the brainmask: manual_brainmask or nifty_brainmask
+    mode = "nifty"  # mode of the brainmask: manual_brainmask or nifty_brainmask
 
     for subj in list_subjs:
         subject_name = subj.split("_")[0].split("-")[-1]
