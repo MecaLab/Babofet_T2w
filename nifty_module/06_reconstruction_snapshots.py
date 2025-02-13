@@ -7,7 +7,7 @@ from tools import qc_recons
 if __name__ == "__main__":
 
     subject = "Fabienne"
-    mode = "manual"
+    mode = "nifty"
 
     base_path = os.path.join(cfg.DATA_PATH, subject)
     qc_recons.qc_recons_bis(base_path, subject, mode)
