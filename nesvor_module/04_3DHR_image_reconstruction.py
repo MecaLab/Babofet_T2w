@@ -20,12 +20,10 @@ def write_slurm_file_nesvor(main_path, denoised_files, mask_files, output_file):
 module load userspace/all
 module load cuda/11.6
 
-echo "Running on: $SLURM_NODELIST"
-
 MAIN_PATH="{main_path}"
 
 INPUT_PATH="${{MAIN_PATH}}/denoising"
-MASK_PATH="${{MAIN_PATH}}/brainmask_niftymic"
+MASK_PATH="${{MAIN_PATH}}/manual_masks"
 
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_nesvor"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
