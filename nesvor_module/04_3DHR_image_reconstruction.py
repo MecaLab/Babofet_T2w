@@ -68,8 +68,10 @@ if __name__ == '__main__':
     subject_IDs = os.listdir(base_path)
     subjects_failed = list()
 
+    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
+
     for subject in subject_IDs:
-        if "Fabienne" not in subject:
+        if subject not in list_subjs:
             continue
 
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
@@ -93,7 +95,7 @@ if __name__ == '__main__':
         if len(haste_files) > 0:
             print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
-            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask_niftymic")
+            bm_haste_subj_output_dir = os.path.join(subj_output_dir, "manual_masks")  # or brainmask_niftymic
             denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising")
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_nesvor')
 
@@ -104,7 +106,19 @@ if __name__ == '__main__':
             bm_img = list()
             for f in haste_files:
                 nifti_filename = f
-                bm_nifti_filename = f.replace("_denoised.nii", "_denoised_seg.nii.gz")
+                # Line below for brainmask_niftymic
+                # bm_nifti_filename = f.replace("_denoised.nii", "_denoised_seg.nii.gz")
+
+                print(nifti_filename)
+                bm_nifti_filename = f + "_mask.nii"
+                bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
+                print(bm_nifti_filename)
+                exit()
+                if not os.path.exists(bm_path_subj_path):
+                    bm_nifti_filename = f + "_mask.nii.gz"
+                    bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
+
+
 
                 if os.path.exists(os.path.join(denoised_subj_output_dir, f)) and os.path.exists(
                         os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)):
