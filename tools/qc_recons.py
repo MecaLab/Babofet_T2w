@@ -198,6 +198,5 @@ if __name__ == "__main__":
         subj_path = os.path.join(cfg.DATA_PATH, subject_name, session_nb)
 
         qc_rejected_slices(subj_path, subj, mode)
-        # json_path = os.path.join(cfg.DATA_PATH, subject_name, session_nb, mode + "_brainmask", "exp_param", "rejected_slices.json")
-        # qc_rejected_slices(json_path, subj, mode)
+        break
 
