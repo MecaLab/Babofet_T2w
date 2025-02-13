@@ -109,7 +109,9 @@ def qc_rejected_slices(subj_path, subj, mode):
     elif mode == "manual":
         bm_folder = "manual_masks"
 
-    json_file = os.path.join(subj_path, bm_folder, "rejected_slices.json")
+    output_folder = f"{mode}_braimask"
+
+    json_file = os.path.join(subj_path, output_folder, "rejected_slices.json")
     with open(json_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
