@@ -131,5 +131,5 @@ if __name__ == '__main__':
             recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
 
             write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
-            # subprocess.run(["sbatch", "nesvor_reconstruction.slurm"])
+            subprocess.run(["sbatch", "nesvor_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
