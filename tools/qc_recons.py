@@ -14,7 +14,7 @@ def qc_recons_bis(base_path, subject, mode):
 
     dir_snapshots = "snapshots"
 
-    mid_dir_snapshots = os.path.join(dir_snapshots, "recons")
+    mid_dir_snapshots = os.path.join(dir_snapshots, "recons", "niftymic")
 
     if not os.path.exists(mid_dir_snapshots):
         os.mkdir(mid_dir_snapshots)
@@ -40,7 +40,7 @@ def qc_recons_bis(base_path, subject, mode):
             print(f"Skipping {anat_path} or {bm_path} does not exist")
             continue
 
-        filename_out = f"{subj_name}_{mode}_recons.png"
+        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_recons.png")
         qc.qc_recontructed_3DHRvolume(
             path_anat_vol=anat_path,
             path_brainmask_vol=bm_path,
