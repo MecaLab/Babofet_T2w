@@ -10,9 +10,43 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
 
-def qc_recons_bis(base_path):
+def qc_recons_bis(base_path, subject, mode):
+
+    dir_snapshots = "snapshots"
+
+    mid_dir_snapshots = os.path.join(dir_snapshots, "recons")
+
+    if not os.path.exists(mid_dir_snapshots):
+        os.mkdir(mid_dir_snapshots)
+
+    mid_dir_snapshots = os.path.join(mid_dir_snapshots, subject)
+    if not os.path.exists(mid_dir_snapshots):
+        os.mkdir(mid_dir_snapshots)
+
+    mid_dir_snapshots = os.path.join(mid_dir_snapshots, mode)
+    if not os.path.exists(mid_dir_snapshots):
+        os.mkdir(mid_dir_snapshots)
+
     for session in os.listdir(base_path):
-        print(session)
+        session_path = os.path.join(base_path, session)
+
+        mode_folder = f"{mode}_brainmask"
+        subj_name = f"sub-{subject}_ses-{session[3:]}"
+
+        anat_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_manual_bm_pipeline.nii.gz")
+        bm_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")
+
+        if not os.path.exists(anat_path) or not os.path.exists(bm_path):
+            print(f"Skipping {anat_path} or {bm_path} does not exist")
+            continue
+
+        filename_out = f"{subj_name}_{mode}_recons.png"
+        qc.qc_recontructed_3DHRvolume(
+            path_anat_vol=anat_path,
+            path_brainmask_vol=bm_path,
+            file_figure_out=filename_out
+        )
+        exit()
 
 
 def qc_recons(base_path, model, mode):
