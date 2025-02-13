@@ -103,7 +103,13 @@ def qc_recons(base_path, model, mode):
             )
 
 
-def qc_rejected_slices(json_file, subj, mode):
+def qc_rejected_slices(subj_path, subj, mode):
+    if mode == "nifty":
+        bm_folder = "brainmask_niftymic"
+    elif mode == "manual":
+        bm_folder = "manual_masks"
+
+    json_file = os.path.join(subj_path, "rejected_slices.json")
     with open(json_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -141,12 +147,16 @@ def qc_rejected_slices(json_file, subj, mode):
             img = nib.load(stack_path)
             img_data = img.get_fdata()
 
-            try:
-                bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "manual_masks", stack_name + "_mask.nii.gz")
+            if mode == "nifty":
+                bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_seg.nii.gz")
                 bm = nib.load(bm_path)
-            except FileNotFoundError:
-                bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "manual_masks", stack_name + "_mask.nii")
-                bm = nib.load(bm_path)
+            elif mode == "manual":
+                try:
+                    bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii.gz")
+                    bm = nib.load(bm_path)
+                except FileNotFoundError:
+                    bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii")
+                    bm = nib.load(bm_path)
 
             bm_data = bm.get_fdata()
             bm_data = (bm_data == 1).astype(int)
@@ -183,6 +193,9 @@ if __name__ == "__main__":
     for subj in list_subjs:
         subject_name = subj.split("_")[0].split("-")[-1]
         session_nb = "".join(subj.split("_")[1].split("-"))
-        json_path = os.path.join(cfg.DATA_PATH, subject_name, session_nb, mode + "_brainmask", "rejected_slices.json")
-        qc_rejected_slices(json_path, subj, mode)
+        subj_path = os.path.join(cfg.DATA_PATH, subject_name, session_nb)
+
+        qc_rejected_slices(subj_path, subj, mode)
+        #json_path = os.path.join(cfg.DATA_PATH, subject_name, session_nb, mode + "_brainmask", "exp_param", "rejected_slices.json")
+        # qc_rejected_slices(json_path, subj, mode)
 
