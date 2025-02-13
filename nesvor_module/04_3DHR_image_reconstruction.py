@@ -109,7 +109,7 @@ if __name__ == '__main__':
                 # Line below for brainmask_niftymic
                 # bm_nifti_filename = f.replace("_denoised.nii", "_denoised_seg.nii.gz")
 
-                bm_nifti_filename = filename[0] + "_mask.nii.gz"
+                bm_nifti_filename = filename[0] + "_mask.nii"
                 bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
                 if not os.path.exists(bm_path_subj_path):
