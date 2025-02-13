@@ -105,24 +105,21 @@ if __name__ == '__main__':
             anat_img = list()
             bm_img = list()
             for f in haste_files:
-                nifti_filename = f
+                filename = f.split(".")
+                anatpath_subj_path = os.path.join(denoised_subj_output_dir, f)
+
                 # Line below for brainmask_niftymic
                 # bm_nifti_filename = f.replace("_denoised.nii", "_denoised_seg.nii.gz")
 
-                print(nifti_filename)
-                bm_nifti_filename = f + "_mask.nii"
+                bm_nifti_filename = filename[0] + "_mask.nii.gz"
                 bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
-                print(bm_nifti_filename)
-                exit()
+
                 if not os.path.exists(bm_path_subj_path):
-                    bm_nifti_filename = f + "_mask.nii.gz"
+                    bm_nifti_filename = filename[0] + "_mask.nii.gz"
                     bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
-
-
-                if os.path.exists(os.path.join(denoised_subj_output_dir, f)) and os.path.exists(
-                        os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)):
-                    anat_img.append(nifti_filename)
+                if os.path.exists(anatpath_subj_path) and os.path.exists(bm_path_subj_path):
+                    anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
 
             recons_haste_subj_output = os.path.join(recons_haste_subj_output_dir, subject + '_haste_3DHR.nii.gz')
@@ -134,5 +131,5 @@ if __name__ == '__main__':
             recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
 
             write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
-            subprocess.run(["sbatch", "nesvor_reconstruction.slurm"])
+            # subprocess.run(["sbatch", "nesvor_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
