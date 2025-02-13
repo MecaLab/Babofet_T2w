@@ -55,6 +55,8 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
+        --thresold 0 \\
+        --threshold-first 0 \\
         
 ./mv_recons.sh {subj} nifty
 """
@@ -80,7 +82,7 @@ if __name__ == "__main__":
     subjects_failed = list()
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
     # True mean it will use the manual corrected brainmask, False is the niftys one
-    manual_bm = False
+    manual_bm = True
     if manual_bm:
         bm_folder = "manual_masks"
     else:
@@ -154,7 +156,7 @@ if __name__ == "__main__":
             if not manual_bm:
                 recons_haste_subj_output = subject + '_haste_3DHR_nifty_bm_pipeline.nii.gz'
             else:
-                recons_haste_subj_output = subject + '_haste_3DHR_manual_bm_pipeline.nii.gz'
+                recons_haste_subj_output = subject + '_haste_3DHR_manual_bm_T0_pipeline.nii.gz'
 
             write_slurm_file_nifty(
                 subj=subject,
