@@ -160,6 +160,8 @@ def qc_rejected_slices(subj_path, subj, mode):
                     bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii")
                     bm = nib.load(bm_path)
 
+            print(bm_path)
+
             bm_data = bm.get_fdata()
             bm_data = (bm_data == 1).astype(int)
 
