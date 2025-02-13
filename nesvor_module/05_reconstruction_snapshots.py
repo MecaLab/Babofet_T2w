@@ -7,10 +7,11 @@ from tools import qc_recons
 if __name__ == "__main__":
 
     base_path = cfg.MESO_OUTPUT_PATH
-    mode = "nesvor"
+    model = "nesvor"
     debug = False
 
     qc_recons.qc_recons(
         base_path,
-        mode,
+        model,
+        mode=None,
     )
