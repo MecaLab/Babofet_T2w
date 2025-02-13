@@ -6,7 +6,7 @@ import configuration as cfg
 import subprocess
 
 
-def write_slurm_file_nesvor(main_path, denoised_files, mask_files, output_file):
+def write_slurm_file_nesvor(main_path, subj, denoised_files, mask_files, output_file):
     filename = "nesvor_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
 
@@ -16,8 +16,8 @@ def write_slurm_file_nesvor(main_path, denoised_files, mask_files, output_file):
 #SBATCH --time=02:00:00
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=50G
-#SBATCH -o tmp.out
-#SBATCH -e tmp.err
+#SBATCH -o tmp_{subj}.out
+#SBATCH -e tmp_{subj}.err
 
 module load userspace/all
 module load cuda/11.6
@@ -130,6 +130,6 @@ if __name__ == '__main__':
 
             recons_haste_subj_output = subject + '_haste_3DHR.nii.gz'
 
-            write_slurm_file_nesvor(subj_output_dir, anat_img, bm_img, recons_haste_subj_output)
+            write_slurm_file_nesvor(subj_output_dir, subject, anat_img, bm_img, recons_haste_subj_output)
             subprocess.run(["sbatch", "nesvor_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
