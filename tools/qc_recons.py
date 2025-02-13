@@ -11,7 +11,7 @@ import matplotlib.colors as mcolors
 
 
 def qc_recons_bis(base_path, subject, mode):
-
+    exp_param_folder = True
     dir_snapshots = "snapshots"
 
     mid_dir_snapshots = os.path.join(dir_snapshots, "recons", "niftymic")
@@ -33,14 +33,18 @@ def qc_recons_bis(base_path, subject, mode):
         mode_folder = f"{mode}_brainmask"
         subj_name = f"sub-{subject}_ses-{session[3:]}"
 
-        anat_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
-        bm_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline_mask.nii.gz")
+        if exp_param_folder:
+            anat_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_T0_pipeline.nii.gz")
+            bm_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_T0_pipeline_mask.nii.gz")
+        else:
+            anat_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
+            bm_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline_mask.nii.gz")
 
         if not os.path.exists(anat_path) or not os.path.exists(bm_path):
             print(f"Skipping {anat_path} or {bm_path} does not exist")
             continue
 
-        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_recons.png")
+        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_T0_recons.png")
         qc.qc_recontructed_3DHRvolume(
             path_anat_vol=anat_path,
             path_brainmask_vol=bm_path,
