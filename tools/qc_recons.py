@@ -103,7 +103,7 @@ def qc_recons(base_path, model, mode):
             )
 
 
-def qc_rejected_slices(json_file, subj):
+def qc_rejected_slices(json_file, subj, mode):
     with open(json_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -112,7 +112,6 @@ def qc_rejected_slices(json_file, subj):
 
     model = "niftymic"
     dir_snapshots = "snapshots"
-    mode = "nifty"
     subject_name = subj.split("-")[1].split("_")[0]
 
     mid_dir_snapshots = os.path.join(dir_snapshots, "recons")
@@ -179,12 +178,12 @@ def qc_rejected_slices(json_file, subj):
 if __name__ == "__main__":
 
     list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
-    mode = "manual_brainmask"  # mode of the brainmask: manual_brainmask or nifty_brainmask
+    mode = "manual"  # mode of the brainmask: manual_brainmask or nifty_brainmask
 
     for subj in list_subjs:
         subject_name = subj.split("_")[0].split("-")[-1]
         session_nb = "".join(subj.split("_")[1].split("-"))
-        json_path = os.path.join(cfg.DATA_PATH, subject_name, session_nb, mode, "rejected_slices.json")
-        qc_rejected_slices(json_path, subj)
+        json_path = os.path.join(cfg.DATA_PATH, subject_name, session_nb, mode + "_brainmask", "rejected_slices.json")
+        qc_rejected_slices(json_path, subj, mode)
         break
 
