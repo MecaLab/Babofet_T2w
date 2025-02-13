@@ -33,8 +33,8 @@ def qc_recons_bis(base_path, subject, mode):
         mode_folder = f"{mode}_brainmask"
         subj_name = f"sub-{subject}_ses-{session[3:]}"
 
-        anat_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_manual_bm_pipeline.nii.gz")
-        bm_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")
+        anat_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
+        bm_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline_mask.nii.gz")
 
         if not os.path.exists(anat_path) or not os.path.exists(bm_path):
             print(f"Skipping {anat_path} or {bm_path} does not exist")
