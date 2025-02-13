@@ -10,10 +10,12 @@ def write_slurm_file_nesvor(main_path, denoised_files, mask_files, output_file):
     filename = "nesvor_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
 
-#SBATCH --account='a391'
+#SBATCH --account='b391'
 #SBATCH --partition=volta
 #SBATCH --gres=gpu:1
-#SBATCH --time=00:10:00
+#SBATCH --time=02:00:00
+#SBATCH -c 1
+#SBATCH --mem-per-cpu=50G
 #SBATCH -o tmp.out
 #SBATCH -e tmp.err
 
