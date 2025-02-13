@@ -46,7 +46,7 @@ def qc_recons_bis(base_path, subject, mode):
             path_brainmask_vol=bm_path,
             file_figure_out=filename_out
         )
-        exit()
+        print(f"Figure saved at {filename_out}")
 
 
 def qc_recons(base_path, model, mode):
