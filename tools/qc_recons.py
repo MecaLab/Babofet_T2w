@@ -10,6 +10,11 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
 
+def qc_recons_bis(base_path):
+    for session in os.listdir(base_path):
+        print(session)
+
+
 def qc_recons(base_path, model, mode):
     """
     Function that use the anatomic and the brainmask data to snapshot them

@@ -6,13 +6,16 @@ from tools import qc_recons
 
 if __name__ == "__main__":
 
-    base_path = cfg.MESO_OUTPUT_PATH
+    subject = "Fabienne"
+    base_path = os.path.join(cfg.DATA_PATH, subject)
+
+    """base_path = cfg.MESO_OUTPUT_PATH
     model = "niftymic"  # niftymic or nesvor
-    mode = "nifty"  # manual bm or nifty bm
+    mode = "manual"  # manual bm or nifty bm
     debug = False
 
     qc_recons.qc_recons(
         base_path,
         model,
         mode,
-    )
+    )"""
