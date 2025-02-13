@@ -55,10 +55,10 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
-        --thresold 0 \\
+        --threshold 0 \\
         --threshold-first 0 \\
         
-./mv_recons.sh {subj} nifty
+./mv_recons.sh {subj} manual
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
