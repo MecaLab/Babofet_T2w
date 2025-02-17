@@ -58,7 +58,7 @@ singularity exec \\
         --threshold 0 \\
         --threshold-first 0 \\
         
-./mv_recons.sh {subj} manual
+./mv_recons.sh {subj} nifty
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
     # True mean it will use the manual corrected brainmask, False is the niftys one
-    manual_bm = True
+    manual_bm = False
     if manual_bm:
         bm_folder = "manual_masks"
     else:
