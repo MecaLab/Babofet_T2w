@@ -73,6 +73,14 @@ Parametres:
 """
 
 
+"""
+/!\ 
+TODO: x
+- Implémenter la fonction pour modifier le nom de rejected_slices et du recon.out pour adapter la copie dans le mv_recons.sh
+- Puis lancer pour nifty_brainmask
+"""
+
+
 if __name__ == "__main__":
     base_path = cfg.MESO_DATA_PATH
 
