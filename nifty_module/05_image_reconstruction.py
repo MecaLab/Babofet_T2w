@@ -55,9 +55,10 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
-        --dilation-radius 5 \\
+        --threshold 0 \\
+        --threshold-first 0 \\
         
-./mv_recons.sh {subj} nifty
+./mv_recons.sh {subj} manual
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -88,7 +89,7 @@ if __name__ == "__main__":
 
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
     # True mean it will use the manual corrected brainmask, False is the niftys one
-    manual_bm = False
+    manual_bm = True
     if manual_bm:
         bm_folder = "manual_masks"
     else:
@@ -159,9 +160,9 @@ if __name__ == "__main__":
                 os.mkdir(motion_subfolder)
 
             if not manual_bm:
-                recons_haste_subj_output = subject + '_haste_3DHR_nifty_bm_DR5_pipeline.nii.gz'
+                recons_haste_subj_output = subject + '_haste_3DHR_nifty_bm_T0_pipeline.nii.gz'
             else:
-                recons_haste_subj_output = subject + '_haste_3DHR_manual_bm_DR5_pipeline.nii.gz'
+                recons_haste_subj_output = subject + '_haste_3DHR_manual_bm_T0_pipeline.nii.gz'
 
             write_slurm_file_nifty(
                 subj=subject,
