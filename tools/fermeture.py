@@ -9,15 +9,15 @@ if __name__ == "__main__":
 
     result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
     dims = int(result.stdout.strip())
-    print(f"Nombre de coupe: {dims}")
+    print(f"Nombre de coupes: {dims}")
 
     result = subprocess.run(f"fslval {input_file} pixdim3", shell=True, capture_output=True, text=True)
     slice_thickness = int(float(result.stdout.strip()))
-    print(f"Taille de la coupe: {slice_thickness}")
+    print(f"Taille d'une coupe: {slice_thickness}")
 
     with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmp_file:
-        result = subprocess.run(f"fslmaths {input_file} -kernel box {slice_thickness}x2 -dilM {tmp_file.name}", shell=True, capture_output=True, text=True)
-        result = subprocess.run(f"fslmaths {tmp_file.name} -kernel box {slice_thickness}x2 -ero {output_file}", shell=True, capture_output=True, text=True)
+        result = subprocess.run(f"fslmaths {input_file} -kernel box {slice_thickness} -dilM {tmp_file.name}", shell=True, capture_output=True, text=True)
+        result = subprocess.run(f"fslmaths {tmp_file.name} -kernel box {slice_thickness} -ero {output_file}", shell=True, capture_output=True, text=True)
 
     print("Fermeture OK")
 
