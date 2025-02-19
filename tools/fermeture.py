@@ -9,5 +9,8 @@ if __name__ == "__main__":
 
     result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
     dims = result.stdout.strip()
+    print(f"Nombre de coupe: {dims}")
 
-    print(dims)
+    result = subprocess.run(f"fslval {input_file} pixdim3", shell=True, capture_output=True, text=True)
+    slice_thickness = result.stdout.strip()
+    print(f"Taille de la coupe: {slice_thickness}")
