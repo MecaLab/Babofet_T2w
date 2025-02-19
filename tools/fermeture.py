@@ -1,5 +1,5 @@
 import subprocess
-import os
+import tempfile
 import sys
 
 if __name__ == "__main__":
@@ -13,5 +13,10 @@ if __name__ == "__main__":
 
     result = subprocess.run(f"fslval {input_file} pixdim3", shell=True, capture_output=True, text=True)
     slice_thickness = int(float(result.stdout.strip()))
-    print(type(slice_thickness))
     print(f"Taille de la coupe: {slice_thickness}")
+
+    with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmp_file:
+        result = subprocess.run(f"fslmaths {input_file} -kernel box {slice_thickness} -dilM {tmp_file.name}", shell=True, capture_output=True, text=True)
+        result = subprocess.run(f"fslmaths {tmp_file.name} -kernel box {slice_thickness} -ero {output_file}", shell=True, capture_output=True, text=True)
+
+    print(f"File written to {output_file}")
