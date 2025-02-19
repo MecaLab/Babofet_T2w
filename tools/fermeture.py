@@ -20,7 +20,7 @@ def fermeture_3D(input_file, output_file, kernel_size=None, kernel_object="spher
         result = subprocess.run(f"fslmaths {tmp_file.name} -bin -kernel {kernel_object} {kernel_size} -ero {output_file}", shell=True,
                                 capture_output=True, text=True)
 
-    print(f"Fermeture OK. Written at {output_file}")
+    print("Fermeture 3D OK")
 
 
 def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere"):
@@ -46,7 +46,7 @@ def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere
     subprocess.run(f"fslmerge -z {output_file} slice_dilated_*.nii.gz", shell=True)
     subprocess.run("rm slice_*.nii.gz", shell=True)
 
-    print(f"Dilation 2D OK. Written at {output_file}")
+    print("Dilation 2D OK")
 
 
 if __name__ == "__main__":
@@ -60,3 +60,4 @@ if __name__ == "__main__":
 
     dilation_2D(input_file, output_file, kernel_size, kernel_object)
     fermeture_3D(input_file, output_file, kernel_size, kernel_object)
+    print(f"File saved as {output_file}")
