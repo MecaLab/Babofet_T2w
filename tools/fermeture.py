@@ -15,9 +15,9 @@ def fermeture_3D(input_file, output_file, kernel_size=None, kernel_object="spher
         print(f"Taille d'une coupe: {kernel_size}")
 
     with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmp_file:
-        result = subprocess.run(f"fslmaths {input_file} -kernel {kernel_object} {kernel_size} -dilD {tmp_file.name}", shell=True,
+        result = subprocess.run(f"fslmaths {input_file} -bin -kernel {kernel_object} {kernel_size} -dilD {tmp_file.name}", shell=True,
                                 capture_output=True, text=True)
-        result = subprocess.run(f"fslmaths {tmp_file.name} -kernel {kernel_object} {kernel_size} -ero {output_file}", shell=True,
+        result = subprocess.run(f"fslmaths {tmp_file.name} -bin -kernel {kernel_object} {kernel_size} -ero {output_file}", shell=True,
                                 capture_output=True, text=True)
 
     print(f"Fermeture OK. Written at {output_file}")
@@ -33,7 +33,7 @@ def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere
         subprocess.run(f"fslroi {input_file} slice_{i}.nii.gz 0 -1 0 -1 {i} 1", shell=True)
 
         subprocess.run(
-            f"fslmaths slice_{i}.nii.gz -kernel {kernel_object} {kernel_size} -dilD slice_dilated_{i}.nii.gz",
+            f"fslmaths slice_{i}.nii.gz -bin -kernel {kernel_object} {kernel_size} -dilD slice_dilated_{i}.nii.gz",
             shell=True
         )
 
