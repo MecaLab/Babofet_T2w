@@ -58,6 +58,6 @@ if __name__ == "__main__":
 
     output_file = output_file.replace(".nii.gz", f"_{kernel_object}_{kernel_size}.nii.gz")
 
-    fermeture_3D(input_file, output_file, kernel_size, kernel_object)
-    # dilation_2D(input_file, output_file, kernel_size, kernel_object)
+    # fermeture_3D(input_file, output_file, kernel_size, kernel_object)
+    dilation_2D(input_file, output_file, kernel_size, kernel_object)
     print(f"File saved as {output_file}")
