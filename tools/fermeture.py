@@ -49,6 +49,8 @@ def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere
     subprocess.run(f"fslmerge -z {output_file} slice_dilated_*.nii.gz", shell=True)
     subprocess.run("rm slice_*.nii.gz", shell=True)
 
+    print(f"Dilation 2D OK. Written at {output_file}")
+
 
 if __name__ == "__main__":
 
