@@ -2,42 +2,60 @@ import subprocess
 import tempfile
 import sys
 
-if __name__ == "__main__":
 
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
-    kernel_size = sys.argv[3]
-
-    output_file = output_file.replace(".nii.gz", f"_{kernel_size}.nii.gz")
+def fermeture_3D(input_file, output_file, kernel_size=None, kernel_object="sphere"):
+    output_file = output_file.replace(".nii.gz", f"_{kernel_object}_{kernel_size}.nii.gz")
 
     result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
     dims = int(result.stdout.strip())
     print(f"Nombre de coupes: {dims}")
 
-    result = subprocess.run(f"fslval {input_file} pixdim3", shell=True, capture_output=True, text=True)
-    slice_thickness = int(float(result.stdout.strip()))
-    print(f"Taille d'une coupe: {slice_thickness}")
+    if kernel_size is None:
+        result = subprocess.run(f"fslval {input_file} pixdim3", shell=True, capture_output=True, text=True)
+        kernel_size = int(float(result.stdout.strip()))
+        print(f"Taille d'une coupe: {kernel_size}")
 
     with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmp_file:
-        result = subprocess.run(f"fslmaths {input_file} -kernel sphere {kernel_size} -dilD {tmp_file.name}", shell=True, capture_output=True, text=True)
-        result = subprocess.run(f"fslmaths {tmp_file.name} -kernel sphere {kernel_size} -ero {output_file}", shell=True, capture_output=True, text=True)
+        result = subprocess.run(f"fslmaths {input_file} -kernel {kernel_object} {kernel_size} -dilD {tmp_file.name}", shell=True,
+                                capture_output=True, text=True)
+        result = subprocess.run(f"fslmaths {tmp_file.name} -kernel {kernel_object} {kernel_size} -ero {output_file}", shell=True,
+                                capture_output=True, text=True)
 
-    print("Fermeture OK")
+    print(f"Fermeture OK. Written at {output_file}")
 
-    """i = 0
+
+def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere"):
+    output_file = output_file.replace(".nii.gz", f"_{kernel_object}_{kernel_size}.nii.gz")
+
+    result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
+    dims = int(result.stdout.strip())
+    print(f"Nombre de coupes: {dims}")
+
+    i = 0
     while i < dims:
         subprocess.run(f"fslroi {output_file} slice_{i}.nii.gz 0 -1 0 -1 {i} 1", shell=True)
 
         subprocess.run(
-            f"fslmaths slice_{i}.nii.gz -dilM slice_dilated_{i}.nii.gz",
+            f"fslmaths slice_{i}.nii.gz -kernel {kernel_object} {kernel_size} -dilD slice_dilated_{i}.nii.gz",
             shell=True
         )
 
+        # Pour être sûr que les fichiers soient dans le bon ordre lors du merge
         if i < 10:
             subprocess.run(f"mv slice_dilated_{i}.nii.gz slice_dilated_0{i}.nii.gz", shell=True)
 
         i += 1
 
     subprocess.run(f"fslmerge -z {output_file} slice_dilated_*.nii.gz", shell=True)
-    subprocess.run("rm slice_*.nii.gz", shell=True)"""
-    print(f"File written to {output_file}")
+    subprocess.run("rm slice_*.nii.gz", shell=True)
+
+
+if __name__ == "__main__":
+
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
+    kernel_size = sys.argv[3]
+    kernel_object = sys.argv[4]
+
+    dilation_2D(input_file, output_file, kernel_size, kernel_object)
+    # fermeture_3D(input_file, output_file, kernel_size, kernel_object)
