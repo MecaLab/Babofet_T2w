@@ -8,7 +8,7 @@ if __name__ == "__main__":
     output_file = sys.argv[2]
 
     result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
-    dims = result.stdout.strip()
+    dims = int(result.stdout.strip())
     print(f"Nombre de coupe: {dims}")
 
     result = subprocess.run(f"fslval {input_file} pixdim3", shell=True, capture_output=True, text=True)
