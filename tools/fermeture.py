@@ -4,7 +4,6 @@ import sys
 
 
 def fermeture_3D(input_file, output_file, kernel_size=None, kernel_object="sphere"):
-    output_file = output_file.replace(".nii.gz", f"_{kernel_object}_{kernel_size}.nii.gz")
 
     result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
     dims = int(result.stdout.strip())
@@ -25,8 +24,6 @@ def fermeture_3D(input_file, output_file, kernel_size=None, kernel_object="spher
 
 
 def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere"):
-    output_file = output_file.replace(".nii.gz", f"_{kernel_object}_{kernel_size}.nii.gz")
-
     result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
     dims = int(result.stdout.strip())
     print(f"Nombre de coupes: {dims}")
@@ -50,7 +47,6 @@ def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere
     subprocess.run("rm slice_*.nii.gz", shell=True)
 
     print(f"Dilation 2D OK. Written at {output_file}")
-    return output_file
 
 
 if __name__ == "__main__":
@@ -60,5 +56,7 @@ if __name__ == "__main__":
     kernel_size = sys.argv[3]
     kernel_object = sys.argv[4]
 
-    output_file_dilated = dilation_2D(input_file, output_file, kernel_size, kernel_object)
-    fermeture_3D(input_file, output_file_dilated, kernel_size, kernel_object)
+    output_file = output_file.replace(".nii.gz", f"_{kernel_object}_{kernel_size}.nii.gz")
+
+    dilation_2D(input_file, output_file, kernel_size, kernel_object)
+    fermeture_3D(input_file, output_file, kernel_size, kernel_object)
