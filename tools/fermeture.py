@@ -8,6 +8,8 @@ if __name__ == "__main__":
     output_file = sys.argv[2]
     kernel_size = sys.argv[3]
 
+    output_file = output_file.replace(".nii.gz", f"_{kernel_size}.nii.gz")
+
     result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
     dims = int(result.stdout.strip())
     print(f"Nombre de coupes: {dims}")
