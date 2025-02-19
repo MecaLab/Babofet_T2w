@@ -20,3 +20,20 @@ if __name__ == "__main__":
         result = subprocess.run(f"fslmaths {tmp_file.name} -kernel box {slice_thickness}x2 -ero {output_file}", shell=True, capture_output=True, text=True)
 
     print(f"File written to {output_file}")
+
+    i = 0
+    while i < dims:
+        # Exécuter la commande fslroi
+        subprocess.run(f"fslroi {output_file} slice_{i}.nii.gz 0 -1 0 -1 {i} 1", shell=True)
+
+        # Exécuter la commande fslmaths
+        subprocess.run(
+            f"fslmaths slice_{i}.nii.gz -dilM slice_dilated_{i}.nii.gz",
+            shell=True
+        )
+
+        if i < 10:
+            # Exécuter la commande mv
+            subprocess.run(f"mv slice_dilated_{i}.nii.gz slice_dilated_0{i}.nii.gz", shell=True)
+
+        i += 1
