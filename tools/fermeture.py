@@ -25,10 +25,7 @@ def fermeture_3D(input_file, output_file, kernel_size=None, kernel_object="spher
 
 
 def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere"):
-    print(output_file)
     output_file = output_file.replace(".nii.gz", f"_{kernel_object}_{kernel_size}.nii.gz")
-    print(output_file)
-    exit()
 
     result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
     dims = int(result.stdout.strip())
@@ -36,7 +33,7 @@ def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere
 
     i = 0
     while i < dims:
-        subprocess.run(f"fslroi {output_file} slice_{i}.nii.gz 0 -1 0 -1 {i} 1", shell=True)
+        subprocess.run(f"fslroi {input_file} slice_{i}.nii.gz 0 -1 0 -1 {i} 1", shell=True)
 
         subprocess.run(
             f"fslmaths slice_{i}.nii.gz -kernel {kernel_object} {kernel_size} -dilD slice_dilated_{i}.nii.gz",
