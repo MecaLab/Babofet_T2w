@@ -6,6 +6,7 @@ if __name__ == "__main__":
 
     input_file = sys.argv[1]
     output_file = sys.argv[2]
+    kernel_size = sys.argv[3]
 
     result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
     dims = int(result.stdout.strip())
@@ -16,8 +17,8 @@ if __name__ == "__main__":
     print(f"Taille d'une coupe: {slice_thickness}")
 
     with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmp_file:
-        result = subprocess.run(f"fslmaths {input_file} -kernel box {slice_thickness//2} -dilM {tmp_file.name}", shell=True, capture_output=True, text=True)
-        result = subprocess.run(f"fslmaths {tmp_file.name} -kernel box {slice_thickness//2} -ero {output_file}", shell=True, capture_output=True, text=True)
+        result = subprocess.run(f"fslmaths {input_file} -kernel box {kernel_size} -dilM {tmp_file.name}", shell=True, capture_output=True, text=True)
+        result = subprocess.run(f"fslmaths {tmp_file.name} -kernel box {kernel_size} -ero {output_file}", shell=True, capture_output=True, text=True)
 
     print("Fermeture OK")
 
