@@ -12,5 +12,6 @@ if __name__ == "__main__":
     print(f"Nombre de coupe: {dims}")
 
     result = subprocess.run(f"fslval {input_file} pixdim3", shell=True, capture_output=True, text=True)
-    slice_thickness = int(result.stdout.strip())
+    slice_thickness = result.stdout.strip()
+    print(type(slice_thickness))
     print(f"Taille de la coupe: {slice_thickness}")
