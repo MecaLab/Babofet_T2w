@@ -19,8 +19,8 @@ if __name__ == "__main__":
     print(f"Taille d'une coupe: {slice_thickness}")
 
     with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmp_file:
-        result = subprocess.run(f"fslmaths {input_file} -kernel box {kernel_size} -dilM {tmp_file.name}", shell=True, capture_output=True, text=True)
-        result = subprocess.run(f"fslmaths {tmp_file.name} -kernel box {kernel_size} -ero {output_file}", shell=True, capture_output=True, text=True)
+        result = subprocess.run(f"fslmaths {input_file} -kernel sphere {kernel_size} -dilD {tmp_file.name}", shell=True, capture_output=True, text=True)
+        result = subprocess.run(f"fslmaths {tmp_file.name} -kernel sphere {kernel_size} -ero {output_file}", shell=True, capture_output=True, text=True)
 
     print("Fermeture OK")
 
