@@ -37,3 +37,5 @@ if __name__ == "__main__":
             subprocess.run(f"mv slice_dilated_{i}.nii.gz slice_dilated_0{i}.nii.gz", shell=True)
 
         i += 1
+
+    subprocess.run("rm slice_*.nii.gz", shell=True)
