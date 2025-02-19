@@ -19,9 +19,9 @@ if __name__ == "__main__":
         result = subprocess.run(f"fslmaths {input_file} -kernel box {slice_thickness}x2 -dilM {tmp_file.name}", shell=True, capture_output=True, text=True)
         result = subprocess.run(f"fslmaths {tmp_file.name} -kernel box {slice_thickness}x2 -ero {output_file}", shell=True, capture_output=True, text=True)
 
-    print(f"File written to {output_file}")
+    print("Fermeture OK")
 
-    i = 0
+    """i = 0
     while i < dims:
         subprocess.run(f"fslroi {output_file} slice_{i}.nii.gz 0 -1 0 -1 {i} 1", shell=True)
 
@@ -36,4 +36,5 @@ if __name__ == "__main__":
         i += 1
 
     subprocess.run(f"fslmerge -z {output_file} slice_dilated_*.nii.gz", shell=True)
-    subprocess.run("rm slice_*.nii.gz", shell=True)
+    subprocess.run("rm slice_*.nii.gz", shell=True)"""
+    print(f"File written to {output_file}")
