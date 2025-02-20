@@ -55,7 +55,7 @@ def dilation_2D_voxel(input_file, output_file, kernel_size=None):
     for i in range(dims):
         subprocess.run(f"fslroi {input_file} slice_{i}.nii.gz 0 -1 0 -1 {i} 1", shell=True)
 
-        subprocess.run(f"fslmaths slice_{i}.nii.gz -bin -kernel boxv {kernel_size} -dilD slice_dilated_{i}.nii.gz", shell=True)
+        subprocess.run(f"fslmaths slice_{i}.nii.gz -bin -kernel boxv 3 -dilD slice_dilated_{i}.nii.gz", shell=True)
 
         if i < 10:
             subprocess.run(f"mv slice_dilated_{i}.nii.gz slice_dilated_0{i}.nii.gz", shell=True)
@@ -73,10 +73,10 @@ if __name__ == "__main__":
     kernel_size = sys.argv[3]
     kernel_object = sys.argv[4]
 
-    output_file = output_file.replace(".nii.gz", f"_boxv_{kernel_object}_{kernel_size}.nii.gz")
+    output_file = output_file.replace(".nii.gz", f"_boxv_3_{kernel_object}_{kernel_size}.nii.gz")
 
     # dilation_2D(input_file, output_file, kernel_size, kernel_object)
 
-    fermeture_3D(input_file, output_file, kernel_size, kernel_object)
     dilation_2D_voxel(output_file, output_file, kernel_size)
+    fermeture_3D(input_file, output_file, kernel_size, kernel_object)
     print(f"File saved as {output_file}")
