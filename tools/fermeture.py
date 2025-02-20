@@ -77,6 +77,7 @@ if __name__ == "__main__":
 
     # dilation_2D(input_file, output_file, kernel_size, kernel_object)
 
-    dilation_2D_voxel(input_file, output_file, kernel_size)
-    fermeture_3D(output_file, output_file, kernel_size, kernel_object)
+    fermeture_3D(input_file, output_file, kernel_size, kernel_object)
+    dilation_2D_voxel(output_file, output_file, kernel_size)
+
     print(f"File saved as {output_file}")
