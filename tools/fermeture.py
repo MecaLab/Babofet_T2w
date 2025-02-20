@@ -4,11 +4,7 @@ import sys
 
 
 def fermeture_3D(input_file, output_file, kernel_size=None, kernel_object="sphere"):
-
-    result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
-    dims = int(result.stdout.strip())
-    print(f"Nombre de coupes: {dims}")
-
+    
     if kernel_size is None:
         result = subprocess.run(f"fslval {input_file} pixdim3", shell=True, capture_output=True, text=True)
         kernel_size = int(float(result.stdout.strip()))
