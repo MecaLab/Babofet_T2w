@@ -4,7 +4,7 @@ import sys
 
 
 def fermeture_3D(input_file, output_file, kernel_size=None, kernel_object="sphere"):
-    
+
     if kernel_size is None:
         result = subprocess.run(f"fslval {input_file} pixdim3", shell=True, capture_output=True, text=True)
         kernel_size = int(float(result.stdout.strip()))
@@ -24,6 +24,11 @@ def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere
     dims = int(result.stdout.strip())
     print(f"Nombre de coupes: {dims}")
 
+    if kernel_size is None:
+        result = subprocess.run(f"fslval {input_file} pixdim3", shell=True, capture_output=True, text=True)
+        kernel_size = int(float(result.stdout.strip()))
+        print(f"Taille d'une coupe: {kernel_size}")
+
     for i in range(dims):
         subprocess.run(f"fslroi {input_file} slice_{i}.nii.gz 0 -1 0 -1 {i} 1", shell=True)
 
@@ -39,7 +44,26 @@ def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere
     subprocess.run(f"fslmerge -z {output_file} slice_dilated_*.nii.gz", shell=True)
     subprocess.run("rm slice_*.nii.gz", shell=True)
 
-    print("Dilation 2D OK")
+    print("Dilation en mm 2D OK")
+
+
+def dilation_2D_voxel(input_file, output_file, kernel_size=None):
+    result = subprocess.run(f"fslval {input_file} dim3", shell=True, capture_output=True, text=True)
+    dims = int(result.stdout.strip())
+    print(f"Nombre de coupes: {dims}")
+
+    for i in range(dims):
+        subprocess.run(f"fslroi {input_file} slice_{i}.nii.gz 0 -1 0 -1 {i} 1", shell=True)
+
+        subprocess.run(f"fslmaths slice_{i}.nii.gz -bin -kernel boxv {kernel_size} -dilD slice_dilated_{i}.nii.gz", shell=True)
+
+        if i < 10:
+            subprocess.run(f"mv slice_dilated_{i}.nii.gz slice_dilated_0{i}.nii.gz", shell=True)
+
+    subprocess.run(f"fslmerge -z {output_file} slice_dilated_*.nii.gz", shell=True)
+    subprocess.run("rm slice_*.nii.gz", shell=True)
+
+    print("Dilation en voxel 2D OK")
 
 
 if __name__ == "__main__":
@@ -52,5 +76,6 @@ if __name__ == "__main__":
     output_file = output_file.replace(".nii.gz", f"_{kernel_object}_{kernel_size}.nii.gz")
 
     # dilation_2D(input_file, output_file, kernel_size, kernel_object)
-    fermeture_3D(input_file, output_file, kernel_size, kernel_object)
+    # fermeture_3D(input_file, output_file, kernel_size, kernel_object)
+    dilation_2D_voxel(input_file, output_file, kernel_size)
     print(f"File saved as {output_file}")
