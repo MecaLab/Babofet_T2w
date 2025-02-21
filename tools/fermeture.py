@@ -73,7 +73,7 @@ if __name__ == "__main__":
     kernel_size = sys.argv[3]
     kernel_object = sys.argv[4]
 
-    output_file = output_file.replace(".nii.gz", f"_boxv_3_{kernel_object}_{kernel_size}.nii.gz")
+    output_file = output_file.replace(".nii.gz", f"_{kernel_object}_{kernel_size}.nii.gz")
 
     # dilation_2D(input_file, output_file, kernel_size, kernel_object)
 
