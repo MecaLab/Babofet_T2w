@@ -10,6 +10,10 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
 
+def qc_plot_table(base_path, subject, mode):
+    pass
+
+
 def qc_recons_bis(base_path, subject, mode):
     exp_param_folder = True
     dir_snapshots = "snapshots"
