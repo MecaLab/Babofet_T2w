@@ -12,10 +12,13 @@ import matplotlib.colors as mcolors
 
 def qc_plot_table(datas):
     print(datas)
-    n_rows = 5
-    n_cols = 0
-    fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 5*n_rows), facecolor='#121212')  # almost full black
-    
+    for session, data in datas.items():
+        n_rows = 5
+        n_cols = len(datas["session"])
+        print(data)
+        print(data.keys())
+        fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 5*n_rows), facecolor='#121212')  # almost full black
+
 
 def qc_recons_bis(base_path, subject, mode):
     exp_param_folder = True
