@@ -19,7 +19,7 @@ if __name__ == "__main__":
             datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
             datas[session][mode]["bm"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline_mask.nii.gz")
 
-    print(datas)
+    print(datas["ses01"])
 
     """subject = "Fabienne"
     modes = ["manual", "nifty"]
