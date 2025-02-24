@@ -263,15 +263,18 @@ def qc_rejected_slices(subj_path, subj, mode):
 def qc_plot_table_stack(base_path, list_subj, modes):
     num_slices = 5
     num_cols = len(modes)
+    red_cmap = mcolors.ListedColormap(['red'])
+
     for subj in list_subjs:
         subj_path = os.path.join(base_path, subj)
 
         anat_path = os.path.join(subj_path, "denoising")
 
         for stack_file in os.listdir(anat_path):
-
             if "HASTE" not in stack_file:
                 continue
+
+            stack_name = "_".join(stack_file.split("_")[:-1])
             fig, axes = plt.subplots(num_slices, num_cols, figsize=(18, 5 * num_slices))
             fig.suptitle(f'{subj}')
             anat_img = nib.load(os.path.join(anat_path, stack_file)).get_fdata()
@@ -290,15 +293,21 @@ def qc_plot_table_stack(base_path, list_subj, modes):
                     bm_filename = stack_file.replace(".nii", "_mask.nii")
                     brainmask = nib.load(os.path.join(bm_folder, bm_filename)).get_fdata()
 
-                """for row in range(num_slices):
+                for row in range(num_slices):
                     slice_idx = anat_img.shape[2] * row // num_slices
+                    masked_brainmask = np.ma.masked_where(brainmask[:, :, slice_idx].T == 0, brainmask[:, :, slice_idx].T)
+
                     axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
+                    axes[row, col].imshow(masked_brainmask, alpha=0.5, cmap=red_cmap)
                     axes[row, col].set_title(f'{mode.upper()}')
-                    axes[row, col].axis('off')"""
-            break
-        break
+                    axes[row, col].axis('off')
 
-
+            plt.tight_layout()
+            plt.savefig(f"{stack_name}.png")
+            plt.close()
+        print(f"Fin de la session {subj}")
+        exit()
+        
 
 if __name__ == "__main__":
 
