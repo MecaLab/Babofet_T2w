@@ -11,16 +11,35 @@ import matplotlib.colors as mcolors
 
 
 def qc_plot_table(datas):
-    print(datas)
-    for session, img_paths in datas.items():
+    num_slices = 2
+    for session, modes in datas.items():
+        num_cols = len(modes)
+
+        fig, axes = plt.subplots(num_slices, num_cols, figsize=(22, 5*num_slices), facecolor='#121212')  # almost full black
+
+        for col, (mode, paths) in enumerate(modes.items()):
+            anat_path = paths["anat"]
+
+            anat_img = nib.load(anat_path).get_fdata()
+
+            for row in range(num_slices):
+                slice_idx = anat_img.shape[2] * row // num_slices
+                axes[row, col].imshow(anat_img[:, :, slice_idx].T, cmap="gray")
+
+            plt.save("tmp.png")
+            exit()
+            
+    """for session, img_paths in datas.items():
         n_rows = 5
         n_cols = len(datas[session])
         fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 12), facecolor='#121212')  # almost full black
         for type_bm in img_paths.keys():
             anat_path = img_paths[type_bm]["anat"]
             bm_path = img_paths[type_bm]["bm"]
-            print(anat_path)
-            exit()
+            img = nib.load(anat_path)
+            img_data = img.get_fdata()"""
+
+
 
 
 def qc_recons_bis(base_path, subject, mode):
