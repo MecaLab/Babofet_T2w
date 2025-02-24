@@ -291,11 +291,17 @@ def qc_plot_table_stack(base_path, list_subj, modes):
                     brainmask = nib.load(os.path.join(bm_folder, bm_filename)).get_fdata()
                 except FileNotFoundError:
                     bm_filename = stack_file.replace(".nii", "_mask.nii")
-                    brainmask = nib.load(os.path.join(bm_folder, bm_filename)).get_fdata()
+                    brainmask = nib.load(os.path.join(bm_folder, bm_filename))
+
+                bm_data = brainmask.get_fdata()
+                bm_data = (bm_data == 1).astype(int)
+
+                if len(bm_data.shape) == 4:  # NiftyMIC brainmask has a 4D data: (M, M, nb_slices, 1)
+                    bm_data = np.squeeze(bm_data)  # (M, M, nb_slices)
 
                 for row in range(num_slices):
                     slice_idx = anat_img.shape[2] * row // num_slices
-                    masked_brainmask = np.ma.masked_where(brainmask[:, :, slice_idx].T == 0, brainmask[:, :, slice_idx].T)
+                    masked_brainmask = np.ma.masked_where(bm_data[:, :, slice_idx].T == 0, bm_data[:, :, slice_idx].T)
 
                     axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
                     axes[row, col].imshow(masked_brainmask, alpha=0.5, cmap=red_cmap)
@@ -307,7 +313,7 @@ def qc_plot_table_stack(base_path, list_subj, modes):
             plt.close()
         print(f"Fin de la session {subj}")
         exit()
-        
+
 
 if __name__ == "__main__":
 
