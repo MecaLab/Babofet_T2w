@@ -14,7 +14,7 @@ def qc_plot_table(datas):
     print(datas)
     for session, data in datas.items():
         n_rows = 5
-        n_cols = len(datas["session"])
+        n_cols = len(datas[session])
         print(data)
         print(data.keys())
         fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 5*n_rows), facecolor='#121212')  # almost full black
