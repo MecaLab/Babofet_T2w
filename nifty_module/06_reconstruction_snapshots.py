@@ -8,9 +8,18 @@ if __name__ == "__main__":
 
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
+    modes = ["manual", "nifty"]
+
+    datas = {}
 
     for session in os.listdir(base_path):
-        print(session)
+        datas[session] = {}
+        for mode in modes:
+            datas[session][mode] = {}
+            datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
+            datas[session][mode]["bm"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline_mask.nii.gz")
+
+    print(datas)
 
     """subject = "Fabienne"
     modes = ["manual", "nifty"]
