@@ -11,7 +11,7 @@ import matplotlib.colors as mcolors
 
 
 def qc_plot_table(datas):
-    num_slices = 2
+    num_slices = 5
     for session, modes in datas.items():
         num_cols = len(modes)
 
