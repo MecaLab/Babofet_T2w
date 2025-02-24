@@ -267,13 +267,14 @@ def qc_plot_table_stack(base_path, list_subj, modes):
         subj_path = os.path.join(base_path, subj)
 
         anat_path = os.path.join(subj_path, "denoising")
-        anat_img = nib.load(anat_path).get_fdata()
 
         for stack_file in os.listdir(anat_path):
-            fig, axes = plt.subplots(num_slices, num_cols, figsize=(18, 5 * num_slices))
-            fig.suptitle(f'{subj}')
+
             if "HASTE" not in stack_file:
                 continue
+            fig, axes = plt.subplots(num_slices, num_cols, figsize=(18, 5 * num_slices))
+            fig.suptitle(f'{subj}')
+            anat_img = nib.load(os.path.join(anat_path, stack_file)).get_fdata()
             for col, mode in enumerate(modes):
                 if mode == "manual":
                     bm_folder = os.path.join(subj_path, "manual_masks")
