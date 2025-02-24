@@ -15,17 +15,16 @@ def qc_plot_table(datas):
     for session, modes in datas.items():
         num_cols = len(modes)
 
-        fig, axes = plt.subplots(num_slices, num_cols, figsize=(22, 5*num_slices))  # almost full black
+        fig, axes = plt.subplots(num_slices, num_cols, figsize=(15, 5*num_slices))
 
         for col, (mode, paths) in enumerate(modes.items()):
             anat_path = paths["anat"]
 
-            print(anat_path)
             anat_img = nib.load(anat_path).get_fdata()
 
             for row in range(num_slices):
                 slice_idx = anat_img.shape[2] * row // num_slices
-                axes[row, col].imshow(anat_img[:, :, slice_idx].T, cmap="gray")
+                axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
                 axes[row, col].set_title(f'{mode.upper()}')
                 axes[row, col].axis('off')
 
