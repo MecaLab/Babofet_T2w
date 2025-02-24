@@ -15,8 +15,9 @@ def qc_plot_table(datas):
     for session, data in datas.items():
         n_rows = 5
         n_cols = len(datas[session])
-        print(n_rows, n_cols)
         fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 12), facecolor='#121212')  # almost full black
+        for type_bm in data[session]:
+            print(type_bm)
 
 
 def qc_recons_bis(base_path, subject, mode):
