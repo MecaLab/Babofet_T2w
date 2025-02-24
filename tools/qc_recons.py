@@ -18,6 +18,7 @@ def qc_plot_table(datas):
         fig, axes = plt.subplots(num_slices, num_cols, figsize=(22, 5*num_slices))  # almost full black
 
         for col, (mode, paths) in enumerate(modes.items()):
+            print(col, mode)
             anat_path = paths["anat"]
 
             anat_img = nib.load(anat_path).get_fdata()
