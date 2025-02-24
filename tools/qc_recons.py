@@ -288,11 +288,11 @@ def qc_plot_table_stack(base_path, list_subj, modes):
 
                 try:
                     bm_filename = stack_file.replace(".nii", bm_extension)
-                    brainmask = nib.load(os.path.join(bm_folder, bm_filename)).get_fdata()
+                    brainmask = nib.load(os.path.join(bm_folder, bm_filename))
                 except FileNotFoundError:
                     bm_filename = stack_file.replace(".nii", "_mask.nii")
                     brainmask = nib.load(os.path.join(bm_folder, bm_filename))
-
+                
                 bm_data = brainmask.get_fdata()
                 bm_data = (bm_data == 1).astype(int)
 
