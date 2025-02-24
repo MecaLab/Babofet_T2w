@@ -30,6 +30,7 @@ def qc_plot_table(datas):
 
         plt.savefig(f"fabienne_{session}_recons.png")
         plt.close()
+        print(f"Fin de la session {session}")
 
     """for session, img_paths in datas.items():
         n_rows = 5
