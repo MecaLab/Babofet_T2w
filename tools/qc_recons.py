@@ -12,12 +12,11 @@ import matplotlib.colors as mcolors
 
 def qc_plot_table(datas):
     print(datas)
-    for session, data in datas.items():
+    for session, img_paths in datas.items():
         n_rows = 5
         n_cols = len(datas[session])
         fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 12), facecolor='#121212')  # almost full black
-        for type_bm in data[session].items():
-            print(type_bm)
+        print(img_paths)
 
 
 def qc_recons_bis(base_path, subject, mode):
