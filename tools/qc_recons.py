@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
 
-def qc_plot_table(datas):
+def qc_plot_table_recons(datas):
     num_slices = 5
     for session, modes in datas.items():
         num_cols = len(modes)
@@ -29,21 +29,10 @@ def qc_plot_table(datas):
                 axes[row, col].set_title(f'{mode.upper()}')
                 axes[row, col].axis('off')
 
+        plt.tight_layout()
         plt.savefig(f"fabienne_{session}_recons.png")
         plt.close()
         print(f"Fin de la session {session}")
-
-    """for session, img_paths in datas.items():
-        n_rows = 5
-        n_cols = len(datas[session])
-        fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 12), facecolor='#121212')  # almost full black
-        for type_bm in img_paths.keys():
-            anat_path = img_paths[type_bm]["anat"]
-            bm_path = img_paths[type_bm]["bm"]
-            img = nib.load(anat_path)
-            img_data = img.get_fdata()"""
-
-
 
 
 def qc_recons_bis(base_path, subject, mode):
