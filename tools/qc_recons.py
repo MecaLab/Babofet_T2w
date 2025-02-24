@@ -11,11 +11,11 @@ import matplotlib.colors as mcolors
 
 
 def qc_plot_table(datas):
-    num_slices = 5
+    num_slices = 8
     for session, modes in datas.items():
         num_cols = len(modes)
 
-        fig, axes = plt.subplots(num_slices, num_cols, figsize=(15, 5*num_slices))
+        fig, axes = plt.subplots(num_slices, num_cols, figsize=(18, 3*num_slices))
 
         for col, (mode, paths) in enumerate(modes.items()):
             anat_path = paths["anat"]
@@ -28,7 +28,7 @@ def qc_plot_table(datas):
                 axes[row, col].set_title(f'{mode.upper()}')
                 axes[row, col].axis('off')
 
-        plt.savefig(f"tmp_{session}.png")
+        plt.savefig(f"fabienne_{session}_recons.png")
         plt.close()
 
     """for session, img_paths in datas.items():
