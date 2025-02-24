@@ -15,7 +15,7 @@ def qc_plot_table(datas):
     for session, modes in datas.items():
         num_cols = len(modes)
 
-        fig, axes = plt.subplots(num_slices, num_cols, figsize=(22, 5*num_slices), facecolor='#121212')  # almost full black
+        fig, axes = plt.subplots(num_slices, num_cols, figsize=(22, 5*num_slices))  # almost full black
 
         for col, (mode, paths) in enumerate(modes.items()):
             anat_path = paths["anat"]
