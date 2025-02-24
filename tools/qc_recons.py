@@ -260,7 +260,7 @@ def qc_rejected_slices(subj_path, subj, mode):
             plt.close()
 
 
-def qc_plot_table_stack(base_path, list_subj, modes):
+def qc_plot_table_stack(base_path, list_subjs, modes):
     num_slices = 5
     num_cols = len(modes)
     red_cmap = mcolors.ListedColormap(['red'])
@@ -278,6 +278,7 @@ def qc_plot_table_stack(base_path, list_subj, modes):
             fig, axes = plt.subplots(num_slices, num_cols, figsize=(18, 5 * num_slices))
             fig.suptitle(f'{subj}')
             anat_img = nib.load(os.path.join(anat_path, stack_file)).get_fdata()
+
             for col, mode in enumerate(modes):
                 if mode == "manual":
                     bm_folder = os.path.join(subj_path, "manual_masks")
@@ -292,7 +293,7 @@ def qc_plot_table_stack(base_path, list_subj, modes):
                 except FileNotFoundError:
                     bm_filename = stack_file.replace(".nii", "_mask.nii")
                     brainmask = nib.load(os.path.join(bm_folder, bm_filename))
-                
+
                 bm_data = brainmask.get_fdata()
                 bm_data = (bm_data == 1).astype(int)
 
@@ -311,8 +312,8 @@ def qc_plot_table_stack(base_path, list_subj, modes):
             plt.tight_layout()
             plt.savefig(f"{stack_name}.png")
             plt.close()
-        print(f"Fin de la session {subj}")
-        exit()
+            print(f"Fin de la session {subj}")
+            exit()
 
 
 if __name__ == "__main__":
