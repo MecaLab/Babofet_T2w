@@ -25,6 +25,8 @@ def qc_plot_table(datas):
             for row in range(num_slices):
                 slice_idx = anat_img.shape[2] * row // num_slices
                 axes[row, col].imshow(anat_img[:, :, slice_idx].T, cmap="gray")
+                axes[row, col].set_title(f'{mode} - anat (slice {slice_idx})')
+                axes[row, col].axis('off')
 
 
         plt.savefig("tmp.png")
