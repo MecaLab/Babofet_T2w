@@ -16,8 +16,11 @@ def qc_plot_table(datas):
         n_rows = 5
         n_cols = len(datas[session])
         fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 12), facecolor='#121212')  # almost full black
-        for type_bm in img_paths.items():
-            print(type_bm)
+        for type_bm in img_paths.keys():
+            anat_path = img_paths[type_bm]["anat"]
+            bm_path = img_paths[type_bm]["bm"]
+            print(anat_path)
+            exit()
 
 
 def qc_recons_bis(base_path, subject, mode):
