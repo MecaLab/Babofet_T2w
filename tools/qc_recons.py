@@ -26,8 +26,9 @@ def qc_plot_table(datas):
                 slice_idx = anat_img.shape[2] * row // num_slices
                 axes[row, col].imshow(anat_img[:, :, slice_idx].T, cmap="gray")
 
-            plt.savefig("tmp.png")
-            exit()
+
+        plt.savefig("tmp.png")
+        plt.close()
 
     """for session, img_paths in datas.items():
         n_rows = 5
