@@ -10,9 +10,12 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
 
-def qc_plot_table(base_path, subject, mode):
-    pass
-
+def qc_plot_table(datas):
+    print(datas)
+    n_rows = 5
+    n_cols = 0
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 5*n_rows), facecolor='#121212')  # almost full black
+    
 
 def qc_recons_bis(base_path, subject, mode):
     exp_param_folder = True
