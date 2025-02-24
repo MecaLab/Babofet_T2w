@@ -17,7 +17,6 @@ if __name__ == "__main__":
         for mode in modes:
             datas[session][mode] = {}
             datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
-        break
 
     qc_recons.qc_plot_table(datas)
 
