@@ -21,11 +21,11 @@ def qc_plot_table_recons(datas):
         num_cols = len(modes)
 
         fig, axes = plt.subplots(num_slices, num_cols, figsize=(15, 3*num_slices))
-        fig.suptitle(f'Fabienne {session} | Threshold -1', fontsize=25)
+        fig.suptitle(f'Fabienne {session} | Threshold -1', fontsize=14)
 
         for col, (mode, paths) in enumerate(modes.items()):
             anat_path = paths["anat"]
-            fig.text((col + 0.5) / num_cols, 0.95, f'{mode}', ha='center', va='center', fontsize=25)
+            fig.text((col + 0.5) / num_cols, 0.95, f'{mode}', ha='center', va='center', fontsize=14)
 
             anat_img = nib.load(anat_path).get_fdata()
 
