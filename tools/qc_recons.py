@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
 
-def qc_plot_table_recons(datas):
+def qc_plot_table_recons(datas, name):
     num_slices = 7
     dir_snapshots = "snapshots"
 
@@ -36,7 +36,7 @@ def qc_plot_table_recons(datas):
                 axes[row, col].axis('off')
 
         plt.tight_layout(rect=[0, 0, 1, 0.96])
-        output_file = os.path.join(output_dir, f"fabienne_{session}_table_recons.png")
+        output_file = os.path.join(output_dir, f"fabienne_{session}_{name}_table_recons.png")
         plt.savefig(output_file)
         plt.close()
         print(f"Fin de la session {session}")
