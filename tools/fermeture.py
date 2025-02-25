@@ -11,16 +11,11 @@ def fermeture_3D(input_file, output_file, kernel_size=None, kernel_object="spher
         print(f"Taille d'une coupe: {kernel_size}")
 
     with tempfile.NamedTemporaryFile(suffix=".nii.gz") as tmp_file:
-        print(tmp_file)
         result = subprocess.run(f"fslmaths {input_file} -bin -kernel {kernel_object} {kernel_size} -dilD {tmp_file.name}", shell=True,
                                 capture_output=True, text=True)
-        print(result.returncode)
         result = subprocess.run(f"fslmaths {tmp_file.name} -bin -kernel {kernel_object} {kernel_size} -ero {output_file}", shell=True,
                                 capture_output=True, text=True)
-
-        print(result.returncode)
-
-    print("Fermeture 3D OK")
+    print(f"Fermeture 3D OK for {output_file}")
 
 
 def dilation_2D(input_file, output_file, kernel_size=None, kernel_object="sphere"):
