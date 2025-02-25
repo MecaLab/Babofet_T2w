@@ -74,7 +74,6 @@ if __name__ == "__main__":
     for file in os.listdir(input_path):
         if "HASTE" not in file:
             continue
-        print(file)
         file_path = os.path.join(input_path, file)
 
         output_dir = os.path.join(output_path, subject_name)
