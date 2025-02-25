@@ -84,6 +84,7 @@ if __name__ == "__main__":
             os.mkdir(output_dir)
         output_file_path = os.path.join(output_dir, file)
         fermeture_3D(file_path, output_file_path, kernel_size=2, kernel_object="sphere")
+        print(os.path.exists(output_file_path))
         break
 
     """input_file = sys.argv[1]
