@@ -81,11 +81,13 @@ if __name__ == "__main__":
 
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
     # True mean it will use the manual corrected brainmask, False is the niftys one
-    manual_bm = False
-    if manual_bm:
+    mask_model = "manual"  # could be 'nifty' or 'mattia' or 'manual'
+    if mask_model == "manual":
         bm_folder = "manual_masks"
-    else:
+    elif mask_model == "nifty":
         bm_folder = "brainmask_niftymic"
+    elif mask_model == "mattia":
+        bm_folder = "mattia_masks"
 
     list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
 
@@ -115,10 +117,12 @@ if __name__ == "__main__":
         if len(haste_files) > 0:
             print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
-            if not manual_bm:
+            if mask_model == "manual":
                 bm_haste_subj_output_dir = os.path.join(subj_output_dir, "brainmask_niftymic")
-            else:
+            elif mask_model == "nifty":
                 bm_haste_subj_output_dir = os.path.join(subj_output_dir, "manual_masks")
+            elif mask_model == "mattia":
+                bm_haste_subj_output_dir = os.path.join(subj_output_dir, "mattia_masks")
 
             denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising")
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_niftymic')
@@ -131,16 +135,20 @@ if __name__ == "__main__":
             for f in haste_files:
                 filename = f.split(".")
                 anat_path_subj_path = os.path.join(denoised_subj_output_dir, f)
-                if not manual_bm:  # for brainmask_niftymic folder
+                if mask_model == "nifty":  # for brainmask_niftymic folder
                     bm_nifti_filename = filename[0] + "_seg.nii.gz"
                     bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, filename[0], bm_nifti_filename)
 
-                else:  # with manual brainmask
+                elif mask_model == "manual":  # with manual brainmask
                     bm_nifti_filename = filename[0] + "_mask.nii"
                     bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
                     if not os.path.exists(bm_path_subj_path):
                         bm_nifti_filename = filename[0] + "_mask.nii.gz"
                         bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
+
+                elif mask_model == "mattia":  # with mattia brainmask
+                    bm_nifti_filename = filename[0] + "_mask.nii.gz"
+                    bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
                 if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
                     anat_img.append(f)
@@ -151,10 +159,7 @@ if __name__ == "__main__":
             if not os.path.exists(motion_subfolder):
                 os.mkdir(motion_subfolder)
 
-            if not manual_bm:
-                recons_haste_subj_output = subject + '_haste_3DHR_nifty_bm_T-1_pipeline.nii.gz'
-            else:
-                recons_haste_subj_output = subject + '_haste_3DHR_manual_bm_T-1_pipeline.nii.gz'
+            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_T-1_pipeline.nii.gz"
 
             write_slurm_file_nifty(
                 subj=subject,
@@ -165,5 +170,6 @@ if __name__ == "__main__":
                 output_file=recons_haste_subj_output
             )
 
-            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
+            exit()
