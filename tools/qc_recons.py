@@ -69,7 +69,7 @@ def qc_recons_bis(base_path, subject, mode):
             print(f"Skipping {anat_path} or {bm_path} does not exist")
             continue
 
-        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_T0_recons.png")
+        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_T-1_recons.png")
         qc.qc_recontructed_3DHRvolume(
             path_anat_vol=anat_path,
             path_brainmask_vol=bm_path,
