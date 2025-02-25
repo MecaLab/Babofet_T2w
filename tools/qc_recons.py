@@ -11,7 +11,11 @@ import matplotlib.colors as mcolors
 
 
 def qc_plot_table_recons(datas):
-    num_slices = 5
+    num_slices = 8
+    dir_snapshots = "snapshots"
+
+    output_dir = os.path.join(dir_snapshots, "recons", "niftymic", "Fabienne")
+
     for session, modes in datas.items():
         num_cols = len(modes)
 
@@ -30,7 +34,8 @@ def qc_plot_table_recons(datas):
                 axes[row, col].axis('off')
 
         plt.tight_layout()
-        plt.savefig(f"fabienne_{session}_recons.png")
+        output_file = os.path.join(output_dir, f"fabienne_{session}_table_recons.png")
+        plt.savefig(output_file)
         plt.close()
         print(f"Fin de la session {session}")
 
