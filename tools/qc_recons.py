@@ -15,6 +15,7 @@ def qc_plot_table_recons(datas):
     dir_snapshots = "snapshots"
 
     output_dir = os.path.join(dir_snapshots, "recons", "niftymic", "Fabienne")
+    print("Images are written in {}".format(output_dir))
 
     for session, modes in datas.items():
         num_cols = len(modes)
