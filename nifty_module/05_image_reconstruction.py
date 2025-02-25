@@ -79,7 +79,6 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
 
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
-    # True mean it will use the manual corrected brainmask, False is the niftys one
     mask_model = "mattia"  # could be 'nifty' or 'mattia' or 'manual'
     if mask_model == "manual":
         bm_folder = "manual_masks"
@@ -88,7 +87,7 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    list_subjs = ["sub-Fabienne_ses-09"]
+    list_subjs = ["sub-Fabienne_ses-01"]
 
     for subject in subject_IDs:
         if subject not in list_subjs:
@@ -169,5 +168,5 @@ if __name__ == "__main__":
                 output_file=recons_haste_subj_output
             )
 
-            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
