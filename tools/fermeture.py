@@ -70,6 +70,7 @@ def dilation_2D_voxel(input_file, output_file, kernel_size=None):
 if __name__ == "__main__":
 
     input_path = sys.argv[1]
+    print(input_path)
     subject_name = input_path.split("/")[-1]
     print(subject_name)
     output_path = sys.argv[2]
