@@ -70,16 +70,19 @@ def dilation_2D_voxel(input_file, output_file, kernel_size=None):
 if __name__ == "__main__":
 
     input_path = sys.argv[1]
-    print(input_path)
-    exit()
+    subject_name = input_path.split("/")[-1]
     output_path = sys.argv[2]
 
     for file in os.listdir(input_path):
         if "HASTE" not in file:
             continue
         file_path = os.path.join(input_path, file)
+
+        output_dir = os.path.join(output_path, subject_name)
+        if not os.path.exists(output_dir):
+            os.mkdir(output_dir)
         output_file_path = os.path.join(output_path, file)
-        fermeture_3D(file_path, output_file_path, kernel_size=2, kernel_object="sphere")
+        # fermeture_3D(file_path, output_file_path, kernel_size=2, kernel_object="sphere")
         break
 
     """input_file = sys.argv[1]
