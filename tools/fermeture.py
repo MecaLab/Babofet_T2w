@@ -76,12 +76,13 @@ if __name__ == "__main__":
     for file in os.listdir(input_path):
         if "HASTE" not in file:
             continue
+        print(file)
         file_path = os.path.join(input_path, file)
 
         output_dir = os.path.join(output_path, subject_name)
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
-        output_file_path = os.path.join(output_path, file)
+        output_file_path = os.path.join(output_dir, file)
         fermeture_3D(file_path, output_file_path, kernel_size=2, kernel_object="sphere")
         break
 
