@@ -11,7 +11,7 @@ import matplotlib.colors as mcolors
 
 
 def qc_plot_table_recons(datas):
-    num_slices = 8
+    num_slices = 7
     dir_snapshots = "snapshots"
 
     output_dir = os.path.join(dir_snapshots, "recons", "niftymic", "Fabienne")
@@ -21,7 +21,7 @@ def qc_plot_table_recons(datas):
         num_cols = len(modes)
 
         fig, axes = plt.subplots(num_slices, num_cols, figsize=(15, 3*num_slices))
-        fig.suptitle(f'Fabienne {session} | Threshold -1', fontsize=16)
+        fig.suptitle(f'Fabienne {session} | Default param', fontsize=16)
 
         for col, (mode, paths) in enumerate(modes.items()):
             fig.text((col + 0.5) / num_cols, 0.95, mode, ha='center', va='center', fontsize=14)
