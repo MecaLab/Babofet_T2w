@@ -1,6 +1,7 @@
 import subprocess
 import tempfile
 import sys
+import os
 
 
 def fermeture_3D(input_file, output_file, kernel_size=None, kernel_object="sphere"):
@@ -68,7 +69,15 @@ def dilation_2D_voxel(input_file, output_file, kernel_size=None):
 
 if __name__ == "__main__":
 
-    input_file = sys.argv[1]
+    input_path = sys.argv[1]
+    output_path = sys.argv[2]
+
+    for file in os.listdir(input_path):
+        if "HASTE" not in file:
+            continue
+        print(file)
+
+    """input_file = sys.argv[1]
     output_file = sys.argv[2]
     kernel_size = sys.argv[3]
     kernel_object = sys.argv[4]
@@ -80,4 +89,4 @@ if __name__ == "__main__":
     fermeture_3D(input_file, output_file, kernel_size, kernel_object)
     # dilation_2D_voxel(output_file, output_file, kernel_size)
 
-    print(f"File saved as {output_file}")
+    print(f"File saved as {output_file}")"""
