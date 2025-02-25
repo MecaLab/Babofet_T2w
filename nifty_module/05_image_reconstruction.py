@@ -89,7 +89,7 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
+    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-09"]
 
     for subject in subject_IDs:
         if subject not in list_subjs:
@@ -170,6 +170,5 @@ if __name__ == "__main__":
                 output_file=recons_haste_subj_output
             )
 
-            # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
-            exit()
