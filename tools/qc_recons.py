@@ -20,8 +20,8 @@ def qc_plot_table_recons(datas):
     for session, modes in datas.items():
         num_cols = len(modes)
 
-        fig, axes = plt.subplots(num_slices, num_cols, figsize=(22, 3*num_slices))
-        fig.suptitle(f'Fabienne session: {session} | Threshold -1')
+        fig, axes = plt.subplots(num_slices, num_cols, figsize=(18, 3*num_slices))
+        fig.suptitle(f'Fabienne {session} | Threshold -1')
 
         for col, (mode, paths) in enumerate(modes.items()):
             anat_path = paths["anat"]
