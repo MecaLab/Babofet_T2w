@@ -21,11 +21,11 @@ def qc_plot_table_recons(datas):
         num_cols = len(modes)
 
         fig, axes = plt.subplots(num_slices, num_cols, figsize=(15, 3*num_slices))
-        fig.suptitle(f'Fabienne {session} | Threshold -1', fontsize=14)
+        fig.suptitle(f'Fabienne {session} | Threshold -1', fontsize=16)
 
         for col, (mode, paths) in enumerate(modes.items()):
+            fig.text((col + 0.5) / num_cols, 0.95, mode, ha='center', va='center', fontsize=14)
             anat_path = paths["anat"]
-            fig.text((col + 0.5) / num_cols, 0.95, f'{mode}', ha='center', va='center', fontsize=14)
 
             anat_img = nib.load(anat_path).get_fdata()
 
@@ -35,7 +35,7 @@ def qc_plot_table_recons(datas):
                 # axes[row, col].set_title(f'{mode}')
                 axes[row, col].axis('off')
 
-        plt.tight_layout()
+        plt.tight_layout(rect=[0, 0, 1, 0.96])
         output_file = os.path.join(output_dir, f"fabienne_{session}_table_recons.png")
         plt.savefig(output_file)
         plt.close()
