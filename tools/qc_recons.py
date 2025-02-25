@@ -59,8 +59,8 @@ def qc_recons_bis(base_path, subject, mode):
         subj_name = f"sub-{subject}_ses-{session[3:]}"
 
         if exp_param_folder:
-            anat_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_T0_pipeline.nii.gz")
-            bm_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_T0_pipeline_mask.nii.gz")
+            anat_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_T-1_pipeline.nii.gz")
+            bm_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_T-1_pipeline_mask.nii.gz")
         else:
             anat_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
             bm_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline_mask.nii.gz")

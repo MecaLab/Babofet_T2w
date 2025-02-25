@@ -6,7 +6,6 @@ from tools import qc_recons
 
 if __name__ == "__main__":
 
-    pass
     """
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
@@ -24,13 +23,12 @@ if __name__ == "__main__":
 
     qc_recons.qc_plot_table_recons(datas)"""
 
-
-    """subject = "Fabienne"
-    modes = ["manual", "nifty"]
+    subject = "Fabienne"
+    modes = ["manual"]
     base_path = os.path.join(cfg.DATA_PATH, subject)
 
     for mode in modes:
-        qc_recons.qc_recons_bis(base_path, subject, mode)"""
+        qc_recons.qc_recons_bis(base_path, subject, mode)
 
 
     """base_path = cfg.MESO_OUTPUT_PATH
