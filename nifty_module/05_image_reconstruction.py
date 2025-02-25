@@ -58,7 +58,7 @@ singularity exec \\
         --threshold -1 \\
         --threshold-first -1 \\
         
-./mv_recons.sh {subj} nifty
+./mv_recons.sh {subj} mattia
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
