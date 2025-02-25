@@ -21,10 +21,10 @@ def qc_plot_table_recons(datas):
         num_cols = len(modes)
 
         fig, axes = plt.subplots(num_slices, num_cols, figsize=(15, 3*num_slices))
-        fig.suptitle(f'Fabienne {session} | Threshold -1')
+        fig.suptitle(f'Fabienne {session} | Threshold -1', fontsize=25)
 
-        fig.text(0.25, 0.95, 'Titre Colonne 1', ha='center', va='center', fontsize=14)
-        fig.text(0.75, 0.95, 'Titre Colonne 2', ha='center', va='center', fontsize=14)
+        for col in range(num_cols):
+            fig.text((col + 0.5) / num_cols, 0.95, f'{mode}', ha='center', va='center', fontsize=25)
 
         for col, (mode, paths) in enumerate(modes.items()):
             anat_path = paths["anat"]
@@ -34,10 +34,10 @@ def qc_plot_table_recons(datas):
             for row in range(num_slices):
                 slice_idx = anat_img.shape[2] * row // num_slices
                 axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
-                axes[row, col].set_title(f'{mode}')
+                # axes[row, col].set_title(f'{mode}')
                 axes[row, col].axis('off')
 
-        plt.tight_layout(rect=[0, 0, 1, 0.96])
+        plt.tight_layout()
         output_file = os.path.join(output_dir, f"fabienne_{session}_table_recons.png")
         plt.savefig(output_file)
         plt.close()
