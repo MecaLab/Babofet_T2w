@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
     # True mean it will use the manual corrected brainmask, False is the niftys one
-    mask_model = "manual"  # could be 'nifty' or 'mattia' or 'manual'
+    mask_model = "mattia"  # could be 'nifty' or 'mattia' or 'manual'
     if mask_model == "manual":
         bm_folder = "manual_masks"
     elif mask_model == "nifty":
