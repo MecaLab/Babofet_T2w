@@ -17,7 +17,7 @@ def qc_plot_table_recons(datas, name):
     output_dir = os.path.join(dir_snapshots, "recons", "niftymic", "Fabienne")
     print("Images are written in {}".format(output_dir))
 
-    slice_percentages = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
+    slice_percentages = [0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75]
 
     for session, modes in datas.items():
         num_cols = len(modes)
