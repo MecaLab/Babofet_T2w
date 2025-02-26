@@ -10,6 +10,14 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
 
+def calculate_scale_factor(reference_slices):
+    # Calculer le facteur d'échelle en fonction des points de correspondance
+    ref_slice1, ref_total1 = reference_slices[0]
+    ref_slice2, ref_total2 = reference_slices[1]
+    scale_factor = (ref_slice2 / ref_total2) / (ref_slice1 / ref_total1)
+    return scale_factor
+
+
 def qc_plot_table_recons(datas, name):
     num_slices = 7
     dir_snapshots = "snapshots"
@@ -25,16 +33,21 @@ def qc_plot_table_recons(datas, name):
         fig, axes = plt.subplots(num_slices, num_cols, figsize=(15, 3*num_slices))
         fig.suptitle(f'Fabienne {session} | {name}', fontsize=16)
 
+        reference_slices = []
+
         for col, (mode, paths) in enumerate(modes.items()):
             fig.text((col + 0.5) / num_cols, 0.95, mode, ha='center', va='center', fontsize=14)
             anat_path = paths["anat"]
 
             anat_img = nib.load(anat_path).get_fdata()
-            print(paths, anat_img.shape)
             depth = anat_img.shape[2]
 
+            reference_slices.append((depth // 2, depth))
+
+            scale_factor = calculate_scale_factor(reference_slices)
+
             for row in range(num_slices):
-                slice_idx = int(depth * slice_percentages[row])
+                slice_idx = int(depth * slice_percentages[row] * scale_factor)
                 axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
                 axes[row, col].set_title(f'Coupe {slice_idx}')
                 axes[row, col].axis('off')
