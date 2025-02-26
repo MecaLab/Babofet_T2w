@@ -44,7 +44,15 @@ def qc_plot_table_recons(datas, name):
 
             reference_slices.append((depth // 2, depth))
 
-            scale_factor = calculate_scale_factor(reference_slices)
+        scale_factor = calculate_scale_factor(reference_slices)
+
+        for col, (mode, paths) in enumerate(modes.items()):
+            anat_path = paths["anat"]
+
+            anat_img = nib.load(anat_path).get_fdata()
+            depth = anat_img.shape[2]
+
+            reference_slices.append((depth // 2, depth))
 
             for row in range(num_slices):
                 slice_idx = int(depth * slice_percentages[row] * scale_factor)
