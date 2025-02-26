@@ -17,7 +17,7 @@ def qc_plot_table_recons(datas, name):
     output_dir = os.path.join(dir_snapshots, "recons", "niftymic", "Fabienne")
     print("Images are written in {}".format(output_dir))
 
-    slices_idx = [5, 15, 25, 35, 45, 55, 65]
+    slice_percentages = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
 
     for session, modes in datas.items():
         num_cols = len(modes)
@@ -30,8 +30,10 @@ def qc_plot_table_recons(datas, name):
             anat_path = paths["anat"]
 
             anat_img = nib.load(anat_path).get_fdata()
+            depth = anat_img.shape[2]
+
             for row in range(num_slices):
-                slice_idx = anat_img.shape[2] * row // num_slices
+                slice_idx = int(depth * slice_percentages[row])
                 axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
                 axes[row, col].set_title(f'Coupe {slice_idx}')
                 axes[row, col].axis('off')
