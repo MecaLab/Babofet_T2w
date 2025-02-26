@@ -48,7 +48,7 @@ def qc_plot_table_recons(datas, name):
 
             for row in range(num_slices):
                 slice_idx = int(depth * slice_percentages[row])
-                axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
+                axes[row, col].imshow(anat_data_resized[:, :, slice_idx], cmap="gray")
                 axes[row, col].set_title(f'Coupe {slice_idx}')
                 axes[row, col].axis('off')
 
