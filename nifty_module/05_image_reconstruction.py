@@ -11,6 +11,7 @@ def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files,
     
 #SBATCH --account='b391'
 #SBATCH --partition=pascal
+#SBATCH --time=5:00:00
 #SBATCH --gres=gpu:1
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=50G
