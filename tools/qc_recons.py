@@ -8,7 +8,6 @@ import numpy as np
 import configuration as cfg
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-from PIL import Image
 
 
 def qc_plot_table_recons(datas, name):
@@ -18,7 +17,7 @@ def qc_plot_table_recons(datas, name):
     output_dir = os.path.join(dir_snapshots, "recons", "niftymic", "Fabienne")
     print("Images are written in {}".format(output_dir))
 
-    slice_percentages = [0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75]
+    slice_percentages = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
 
     for session, modes in datas.items():
         num_cols = len(modes)
@@ -30,25 +29,12 @@ def qc_plot_table_recons(datas, name):
             fig.text((col + 0.5) / num_cols, 0.95, mode, ha='center', va='center', fontsize=14)
             anat_path = paths["anat"]
 
-            anat_img = nib.load(anat_path)
-            affine = anat_img.affine
-
-            orientation = nib.aff2axcodes(affine)
-            print(f"Orientation de l'image {anat_path}: {orientation}")
-
             anat_img = nib.load(anat_path).get_fdata()
-
-            target_shape = (256, 256, anat_img.shape[2])  # Exemple de forme cible
-            anat_data_resized = np.zeros(target_shape)
-            for z in range(anat_img.shape[2]):
-                anat_data_resized[:, :, z] = np.array(
-                    Image.fromarray(anat_img[:, :, z]).resize((target_shape[0], target_shape[1])))
-
-            depth = anat_data_resized.shape[2]
+            depth = anat_img.shape[2]
 
             for row in range(num_slices):
                 slice_idx = int(depth * slice_percentages[row])
-                axes[row, col].imshow(anat_data_resized[:, :, slice_idx], cmap="gray")
+                axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
                 axes[row, col].set_title(f'Coupe {slice_idx}')
                 axes[row, col].axis('off')
 
