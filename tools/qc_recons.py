@@ -29,6 +29,12 @@ def qc_plot_table_recons(datas, name):
             fig.text((col + 0.5) / num_cols, 0.95, mode, ha='center', va='center', fontsize=14)
             anat_path = paths["anat"]
 
+            anat_img = nib.load(anat_path)
+            affine = anat_img.affine
+
+            orientation = nib.aff2axcodes(affine)
+            print(f"Orientation de l'image {anat_path}: {orientation}")
+
             anat_img = nib.load(anat_path).get_fdata()
             depth = anat_img.shape[2]
 
