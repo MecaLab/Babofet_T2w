@@ -31,9 +31,9 @@ def qc_plot_table_recons(datas, name):
 
             anat_img = nib.load(anat_path).get_fdata()
             for row in range(num_slices):
-                # slice_idx = anat_img.shape[2] * row // num_slices
-                axes[row, col].imshow(anat_img[:, :, slices_idx[row]], cmap="gray")
-                # axes[row, col].set_title(f'Coupe {slice_idx}')
+                slice_idx = anat_img.shape[2] * row // num_slices
+                axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
+                axes[row, col].set_title(f'Coupe {slice_idx}')
                 axes[row, col].axis('off')
 
         plt.tight_layout(rect=[0, 0, 1, 0.96])
