@@ -28,9 +28,10 @@ def qc_plot_table_recons(datas, name):
             anat_path = paths["anat"]
 
             anat_img = nib.load(anat_path).get_fdata()
-
+            print(mode)
             for row in range(num_slices):
                 slice_idx = anat_img.shape[2] * row // num_slices
+                print(f"\t {slice_idx}")
                 axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
                 axes[row, col].set_title(f'Coupe {slice_idx}')
                 axes[row, col].axis('off')
