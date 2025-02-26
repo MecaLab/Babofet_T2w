@@ -21,7 +21,7 @@ def qc_plot_table_recons(datas, name):
         num_cols = len(modes)
 
         fig, axes = plt.subplots(num_slices, num_cols, figsize=(15, 3*num_slices))
-        fig.suptitle(f'Fabienne {session} | Default param', fontsize=16)
+        fig.suptitle(f'Fabienne {session} | {name}', fontsize=16)
 
         for col, (mode, paths) in enumerate(modes.items()):
             fig.text((col + 0.5) / num_cols, 0.95, mode, ha='center', va='center', fontsize=14)
