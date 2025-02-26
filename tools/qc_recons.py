@@ -30,6 +30,7 @@ def qc_plot_table_recons(datas, name):
             anat_path = paths["anat"]
 
             anat_img = nib.load(anat_path).get_fdata()
+            print(paths, anat_img.shape)
             depth = anat_img.shape[2]
 
             for row in range(num_slices):
