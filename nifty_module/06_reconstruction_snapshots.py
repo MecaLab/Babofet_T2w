@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
-    modes = ["manual", "nifty"]
+    modes = ["manual", "nifty", "mattia"]
 
     datas = {}
     # plot the matplotlib table format for the qc:
