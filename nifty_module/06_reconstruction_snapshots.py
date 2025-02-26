@@ -14,7 +14,7 @@ if __name__ == "__main__":
     # plot the matplotlib table format for the qc:
     # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc)
     # 1 file per session
-    name = "default"
+    name = "thresholds-1"
     for session in os.listdir(base_path):
         datas[session] = {}
         for mode in modes:
