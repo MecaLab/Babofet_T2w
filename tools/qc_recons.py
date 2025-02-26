@@ -8,6 +8,7 @@ import numpy as np
 import configuration as cfg
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+from PIL import Image
 
 
 def qc_plot_table_recons(datas, name):
@@ -36,7 +37,14 @@ def qc_plot_table_recons(datas, name):
             print(f"Orientation de l'image {anat_path}: {orientation}")
 
             anat_img = nib.load(anat_path).get_fdata()
-            depth = anat_img.shape[2]
+
+            target_shape = (256, 256, anat_img.shape[2])  # Exemple de forme cible
+            anat_data_resized = np.zeros(target_shape)
+            for z in range(anat_img.shape[2]):
+                anat_data_resized[:, :, z] = np.array(
+                    Image.fromarray(anat_img[:, :, z]).resize((target_shape[0], target_shape[1])))
+
+            depth = anat_data_resized.shape[2]
 
             for row in range(num_slices):
                 slice_idx = int(depth * slice_percentages[row])
