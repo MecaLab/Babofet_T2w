@@ -45,6 +45,7 @@ def qc_plot_table_recons(datas, name):
             reference_slices.append((depth // 2, depth))
 
         scale_factor = calculate_scale_factor(reference_slices)
+        print(scale_factor)
 
         for col, (mode, paths) in enumerate(modes.items()):
             anat_path = paths["anat"]
