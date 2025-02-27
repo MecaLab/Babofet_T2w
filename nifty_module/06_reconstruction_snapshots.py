@@ -18,9 +18,9 @@ def plot_slice(image, slice_index, title):
 if __name__ == "__main__":
     base_path = os.path.join(cfg.DATA_PATH, "Fabienne")
 
-    img1 = nib.load(os.path.join(base_path, "ses09", f"manual_brainmask", f"sub-Fabienne_ses-09_haste_3DHR_manual_bm_T-1_pipeline.nii.gz"))
-    img2 = nib.load(os.path.join(base_path, "ses09", f"nifty_brainmask", f"sub-Fabienne_ses-09_haste_3DHR_nifty_bm_T-1_pipeline.nii.gz"))
-    img3 = nib.load(os.path.join(base_path, "ses09", f"mattia_brainmask", f"sub-Fabienne_ses-09_haste_3DHR_mattia_bm_T-1_pipeline.nii.gz"))
+    img1 = nib.load(os.path.join(base_path, "ses09", f"manual_brainmask/exp_param", f"sub-Fabienne_ses-09_haste_3DHR_manual_bm_T-1_pipeline.nii.gz"))
+    img2 = nib.load(os.path.join(base_path, "ses09", f"nifty_brainmask/exp_param", f"sub-Fabienne_ses-09_haste_3DHR_nifty_bm_T-1_pipeline.nii.gz"))
+    img3 = nib.load(os.path.join(base_path, "ses09", f"mattia_brainmask/exp_param", f"sub-Fabienne_ses-09_haste_3DHR_mattia_bm_T-1_pipeline.nii.gz"))
 
     sitk_img1 = sitk.GetImageFromArray(img1.get_fdata())
     sitk_img1.SetOrigin(img1.affine[:3, 3])
