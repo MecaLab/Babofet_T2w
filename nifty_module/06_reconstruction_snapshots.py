@@ -25,12 +25,12 @@ if __name__ == "__main__":
     qc_recons.qc_plot_table_recons(datas, name)
 
 
-    """# 1 snapshot per reconstruction
+    # 1 snapshot per reconstruction
     modes = ["manual"]
     base_path = os.path.join(cfg.DATA_PATH, subject)
 
     for mode in modes:
-        qc_recons.qc_recons_bis(base_path, subject, mode)"""
+        qc_recons.qc_recons_bis(base_path, subject, mode)
 
     """
     base_path = cfg.MESO_OUTPUT_PATH
