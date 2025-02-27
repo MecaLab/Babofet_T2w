@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
 
     # 1 snapshot per reconstruction
-    modes = ["manual"]
+    modes = ["manual", "nifty", "mattia"]
     base_path = os.path.join(cfg.DATA_PATH, subject)
 
     for mode in modes:
