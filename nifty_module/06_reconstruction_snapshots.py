@@ -26,8 +26,11 @@ if __name__ == "__main__":
         for col, (mode, paths) in enumerate(modes.items()):
             anat_path = paths["anat"]
 
-            anat_img = nib.load(anat_path).get_fdata()
-            print(anat_img)
+            try:
+                anat_img = nib.load(anat_path).get_fdata()
+                print(anat_img.shape)
+            except FileNotFoundError as e:
+                print(e)
 
 
 
