@@ -20,7 +20,7 @@ if __name__ == "__main__":
         datas[session] = {}
         for mode in modes:
             datas[session][mode] = {}
-            datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
+            datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask/exp_param", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_T-1_pipeline.nii.gz")
 
     for session, modes in datas.items():
         for col, (mode, paths) in enumerate(modes.items()):
