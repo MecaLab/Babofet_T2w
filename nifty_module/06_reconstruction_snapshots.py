@@ -3,6 +3,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 from tools import qc_recons
+import nibabel as nib
 
 if __name__ == "__main__":
 
@@ -21,7 +22,16 @@ if __name__ == "__main__":
             datas[session][mode] = {}
             datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
 
-    qc_recons.qc_plot_table_recons(datas, name)
+    for session, modes in datas.items():
+        for col, (mode, paths) in enumerate(modes.items()):
+            anat_path = paths["anat"]
+
+            anat_img = nib.load(anat_path).get_fdata()
+            print(anat_img)
+
+
+
+    # qc_recons.qc_plot_table_recons(datas, name)
 
 
     """# 1 snapshot per reconstruction
