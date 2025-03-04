@@ -149,6 +149,9 @@ if __name__ == "__main__":
                     bm_nifti_filename = filename[0] + "_mask.nii.gz"
                     bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
+                print(anat_path_subj_path)
+                print(bm_path_subj_path)
+                exit()
                 if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
                     anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
