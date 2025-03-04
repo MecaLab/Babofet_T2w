@@ -153,6 +153,9 @@ if __name__ == "__main__":
                     anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
 
+            print(anat_img)
+            print(bm_img)
+
             motion_subfolder = os.path.join(recons_haste_subj_output_dir, 'motion_correction')
 
             if not os.path.exists(motion_subfolder):
@@ -170,5 +173,7 @@ if __name__ == "__main__":
                 mode_bm=mask_model
             )
 
-            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            #  subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+
             print(f"\t\tComputing reconstruction for {subject}\n")
+            exit()
