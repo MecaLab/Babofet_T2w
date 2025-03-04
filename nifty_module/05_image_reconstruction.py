@@ -5,7 +5,7 @@ import configuration as cfg
 import subprocess
 
 
-def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file):
+def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file, mode_bm="manual"):
     filename = "nifty_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
     
@@ -55,8 +55,10 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
+        --threshold-first 0.1 \\
+        --threshold 0.3 \\
         
-./mv_recons.sh {subj} mattia
+./mv_recons.sh {subj} {mode_bm}
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -78,7 +80,7 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
 
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
-    mask_model = "mattia"  # could be 'nifty' or 'mattia' or 'manual'
+    mask_model = "manual"  # could be 'nifty' or 'mattia' or 'manual'
     if mask_model == "manual":
         bm_folder = "manual_masks"
     elif mask_model == "nifty":
@@ -156,7 +158,7 @@ if __name__ == "__main__":
             if not os.path.exists(motion_subfolder):
                 os.mkdir(motion_subfolder)
 
-            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_pipeline.nii.gz"
+            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_T13_pipeline.nii.gz"
 
             write_slurm_file_nifty(
                 subj=subject,
@@ -164,7 +166,8 @@ if __name__ == "__main__":
                 denoised_files=anat_img,
                 bm_folder=bm_folder,
                 bm_files=bm_img,
-                output_file=recons_haste_subj_output
+                output_file=recons_haste_subj_output,
+                mode_bm=mask_model
             )
 
             subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
