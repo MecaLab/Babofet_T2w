@@ -24,7 +24,7 @@ def plot_intensity_profile(data, slice_index, axis=0, label=''):
     elif axis == 2:
         profile = data[:, :, slice_index].mean(axis=0)
 
-    plt.plot(data.flatten(), label=label)
+    plt.scatter(data.flatten(), label=label)
     plt.xlabel('Position')
     plt.ylabel('Intensité')
     plt.legend(loc='upper right')
