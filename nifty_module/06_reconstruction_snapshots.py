@@ -14,6 +14,21 @@ def plot_histo(data, label):
     plt.legend(loc="upper right")
 
 
+def plot_intensity_profile(data, slice_index, axis=0, label=''):
+    """Trace le profil d'intensité le long d'une ligne dans une tranche donnée."""
+    if axis == 0:
+        profile = data[slice_index, :, :].mean(axis=1)
+    elif axis == 1:
+        profile = data[:, slice_index, :].mean(axis=1)
+    elif axis == 2:
+        profile = data[:, :, slice_index].mean(axis=0)
+
+    plt.plot(profile, label=label)
+    plt.xlabel('Position')
+    plt.ylabel('Intensité')
+    plt.legend(loc='upper right')
+
+
 if __name__ == "__main__":
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
@@ -37,11 +52,17 @@ if __name__ == "__main__":
     volume_1_data = volume_1.get_fdata()
     volume_2_data = volume_2.get_fdata()
 
-
     plt.figure(figsize=(12, 6))
     plot_histo(volume_1_data, "Threshold -1")
     plot_histo(volume_2_data, "Default threshold")
     plt.savefig("tmp.png")
+    plt.close()
+
+    plt.figure(figsize=(12, 6))
+    plot_intensity_profile(volume_1_data, 30, axis=2, label="Threshold -1")
+    plot_intensity_profile(volume_2_data, 30, axis=2, label="Default threshold")
+    plt.savefig("tmp2.png")
+    plt.close()
 
     """# 1 snapshot per reconstruction
     modes = ["manual"]
