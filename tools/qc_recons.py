@@ -260,10 +260,10 @@ def qc_rejected_slices(subj_path, subj, mode):
                     ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
                     if i in rejected_idx:
                         ax.imshow(masked_brainmask, alpha=0.5, cmap=red_cmap, origin="lower")
-                        ax.set_title(f"Slice {i+1} rejected", color="white")
+                        ax.set_title(f"Slice {i} rejected", color="white")
                     else:
                         ax.imshow(masked_brainmask, alpha=0.5, cmap=green_cmap, origin="lower")
-                        ax.set_title(f"Slice {i+1} included", color="white")
+                        ax.set_title(f"Slice {i} included", color="white")
                     plt.axis("off")
                 else:
                     ax.axis("off")
