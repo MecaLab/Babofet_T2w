@@ -3,7 +3,15 @@ import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 from tools import qc_recons
+import nibabel as nib
 import matplotlib.pyplot as plt
+
+
+def plot_histo(data, label):
+    plt.hist(data.flatten(), bins=50, alpha=0.6, label=label)
+    plt.xlabel("Intensité")
+    plt.ylabel("Fréquence")
+    plt.legend(loc="upper right")
 
 
 if __name__ == "__main__":
@@ -22,8 +30,18 @@ if __name__ == "__main__":
             datas[session][mode] = {}
             datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
 
-    qc_recons.qc_plot_table_recons(datas, name)
+    # qc_recons.qc_plot_table_recons(datas, name)
+    volume_1 = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
+    volume_2 = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/nifty_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")
 
+    volume_1_data = volume_1.get_fdata()
+    volume_2_data = volume_2.get_fdata()
+
+
+    plt.figure(figsize=(12, 6))
+    plot_histo(volume_1_data, "Threshold -1")
+    plot_histo(volume_2_data, "Default threshold")
+    plt.savefig("tmp.png")
 
     """# 1 snapshot per reconstruction
     modes = ["manual"]
