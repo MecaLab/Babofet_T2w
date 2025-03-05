@@ -227,6 +227,7 @@ def qc_rejected_slices(subj_path, subj, mode):
         os.mkdir(dir_out)
 
     for stack_name, rejected_idx in data.items():
+        print(stack_name)
         if stack_name != "sub-Fabienne_ses-01_T2_HASTE_AX_6_denoised":
             continue
         if rejected_idx:
