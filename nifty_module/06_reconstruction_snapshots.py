@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 
 def plot_histo(data, label):
-    plt.hist(data.flatten(), bins=50, alpha=0.6, label=label)
+    plt.hist(data.flatten(), bins=30, alpha=0.6, label=label)
     plt.xlabel("Intensité")
     plt.ylabel("Fréquence")
     plt.legend(loc="upper right")
@@ -24,7 +24,7 @@ def plot_intensity_profile(data, slice_index, axis=0, label=''):
     elif axis == 2:
         profile = data[:, :, slice_index].mean(axis=0)
 
-    plt.plot(profile, label=label)
+    plt.plot(data.flatten(), label=label)
     plt.xlabel('Position')
     plt.ylabel('Intensité')
     plt.legend(loc='upper right')
