@@ -227,6 +227,8 @@ def qc_rejected_slices(subj_path, subj, mode):
         os.mkdir(dir_out)
 
     for stack_name, rejected_idx in data.items():
+        if stack_name != "sub-Fabienne_ses-01_T2_HASTE_AX_6_denoised":
+            continue
         if rejected_idx:
             stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name + ".nii")
             img = nib.load(stack_path)
@@ -256,8 +258,9 @@ def qc_rejected_slices(subj_path, subj, mode):
 
             for i, ax in enumerate(axes.flatten()):
                 if i < n_slices:
-                    masked_brainmask = np.ma.masked_where(bm_data[:, :, i] == 0, bm_data[:, :, i])
-                    ax.imshow(img_data[:, :, i], cmap="gray")
+                    masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
+                    print(masked_brainmask)
+                    ax.imshow(img_data[:, :, i].T, cmap="gray")
                     if i in rejected_idx:
                         ax.imshow(masked_brainmask, alpha=0.5, cmap=red_cmap)
                         ax.set_title(f"Slice {i} rejected", color="white")
