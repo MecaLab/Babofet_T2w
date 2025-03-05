@@ -254,10 +254,17 @@ def qc_rejected_slices(subj_path, subj, mode):
             n_rows = (n_slices + n_cols - 1) // n_cols
             fig, axes = plt.subplots(n_rows, n_cols, figsize=(22, 5*n_rows), facecolor='#121212')  # almost full black
 
+            if "COR" in stack_name:
+                pass
+            if "AX" in stack_name:
+                pass
+            if "SAG" in stack_name:
+                pass
+
             for i, ax in enumerate(axes.flatten()):
                 if i < n_slices:
-                    masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
-                    ax.imshow(img_data[:, :, i].T, cmap="gray", origin="lower")
+                    masked_brainmask = np.ma.masked_where(bm_data[:, i, :].T == 0, bm_data[:, i, :].T)
+                    ax.imshow(img_data[:, i, :].T, cmap="gray", origin="lower")
                     if i in rejected_idx:
                         ax.imshow(masked_brainmask, alpha=0.5, cmap=red_cmap, origin="lower")
                         ax.set_title(f"Slice {i} rejected", color="white")
