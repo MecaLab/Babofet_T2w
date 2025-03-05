@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     # qc_recons.qc_plot_table_recons(datas, name)
     volume_1 = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
-    volume_2 = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/nifty_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")
+    volume_2 = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")
 
     volume_1_data = volume_1.get_fdata()
     volume_2_data = volume_2.get_fdata()
