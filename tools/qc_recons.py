@@ -258,19 +258,17 @@ def qc_rejected_slices(subj_path, subj, mode):
 
             for i, ax in enumerate(axes.flatten()):
                 if i < n_slices:
-                    masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
-                    if not masked_brainmask.mask.all():
-                        ax.imshow(img_data[:, :, i].T, cmap="gray")
-                        if i in rejected_idx:
-                            print(bm_data[:, :, i].T)
-                            ax.imshow(masked_brainmask, alpha=0.5, cmap=red_cmap)
-                            ax.set_title(f"Slice {i+1} rejected", color="white")
-                        else:
-                            ax.imshow(masked_brainmask, alpha=0.5, cmap=green_cmap)
-                            ax.set_title(f"Slice {i+1} included", color="white")
-                        plt.axis("off")
+                    # masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
+                    masked_brainmask = bm_data[:, :, i].T
+                    ax.imshow(img_data[:, :, i].T, cmap="gray")
+                    if i in rejected_idx:
+                        print(bm_data[:, :, i].T)
+                        ax.imshow(masked_brainmask, alpha=0.5, cmap=red_cmap)
+                        ax.set_title(f"Slice {i+1} rejected", color="white")
                     else:
-                        print(f"Brainmask empty for slice {i}")
+                        ax.imshow(masked_brainmask, alpha=0.5, cmap=green_cmap)
+                        ax.set_title(f"Slice {i+1} included", color="white")
+                    plt.axis("off")
                 else:
                     ax.axis("off")
             filename = os.path.join(dir_out, f"{stack_name}.png")
