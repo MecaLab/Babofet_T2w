@@ -258,7 +258,7 @@ def qc_rejected_slices(subj_path, subj, mode):
 
             for i, ax in enumerate(axes.flatten()):
                 if i < n_slices:
-                    masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
+                    masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T == 1)
                     ax.imshow(img_data[:, :, i].T, cmap="gray")
                     if i in rejected_idx:
                         print(bm_data[:, :, i].T)
