@@ -194,7 +194,7 @@ def qc_rejected_slices(subj_path, subj, mode):
 
     output_folder = f"{mode}_brainmask"
 
-    json_file = os.path.join(subj_path, output_folder, "exp_param/rejected_slices_T13.json")
+    json_file = os.path.join(subj_path, output_folder, "rejected_slices.json")
     with open(json_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
