@@ -246,7 +246,7 @@ def qc_rejected_slices(subj_path, subj, mode):
                     bm = nib.load(bm_path)
 
             bm_data = bm.get_fdata()
-            bm_data = (bm_data == 1).astype(int)
+            bm_data = (bm_data > 0).astype(int)
 
             if len(bm_data.shape) == 4:  # NiftyMIC brainmask has a 4D data: (M, M, nb_slices, 1)
                 bm_data = np.squeeze(bm_data)  # (M, M, nb_slices)
