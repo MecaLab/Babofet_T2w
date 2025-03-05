@@ -261,13 +261,12 @@ def qc_rejected_slices(subj_path, subj, mode):
                     masked_brainmask = np.ma.masked_where(bm_data[:, :, i].T == 0, bm_data[:, :, i].T)
                     ax.imshow(img_data[:, :, i].T, cmap="gray")
                     if i in rejected_idx:
-                        print(masked_brainmask == 0)
-                        print(masked_brainmask == 1)
+                        print(bm_data[:, :, i].T)
                         ax.imshow(masked_brainmask, alpha=0.5, cmap=red_cmap)
-                        ax.set_title(f"Slice {i} rejected", color="white")
+                        ax.set_title(f"Slice {i+1} rejected", color="white")
                     else:
                         ax.imshow(masked_brainmask, alpha=0.5, cmap=green_cmap)
-                        ax.set_title(f"Slice {i} included", color="white")
+                        ax.set_title(f"Slice {i+1} included", color="white")
                     plt.axis("off")
                 else:
                     ax.axis("off")
