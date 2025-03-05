@@ -24,7 +24,7 @@ def plot_intensity_profile(data, slice_index, axis=0, label=''):
     elif axis == 2:
         profile = data[:, :, slice_index].mean(axis=0)
 
-    plt.scatter(data.flatten(), label=label)
+    plt.plot(profile, label=label)
     plt.xlabel('Position')
     plt.ylabel('Intensité')
     plt.legend(loc='upper right')
@@ -47,26 +47,34 @@ if __name__ == "__main__":
             datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
 
     # qc_recons.qc_plot_table_recons(datas, name)
+    volume_ref = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")
     volume_1 = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
-    volume_2 = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")
+    volume_2 = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T13_pipeline.nii.gz")
+    volume_3 = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T46_pipeline.nii.gz")
 
+    volume_ref_data = volume_ref.get_fdata()
     volume_1_data = volume_1.get_fdata()
     volume_2_data = volume_2.get_fdata()
+    volume_3_data = volume_3.get_fdata()
 
     plt.figure(figsize=(12, 6))
     plot_histo(volume_1_data, "Threshold -1")
-    plot_histo(volume_2_data, "Default threshold")
+    plot_histo(volume_2_data, "Threshold 13")
+    plot_histo(volume_3_data, "Threshold 46")
+    plot_histo(volume_ref_data, "Default threshold")
     plt.savefig("tmp.png")
     plt.close()
 
     plt.figure(figsize=(12, 6))
     plot_intensity_profile(volume_1_data, 50, axis=2, label="Threshold -1")
-    plot_intensity_profile(volume_2_data, 50, axis=2, label="Default threshold")
+    plot_intensity_profile(volume_2_data, 50, axis=2, label="Threshold 13")
+    plot_intensity_profile(volume_3_data, 50, axis=2, label="Threshold 46")
+    plot_intensity_profile(volume_ref_data, 50, axis=2, label="Default threshold")
     plt.savefig("tmp2.png")
     plt.close()
 
     mean1, std1 = np.mean(volume_1_data), np.std(volume_1_data)
-    mean2, std2 = np.mean(volume_2_data), np.std(volume_2_data)
+    mean2, std2 = np.mean(volume_ref_data), np.std(volume_ref_data)
     print(f'Volume 1 - Moyenne: {mean1} | Écart-type: {std1}')
     print(f'Volume 2 - Moyenne: {mean2} | Écart-type: {std2}')
 
