@@ -3,6 +3,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 from tools import qc_recons
+import numpy as np
 import nibabel as nib
 import matplotlib.pyplot as plt
 
@@ -59,10 +60,15 @@ if __name__ == "__main__":
     plt.close()
 
     plt.figure(figsize=(12, 6))
-    plot_intensity_profile(volume_1_data, 30, axis=2, label="Threshold -1")
-    plot_intensity_profile(volume_2_data, 30, axis=2, label="Default threshold")
+    plot_intensity_profile(volume_1_data, 50, axis=2, label="Threshold -1")
+    plot_intensity_profile(volume_2_data, 50, axis=2, label="Default threshold")
     plt.savefig("tmp2.png")
     plt.close()
+
+    mean1, std1 = np.mean(volume_1_data), np.std(volume_1_data)
+    mean2, std2 = np.mean(volume_2_data), np.std(volume_2_data)
+    print(f'Volume 1 - Moyenne: {mean1} | Écart-type: {std1}')
+    print(f'Volume 2 - Moyenne: {mean2} | Écart-type: {std2}')
 
     """# 1 snapshot per reconstruction
     modes = ["manual"]
