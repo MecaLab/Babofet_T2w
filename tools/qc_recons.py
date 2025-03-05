@@ -331,7 +331,7 @@ def qc_plot_table_stack(base_path, list_subjs, modes):
 
 if __name__ == "__main__":
 
-    """list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
+    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
     mode = "nifty"  # mode of the brainmask: manual_brainmask or nifty_brainmask
 
     for subj in list_subjs:
@@ -339,12 +339,12 @@ if __name__ == "__main__":
         session_nb = "".join(subj.split("_")[1].split("-"))
         subj_path = os.path.join(cfg.DATA_PATH, subject_name, session_nb)
 
-        qc_rejected_slices(subj_path, subj, mode)"""
-
+        qc_rejected_slices(subj_path, subj, mode)
+    """
     modes = ["nifty", "manual"]
     list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
     base_path = cfg.MESO_OUTPUT_PATH
-    qc_plot_table_stack(base_path, list_subjs, modes)
+    qc_plot_table_stack(base_path, list_subjs, modes)"""
 
 
 
