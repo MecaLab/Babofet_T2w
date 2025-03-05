@@ -194,7 +194,7 @@ def qc_rejected_slices(subj_path, subj, mode):
 
     output_folder = f"{mode}_brainmask"
 
-    json_file = os.path.join(subj_path, output_folder, "rejected_slices.json")
+    json_file = os.path.join(subj_path, output_folder, "exp_param/rejected_slices_T13.json")
     with open(json_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -332,7 +332,7 @@ def qc_plot_table_stack(base_path, list_subjs, modes):
 if __name__ == "__main__":
 
     list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
-    mode = "nifty"  # mode of the brainmask: manual_brainmask or nifty_brainmask
+    mode = "manual"  # mode of the brainmask: manual_brainmask or nifty_brainmask
 
     for subj in list_subjs:
         subject_name = subj.split("_")[0].split("-")[-1]
