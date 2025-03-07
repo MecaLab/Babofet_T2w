@@ -22,7 +22,7 @@ def plot_intensity_profile(data, slice_index, axis=0, label=''):
     elif axis == 1:
         profile = data[:, slice_index, :].mean(axis=1)
     elif axis == 2:
-        profile = data[:, :, slice_index].mean(axis=0)
+        profile = data[:, :, slice_index]
 
     plt.plot(profile, label=label)
     plt.xlabel('Position')
