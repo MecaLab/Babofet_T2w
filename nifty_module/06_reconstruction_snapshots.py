@@ -35,6 +35,7 @@ if __name__ == "__main__":
     base_path = os.path.join(cfg.DATA_PATH, subject)
     modes = ["manual", "nifty", "mattia"]
 
+    """
     datas = {}
     # plot the matplotlib table format for the qc:
     # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc)
@@ -47,6 +48,15 @@ if __name__ == "__main__":
             datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
 
     # qc_recons.qc_plot_table_recons(datas, name)
+    """
+
+    # 1 snapshot per reconstruction
+    modes = ["manual"]
+    base_path = os.path.join(cfg.DATA_PATH, subject)
+
+    for mode in modes:
+        qc_recons.qc_recons_bis(base_path, subject, mode)
+
     """
     volume_ref = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")
     volume_1 = nib.load("/scratch/lbaptiste/data/recons_folder/Fabienne/ses01/manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
@@ -79,15 +89,6 @@ if __name__ == "__main__":
     print(f'Volume 1 - Moyenne: {mean1} | Écart-type: {std1}')
     print(f'Volume 2 - Moyenne: {mean2} | Écart-type: {std2}')
 
-    """
-    # 1 snapshot per reconstruction
-    modes = ["manual"]
-    base_path = os.path.join(cfg.DATA_PATH, subject)
-
-    for mode in modes:
-        qc_recons.qc_recons_bis(base_path, subject, mode)
-
-    """
     base_path = cfg.MESO_OUTPUT_PATH
     model = "niftymic"  # niftymic or nesvor
     mode = "manual"  # manual bm or nifty bm
