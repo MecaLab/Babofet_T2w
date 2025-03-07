@@ -79,10 +79,12 @@ if __name__ == "__main__":
     plt.close()
 
     plt.figure(figsize=(12, 6))
-    plot_intensity_profile(volume_1_data, 50, axis=2, label="Two step cycle 4")
+    plot_intensity_profile(volume_1_data, 50, axis=2, label="Two step cycle 4 (50)")
     """plot_intensity_profile(volume_2_data, 50, axis=2, label="Threshold 13")
     plot_intensity_profile(volume_3_data, 50, axis=2, label="Threshold 46")"""
-    plot_intensity_profile(volume_ref_data, 50, axis=2, label="Default two step cycle")
+    plot_intensity_profile(volume_1_data, 20, axis=2, label="Two step cycle 4 (20)")
+    plot_intensity_profile(volume_ref_data, 20, axis=2, label="Default two step cycle (20)")
+    plot_intensity_profile(volume_ref_data, 50, axis=2, label="Default two step cycle (50)")
     plt.savefig(os.path.join(origin_output_path, "intensity_tsc.png"))
     plt.close()
 
