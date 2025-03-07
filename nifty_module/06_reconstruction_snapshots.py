@@ -86,10 +86,14 @@ if __name__ == "__main__":
     plt.savefig(os.path.join(origin_output_path, "intensity.png"))
     plt.close()
 
-    mean1, std1 = np.mean(volume_1_data), np.std(volume_1_data)
-    mean2, std2 = np.mean(volume_ref_data), np.std(volume_ref_data)
-    print(f'Volume 1 - Moyenne: {mean1} | Écart-type: {std1}')
+    mean1, std1 = np.mean(volume_ref_data), np.std(volume_ref_data)
+    mean2, std2 = np.mean(volume_1_data), np.std(volume_1_data)
+    mean3, std3 = np.mean(volume_2_data), np.std(volume_2_data)
+    mean4, std4 = np.mean(volume_3_data), np.std(volume_3_data)
+    print(f'Volume 1 (ref) - Moyenne: {mean1} | Écart-type: {std1}')
     print(f'Volume 2 - Moyenne: {mean2} | Écart-type: {std2}')
+    print(f'Volume 3 - Moyenne: {mean3} | Écart-type: {std3}')
+    print(f'Volume 4 - Moyenne: {mean4} | Écart-type: {std4}')
 
 
     """
