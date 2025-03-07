@@ -17,6 +17,7 @@ def plot_histo(data, label):
 
 def plot_intensity_profile(data, slice_index, axis=0, label=''):
     """Trace le profil d'intensité le long d'une ligne dans une tranche donnée."""
+    print(data.shape)
     if axis == 0:
         profile = data[slice_index, :, :].mean(axis=1)
     elif axis == 1:
@@ -24,9 +25,6 @@ def plot_intensity_profile(data, slice_index, axis=0, label=''):
     elif axis == 2:
         profile = data[:, :, slice_index].mean(axis=0)
 
-    print(profile)
-    print(profile.shape)
-    
     plt.plot(profile, label=label)
     plt.xlabel('Position')
     plt.ylabel('Intensité')
