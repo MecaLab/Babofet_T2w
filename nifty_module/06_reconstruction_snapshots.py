@@ -80,12 +80,12 @@ if __name__ == "__main__":
     plt.close()"""
 
     fig, axs = plt.subplots(1, 3, figsize=(15, 8))
-    idxs = [25, 50, 75]
+    idxs = [30, 50, 70]
     for i, idx in enumerate(idxs):
         plot_intensity_profile(volume_1_data, idx, axis=2, label=f"Threshold -1", ax=axs[i])
         plot_intensity_profile(volume_2_data, idx, axis=2, label=f"Threshold 0.1/0.3 ", ax=axs[i])
         plot_intensity_profile(volume_3_data, idx, axis=2, label=f"Threshold 0.4/0.6", ax=axs[i])
-        plot_intensity_profile(volume_ref_data, idx, axis=2, label=f"Default two step cycle", ax=axs[i])
+        plot_intensity_profile(volume_ref_data, idx, axis=2, label=f"Default threshold", ax=axs[i])
         axs[i].set_title(f"Slice {idx}")
     plt.tight_layout()
     plt.savefig(os.path.join(origin_output_path, "intensity_threshold.png"))
