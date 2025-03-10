@@ -19,11 +19,11 @@ def plot_intensity_profile(data, slice_index, axis=0, label='', ax=None):
     """Trace le profil d'intensité le long d'une ligne dans une tranche donnée."""
     print(data.shape)
     if axis == 0:
-        profile = data[slice_index, :, :].mean(axis=1)
+        profile = data[slice_index, :, :].mean()
     elif axis == 1:
-        profile = data[:, slice_index, :].mean(axis=1)
+        profile = data[:, slice_index, :].mean()
     elif axis == 2:
-        profile = data[:, :, slice_index].mean(axis=0)
+        profile = data[:, :, slice_index].mean()
 
     ax.plot(profile, label=label)
     ax.set_xlabel('Position')
