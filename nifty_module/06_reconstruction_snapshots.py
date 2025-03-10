@@ -57,7 +57,7 @@ if __name__ == "__main__":
         qc_recons.qc_recons_bis(base_path, subject, mode)
     """
 
-    session_id = "01"
+    session_id = "05"
 
     volume_ref = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_pipeline.nii.gz")
     volume_1 = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/exp_param/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
