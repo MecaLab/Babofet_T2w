@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 
 def plot_histo(data, label, slice_index, ax=None):
-    ax.hist(data[:, :, slice_index], bins=50, alpha=0.6, label=label)
+    ax.hist(data[:, :, slice_index].mean(), bins=50, alpha=0.6, label=label)
     ax.set_xlabel("Intensité")
     ax.set_ylabel("Fréquence")
     ax.legend()
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         plot_histo(volume_2_data, "Threshold 0.1/0.3", slice_index=idx, ax=axs[i])
         plot_histo(volume_3_data, "Threshold 0.4/0.6", slice_index=idx, ax=axs[i])
         plot_histo(volume_ref_data, "Default threshold", slice_index=idx, ax=axs[i])
-
+    plt.tight_layout()
     plt.savefig(os.path.join(origin_output_path, "threshold_histo.png"))
     plt.close()
 
