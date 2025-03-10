@@ -15,7 +15,7 @@ def plot_histo(data, label):
     plt.legend(loc="upper right")
 
 
-def plot_intensity_profile(data, slice_index, axis=0, label=''):
+def plot_intensity_profile(data, slice_index, axis=0, label='', ax=None):
     """Trace le profil d'intensité le long d'une ligne dans une tranche donnée."""
     print(data.shape)
     if axis == 0:
@@ -25,10 +25,10 @@ def plot_intensity_profile(data, slice_index, axis=0, label=''):
     elif axis == 2:
         profile = data[:, :, slice_index].mean(axis=0)
 
-    plt.plot(profile, label=label)
-    plt.xlabel('Position')
-    plt.ylabel('Intensité')
-    plt.legend(loc='upper right')
+    ax.plot(profile, label=label)
+    ax.set_xlabel('Position')
+    ax.set_ylabel('Intensité')
+    ax.legend(loc='upper right')
 
 
 if __name__ == "__main__":
@@ -79,13 +79,13 @@ if __name__ == "__main__":
     plt.savefig(os.path.join(origin_output_path, "histo_tsc.png"))
     plt.close()"""
 
-    plt.figure(figsize=(12, 6))
+    fig, axs = plt.subplots(1, 3, figsize=(12, 6))
     idxs = [25]
-    for idx in idxs:
-        plot_intensity_profile(volume_1_data, idx, axis=2, label=f"Threshold -1 ({idx})")
-        plot_intensity_profile(volume_2_data, idx, axis=2, label=f"Threshold 0.1/0.3 ({idx})")
-        plot_intensity_profile(volume_3_data, idx, axis=2, label=f"Threshold 0.4/0.6 ({idx})")
-        plot_intensity_profile(volume_ref_data, idx, axis=2, label=f"Default two step cycle ({idx})")
+    for i, idx in enumerate(idxs):
+        plot_intensity_profile(volume_1_data, idx, axis=2, label=f"Threshold -1 ({idx})", ax=axs[i])
+        plot_intensity_profile(volume_2_data, idx, axis=2, label=f"Threshold 0.1/0.3 ({idx})", ax=axs[i])
+        plot_intensity_profile(volume_3_data, idx, axis=2, label=f"Threshold 0.4/0.6 ({idx})", ax=axs[i])
+        plot_intensity_profile(volume_ref_data, idx, axis=2, label=f"Default two step cycle ({idx})", ax=axs[i])
     plt.savefig(os.path.join(origin_output_path, "intensity_threshold.png"))
     plt.close()
 
