@@ -8,15 +8,14 @@ import nibabel as nib
 import matplotlib.pyplot as plt
 
 
-def plot_histo(data, label):
-    plt.hist(data.flatten(), bins=50, alpha=0.6, label=label)
-    plt.xlabel("Intensité")
-    plt.ylabel("Fréquence")
-    plt.legend(loc="upper right")
+def plot_histo(data, label, slice_index, ax=None):
+    ax.hist(data[:, :, slice_index], bins=50, alpha=0.6, label=label)
+    ax.set_xlabel("Intensité")
+    ax.set_ylabel("Fréquence")
+    plt.legend()
 
 
 def plot_intensity_profile(data, slice_index, axis=0, label='', ax=None):
-    """Trace le profil d'intensité le long d'une ligne dans une tranche donnée."""
     if axis == 0:
         profile = data[slice_index, :, :].mean(axis=1)
     elif axis == 1:
@@ -70,16 +69,18 @@ if __name__ == "__main__":
 
     origin_output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots"
 
-    """plt.figure(figsize=(12, 6))
-    plot_histo(volume_1_data, "Threshold -1")
-    plot_histo(volume_2_data, "Threshold 13")
-    plot_histo(volume_3_data, "Threshold 46")
-    plot_histo(volume_ref_data, "Default threshold")
-    plt.savefig(os.path.join(origin_output_path, "histo_tsc.png"))
-    plt.close()"""
-
     fig, axs = plt.subplots(1, 3, figsize=(22, 10))
     idxs = [30, 50, 70]
+    for i, idx in enumerate(idxs):
+        plot_histo(volume_1_data, "Threshold -1", slice_index=idx, ax=axs[i])
+        plot_histo(volume_2_data, "Threshold 0.1/0.3", slice_index=idx, ax=axs[i])
+        plot_histo(volume_3_data, "Threshold 0.4/0.6", slice_index=idx, ax=axs[i])
+        plot_histo(volume_ref_data, "Default threshold", slice_index=idx, ax=axs[i])
+
+    plt.savefig(os.path.join(origin_output_path, "threshold_histo.png"))
+    plt.close()
+
+    fig, axs = plt.subplots(1, 3, figsize=(22, 10))
     for i, idx in enumerate(idxs):
         plot_intensity_profile(volume_1_data, idx, axis=2, label=f"Threshold -1", ax=axs[i])
         plot_intensity_profile(volume_2_data, idx, axis=2, label=f"Threshold 0.1/0.3 ", ax=axs[i])
@@ -87,7 +88,7 @@ if __name__ == "__main__":
         plot_intensity_profile(volume_ref_data, idx, axis=2, label=f"Default threshold", ax=axs[i])
         axs[i].set_title(f"Slice {idx}")
     plt.tight_layout()
-    plt.savefig(os.path.join(origin_output_path, "intensity_threshold.png"))
+    plt.savefig(os.path.join(origin_output_path, "threshold_intensity.png"))
     plt.close()
 
     mean1, std1 = np.mean(volume_ref_data), np.std(volume_ref_data)
