@@ -28,7 +28,7 @@ def plot_intensity_profile(data, slice_index, axis=0, label='', ax=None):
     ax.plot(profile, label=label)
     ax.set_xlabel('Position')
     ax.set_ylabel('Intensité')
-    ax.legend(loc='upper right')
+    ax.legend()
 
 
 if __name__ == "__main__":
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     plt.savefig(os.path.join(origin_output_path, "histo_tsc.png"))
     plt.close()"""
 
-    fig, axs = plt.subplots(1, 3, figsize=(15, 8))
+    fig, axs = plt.subplots(1, 3, figsize=(20, 12))
     idxs = [30, 50, 70]
     for i, idx in enumerate(idxs):
         plot_intensity_profile(volume_1_data, idx, axis=2, label=f"Threshold -1", ax=axs[i])
