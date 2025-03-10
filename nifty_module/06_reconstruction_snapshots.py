@@ -12,7 +12,7 @@ def plot_histo(data, label, slice_index, ax=None):
     ax.hist(data[:, :, slice_index], bins=50, alpha=0.6, label=label)
     ax.set_xlabel("Intensité")
     ax.set_ylabel("Fréquence")
-    plt.legend()
+    ax.legend()
 
 
 def plot_intensity_profile(data, slice_index, axis=0, label='', ax=None):
