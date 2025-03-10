@@ -17,7 +17,6 @@ def plot_histo(data, label):
 
 def plot_intensity_profile(data, slice_index, axis=0, label='', ax=None):
     """Trace le profil d'intensité le long d'une ligne dans une tranche donnée."""
-    print(data.shape)
     if axis == 0:
         profile = data[slice_index, :, :].mean(axis=1)
     elif axis == 1:
@@ -79,7 +78,7 @@ if __name__ == "__main__":
     plt.savefig(os.path.join(origin_output_path, "histo_tsc.png"))
     plt.close()"""
 
-    fig, axs = plt.subplots(1, 3, figsize=(20, 12))
+    fig, axs = plt.subplots(1, 3, figsize=(22, 10))
     idxs = [30, 50, 70]
     for i, idx in enumerate(idxs):
         plot_intensity_profile(volume_1_data, idx, axis=2, label=f"Threshold -1", ax=axs[i])
