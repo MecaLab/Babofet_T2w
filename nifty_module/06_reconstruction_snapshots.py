@@ -80,7 +80,7 @@ if __name__ == "__main__":
     plt.close()"""
 
     fig, axs = plt.subplots(1, 3, figsize=(12, 6))
-    idxs = [25]
+    idxs = [25, 50, 75]
     for i, idx in enumerate(idxs):
         plot_intensity_profile(volume_1_data, idx, axis=2, label=f"Threshold -1 ({idx})", ax=axs[i])
         plot_intensity_profile(volume_2_data, idx, axis=2, label=f"Threshold 0.1/0.3 ({idx})", ax=axs[i])
