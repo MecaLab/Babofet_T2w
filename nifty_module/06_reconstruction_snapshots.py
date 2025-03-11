@@ -33,12 +33,11 @@ if __name__ == "__main__":
 
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
-    modes = ["manual", "nifty", "mattia"]
+    modes = ["manual"]
 
     for session in os.listdir(base_path):
-        session_full_name = f"sub-{subject}_ses-{session[3:]}"
-        print(session_full_name)
-    exit()
+        subj_path = os.path.join(base_path, session)
+        qc_recons.qc_rejected_slices(subj_path, subject, "manual")
 
     """  
     list_subjs = ["sub-Fabienne_ses-05"]
