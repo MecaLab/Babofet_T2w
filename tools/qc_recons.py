@@ -353,8 +353,8 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
     volume_ref = nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz"))
     files = get_file_with_pattern(os.path.join(base_path, "exp_param"), pattern=f"*{param}*.nii.gz")
-    print(files)
-    pass
+    for file in files:
+        print(file)
 
 
 """
