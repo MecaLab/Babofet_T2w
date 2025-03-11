@@ -349,15 +349,33 @@ def get_file_with_pattern(path, pattern):
     return files
 
 
+def plot_intensity_profile(data, slice_index, label='', ax=None):
+    profile = data[60, 100, slice_index]
+
+    ax.plot(profile, label=label)
+    ax.set_xlabel('Position')
+    ax.set_ylabel('Intensité')
+    ax.legend()
+
+
 def qc_intensity(subj_path, mode, subj_session, param="T"):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
     volume_ref = nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
     files = get_file_with_pattern(os.path.join(base_path, "exp_param"), pattern=f"*{param}*_pipeline.nii.gz")
-    volumes = []
+    volumes = {"default": volume_ref}
     for file in files:
-        volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
+        print(file)
+        # volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
 
-    print(volumes)
+    exit()
+    origin_output_path = "snapshots"
+
+    fig, axs = plt.subplots(1, 3, figsize=(21, 10))
+    idxs = [40, 70, 100]
+    for vol in volumes:
+        for i, idx in enumerate(idxs):
+            plot_intensity_profile(vol, idx, label=f"Threshold {param}", ax=axs[i])
+
     """
     session_id = "09"
 
