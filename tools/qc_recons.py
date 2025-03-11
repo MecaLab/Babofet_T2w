@@ -368,6 +368,7 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
         volumes[param_name] = nib.load(os.path.join(base_path, "exp_param", file)).get_fdata()
 
     origin_output_path = "snapshots"
+    print(len(volumes))
 
     fig, axs = plt.subplots(1, 3, figsize=(21, 10))
     idxs = [40, 70, 100]
