@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
-    modes = ["manual"]
+    modes = ["manual", "nifty"]
 
     for session in os.listdir(base_path):
         for mode in modes:
