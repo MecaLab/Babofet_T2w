@@ -370,14 +370,11 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
 
     origin_output_path = "snapshots"
 
-    idxs = [40, 70, 100]
+    idxs = [30, 40, 50, 60]
     fig, axs = plt.subplots(1, len(idxs), figsize=(22, 10))
 
-    i = 0
-    for param_name, vol in volumes.items():
-        plot_intensity_profile(vol, 70, label=f"Threshold {param_name}", ax=axs[i])
-        i += 1
-
+    for i, idx in enumerate(idxs):
+        plot_intensity_profile(list(volumes.values())[i], idx, label=f"Threshold {list(volumes.keys())[i]}", ax=axs[i])
     plt.tight_layout()
     plt.savefig("tmp.png")
     """
