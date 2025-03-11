@@ -65,6 +65,7 @@ if __name__ == "__main__":
 
             # plot the matplotlib table format for the qc:
             # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
+        print(datas)
         qc_recons.qc_plot_table_recons(datas, subject, name)
 
 
