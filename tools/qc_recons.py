@@ -34,13 +34,10 @@ def qc_plot_table_recons(datas, subj_name, name):
             anat_img = nib.load(anat_path).get_fdata()
             depth = anat_img.shape[2]
 
-            print(anat_img.shape)
-
             reference_slices.append((depth // 2, depth))
 
             for row in range(num_slices):
                 slice_idx = int(depth * slice_percentages[row])
-                print(slice_idx)
                 axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
                 axes[row, col].set_title(f'Coupe {slice_idx}')
                 axes[row, col].axis('off')
