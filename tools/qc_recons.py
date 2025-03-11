@@ -375,8 +375,10 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
     for i, idx in enumerate(idxs):
         ax = axs[i]
         for j, vol in enumerate(volumes):
-            intensity = vol[:, :, idx]
+            intensity = vol[:, :, idx].mean(axis=1)
             ax.plot(intensity, label=f"{param_name[j]}")
+
+        ax.set_ylabel("Intensity")
         ax.set_title(f"Intensity at slide {idx}")
         ax.legend()
     plt.tight_layout()
