@@ -203,7 +203,6 @@ def qc_rejected_slices(subj_path, subj, mode):
 
     model = "niftymic"
     dir_snapshots = "snapshots"
-    subject_name = subj.split("-")[1].split("_")[0]
 
     mid_dir_snapshots = os.path.join(dir_snapshots, "recons")
 
@@ -214,7 +213,7 @@ def qc_rejected_slices(subj_path, subj, mode):
     if not os.path.exists(mid_dir_snapshots):
         os.mkdir(mid_dir_snapshots)
 
-    dir_out = os.path.join(mid_dir_snapshots, subject_name)
+    dir_out = os.path.join(mid_dir_snapshots, subj)
     if not os.path.exists(dir_out):
         os.mkdir(dir_out)
 
