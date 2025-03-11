@@ -349,7 +349,7 @@ def get_file_with_pattern(path, pattern):
     return files
 
 
-def qc_intensity(subj_path, mode, subj_session, param="T"):
+def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
     volumes = [nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()]
 
@@ -372,47 +372,13 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
         ax.set_ylabel("Intensity")
         ax.set_title(f"Intensity at slide {idx}")
         ax.legend()
+
     plt.suptitle(f"Analysis of the intensity profile for {subj_session}")
     plt.tight_layout()
-    plt.savefig("tmp.png")
+    plt.savefig(os.path.join(origin_output_path, f"recons/niftymic/{subject}/{mode}", f"intensity_{subj_session}.png"))
+    plt.close()
 
     """
-    session_id = "09"
-
-    volume_ref = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_pipeline.nii.gz")
-    volume_1 = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/exp_param/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
-    volume_2 = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/exp_param/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_T13_pipeline.nii.gz")
-    volume_3 = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/exp_param/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_T46_pipeline.nii.gz")
-
-    volume_ref_data = volume_ref.get_fdata()
-    volume_1_data = volume_1.get_fdata()
-    volume_2_data = volume_2.get_fdata()
-    volume_3_data = volume_3.get_fdata()
-
-    origin_output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots"
-
-    fig, axs = plt.subplots(1, 4, figsize=(24, 10))
-    idxs = [30, 40, 50, 60]
-    for i, idx in enumerate(idxs):
-        plot_histo(volume_1_data, "Threshold -1", slice_index=idx, ax=axs[i])
-        plot_histo(volume_2_data, "Threshold 0.1/0.3", slice_index=idx, ax=axs[i])
-        plot_histo(volume_3_data, "Threshold 0.4/0.6", slice_index=idx, ax=axs[i])
-        plot_histo(volume_ref_data, "Default threshold", slice_index=idx, ax=axs[i])
-    plt.tight_layout()
-    plt.savefig(os.path.join(origin_output_path, f"threshold_histo_{session_id}.png"))
-    plt.close()
-
-    fig, axs = plt.subplots(1, 4, figsize=(22, 10))
-    for i, idx in enumerate(idxs):
-        plot_intensity_profile(volume_1_data, idx, axis=2, label=f"Threshold -1", ax=axs[i])
-        plot_intensity_profile(volume_2_data, idx, axis=2, label=f"Threshold 0.1/0.3 ", ax=axs[i])
-        plot_intensity_profile(volume_3_data, idx, axis=2, label=f"Threshold 0.4/0.6", ax=axs[i])
-        plot_intensity_profile(volume_ref_data, idx, axis=2, label=f"Default threshold", ax=axs[i])
-        axs[i].set_title(f"Slice {idx}")
-    plt.tight_layout()
-    plt.savefig(os.path.join(origin_output_path, f"threshold_intensity_{session_id}.png"))
-    plt.close()
-
     mean1, std1 = np.mean(volume_ref_data), np.std(volume_ref_data)
     mean2, std2 = np.mean(volume_1_data), np.std(volume_1_data)
     mean3, std3 = np.mean(volume_2_data), np.std(volume_2_data)
