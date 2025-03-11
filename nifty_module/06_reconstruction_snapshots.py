@@ -38,7 +38,8 @@ if __name__ == "__main__":
     for session in os.listdir(base_path):
         subj_path = os.path.join(base_path, session)
         qc_recons.qc_rejected_slices(subj_path, subject, "manual")
-
+    exit()
+    
     """  
     list_subjs = ["sub-Fabienne_ses-05"]
     mode = "manual"  # mode of the brainmask: manual_brainmask or nifty_brainmask
