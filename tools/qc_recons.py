@@ -367,6 +367,7 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
         ax = axs[i]
         for j, vol in enumerate(volumes):
             intensity = vol[:, vol.shape[1] // 2, idx]
+            print(intensity.shape)
             ax.plot(intensity, label=f"{param_name[j]}")
 
         ax.set_ylabel("Intensity")
