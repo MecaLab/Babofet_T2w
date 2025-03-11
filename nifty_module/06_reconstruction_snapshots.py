@@ -45,7 +45,7 @@ if __name__ == "__main__":
             qc_recons.qc_rejected_slices(subj_path, subject, subj_session, "manual")
 
             # Plot 1 snapshot per reconstruction
-            qc_recons.qc_recons_bis(base_path, subject, mode)
+            qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=True, param="T-1")
             exit()
     exit()
 
