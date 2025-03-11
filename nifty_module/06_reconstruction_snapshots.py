@@ -31,14 +31,14 @@ def plot_intensity_profile(data, slice_index, axis=0, label='', ax=None):
 
 if __name__ == "__main__":
 
-    subject = "Fabienne"
+    subject = "Aziza"
     base_path = os.path.join(cfg.DATA_PATH, subject)
     modes = ["manual"]
     datas = {}
 
-    exp_list = [False, True, True, True]
-    params = [None, "T-1", "T13", "T46"]
-    names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
+    exp_list = [False]
+    params = [None]
+    names = ["default-param"]
 
     for i in range(len(exp_list)):
         exp_param_folder = exp_list[i]
