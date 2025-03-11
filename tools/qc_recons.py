@@ -381,6 +381,7 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
         ax.set_ylabel("Intensity")
         ax.set_title(f"Intensity at slide {idx}")
         ax.legend()
+    plt.suptitle(f"Analysis of the intensity profile for {subj_session}")
     plt.tight_layout()
     plt.savefig("tmp.png")
 
