@@ -30,11 +30,28 @@ def plot_intensity_profile(data, slice_index, axis=0, label='', ax=None):
 
 
 if __name__ == "__main__":
+
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
     modes = ["manual", "nifty", "mattia"]
 
-    """
+    for session in os.listdir(base_path):
+        session_full_name = f"sub-{subject}_ses-{session[3:]}"
+        print(session_full_name)
+    exit()
+
+    """  
+    list_subjs = ["sub-Fabienne_ses-05"]
+    mode = "manual"  # mode of the brainmask: manual_brainmask or nifty_brainmask
+
+    for subj in list_subjs:
+        subject_name = subj.split("_")[0].split("-")[-1]
+        session_nb = "".join(subj.split("_")[1].split("-"))
+        subj_path = os.path.join(cfg.DATA_PATH, subject_name, session_nb)
+
+        qc_recons.qc_rejected_slices(subj_path, subj, mode)
+
+      
     datas = {}
     # plot the matplotlib table format for the qc:
     # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc)
