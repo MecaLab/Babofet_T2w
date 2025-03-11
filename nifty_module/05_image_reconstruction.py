@@ -86,7 +86,7 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    list_subjs = ["sub-Fabienne_ses-05"]
+    list_subjs = ["sub-Aziza_ses-01"]
 
     for subject in subject_IDs:
         if subject not in list_subjs:
