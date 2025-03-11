@@ -37,10 +37,8 @@ if __name__ == "__main__":
 
     for session in os.listdir(base_path):
         subj_path = os.path.join(base_path, session)
-        print(subj_path)
-        exit()
-        qc_recons.qc_rejected_slices(subj_path, subject, "manual")
-    exit()
+        subj = f"sub-{subject}_ses-{session[3:]}"
+        qc_recons.qc_rejected_slices(subj_path, subj, "manual")
 
     """  
     list_subjs = ["sub-Fabienne_ses-05"]

@@ -221,6 +221,8 @@ def qc_rejected_slices(subj_path, subj, mode):
     if not os.path.exists(dir_out):
         os.mkdir(dir_out)
 
+    session_id = subj_path.split("/")[-1]
+
     dir_out = os.path.join(dir_out, mode)
     if not os.path.exists(dir_out):
         os.mkdir(dir_out)
