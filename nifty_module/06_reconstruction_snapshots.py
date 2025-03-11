@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
-    modes = ["nifty"]
+    modes = ["manual", "nifty"]
 
     for session in os.listdir(base_path):
         for mode in modes:
@@ -46,7 +46,6 @@ if __name__ == "__main__":
 
             # Plot 1 snapshot per reconstruction
             qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=True, param="T-1")
-            exit()
     exit()
 
     datas = {}

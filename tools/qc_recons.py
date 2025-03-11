@@ -274,7 +274,7 @@ def qc_rejected_slices(subj_path, subj_name, subj, mode):
                     plt.axis("off")
                 else:
                     ax.axis("off")
-            filename = os.path.join(dir_out, f"{stack_name}.png")
+            filename = os.path.join(dir_out, f"{stack_name}_{mode}.png")
             print(f"Figure saved at {filename}")
             plt.savefig(filename)
             plt.close()
