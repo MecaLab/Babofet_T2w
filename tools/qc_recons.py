@@ -352,12 +352,13 @@ def get_file_with_pattern(path, pattern):
 def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
     volumes = [nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()]
-
-    files = get_file_with_pattern(os.path.join(base_path, "exp_param"), pattern=f"*{param}*_pipeline.nii.gz")
     param_name = ["default"]
-    for file in files:
-        param_name.append(file.split("_")[-2])
-        volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
+    exp_param_folder = os.path.join(base_path, "exp_param")
+    if os.path.exists(exp_param_folder):
+        files = get_file_with_pattern(exp_param_folder, pattern=f"*{param}*_pipeline.nii.gz")
+        for file in files:
+            param_name.append(file.split("_")[-2])
+            volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
 
     origin_output_path = "snapshots"
 
