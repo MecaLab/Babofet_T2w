@@ -33,43 +33,42 @@ if __name__ == "__main__":
 
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
-    modes = ["manual", "nifty"]
+    modes = ["manual"]
     datas = {}
 
-    exp_param_folder = False
-    param = None
+    exp_list = [False, True, True, True]
+    params = [None, "T-1", "T13", "T46"]
+    names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
 
-    if not exp_param_folder:
-        name = "default-param"
-    else:
-        name = param
+    for i in range(len(exp_list)):
+        exp_param_folder = exp_list[i]
+        param = params[i]
+        name = names[i]
+        for session in os.listdir(base_path):
+            datas[session] = {}
+            for mode in modes:
+                print(f"Session {session} - Mode {mode}")
+                subj_path = os.path.join(base_path, session)
+                subj_session = f"sub-{subject}_ses-{session[3:]}"
 
-    for session in os.listdir(base_path):
-        datas[session] = {}
-        for mode in modes:
-            print(f"Session {session} - Mode {mode}")
-            subj_path = os.path.join(base_path, session)
-            subj_session = f"sub-{subject}_ses-{session[3:]}"
+                # Plot the anat image with the BM using the rejected slices file
+                qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode)
 
-            # Plot the anat image with the BM using the rejected slices file
-            # qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode)
+                # Plot 1 snapshot per reconstruction
+                qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=exp_param_folder, param=param)
+                datas[session][mode] = {}
 
-            # Plot 1 snapshot per reconstruction
-            # qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=exp_param_folder, param=param)
-            datas[session][mode] = {}
+                if not exp_param_folder:
+                    datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
+                else:
+                    datas[session][mode]["anat"] = os.path.join(base_path, session, f"exp_param/{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
 
-            if not exp_param_folder:
-                datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
-            else:
-                datas[session][mode]["anat"] = os.path.join(base_path, session, f"exp_param/{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
+            # plot the matplotlib table format for the qc:
+            # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
+            qc_recons.qc_plot_table_recons(datas, subject, name)
 
-        # plot the matplotlib table format for the qc:
-        # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
-        qc_recons.qc_plot_table_recons(datas, subject, name)
-    exit()
 
     """
-
     session_id = "09"
 
     volume_ref = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_pipeline.nii.gz")
