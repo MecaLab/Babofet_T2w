@@ -8,6 +8,7 @@ import numpy as np
 import configuration as cfg
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import fnmatch
 
 
 def qc_plot_table_recons(datas, subj_name, name):
@@ -340,13 +341,73 @@ def qc_plot_table_stack(base_path, list_subjs, modes):
             exit()
 
 
+def get_file_with_pattern(path, pattern):
+    files = []
+    for file in os.listdir(path):
+        if fnmatch.fnmatch(file, pattern):
+            files.append(file)
+    return files
+
+
+def qc_intensity(subj_path, mode, subj_session, param="T"):
+    base_path = os.path.join(subj_path, f"{mode}_brainmask")
+    volume_ref = nib.load(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")
+    files = get_file_with_pattern(os.path.join(base_path, "exp_param"), pattern=f"*{param}*.nii.gz")
+    print(files)
+    pass
+
+
+"""
+    session_id = "09"
+
+    volume_ref = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_pipeline.nii.gz")
+    volume_1 = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/exp_param/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
+    volume_2 = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/exp_param/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_T13_pipeline.nii.gz")
+    volume_3 = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/exp_param/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_T46_pipeline.nii.gz")
+
+    volume_ref_data = volume_ref.get_fdata()
+    volume_1_data = volume_1.get_fdata()
+    volume_2_data = volume_2.get_fdata()
+    volume_3_data = volume_3.get_fdata()
+
+    origin_output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots"
+
+    fig, axs = plt.subplots(1, 4, figsize=(24, 10))
+    idxs = [30, 40, 50, 60]
+    for i, idx in enumerate(idxs):
+        plot_histo(volume_1_data, "Threshold -1", slice_index=idx, ax=axs[i])
+        plot_histo(volume_2_data, "Threshold 0.1/0.3", slice_index=idx, ax=axs[i])
+        plot_histo(volume_3_data, "Threshold 0.4/0.6", slice_index=idx, ax=axs[i])
+        plot_histo(volume_ref_data, "Default threshold", slice_index=idx, ax=axs[i])
+    plt.tight_layout()
+    plt.savefig(os.path.join(origin_output_path, f"threshold_histo_{session_id}.png"))
+    plt.close()
+
+    fig, axs = plt.subplots(1, 4, figsize=(22, 10))
+    for i, idx in enumerate(idxs):
+        plot_intensity_profile(volume_1_data, idx, axis=2, label=f"Threshold -1", ax=axs[i])
+        plot_intensity_profile(volume_2_data, idx, axis=2, label=f"Threshold 0.1/0.3 ", ax=axs[i])
+        plot_intensity_profile(volume_3_data, idx, axis=2, label=f"Threshold 0.4/0.6", ax=axs[i])
+        plot_intensity_profile(volume_ref_data, idx, axis=2, label=f"Default threshold", ax=axs[i])
+        axs[i].set_title(f"Slice {idx}")
+    plt.tight_layout()
+    plt.savefig(os.path.join(origin_output_path, f"threshold_intensity_{session_id}.png"))
+    plt.close()
+
+    mean1, std1 = np.mean(volume_ref_data), np.std(volume_ref_data)
+    mean2, std2 = np.mean(volume_1_data), np.std(volume_1_data)
+    mean3, std3 = np.mean(volume_2_data), np.std(volume_2_data)
+    mean4, std4 = np.mean(volume_3_data), np.std(volume_3_data)
+    print(f'Volume 1 (ref) - Moyenne: {mean1} | Écart-type: {std1}')
+    print(f'Volume 2 - Moyenne: {mean2} | Écart-type: {std2}')
+    print(f'Volume 3 - Moyenne: {mean3} | Écart-type: {std3}')
+    print(f'Volume 4 - Moyenne: {mean4} | Écart-type: {std4}')
+    """
+
+
 if __name__ == "__main__":
     pass
-    """
-    modes = ["nifty", "manual"]
-    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
-    base_path = cfg.MESO_OUTPUT_PATH
-    qc_plot_table_stack(base_path, list_subjs, modes)"""
+
 
 
 
