@@ -9,6 +9,7 @@ import configuration as cfg
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
+
 def qc_plot_table_recons(datas, name):
     num_slices = 7
     dir_snapshots = "snapshots"
@@ -49,7 +50,7 @@ def qc_plot_table_recons(datas, name):
 
 
 def qc_recons_bis(base_path, subject, mode):
-    exp_param_folder = True
+    exp_param_folder = False
     dir_snapshots = "snapshots"
 
     mid_dir_snapshots = os.path.join(dir_snapshots, "recons", "niftymic")
@@ -82,7 +83,7 @@ def qc_recons_bis(base_path, subject, mode):
             print(f"Skipping {anat_path} or {bm_path} does not exist")
             continue
 
-        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_4C_recons.png")
+        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_recons.png")
         qc.qc_recontructed_3DHRvolume(
             path_anat_vol=anat_path,
             path_brainmask_vol=bm_path,
