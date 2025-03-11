@@ -364,18 +364,19 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
     files = get_file_with_pattern(os.path.join(base_path, "exp_param"), pattern=f"*{param}*_pipeline.nii.gz")
     volumes = {"default": volume_ref}
     for file in files:
-        print(file)
-        # volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
+        param_name = file.split("_")[-2]
+        volumes[param_name] = nib.load(os.path.join(base_path, "exp_param", file)).get_fdata()
 
-    exit()
     origin_output_path = "snapshots"
 
     fig, axs = plt.subplots(1, 3, figsize=(21, 10))
     idxs = [40, 70, 100]
-    for vol in volumes:
+    for param_name, vol in volumes.items():
         for i, idx in enumerate(idxs):
-            plot_intensity_profile(vol, idx, label=f"Threshold {param}", ax=axs[i])
+            plot_intensity_profile(vol, idx, label=f"Threshold {param_name}", ax=axs[i])
 
+    plt.tight_layout()
+    plt.savefig("tmp.png")
     """
     session_id = "09"
 
