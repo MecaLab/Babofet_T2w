@@ -49,10 +49,7 @@ def qc_plot_table_recons(datas, subj_name, name):
         print(f"Fin de la session {session}")
 
 
-def qc_recons_bis(base_path, subject, mode, exp_param_folder=False, param=None):
-    if not exp_param_folder and param is None:
-        param = ""
-
+def qc_recons_bis(base_path, subject, mode, exp_param_folder=False, param=None, name="default-param"):
     dir_snapshots = "snapshots"
 
     mid_dir_snapshots = os.path.join(dir_snapshots, "recons", "niftymic")
@@ -85,7 +82,7 @@ def qc_recons_bis(base_path, subject, mode, exp_param_folder=False, param=None):
             print(f"Skipping {anat_path} or {bm_path} does not exist")
             continue
 
-        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_{param}recons.png")
+        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_{name}recons.png")
         qc.qc_recontructed_3DHRvolume(
             path_anat_vol=anat_path,
             path_brainmask_vol=bm_path,
@@ -189,7 +186,10 @@ def qc_recons(base_path, model, mode):
             )
 
 
-def qc_rejected_slices(subj_path, subj_name, subj, mode):
+def qc_rejected_slices(subj_path, subj_name, subj, mode, exp_param_folder=False, param=None, name="default-param"):
+    if not exp_param_folder and param is None:
+        param = ""
+
     if mode == "nifty":
         bm_folder = "brainmask_niftymic"
     elif mode == "manual":
@@ -197,7 +197,11 @@ def qc_rejected_slices(subj_path, subj_name, subj, mode):
 
     output_folder = f"{mode}_brainmask"
 
-    json_file = os.path.join(subj_path, output_folder, "rejected_slices.json")
+    if exp_param_folder:
+        json_file = os.path.join(subj_path, output_folder, f"exp_param/rejected_slices_{param}.json")
+    else:
+        json_file = os.path.join(subj_path, output_folder, f"rejected_slices.json")
+
     with open(json_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
