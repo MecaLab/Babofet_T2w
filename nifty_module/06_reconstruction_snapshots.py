@@ -15,20 +15,6 @@ def plot_histo(data, label, slice_index, ax=None):
     ax.legend()
 
 
-def plot_intensity_profile(data, slice_index, axis=0, label='', ax=None):
-    if axis == 0:
-        profile = data[slice_index, :, :].mean(axis=1)
-    elif axis == 1:
-        profile = data[:, slice_index, :].mean(axis=1)
-    elif axis == 2:
-        profile = data[:, :, slice_index].mean(axis=1)
-
-    ax.plot(profile, label=label)
-    ax.set_xlabel('Position')
-    ax.set_ylabel('Intensité')
-    ax.legend()
-
-
 if __name__ == "__main__":
 
     subject = "Fabienne"
@@ -57,8 +43,7 @@ if __name__ == "__main__":
                 # Plot 1 snapshot per reconstruction
                 # qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
-                qc_recons.qc_intensity(subj_path, mode, subj_session, param="T")
-                exit()
+                qc_recons.qc_intensity(subj_path, subject, mode, subj_session, param="T")
 
                 datas[session][mode] = {}
                 if not exp_param_folder:
