@@ -36,22 +36,18 @@ if __name__ == "__main__":
     modes = ["manual"]
 
     for session in os.listdir(base_path):
-        subj_path = os.path.join(base_path, session)
-        subj = f"sub-{subject}_ses-{session[3:]}"
-        qc_recons.qc_rejected_slices(subj_path, subj, "manual")
+        for mode in modes:
+            subj_path = os.path.join(base_path, session)
+            subj = f"sub-{subject}_ses-{session[3:]}"
 
-    """  
-    list_subjs = ["sub-Fabienne_ses-05"]
-    mode = "manual"  # mode of the brainmask: manual_brainmask or nifty_brainmask
+            # Plot the anat image with the BM with the rejected slices file
+            qc_recons.qc_rejected_slices(subj_path, subj, "manual")
 
-    for subj in list_subjs:
-        subject_name = subj.split("_")[0].split("-")[-1]
-        session_nb = "".join(subj.split("_")[1].split("-"))
-        subj_path = os.path.join(cfg.DATA_PATH, subject_name, session_nb)
+            # Plot 1 snapshot per reconstruction
+            qc_recons.qc_recons_bis(base_path, subject, mode)
 
-        qc_recons.qc_rejected_slices(subj_path, subj, mode)
+    exit()
 
-      
     datas = {}
     # plot the matplotlib table format for the qc:
     # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc)
@@ -64,14 +60,11 @@ if __name__ == "__main__":
             datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
 
     # qc_recons.qc_plot_table_recons(datas, name)
-    
+
+    exit()
 
     # 1 snapshot per reconstruction
-    modes = ["manual"]
-    base_path = os.path.join(cfg.DATA_PATH, subject)
 
-    for mode in modes:
-        qc_recons.qc_recons_bis(base_path, subject, mode)
     """
 
     session_id = "09"
@@ -118,8 +111,6 @@ if __name__ == "__main__":
     print(f'Volume 2 - Moyenne: {mean2} | Écart-type: {std2}')
     print(f'Volume 3 - Moyenne: {mean3} | Écart-type: {std3}')
     print(f'Volume 4 - Moyenne: {mean4} | Écart-type: {std4}')
-
-
     """
     base_path = cfg.MESO_OUTPUT_PATH
     model = "niftymic"  # niftymic or nesvor
@@ -131,4 +122,3 @@ if __name__ == "__main__":
         model,
         mode,
     )
-    """
