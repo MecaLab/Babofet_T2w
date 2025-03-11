@@ -361,22 +361,21 @@ def plot_intensity_profile(data, slice_index, label='', ax=None):
 
 def qc_intensity(subj_path, mode, subj_session, param="T"):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
-    volume_ref = nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
+    volumes = [nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()]
+
     files = get_file_with_pattern(os.path.join(base_path, "exp_param"), pattern=f"*{param}*_pipeline.nii.gz")
-    volumes = {"default": volume_ref}
+    param_name = ["default"]
     for file in files:
-        param_name = file.split("_")[-2]
-        volumes[param_name] = nib.load(os.path.join(base_path, "exp_param", file)).get_fdata()
+        param_name.append(file.split("_")[-2])
+        volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
 
     origin_output_path = "snapshots"
 
+    fig, axs = plt.subplots(1, 4, figsize=(24, 10))
     idxs = [30, 40, 50, 60]
-    fig, axs = plt.subplots(1, len(idxs), figsize=(22, 10))
-
-    for i, idx in enumerate(idxs):
-        plot_intensity_profile(list(volumes.values())[i], idx, label=f"Threshold {list(volumes.keys())[i]}", ax=axs[i])
-    plt.tight_layout()
-    plt.savefig("tmp.png")
+    for i in range(len(volumes)):
+        for j, idx in enumerate(idxs):
+            plot_intensity_profile(volumes[i], idx, label=f"{param_name[i]}", ax=axs[j])
     """
     session_id = "09"
 
