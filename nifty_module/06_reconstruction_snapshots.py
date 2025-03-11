@@ -52,10 +52,10 @@ if __name__ == "__main__":
                 subj_session = f"sub-{subject}_ses-{session[3:]}"
 
                 # Plot the anat image with the BM using the rejected slices file
-                # qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode)
+                qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode)
 
                 # Plot 1 snapshot per reconstruction
-                # qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=exp_param_folder, param=param)
+                qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=exp_param_folder, param=param)
                 datas[session][mode] = {}
 
                 if not exp_param_folder:
@@ -63,10 +63,10 @@ if __name__ == "__main__":
                 else:
                     datas[session][mode]["anat"] = os.path.join(base_path, session, f"exp_param/{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
 
-            # plot the matplotlib table format for the qc:
-            # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
-        print(datas)
-        qc_recons.qc_plot_table_recons(datas, subject, name)
+        # plot the matplotlib table format for the qc:
+        # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
+        # qc_recons.qc_plot_table_recons(datas, subject, name)
+        # Lines above are commented because it is not working properly. Need to fix the orientation of the images (dim prb ?)
 
 
     """
