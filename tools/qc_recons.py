@@ -20,6 +20,7 @@ def qc_plot_table_recons(datas, subj_name, name):
     slice_percentages = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
 
     for session, modes in datas.items():
+        print(f"Session {session} | modes {modes}")
         num_cols = len(modes)
 
         fig, axes = plt.subplots(num_slices, num_cols, figsize=(15, 3*num_slices))
@@ -30,14 +31,17 @@ def qc_plot_table_recons(datas, subj_name, name):
         for col, (mode, paths) in enumerate(modes.items()):
             fig.text((col + 0.5) / num_cols, 0.95, mode, ha='center', va='center', fontsize=14)
             anat_path = paths["anat"]
+            print(anat_path)
 
             anat_img = nib.load(anat_path).get_fdata()
+            print(anat_img.shape)
             depth = anat_img.shape[2]
 
             reference_slices.append((depth // 2, depth))
 
             for row in range(num_slices):
                 slice_idx = int(depth * slice_percentages[row])
+                print(row, slice_idx)
                 axes[row, col].imshow(anat_img[:, :, slice_idx], cmap="gray")
                 axes[row, col].set_title(f'Coupe {slice_idx}')
                 axes[row, col].axis('off')
