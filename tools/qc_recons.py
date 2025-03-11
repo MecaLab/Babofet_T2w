@@ -368,13 +368,14 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
         volumes[param_name] = nib.load(os.path.join(base_path, "exp_param", file)).get_fdata()
 
     origin_output_path = "snapshots"
-    print(len(volumes))
 
-    fig, axs = plt.subplots(1, 3, figsize=(21, 10))
     idxs = [40, 70, 100]
+    fig, axs = plt.subplots(1, len(idxs), figsize=(22, 10))
+
+    i = 0
     for param_name, vol in volumes.items():
-        for i, idx in enumerate(idxs):
-            plot_intensity_profile(vol, idx, label=f"Threshold {param_name}", ax=axs[i])
+        plot_intensity_profile(vol, 70, label=f"Threshold {param_name}", ax=axs[i])
+        i += 1
 
     plt.tight_layout()
     plt.savefig("tmp.png")
