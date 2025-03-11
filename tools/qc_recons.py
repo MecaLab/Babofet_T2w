@@ -349,15 +349,6 @@ def get_file_with_pattern(path, pattern):
     return files
 
 
-def plot_intensity_profile(data, slice_index, label='', ax=None):
-    profile = data[:, :, slice_index].mean(axis=1)
-
-    ax.plot(profile, label=label)
-    ax.set_xlabel('Position')
-    ax.set_ylabel('Intensité')
-    ax.legend()
-
-
 def qc_intensity(subj_path, mode, subj_session, param="T"):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
     volumes = [nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()]
@@ -375,7 +366,7 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
     for i, idx in enumerate(idxs):
         ax = axs[i]
         for j, vol in enumerate(volumes):
-            intensity = vol[:, :, idx].mean(axis=1)
+            intensity = vol[:, :, idx].flatten()
             ax.plot(intensity, label=f"{param_name[j]}")
 
         ax.set_ylabel("Intensity")
