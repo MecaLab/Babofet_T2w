@@ -217,9 +217,9 @@ def qc_rejected_slices(subj_path, subj_name, subj, mode):
         os.mkdir(mid_dir_snapshots)
 
     # /snapshots/recons/niftymic/Fabienne
-    dir_out = os.path.join(mid_dir_snapshots, subj_name)
-    if not os.path.exists(dir_out):
-        os.mkdir(dir_out)
+    mid_dir_snapshots = os.path.join(mid_dir_snapshots, subj_name)
+    if not os.path.exists(mid_dir_snapshots):
+        os.mkdir(mid_dir_snapshots)
 
     # /snapshots/recons/niftymic/Fabienne/manual
     dir_out = os.path.join(mid_dir_snapshots, mode)
