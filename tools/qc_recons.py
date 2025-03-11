@@ -372,8 +372,8 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
 
     fig, axs = plt.subplots(1, 4, figsize=(24, 10))
     idxs = [30, 40, 50, 60]
-    for i in range(len(volumes)):
-        for j, idx in enumerate(idxs):
+    for j, idx in enumerate(idxs):
+        for i in range(len(volumes)):
             plot_intensity_profile(volumes[i], idx, label=f"{param_name[i]}", ax=axs[j])
     """
     session_id = "09"
