@@ -10,11 +10,11 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
 
-def qc_plot_table_recons(datas, name):
+def qc_plot_table_recons(datas, subj_name, name):
     num_slices = 7
     dir_snapshots = "snapshots"
 
-    output_dir = os.path.join(dir_snapshots, "recons", "niftymic", "Fabienne")
+    output_dir = os.path.join(dir_snapshots, "recons", "niftymic", subj_name)
     print("Images are written in {}".format(output_dir))
 
     slice_percentages = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
@@ -42,7 +42,7 @@ def qc_plot_table_recons(datas, name):
                 axes[row, col].set_title(f'Coupe {slice_idx}')
                 axes[row, col].axis('off')
 
-        plt.tight_layout(rect=[0, 0, 1, 0.96])
+        plt.tight_layout()
         output_file = os.path.join(output_dir, f"fabienne_{session}_{name}_table_recons.png")
         plt.savefig(output_file)
         plt.close()

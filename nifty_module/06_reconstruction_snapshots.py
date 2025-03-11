@@ -34,36 +34,39 @@ if __name__ == "__main__":
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
     modes = ["manual", "nifty"]
+    datas = {}
+
+    exp_param_folder = False
+    param = None
+
+    if not exp_param_folder:
+        name = "default-param"
+    else:
+        name = param
 
     for session in os.listdir(base_path):
+        datas[session] = {}
         for mode in modes:
             print(f"Session {session} - Mode {mode}")
             subj_path = os.path.join(base_path, session)
             subj_session = f"sub-{subject}_ses-{session[3:]}"
 
             # Plot the anat image with the BM using the rejected slices file
-            # qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode)
+            qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode)
 
             # Plot 1 snapshot per reconstruction
-            qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=False, param=None)
-    exit()
-
-    datas = {}
-    # plot the matplotlib table format for the qc:
-    # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc)
-    # 1 file per session
-    name = "default-param"
-    for session in os.listdir(base_path):
-        datas[session] = {}
-        for mode in modes:
+            qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=exp_param_folder, param=param)
             datas[session][mode] = {}
-            datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
 
-    # qc_recons.qc_plot_table_recons(datas, name)
+            if not exp_param_folder:
+                datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
+            else:
+                datas[session][mode]["anat"] = os.path.join(base_path, session, f"exp_param/{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
 
+        # plot the matplotlib table format for the qc:
+        # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
+        qc_recons.qc_plot_table_recons(datas, subject, name)
     exit()
-
-    # 1 snapshot per reconstruction
 
     """
 
@@ -112,13 +115,3 @@ if __name__ == "__main__":
     print(f'Volume 3 - Moyenne: {mean3} | Écart-type: {std3}')
     print(f'Volume 4 - Moyenne: {mean4} | Écart-type: {std4}')
     """
-    base_path = cfg.MESO_OUTPUT_PATH
-    model = "niftymic"  # niftymic or nesvor
-    mode = "manual"  # manual bm or nifty bm
-    debug = False
-
-    qc_recons.qc_recons(
-        base_path,
-        model,
-        mode,
-    )
