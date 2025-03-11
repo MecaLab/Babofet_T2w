@@ -331,7 +331,7 @@ def qc_plot_table_stack(base_path, list_subjs, modes):
 
 if __name__ == "__main__":
 
-    list_subjs = ["sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"]
+    list_subjs = ["sub-Fabienne_ses-05"]
     mode = "manual"  # mode of the brainmask: manual_brainmask or nifty_brainmask
 
     for subj in list_subjs:
