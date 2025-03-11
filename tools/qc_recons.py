@@ -222,12 +222,6 @@ def qc_rejected_slices(subj_path, subj, mode):
     if not os.path.exists(dir_out):
         os.mkdir(dir_out)
 
-    session_id = subj_path.split("/")[-1]
-
-    dir_out = os.path.join(dir_out, mode)
-    if not os.path.exists(dir_out):
-        os.mkdir(dir_out)
-
     for stack_name, rejected_idx in data.items():
         if rejected_idx:
             stack_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, "denoising", stack_name + ".nii")
