@@ -49,8 +49,10 @@ def qc_plot_table_recons(datas, name):
         print(f"Fin de la session {session}")
 
 
-def qc_recons_bis(base_path, subject, mode):
-    exp_param_folder = False
+def qc_recons_bis(base_path, subject, mode, exp_param_folder=False, param=None):
+    if not exp_param_folder and param is None:
+        param = ""
+
     dir_snapshots = "snapshots"
 
     mid_dir_snapshots = os.path.join(dir_snapshots, "recons", "niftymic")
@@ -73,8 +75,8 @@ def qc_recons_bis(base_path, subject, mode):
         subj_name = f"sub-{subject}_ses-{session[3:]}"
 
         if exp_param_folder:
-            anat_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_4C_pipeline.nii.gz")
-            bm_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_4C_pipeline_mask.nii.gz")
+            anat_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
+            bm_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_{param}_pipeline_mask.nii.gz")
         else:
             anat_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
             bm_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline_mask.nii.gz")
@@ -83,7 +85,7 @@ def qc_recons_bis(base_path, subject, mode):
             print(f"Skipping {anat_path} or {bm_path} does not exist")
             continue
 
-        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_recons.png")
+        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_{param}recons.png")
         qc.qc_recontructed_3DHRvolume(
             path_anat_vol=anat_path,
             path_brainmask_vol=bm_path,
