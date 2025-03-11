@@ -31,7 +31,7 @@ def plot_intensity_profile(data, slice_index, axis=0, label='', ax=None):
 
 if __name__ == "__main__":
 
-    subject = "Aziza"
+    subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
     modes = ["manual"]
     datas = {}
