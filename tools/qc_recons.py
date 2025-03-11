@@ -351,6 +351,7 @@ def get_file_with_pattern(path, pattern):
 
 def plot_intensity_profile(data, slice_index, label='', ax=None):
     profile = data[60, 100, slice_index]
+    print(profile.shape)
 
     ax.plot(profile, label=label)
     ax.set_xlabel('Position')
