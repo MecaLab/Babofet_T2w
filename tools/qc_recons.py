@@ -372,9 +372,16 @@ def qc_intensity(subj_path, mode, subj_session, param="T"):
 
     fig, axs = plt.subplots(1, 4, figsize=(24, 10))
     idxs = [30, 40, 50, 60]
-    for j, idx in enumerate(idxs):
-        for i in range(len(volumes)):
-            plot_intensity_profile(volumes[i], idx, label=f"{param_name[i]}", ax=axs[j])
+    for i, idx in enumerate(idxs):
+        ax = axs[i]
+        for j, vol in enumerate(volumes):
+            intensity = vol[:, :, idx]
+            ax.plot(intensity, label=f"{param_name[j]}")
+        ax.set_title(f"Intensity at slide {idx}")
+        ax.legend()
+    plt.tight_layout()
+    plt.savefig("tmp.png")
+
     """
     session_id = "09"
 
