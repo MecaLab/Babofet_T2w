@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
-    modes = ["manual", "nifty"]
+    modes = ["nifty"]
 
     for session in os.listdir(base_path):
         for mode in modes:
@@ -42,7 +42,7 @@ if __name__ == "__main__":
             subj_session = f"sub-{subject}_ses-{session[3:]}"
 
             # Plot the anat image with the BM with the rejected slices file
-            qc_recons.qc_rejected_slices(subj_path, subject, subj_session, "manual")
+            qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode)
 
             # Plot 1 snapshot per reconstruction
             qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=True, param="T-1")
