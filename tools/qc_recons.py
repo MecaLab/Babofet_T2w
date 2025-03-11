@@ -351,16 +351,14 @@ def get_file_with_pattern(path, pattern):
 
 def qc_intensity(subj_path, mode, subj_session, param="T"):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
-    volume_ref = nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz"))
+    volume_ref = nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
     files = get_file_with_pattern(os.path.join(base_path, "exp_param"), pattern=f"*{param}*_pipeline.nii.gz")
     volumes = []
     for file in files:
-        volumes.append(nib.load(os.path.join(base_path, "exp_param", file)))
+        volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
 
     print(volumes)
-
-
-"""
+    """
     session_id = "09"
 
     volume_ref = nib.load(f"/scratch/lbaptiste/data/recons_folder/Fabienne/ses{session_id}/manual_brainmask/sub-Fabienne_ses-{session_id}_haste_3DHR_manual_bm_pipeline.nii.gz")
