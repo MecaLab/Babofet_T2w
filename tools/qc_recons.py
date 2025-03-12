@@ -370,7 +370,7 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
             # vol shape is (x, y, z).
             # x is COR, y is SAG, z is AX
             # get the intensity on the AX slice (x-y view) at indice idx along z-view
-            intensity = vol[:, vol.shape[1], idx]
+            intensity = vol[:, vol.shape[1]//2, idx]
             ax.plot(intensity, label=f"{param_name[j]}")
 
         ax.set_ylabel("Intensity")
