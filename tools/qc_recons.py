@@ -369,6 +369,7 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
         for j, vol in enumerate(volumes):
             # vol shape is (x, y, z). x is COR, y is SAG, z is AX
             # get the intensity on the SAG slice (y-z) in the middle of the COR slice
+            print(vol.shape)
             intensity = vol[vol.shape[0] // 2, :, idx]  # milieu de la coupe axial dans le volume 3D
             ax.plot(intensity, label=f"{param_name[j]}")
 
