@@ -363,7 +363,7 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
     origin_output_path = "snapshots"
 
     fig, axs = plt.subplots(1, 4, figsize=(24, 10))
-    idxs = [30, 40, 50, 60]
+    idxs = [50, 60, 70, 80]
     for i, idx in enumerate(idxs):
         ax = axs[i]
         for j, vol in enumerate(volumes):
