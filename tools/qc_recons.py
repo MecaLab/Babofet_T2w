@@ -80,15 +80,14 @@ def qc_recons_bis(subj_path, subject, mode, exp_param_folder=False, param=None, 
 
     if not os.path.exists(anat_path) or not os.path.exists(bm_path):
         print(f"Skipping {anat_path} or {bm_path} does not exist")
-        break
-
-    filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_{name}_recons.png")
-    qc.qc_recontructed_3DHRvolume(
-        path_anat_vol=anat_path,
-        path_brainmask_vol=bm_path,
-        file_figure_out=filename_out
-    )
-    print(f"Figure saved at {filename_out}")
+    else:
+        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_{name}_recons.png")
+        qc.qc_recontructed_3DHRvolume(
+            path_anat_vol=anat_path,
+            path_brainmask_vol=bm_path,
+            file_figure_out=filename_out
+        )
+        print(f"Figure saved at {filename_out}")
 
 
 def qc_recons(base_path, model, mode):
