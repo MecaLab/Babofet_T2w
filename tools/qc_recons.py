@@ -353,12 +353,12 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
     volumes = [nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()]
     param_name = ["default"]
-    exp_param_folder = os.path.join(base_path, "exp_param")
+    """exp_param_folder = os.path.join(base_path, "exp_param")
     if os.path.exists(exp_param_folder):
         files = get_file_with_pattern(exp_param_folder, pattern=f"*{param}*_pipeline.nii.gz")
         for file in files:
             param_name.append(file.split("_")[-2])
-            volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
+            volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())"""
 
     origin_output_path = "snapshots"
 
@@ -370,6 +370,7 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
             # vol shape is (x, y, z).
             # x is COR, y is SAG, z is AX
             # get the intensity on the AX slice (x-y view) at indice idx along z-view
+            print(vol.shape)
             intensity = vol[:, vol.shape[1]//2, idx]
             ax.plot(intensity, label=f"{param_name[j]}")
 
