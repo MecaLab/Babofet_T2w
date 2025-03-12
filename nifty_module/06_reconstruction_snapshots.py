@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     exp_list = [False, True, True, True]
     params = [None, "T-1", "T13", "T46"]
-    names = ["default-param", "threshold -1", "threshold 0.1/0.3", "threshold 0.4/0.6"]
+    names = ["default-param", "threshold_-1", "threshold_0.1/0.3", "threshold_0.4/0.6"]
 
     for i in range(len(exp_list)):
         exp_param_folder = exp_list[i]
@@ -33,7 +33,7 @@ if __name__ == "__main__":
         for session in os.listdir(base_path):
             datas[session] = {}
             for mode in modes:
-                print(f"Session {session} - Mode {mode}")
+                print(f"Running {mode} for {session} with {param} param")
                 subj_path = os.path.join(base_path, session)  # ../data/recons_folder/subj/session
 
                 subj_session = f"sub-{subject}_ses-{session[3:]}"
