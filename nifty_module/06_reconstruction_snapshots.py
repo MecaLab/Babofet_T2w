@@ -35,8 +35,7 @@ if __name__ == "__main__":
             for mode in modes:
                 print(f"Session {session} - Mode {mode}")
                 subj_path = os.path.join(base_path, session)  # ../data/recons_folder/subj/session
-                print(subj_path)
-                exit()
+
                 subj_session = f"sub-{subject}_ses-{session[3:]}"
 
                 # Plot the anat image with the BM using the rejected slices file
