@@ -50,7 +50,7 @@ def qc_plot_table_recons(datas, subj_name, name):
         print(f"Fin de la session {session}")
 
 
-def qc_recons_bis(base_path, subject, mode, exp_param_folder=False, param=None, name="default-param"):
+def qc_recons_bis(subj_path, subject, mode, exp_param_folder=False, param=None, name="default-param"):
     dir_snapshots = "snapshots"
 
     mid_dir_snapshots = os.path.join(dir_snapshots, "recons", "niftymic")
@@ -66,30 +66,29 @@ def qc_recons_bis(base_path, subject, mode, exp_param_folder=False, param=None, 
     if not os.path.exists(mid_dir_snapshots):
         os.mkdir(mid_dir_snapshots)
 
-    for session in os.listdir(base_path):
-        session_path = os.path.join(base_path, session)
+    session = subj_path.split("/")[-1]
 
-        mode_folder = f"{mode}_brainmask"
-        subj_name = f"sub-{subject}_ses-{session[3:]}"
+    mode_folder = f"{mode}_brainmask"
+    subj_name = f"sub-{subject}_ses-{session[3:]}"
 
-        if exp_param_folder:
-            anat_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
-            bm_path = os.path.join(session_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_{param}_pipeline_mask.nii.gz")
-        else:
-            anat_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
-            bm_path = os.path.join(session_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline_mask.nii.gz")
+    if exp_param_folder:
+        anat_path = os.path.join(subj_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
+        bm_path = os.path.join(subj_path, mode_folder, "exp_param", f"{subj_name}_haste_3DHR_{mode}_bm_{param}_pipeline_mask.nii.gz")
+    else:
+        anat_path = os.path.join(subj_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
+        bm_path = os.path.join(subj_path, mode_folder, f"{subj_name}_haste_3DHR_{mode}_bm_pipeline_mask.nii.gz")
 
-        if not os.path.exists(anat_path) or not os.path.exists(bm_path):
-            print(f"Skipping {anat_path} or {bm_path} does not exist")
-            continue
+    if not os.path.exists(anat_path) or not os.path.exists(bm_path):
+        print(f"Skipping {anat_path} or {bm_path} does not exist")
+        break
 
-        filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_{name}_recons.png")
-        qc.qc_recontructed_3DHRvolume(
-            path_anat_vol=anat_path,
-            path_brainmask_vol=bm_path,
-            file_figure_out=filename_out
-        )
-        print(f"Figure saved at {filename_out}")
+    filename_out = os.path.join(mid_dir_snapshots, f"{subj_name}_{mode}_{name}_recons.png")
+    qc.qc_recontructed_3DHRvolume(
+        path_anat_vol=anat_path,
+        path_brainmask_vol=bm_path,
+        file_figure_out=filename_out
+    )
+    print(f"Figure saved at {filename_out}")
 
 
 def qc_recons(base_path, model, mode):
