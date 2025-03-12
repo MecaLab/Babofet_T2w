@@ -55,8 +55,8 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
-        --threshold-first 0.4 \\
-        --threshold 0.6 \\
+        --threshold-first 0.1 \\
+        --threshold 0.3 \\
         
 ./mv_recons.sh {subj} {mode_bm}
 """
@@ -69,8 +69,9 @@ singularity exec \\
 
 """
 Parametres:
-- two-step-cycle: Changer le nombre de cycle (défault 3)
-- threshold(-first): est utilisé pour rejeter les slices (NCC). -first pour le premier cycle, rien pour le cycle au milieu (moyenne des 2)
+-- bias-field-correction Turn on/off bias field correction step during data preprocessing (default: 0)
+-- two-step-cycle: Changer le nombre de cycle (défault 3)
+-- threshold(-first): est utilisé pour rejeter les slices (NCC). -first pour le premier cycle, rien pour le cycle au milieu (moyenne des 2)
 """
 
 
@@ -153,7 +154,7 @@ if __name__ == "__main__":
             if not os.path.exists(motion_subfolder):
                 os.mkdir(motion_subfolder)
 
-            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_T46_pipeline.nii.gz"
+            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_T13_pipeline.nii.gz"
 
             write_slurm_file_nifty(
                 subj=subject,
