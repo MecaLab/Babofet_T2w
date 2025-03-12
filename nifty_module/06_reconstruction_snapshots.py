@@ -44,7 +44,6 @@ if __name__ == "__main__":
                 # qc_recons.qc_recons_bis(base_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
                 qc_recons.qc_intensity(subj_path, subject, mode, subj_session, param="T")
-                exit()
 
                 datas[session][mode] = {}
                 if not exp_param_folder:
