@@ -55,8 +55,7 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
-        --threshold-first -1 \\
-        --threshold -1 \\
+        --bias-field-correction 1 \\
         
 ./mv_recons.sh {subj} {mode_bm}
 """
@@ -154,7 +153,7 @@ if __name__ == "__main__":
             if not os.path.exists(motion_subfolder):
                 os.mkdir(motion_subfolder)
 
-            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_T-1_pipeline.nii.gz"
+            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_B1_pipeline.nii.gz"
 
             write_slurm_file_nifty(
                 subj=subject,
