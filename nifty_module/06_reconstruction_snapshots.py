@@ -17,7 +17,7 @@ def plot_histo(data, label, slice_index, ax=None):
 
 if __name__ == "__main__":
 
-    subject = "Aziza"
+    subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
     modes = ["manual"]
     datas = {}
