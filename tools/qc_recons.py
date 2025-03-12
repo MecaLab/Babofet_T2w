@@ -367,7 +367,9 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
     for i, idx in enumerate(idxs):
         ax = axs[i]
         for j, vol in enumerate(volumes):
+            print(volumes.shape)
             intensity = vol[vol.shape[0] // 2, :, idx]  # milieu de la coupe axial dans le volume 3D
+            print(intensity.shape)
             ax.plot(intensity, label=f"{param_name[j]}")
 
         ax.set_ylabel("Intensity")
