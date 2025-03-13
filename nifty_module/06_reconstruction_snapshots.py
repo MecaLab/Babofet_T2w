@@ -42,7 +42,7 @@ if __name__ == "__main__":
     for i, param in enumerate(params):
         for j, vol in enumerate(vols):
             ax = axes[i, j]
-            slice_data = vol.get_fdata()[:, :, idx[i]]  # Coupe selon l'axe Z
+            slice_data = vol[:, :, idx[i]]  # Coupe selon l'axe Z
             ax.imshow(slice_data.T, cmap="gray", origin="lower")
             ax.set_title(f"Vol {j + 1} - {param}\nSlice {idx[i]}")
             ax.axis("off")
