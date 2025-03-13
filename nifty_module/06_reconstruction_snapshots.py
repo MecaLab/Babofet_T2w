@@ -25,7 +25,7 @@ if __name__ == "__main__":
     params = [None, "T-1", "T13", "T46"]
     names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]"""
     exp_list = [False, True]
-    params = [None, "B"]
+    params = [None, "B1"]
     names = ["default-param", "bias-field-correction"]
 
     for i in range(len(exp_list)):
