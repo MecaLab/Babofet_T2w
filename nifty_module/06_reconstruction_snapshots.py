@@ -39,11 +39,13 @@ if __name__ == "__main__":
         "threshold_0.1_0.3": vol3,
         "threshold_0.4_0.6": vol4
     }
-    indices = [20, 40, 60, 80, 100]
+    indices = [10, 30, 50, 70, 90]
 
     fig, axes = plt.subplots(nrows=len(indices), ncols=len(vols), figsize=(15, 10))
 
     for i, idx in enumerate(indices):
+        axes[i, 0].text(0.5, 0.5, f"Slice {idx}", ha='center', va='center', fontsize=12, fontweight='bold')
+        axes[i, 0].axis('off')
         for j, (param, vol) in enumerate(vols.items()):
             ax = axes[i, j]
             axes[0, j].set_title(f"{param}", fontsize=12, fontweight='bold')
