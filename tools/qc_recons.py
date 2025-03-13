@@ -397,7 +397,7 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
             param = file.split("_")[-2]
             vols[param] = vol
 
-    fig, axes = plt.subplots(len(indices), len(vols), figsize=(20, 12))
+    fig, axes = plt.subplots(len(indices), len(vols), figsize=(20, 12), facecolor='white')
     for i, idx in enumerate(indices):
         for j, (param, vol) in enumerate(vols.items()):
             ax = axes[i, j]
