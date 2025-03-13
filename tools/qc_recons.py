@@ -381,16 +381,38 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
     plt.savefig(os.path.join(origin_output_path, f"recons/niftymic/{subject}/{mode}", f"intensity_{subj_session}.png"))
     plt.close()
 
-    """
-    mean1, std1 = np.mean(volume_ref_data), np.std(volume_ref_data)
-    mean2, std2 = np.mean(volume_1_data), np.std(volume_1_data)
-    mean3, std3 = np.mean(volume_2_data), np.std(volume_2_data)
-    mean4, std4 = np.mean(volume_3_data), np.std(volume_3_data)
-    print(f'Volume 1 (ref) - Moyenne: {mean1} | Écart-type: {std1}')
-    print(f'Volume 2 - Moyenne: {mean2} | Écart-type: {std2}')
-    print(f'Volume 3 - Moyenne: {mean3} | Écart-type: {std3}')
-    print(f'Volume 4 - Moyenne: {mean4} | Écart-type: {std4}')
-    """
+
+def qc_plot_table_params(subj_path, mode, subj_session):
+    nib_path = os.path.join(subj_path, mode)
+    vol_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
+
+    vols = {
+        "default": vol_ref
+    }
+    indices = [10, 30, 50, 70, 90]
+
+    for file in os.listdir(os.path.join(nib_path, "exp_param")):
+        if file.endswith("pipeline.nii.gz"):
+            vol = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
+            param = file.split("_")[-2]
+            vols[param] = vol
+
+    fig, axes = plt.subplots(len(indices), len(vols), figsize=(15, 10))
+    for i, idx in enumerate(indices):
+        for j, (param, vol) in enumerate(vols.items()):
+            ax = axes[i, j]
+            axes[0, j].set_title(f"{param}", fontsize=12, fontweight='bold')
+            slice_data = vol[:, :, idx]
+            ax.imshow(slice_data, cmap="gray")
+            ax.axis("off")
+
+    # Ajustement de la mise en page
+    plt.suptitle(subj_session)
+    for i, idx in enumerate(indices):
+        fig.text(0.02, 1 - (i + 0.5) / len(indices), f"Slice {idx}", va='center', ha='left', fontsize=12,
+                 fontweight='bold')
+    plt.tight_layout()
+    plt.savefig("tmp.png")
 
 
 if __name__ == "__main__":
