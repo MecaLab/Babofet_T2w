@@ -44,8 +44,6 @@ if __name__ == "__main__":
     fig, axes = plt.subplots(len(indices), len(vols), figsize=(15, 10))
 
     for i, idx in enumerate(indices):
-        axes[i, 0].text(-20, 0.5, f"Slice {idx}", transform=axes[i, 0].transAxes, va='center', ha='right', fontsize=12,
-                        fontweight='bold')
         for j, (param, vol) in enumerate(vols.items()):
             ax = axes[i, j]
             axes[0, j].set_title(f"{param}", fontsize=12, fontweight='bold')
@@ -55,6 +53,9 @@ if __name__ == "__main__":
 
     # Ajustement de la mise en page
     plt.suptitle("Session 01 Fabienne")
+    for i, idx in enumerate(indices):
+        fig.text(0.02, 1 - (i + 0.5) / len(indices), f"Slice {idx}", va='center', ha='left', fontsize=12,
+                 fontweight='bold')
     plt.tight_layout()
     plt.savefig("tmp.png")
 
