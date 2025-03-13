@@ -17,7 +17,7 @@ def plot_histo(data, label, slice_index, ax=None):
 
 if __name__ == "__main__":
 
-    subject = "Aziza"
+    subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
     modes = ["manual"]
     datas = {}
@@ -26,12 +26,12 @@ if __name__ == "__main__":
     params = [None, "T-1", "T13", "T46"]
     names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
 
-    vol1 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask", "sub-Aziza_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
-    vol2 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param", "sub-Aziza_ses-01_haste_3DHR_manual_bm_T13_pipeline.nii.gz")).get_fdata()
+    vol1 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask", "sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
+    vol2 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param", "sub-Fabienne_ses-01_haste_3DHR_manual_bm_T13_pipeline.nii.gz")).get_fdata()
     vol3 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param",
-                                 "sub-Aziza_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")).get_fdata()
+                                 "sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")).get_fdata()
     vol4 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param",
-                                 "sub-Aziza_ses-01_haste_3DHR_manual_bm_T46_pipeline.nii.gz")).get_fdata()
+                                 "sub-Fabienne_ses-01_haste_3DHR_manual_bm_T46_pipeline.nii.gz")).get_fdata()
 
     print(vol1.shape)
     print(vol2.shape)
