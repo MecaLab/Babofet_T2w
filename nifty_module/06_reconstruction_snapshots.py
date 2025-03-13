@@ -40,7 +40,7 @@ if __name__ == "__main__":
     fig, axes = plt.subplots(len(params), len(vols), figsize=(15, 8))
     for j, param in enumerate(params):
         for i, vol in enumerate(vols):
-            ax = axes[i, j]
+            ax = axes[j, i]
             slice_data = vol[:, :, idxs[j]]
             ax.imshow(slice_data.T, cmap="gray")
             ax.set_title(f"{param}\nSlice {idxs[j]}")
