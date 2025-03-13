@@ -389,7 +389,7 @@ def qc_plot_table_params(subj_path, mode, subj_session):
     vols = {
         "default": vol_ref
     }
-    indices = [10, 30, 50, 70, 90]
+    indices = [20, 30, 40, 50, 60, 70, 80]
 
     for file in os.listdir(os.path.join(nib_path, "exp_param")):
         if file.endswith("pipeline.nii.gz"):
@@ -397,7 +397,7 @@ def qc_plot_table_params(subj_path, mode, subj_session):
             param = file.split("_")[-2]
             vols[param] = vol
 
-    fig, axes = plt.subplots(len(indices), len(vols), figsize=(15, 10))
+    fig, axes = plt.subplots(len(indices), len(vols), figsize=(20, 12))
     for i, idx in enumerate(indices):
         for j, (param, vol) in enumerate(vols.items()):
             ax = axes[i, j]
