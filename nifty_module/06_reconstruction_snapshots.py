@@ -44,7 +44,7 @@ if __name__ == "__main__":
     fig, axes = plt.subplots(len(indices), len(vols), figsize=(15, 10))
 
     for i, idx in enumerate(indices):
-        axes[i, 0].text(0.5, 1, f"Slice {idx}", ha='center', va='center', fontsize=12, fontweight='bold')
+        axes[i, 0].text(0, 0, f"Slice {idx}", ha='center', va='center', fontsize=12)
         axes[i, 0].axis('off')
         for j, (param, vol) in enumerate(vols.items()):
             ax = axes[i, j]
