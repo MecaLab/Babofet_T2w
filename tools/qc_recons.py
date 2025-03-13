@@ -413,6 +413,7 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
                  fontweight='bold')
     plt.tight_layout()
     plt.savefig(os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}", f"comparator_{subj_session}.png"))
+    plt.close()
 
 
 if __name__ == "__main__":
