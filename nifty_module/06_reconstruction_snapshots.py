@@ -39,9 +39,10 @@ if __name__ == "__main__":
 
     fig, axes = plt.subplots(len(vols), len(params), figsize=(15, 8))
     for i, vol in enumerate(vols):
-        for j, params in enumerate(params):
-            for k, idx in enumerate(idxs):
-                axes[i, j].imshow(vol[:, :, idx], cmap="gray")
+        for j, param in enumerate(params):
+            ax = axes[i, j]
+            slice_data = vol[:, :, idxs[j]]
+            ax.imshow(slice_data.T, cmap="gray")
 
     plt.tight_layout()
     plt.savefig("tmp.png")
