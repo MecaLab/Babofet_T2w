@@ -21,9 +21,12 @@ if __name__ == "__main__":
     modes = ["manual"]
     datas = {}
 
-    exp_list = [False, True, True, True]
+    """exp_list = [False, True, True, True]
     params = [None, "T-1", "T13", "T46"]
-    names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
+    names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]"""
+    exp_list = [False, True]
+    params = [None, "B"]
+    names = ["default-param", "bias-field-correction"]
 
     for i in range(len(exp_list)):
         exp_param_folder = exp_list[i]
@@ -36,10 +39,10 @@ if __name__ == "__main__":
             for mode in modes:
                 print(f"Running {mode} for {session} with {param} param")
                 # Plot the anat image with the BM using the rejected slices file
-                # qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode, exp_param_folder=exp_param_folder, param=param, name=name)
+                qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
                 # Plot 1 snapshot per reconstruction
-                # qc_recons.qc_recons_bis(subj_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
+                qc_recons.qc_recons_bis(subj_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
                 qc_recons.qc_intensity(subj_path, subject, mode, subj_session, param="B")
 
