@@ -43,6 +43,7 @@ if __name__ == "__main__":
             ax = axes[i, j]
             slice_data = vol[:, :, idxs[j]]
             ax.imshow(slice_data.T, cmap="gray")
+            ax.set_title(f"{param}\nSlice {idxs[j]}")
 
     plt.tight_layout()
     plt.savefig("tmp.png")
