@@ -27,8 +27,17 @@ if __name__ == "__main__":
     names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
 
     vol1 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask", "sub-Aziza_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
+    vol2 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param", "sub-Aziza_ses-01_haste_3DHR_manual_bm_T13_pipeline.nii.gz")).get_fdata()
+    vol3 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param",
+                                 "sub-Aziza_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")).get_fdata()
+    vol4 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param",
+                                 "sub-Aziza_ses-01_haste_3DHR_manual_bm_T46_pipeline.nii.gz")).get_fdata()
 
     print(vol1.shape)
+    print(vol2.shape)
+    print(vol3.shape)
+    print(vol4.shape)
+
 
     exit()
     for i in range(len(exp_list)):
