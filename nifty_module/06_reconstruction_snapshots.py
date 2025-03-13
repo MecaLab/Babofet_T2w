@@ -27,16 +27,24 @@ if __name__ == "__main__":
     names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
 
     vol1 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask", "sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
-    vol2 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param", "sub-Fabienne_ses-01_haste_3DHR_manual_bm_T13_pipeline.nii.gz")).get_fdata()
+    vol2 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param", "sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")).get_fdata()
     vol3 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param",
-                                 "sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")).get_fdata()
+                                 "sub-Fabienne_ses-01_haste_3DHR_manual_bm_T13_pipeline.nii.gz")).get_fdata()
     vol4 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param",
                                  "sub-Fabienne_ses-01_haste_3DHR_manual_bm_T46_pipeline.nii.gz")).get_fdata()
 
-    print(vol1.shape)
-    print(vol2.shape)
-    print(vol3.shape)
-    print(vol4.shape)
+    vols = [vol1, vol2, vol3, vol4]
+    params = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
+    idxs = [10, 30, 50, 70, 90]
+
+    fig, axes = plt.subplots(len(idxs), len(params), figsize=(15, 8))
+    for i, vol in enumerate(vols):
+        for j, params in enumerate(params):
+            for k, idx in enumerate(idxs):
+                axes[i, j].imshow(vol[:, :, idx], cmap="gray")
+
+    plt.tight_layout()
+    plt.savefig("tmp.png")
 
 
     exit()
