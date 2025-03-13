@@ -37,16 +37,18 @@ if __name__ == "__main__":
     params = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
     idx = [20, 40, 60, 80, 100]
 
-    fig, axes = plt.subplots(len(params), len(vols), figsize=(18, 12))
+    fig, axes = plt.subplots(len(vols), len(params), figsize=(17, 12))
 
-    for i, param in enumerate(params):
-        for j, vol in enumerate(vols):
+    # Remplissage de la figure
+    for i, vol in enumerate(vols):
+        for j, param in enumerate(params):
             ax = axes[i, j]
-            slice_data = vol[:, :, idx[i]]  # Coupe selon l'axe Z
+            slice_data = vol.get_fdata()[:, :, idx[j]]  # Coupe selon l'axe Z
             ax.imshow(slice_data.T, cmap="gray", origin="lower")
-            ax.set_title(f"Vol {j + 1} - {param}\nSlice {idx[i]}")
+            ax.set_title(f"{param}\nSlice {idx[j]}")
             ax.axis("off")
 
+    # Ajustement de la mise en page
     plt.tight_layout()
     plt.savefig("tmp.png")
 
