@@ -383,7 +383,7 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
 
 
 def qc_plot_table_params(subj_path, mode, subj_session):
-    nib_path = os.path.join(subj_path, mode)
+    nib_path = os.path.join(subj_path, f"{mode}_brainmask")
     print(nib_path)
     exit()
     vol_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
