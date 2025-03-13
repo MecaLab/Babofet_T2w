@@ -41,7 +41,7 @@ if __name__ == "__main__":
     }
     indices = [10, 30, 50, 70, 90]
 
-    fig, axes = plt.subplots(len(indices), len(vols) + 1, figsize=(15, 10), gridspec_kw={'width_ratios': [0.1] + [1] * len(vols)})
+    fig, axes = plt.subplots(len(indices), len(vols), figsize=(15, 10), gridspec_kw={'width_ratios': [0.1] + [1] * len(vols)})
 
     for i, idx in enumerate(indices):
         axes[i, 0].text(0.5, 0.5, f"Slice {idx}", ha='center', va='center', fontsize=12, fontweight='bold')
