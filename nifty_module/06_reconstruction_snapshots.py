@@ -32,12 +32,10 @@ if __name__ == "__main__":
         name = names[i]
         for session in os.listdir(base_path):
             datas[session] = {}
+            subj_path = os.path.join(base_path, session)  # ../data/recons_folder/subj/session
+            subj_session = f"sub-{subject}_ses-{session[3:]}"
             for mode in modes:
                 print(f"Running {mode} for {session} with {param} param")
-                subj_path = os.path.join(base_path, session)  # ../data/recons_folder/subj/session
-
-                subj_session = f"sub-{subject}_ses-{session[3:]}"
-
                 # Plot the anat image with the BM using the rejected slices file
                 # qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
@@ -46,13 +44,13 @@ if __name__ == "__main__":
 
                 # qc_recons.qc_intensity(subj_path, subject, mode, subj_session, param="B")
 
-                qc_recons.qc_plot_table_params(subj_path, mode, subj_session)
                 datas[session][mode] = {}
                 if not exp_param_folder:
                     datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
                 else:
                     datas[session][mode]["anat"] = os.path.join(base_path, session, f"exp_param/{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
 
+            qc_recons.qc_plot_table_params(subj_path, mode, subj_session)
         # plot the matplotlib table format for the qc:
         # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
         # qc_recons.qc_plot_table_recons(datas, subject, name)
