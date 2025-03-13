@@ -19,12 +19,12 @@ if __name__ == "__main__":
 
     subject = "Fabienne"
     base_path = os.path.join(cfg.DATA_PATH, subject)
-    modes = ["manual"]
+    """modes = ["manual"]
     datas = {}
 
     exp_list = [False, True, True, True]
     params = [None, "T-1", "T13", "T46"]
-    names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
+    names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]"""
 
     vol1 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask", "sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
     vol2 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param", "sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")).get_fdata()
@@ -33,19 +33,23 @@ if __name__ == "__main__":
     vol4 = nib.load(os.path.join(base_path, "ses01", "manual_brainmask/exp_param",
                                  "sub-Fabienne_ses-01_haste_3DHR_manual_bm_T46_pipeline.nii.gz")).get_fdata()
 
-    vols = [vol1, vol2, vol3, vol4]
-    params = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
-    idx = [20, 40, 60, 80, 100]
+    vols = {
+        "default-param": vol1,
+        "threshold_-1": vol2,
+        "threshold_0.1_0.3": vol3,
+        "threshold_0.4_0.6": vol4
+    }
+    indices = [20, 40, 60, 80, 100]
 
-    fig, axes = plt.subplots(len(vols), len(params), figsize=(17, 12))
+    fig, axes = plt.subplots(nrows=len(indices), ncols=len(vols), figsize=(15, 10))
 
-    # Remplissage de la figure
-    for i, vol in enumerate(vols):
-        for j, param in enumerate(params):
+    for i, idx in enumerate(indices):
+        axes[i, 0].set_ylabel(f"Slice {idx}", fontsize=12, fontweight='bold')
+        for j, (param, vol) in enumerate(vols.items()):
             ax = axes[i, j]
-            slice_data = vol[:, :, idx[j]]  # Coupe selon l'axe Z
-            ax.imshow(slice_data.T, cmap="gray", origin="lower")
-            ax.set_title(f"{param}\nSlice {idx[j]}")
+            axes[0, j].set_title(f"{param}", fontsize=12, fontweight='bold')
+            slice_data = vol[:, :, idx]
+            ax.imshow(slice_data, cmap="gray")
             ax.axis("off")
 
     # Ajustement de la mise en page
