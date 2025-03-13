@@ -38,16 +38,16 @@ if __name__ == "__main__":
     idxs = [10, 30, 50, 70, 90]
 
     fig, axes = plt.subplots(len(params), len(vols), figsize=(15, 8))
-    for j, param in enumerate(params):
-        for i, vol in enumerate(vols):
-            ax = axes[j, i]
-            slice_data = vol[:, :, idxs[j]]
-            ax.imshow(slice_data.T, cmap="gray")
-            ax.set_title(f"{param}\nSlice {idxs[j]}")
+    for i, vol in enumerate(vols):
+        for j, param in enumerate(params):
+            ax = axes[i, j]
+            for idx in idxs:
+                ax.imshow(vol[:, :, idx], cmap="gray")
+            ax.set_title(f"{param}\n")
+            ax.axis("off")
 
     plt.tight_layout()
     plt.savefig("tmp.png")
-
 
     exit()
     for i in range(len(exp_list)):
