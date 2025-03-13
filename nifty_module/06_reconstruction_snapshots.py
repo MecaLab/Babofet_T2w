@@ -39,12 +39,12 @@ if __name__ == "__main__":
                 subj_session = f"sub-{subject}_ses-{session[3:]}"
 
                 # Plot the anat image with the BM using the rejected slices file
-                qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode, exp_param_folder=exp_param_folder, param=param, name=name)
+                # qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
                 # Plot 1 snapshot per reconstruction
-                qc_recons.qc_recons_bis(subj_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
+                # qc_recons.qc_recons_bis(subj_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
-                qc_recons.qc_intensity(subj_path, subject, mode, subj_session, param="B")
+                # qc_recons.qc_intensity(subj_path, subject, mode, subj_session, param="B")
 
                 qc_recons.qc_plot_table_params(subj_path, mode, subj_session)
                 datas[session][mode] = {}
