@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
                 qc_recons.qc_intensity(subj_path, subject, mode, subj_session, param="B")
 
-                qc_recons.qc_plot_table_params(subj_path, subject, mode, subj_session)
+                qc_recons.qc_plot_table_params(subj_path, mode, subj_session)
                 datas[session][mode] = {}
                 if not exp_param_folder:
                     datas[session][mode]["anat"] = os.path.join(base_path, session, f"{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_pipeline.nii.gz")
