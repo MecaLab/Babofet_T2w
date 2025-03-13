@@ -37,9 +37,9 @@ if __name__ == "__main__":
     params = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
     idxs = [10, 30, 50, 70, 90]
 
-    fig, axes = plt.subplots(len(vols), len(params), figsize=(15, 8))
-    for i, vol in enumerate(vols):
-        for j, param in enumerate(params):
+    fig, axes = plt.subplots(len(params), len(vols), figsize=(15, 8))
+    for i, vol in enumerate(params):
+        for j, param in enumerate(vols):
             ax = axes[i, j]
             slice_data = vol[:, :, idxs[j]]
             ax.imshow(slice_data.T, cmap="gray")
