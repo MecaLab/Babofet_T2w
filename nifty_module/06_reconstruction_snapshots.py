@@ -50,7 +50,7 @@ if __name__ == "__main__":
                 else:
                     datas[session][mode]["anat"] = os.path.join(base_path, session, f"exp_param/{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
 
-            qc_recons.qc_plot_table_params(subj_path, mode, subj_session)
+            qc_recons.qc_plot_table_params(subj_path, mode, subject, subj_session)
         # plot the matplotlib table format for the qc:
         # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
         # qc_recons.qc_plot_table_recons(datas, subject, name)
