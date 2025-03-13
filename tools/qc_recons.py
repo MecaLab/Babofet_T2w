@@ -378,7 +378,7 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
 
     plt.suptitle(f"Analysis of the intensity profile for {subj_session}")
     plt.tight_layout()
-    plt.savefig(os.path.join(origin_output_path, f"recons/niftymic/{subject}/{mode}", f"intensity_{subj_session}.png"))
+    plt.savefig(os.path.join(origin_output_path, f"recons/niftymic/{subject}/{mode}", f"intensity_{subj_session}_{param}.png"))
     plt.close()
 
 
