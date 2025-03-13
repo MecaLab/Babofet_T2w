@@ -37,7 +37,7 @@ if __name__ == "__main__":
     params = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6"]
     idx = [20, 40, 60, 80, 100]
 
-    fig, axes = plt.subplots(len(params), len(vols), figsize=(10, 10))
+    fig, axes = plt.subplots(len(params), len(vols), figsize=(18, 12))
 
     for i, param in enumerate(params):
         for j, vol in enumerate(vols):
