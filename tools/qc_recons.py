@@ -412,7 +412,8 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
         fig.text(0.02, 1 - (i + 0.5) / len(indices), f"Slice {idx}", va='center', ha='left', fontsize=12,
                  fontweight='bold')
     plt.tight_layout()
-    plt.savefig(os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}", f"comparator_{subj_session}.png"))
+    output_filepath = os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}", f"comparator_{subj_session}.png")
+    plt.savefig(output_filepath)
     plt.savefig()
 
 
