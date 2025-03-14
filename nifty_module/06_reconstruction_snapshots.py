@@ -41,6 +41,7 @@ if __name__ == "__main__":
                 # Plot 1 snapshot per reconstruction
                 # qc_recons.qc_recons_bis(subj_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
+                # TODO: A adapter pour les paramètres, prendre en compte plusieurs param_testé (B1_T13, B1_T46, etc)
                 # qc_recons.qc_intensity(subj_path, subject, mode, subj_session, param="B")
 
                 datas[session][mode] = {}
