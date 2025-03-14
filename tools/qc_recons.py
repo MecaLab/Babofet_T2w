@@ -383,6 +383,10 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
 
 
 def qc_plot_table_params(subj_path, mode, subject, subj_session):
+    output_filename = os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}", f"comparator_{subj_session}.png")
+    if os.path.exists(output_filename):
+        return None
+
     nib_path = os.path.join(subj_path, f"{mode}_brainmask")
     vol_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
 
@@ -393,12 +397,11 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
 
     for file in os.listdir(os.path.join(nib_path, "exp_param")):
         if file.endswith("pipeline.nii.gz"):
-            print(file)
             vol = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
             param = file.split("bm_")[-1].split("_pipeline")[0]
             vols[param] = vol
 
-    fig, axes = plt.subplots(len(indices), len(vols), figsize=(4*len(vols), 2*len(indices)), facecolor='white')
+    fig, axes = plt.subplots(len(indices), len(vols), figsize=(3*len(vols), 2*len(indices)), facecolor='white')
     for i, idx in enumerate(indices):
         for j, (param, vol) in enumerate(vols.items()):
             ax = axes[i, j]
@@ -413,7 +416,7 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
         fig.text(0.02, 1 - (i + 0.5) / len(indices), f"Slice {idx}", va='center', ha='left', fontsize=12,
                  fontweight='bold')
     plt.tight_layout()
-    plt.savefig(os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}", f"comparator_{subj_session}.png"))
+    plt.savefig(output_filename)
     plt.close()
 
 
