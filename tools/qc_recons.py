@@ -395,12 +395,8 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
         if file.endswith("pipeline.nii.gz"):
             print(file)
             vol = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
-            print(file.split("bm_")[-1].split("_pipeline")[0])
-            param = file.split("_")[-2]
-            print(param)
+            param = file.split("bm_")[-1].split("_pipeline")[0]
             vols[param] = vol
-
-    exit()
 
     fig, axes = plt.subplots(len(indices), len(vols), figsize=(4*len(vols), 2*len(indices)), facecolor='white')
     for i, idx in enumerate(indices):
