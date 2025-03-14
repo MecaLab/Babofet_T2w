@@ -56,6 +56,8 @@ singularity exec \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
         --bias-field-correction 1 \\
+        --threshold-first 0.1 \\
+        --threshold 0.3 \\
         
 ./mv_recons.sh {subj} {mode_bm}
 """
