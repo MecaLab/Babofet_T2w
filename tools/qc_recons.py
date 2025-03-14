@@ -395,7 +395,7 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
         if file.endswith("pipeline.nii.gz"):
             print(file)
             vol = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
-            print(file.split("_"))
+            print(file.split("bm_"))
             param = file.split("_")[-2]
             print(param)
             vols[param] = vol
