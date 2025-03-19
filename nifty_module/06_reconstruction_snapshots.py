@@ -33,18 +33,18 @@ if __name__ == "__main__":
     modes = ["manual"]
     datas = {}
 
-    vol_1 = nib.load("../data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz").get_fdata()
-    vol_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz").get_fdata()
+    vol_1 = nib.load("../data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-09_haste_3DHR_manual_bm_pipeline.nii.gz").get_fdata()
+    vol_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-09_haste_3DHR_manual_bm_T-1_pipeline.nii.gz").get_fdata()
 
-    bm_1 = nib.load("../data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline_mask.nii.gz").get_fdata()
-    bm_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz").get_fdata()
+    bm_1 = nib.load("../data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-09_haste_3DHR_manual_bm_pipeline_mask.nii.gz").get_fdata()
+    bm_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-09_haste_3DHR_manual_bm_T-1_pipeline.nii.gz").get_fdata()
 
     volume1_masked = vol_1[bm_1 > 0]
     volume2_masked = vol_2[bm_2 > 0]
     print(vol_1.shape)
     print(volume1_masked.shape)
 
-    plot_histo(volume1_masked, volume2_masked, "Fabienne_ses01 default vs T-1", bins=100)
+    plot_histo(volume1_masked, volume2_masked, "Fabienne_ses09 default vs T-1", bins=100)
 
     """
     exp_list = [False, True, True, True, ] # True, True, True, True]
