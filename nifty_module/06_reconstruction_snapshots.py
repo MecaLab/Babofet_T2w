@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     volume1_masked = vol_1[bm_1 > 0]
     volume2_masked = vol_2[bm_2 > 0]
-
+    print(vol_1)
     print(volume1_masked)
 
     plot_histo(volume1_masked, volume2_masked, "Fabienne_ses01 default vs T-1", bins=256)
