@@ -10,15 +10,20 @@ from scipy import stats
 
 
 def plot_histo(vol1, vol2, title, bins=100):
-    hist1, bins1 = np.histogram(vol1, bins=bins, density=True)
-    hist2, bins2 = np.histogram(vol2, bins=bins, density=True)
-    distance = stats.wasserstein_distance(bins1[:-1], bins2[:-1], hist1, hist2)
-    print(f"Distance de Wasserstein : {distance}")
-    plt.figure(figsize=(15, 8))
-    plt.plot(bins1[:-1], hist1, label='Volume 1')
-    plt.plot(bins2[:-1], hist2, label='Volume 2')
-    plt.title(title)
+    hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
+    hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
+    hist2, bins2 = np.histogram(vol2, bins=bins, density=True, range=hist_range)
+    bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
+    wasserstein_dist = stats.wasserstein_distance(bin_centers, bin_centers, hist1 * np.diff(bins1), hist2 * np.diff(bins2))
+    print(f"Wasserstein distance: {wasserstein_dist}")
+    plt.figure(figsize=(10, 6))
+    plt.plot(bin_centers, hist1, label='Volume 1', linestyle='-', alpha=0.7)
+    plt.plot(bin_centers, hist2, label='Volume 2', linestyle='--', alpha=0.7)
+    plt.title(f"{title}\n(Wasserstein Distance = {wasserstein_dist:.4f})")
     plt.legend()
+    plt.xlabel("Intensité")
+    plt.ylabel("Densité")
+    plt.grid()
     plt.savefig("tmp.png")
 
 
