@@ -28,8 +28,8 @@ if __name__ == "__main__":
     modes = ["manual"]
     datas = {}
 
-    vol_1 = nib.load("data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")
-    vol_2 = nib.load("data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
+    vol_1 = nib.load("../data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")
+    vol_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
     plot_histo(vol_1.get_fdata(), vol_2.get_fdata(), "Fabienne_ses01 default vs T-1", bins=256)
 
     """
