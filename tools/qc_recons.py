@@ -9,6 +9,7 @@ import configuration as cfg
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import fnmatch
+import re
 
 
 def qc_plot_table_recons(datas, subj_name, name):
@@ -347,16 +348,24 @@ def get_file_with_pattern(path, pattern):
     return files
 
 
+def extract_param_name(file):
+    pattern = r"bm_(.*?)_pipeline"  # extract the param name between 'bm' and '_pipeline'
+    match = re.search(pattern, file)
+    if match:
+        return match.group(1)
+    else:
+        return None
+
+
 def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
     volumes = [nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()]
     param_name = ["default"]
     exp_param_folder = os.path.join(base_path, "exp_param")
     if os.path.exists(exp_param_folder):
-        files = get_file_with_pattern(exp_param_folder, pattern=f"*{param}*_pipeline.nii.gz")
+        files = os.listdir(os.path.join(base_path, "exp_param"))
         for file in files:
-            param_name.append(file.split("_")[-2])
-            print(file, file.split("_")[-2])
+            param_name.append(extract_param_name(file))
             volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
 
     origin_output_path = "snapshots"
