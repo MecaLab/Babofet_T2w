@@ -9,8 +9,19 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 
-def plot_histo(vol1, vol2, title, bins=100):
+def freedman_diaconis_bins(data):
+    """Calcule le nombre optimal de bins selon la règle de Freedman-Diaconis."""
+    q75, q25 = np.percentile(data, [75, 25])
+    iqr = q75 - q25
+    n = len(data)
+    bin_width = 2 * iqr / (n ** (1/3))
+    return int((data.max() - data.min()) / bin_width)
+
+
+def plot_histo(vol1, vol2, title):
     hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
+    bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
+    print(bins)
     hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
     hist2, bins2 = np.histogram(vol2, bins=bins, density=True, range=hist_range)
     bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
