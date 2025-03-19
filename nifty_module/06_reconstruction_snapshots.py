@@ -13,7 +13,7 @@ def plot_histo(vol1, vol2, title, bins=256):
     hist1, bins1 = np.histogram(vol1, bins=bins, range=(0, 1), density=True)
     hist2, bins2 = np.histogram(vol2, bins=bins, range=(0, 1), density=True)
     distance = stats.wasserstein_distance(bins1[:-1], bins2[:-1], hist1, hist2)
-    print(f"Distance de wasserstein: {distance}")
+    print(f"Distance de Wasserstein : {distance}")
     plt.figure(figsize=(15, 8))
     plt.plot(bins1[:-1], hist1, label='Volume 1')
     plt.plot(bins2[:-1], hist2, label='Volume 2')
@@ -36,6 +36,8 @@ if __name__ == "__main__":
 
     volume1_masked = vol_1[bm_1 > 0]
     volume2_masked = vol_2[bm_2 > 0]
+
+    print(volume1_masked)
 
     plot_histo(volume1_masked, volume2_masked, "Fabienne_ses01 default vs T-1", bins=256)
 
