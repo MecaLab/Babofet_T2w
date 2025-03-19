@@ -357,7 +357,7 @@ def extract_param_name(file):
         return None
 
 
-def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
+def qc_intensity(subj_path, subject, mode, subj_session):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
     volumes = [nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()]
     param_name = ["default"]
@@ -389,7 +389,7 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
 
     plt.suptitle(f"Analysis of the intensity profile for {subj_session}")
     plt.tight_layout()
-    plt.savefig(os.path.join(origin_output_path, f"recons/niftymic/{subject}/{mode}", f"intensity_{subj_session}_{param}.png"))
+    plt.savefig(os.path.join(origin_output_path, f"recons/niftymic/{subject}/{mode}", f"intensity_{subj_session}.png"))
     plt.close()
 
 
