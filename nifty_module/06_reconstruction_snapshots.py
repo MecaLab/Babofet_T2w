@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 
-def plot_histo(vol1, vol2, title, bins=256):
+def plot_histo(vol1, vol2, title, bins=100):
     hist1, bins1 = np.histogram(vol1, bins=bins, range=(0, 1), density=True)
     hist2, bins2 = np.histogram(vol2, bins=bins, range=(0, 1), density=True)
     distance = stats.wasserstein_distance(bins1[:-1], bins2[:-1], hist1, hist2)
@@ -29,17 +29,17 @@ if __name__ == "__main__":
     datas = {}
 
     vol_1 = nib.load("../data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz").get_fdata()
-    vol_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz").get_fdata()
+    vol_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T46_pipeline.nii.gz").get_fdata()
 
     bm_1 = nib.load("../data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline_mask.nii.gz").get_fdata()
-    bm_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz").get_fdata()
+    bm_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T46_pipeline.nii.gz").get_fdata()
 
     volume1_masked = vol_1[bm_1 > 0]
     volume2_masked = vol_2[bm_2 > 0]
     print(vol_1.shape)
     print(volume1_masked.shape)
 
-    plot_histo(volume1_masked, volume2_masked, "Fabienne_ses01 default vs T-1", bins=256)
+    plot_histo(volume1_masked, volume2_masked, "Fabienne_ses01 default vs T46", bins=100)
 
     """
     exp_list = [False, True, True, True, ] # True, True, True, True]
