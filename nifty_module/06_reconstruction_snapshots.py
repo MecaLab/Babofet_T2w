@@ -10,8 +10,8 @@ from scipy import stats
 
 
 def plot_histo(vol1, vol2, title, bins=100):
-    hist1, bins1 = np.histogram(vol1, bins=bins, range=(0, 1), density=True)
-    hist2, bins2 = np.histogram(vol2, bins=bins, range=(0, 1), density=True)
+    hist1, bins1 = np.histogram(vol1, bins=bins, density=True)
+    hist2, bins2 = np.histogram(vol2, bins=bins, density=True)
     distance = stats.wasserstein_distance(bins1[:-1], bins2[:-1], hist1, hist2)
     print(f"Distance de Wasserstein : {distance}")
     plt.figure(figsize=(15, 8))
