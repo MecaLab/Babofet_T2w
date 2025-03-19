@@ -28,9 +28,16 @@ if __name__ == "__main__":
     modes = ["manual"]
     datas = {}
 
-    vol_1 = nib.load("../data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")
-    vol_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
-    plot_histo(vol_1.get_fdata(), vol_2.get_fdata(), "Fabienne_ses01 default vs T-1", bins=256)
+    vol_1 = nib.load("../data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz").get_fdata()
+    vol_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz").get_fdata()
+
+    bm_1 = nib.load("../data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline_mask.nii.gz").get_fdata()
+    bm_2 = nib.load("../data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz").get_fdata()
+
+    volume1_masked = vol_1[bm_1 > 0]
+    volume2_masked = vol_2[bm_2 > 0]
+
+    plot_histo(volume1_masked, volume2_masked, "Fabienne_ses01 default vs T-1", bins=256)
 
     """
     exp_list = [False, True, True, True, ] # True, True, True, True]
