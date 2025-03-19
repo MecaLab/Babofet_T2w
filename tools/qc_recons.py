@@ -365,8 +365,9 @@ def qc_intensity(subj_path, subject, mode, subj_session, param="T"):
     if os.path.exists(exp_param_folder):
         files = os.listdir(os.path.join(base_path, "exp_param"))
         for file in files:
-            param_name.append(extract_param_name(file))
-            volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
+            if file.endswith("pipeline.nii.gz"):
+                param_name.append(extract_param_name(file))
+                volumes.append(nib.load(os.path.join(base_path, "exp_param", file)).get_fdata())
 
     origin_output_path = "snapshots"
 
