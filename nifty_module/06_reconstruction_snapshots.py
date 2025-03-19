@@ -44,7 +44,7 @@ if __name__ == "__main__":
     print(vol_1.shape)
     print(volume1_masked.shape)
 
-    plot_histo(volume1_masked, volume2_masked, "Fabienne_ses01 default vs T46", bins=100)
+    plot_histo(volume1_masked, volume2_masked, "Fabienne_ses01 default vs T-1", bins=100)
 
     """
     exp_list = [False, True, True, True, ] # True, True, True, True]
