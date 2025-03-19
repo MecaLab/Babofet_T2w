@@ -6,13 +6,20 @@ from tools import qc_recons
 import numpy as np
 import nibabel as nib
 import matplotlib.pyplot as plt
+from scipy import stats
 
 
-def plot_histo(data, label, slice_index, ax=None):
-    ax.hist(data[:, :, slice_index].flatten(), bins=50, alpha=0.6, label=label)
-    ax.set_xlabel("Intensité")
-    ax.set_ylabel("Fréquence")
-    ax.legend()
+def plot_histo(vol1, vol2, title, bins=256):
+    hist1, bins1 = np.histogram(vol1, bins=bins, range=(0, 1), density=True)
+    hist2, bins2 = np.histogram(vol2, bins=bins, range=(0, 1), density=True)
+    distance = stats.wasserstein_distance(bins1[:-1], bins2[:-1], hist1, hist2)
+    print(f"Distance de wasserstein: {distance}")
+    plt.figure(figsize=(15, 8))
+    plt.plot(bins1[:-1], hist1, label='Volume 1')
+    plt.plot(bins2[:-1], hist2, label='Volume 2')
+    plt.title(title)
+    plt.legend()
+    plt.savefig("tmp.png")
 
 
 if __name__ == "__main__":
@@ -21,6 +28,11 @@ if __name__ == "__main__":
     modes = ["manual"]
     datas = {}
 
+    vol_1 = nib.load("data/recons_folder/Fabienne/ses01/manual_brainmask/sub-Fabienne_ses-01_haste_3DHR_manual_bm_pipeline.nii.gz")
+    vol_2 = nib.load("data/recons_folder/Fabienne/ses01//manual_brainmask/exp_param/sub-Fabienne_ses-01_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
+    plot_histo(vol_1.get_fdata(), vol_2.get_fdata(), "Fabienne_ses01 default vs T-1", bins=256)
+
+    """
     exp_list = [False, True, True, True, ] # True, True, True, True]
     params = [None, "T-1", "T13", "T46", ] # "B1", "B1_T-1", "B1_T13", "B1_T46"]
     names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6", ] # "bias-field-correction", "bias-field-correction_threshold_-1", "bias-field-correction_threshold_0.1_0.3", "bias-field-correction_threshold_0.4_0.6"]
@@ -53,7 +65,7 @@ if __name__ == "__main__":
         # plot the matplotlib table format for the qc:
         # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
         # qc_recons.qc_plot_table_recons(datas, subject, name)
-        # Lines above are commented because it is not working properly. Need to fix the orientation of the images (dim prb ?)
+        # Lines above are commented because it is not working properly. Need to fix the orientation of the images (dim prb ?)"""
 
 
 
