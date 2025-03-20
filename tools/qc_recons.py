@@ -474,9 +474,11 @@ def plot_histo(subj_path, mode, subject, subj_session):
     volumes["Default"] = vol_ref_masked_norm
 
     plt.figure(figsize=(15, 10))
-    comparisons = []
+    comparisons = {}
     for i, (param1, vol1) in enumerate(volumes.items()):
         for j, (param2, vol2) in enumerate(volumes.items()):
+            if (param1, param2) in comparisons or (param2, param1) in comparisons:
+                continue
             if i < j:
                 hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
                 bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
@@ -492,7 +494,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
                          alpha=0.7)
                 plt.plot(bin_centers, hist2, label=f"{param2} vs {param1} (WD: {wasserstein_dist:.4f})", linestyle='--',
                          alpha=0.7)
-                comparisons.append((param1, param2, wasserstein_dist))
+                comparisons[(param1, param2)] = wasserstein_dist
 
     plt.title(f"{subj_session} Histogram Comparisons")
     plt.legend()
