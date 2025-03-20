@@ -19,6 +19,9 @@ volume2_data = nib.load(vol_2_path).get_fdata()
 mask1_data = nib.load(mask_1_path).get_fdata()
 mask2_data = nib.load(mask_2_path).get_fdata()
 
+print(mask1_data.shape)
+print(mask2_data.shape)
+
 volume1_data = volume1_data[mask1_data > 0]
 volume2_data = volume2_data[mask2_data > 0]
 
