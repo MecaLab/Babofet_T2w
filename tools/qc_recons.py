@@ -479,22 +479,21 @@ def plot_histo(subj_path, mode, subject, subj_session):
         for j, (param2, vol2) in enumerate(volumes.items()):
             if (param1, param2) in comparisons or (param2, param1) in comparisons:
                 continue
-            if i < j:
-                hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
-                bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
+            hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
+            bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
 
-                hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
-                hist2, bins2 = np.histogram(vol2, bins=bins, density=True, range=hist_range)
+            hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
+            hist2, bins2 = np.histogram(vol2, bins=bins, density=True, range=hist_range)
 
-                bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
-                wasserstein_dist = stats.wasserstein_distance(bin_centers, bin_centers, hist1 * np.diff(bins1),
-                                                              hist2 * np.diff(bins2))
+            bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
+            wasserstein_dist = stats.wasserstein_distance(bin_centers, bin_centers, hist1 * np.diff(bins1),
+                                                          hist2 * np.diff(bins2))
 
-                plt.plot(bin_centers, hist1, label=f"{param1} vs {param2} (WD: {wasserstein_dist:.4f})", linestyle='-',
-                         alpha=0.7)
-                plt.plot(bin_centers, hist2, label=f"{param2} vs {param1} (WD: {wasserstein_dist:.4f})", linestyle='--',
-                         alpha=0.7)
-                comparisons[(param1, param2)] = wasserstein_dist
+            plt.plot(bin_centers, hist1, label=f"{param1} vs {param2} (WD: {wasserstein_dist:.4f})", linestyle='-',
+                     alpha=0.7)
+            plt.plot(bin_centers, hist2, label=f"{param2} vs {param1} (WD: {wasserstein_dist:.4f})", linestyle='--',
+                     alpha=0.7)
+            comparisons[(param1, param2)] = wasserstein_dist
 
     plt.title(f"{subj_session} Histogram Comparisons")
     plt.legend()
