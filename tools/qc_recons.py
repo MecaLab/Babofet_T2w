@@ -450,7 +450,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
                                         f"histo_{subj_session}_comparisons.png")
     if os.path.exists(output_filename_path):
         return None
-    
+
     nib_path = os.path.join(subj_path, f"{mode}_brainmask")
     vol_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
     mask_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")).get_fdata()
@@ -462,7 +462,8 @@ def plot_histo(subj_path, mode, subject, subj_session):
     for file in os.listdir(os.path.join(nib_path, "exp_param")):
         if file.endswith("pipeline.nii.gz"):
             vol_dst = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
-            mask_dst = nib.load(os.path.join(nib_path, "exp_param", file.replace(".nii.gz", "_mask.nii.gz"))).get_fdata()
+            mask_dst = nib.load(
+                os.path.join(nib_path, "exp_param", file.replace(".nii.gz", "_mask.nii.gz"))).get_fdata()
 
             param = file.split("bm_")[-1].split("_pipeline")[0]
             vol_dst_masked = vol_dst[mask_dst > 0]
@@ -473,22 +474,25 @@ def plot_histo(subj_path, mode, subject, subj_session):
     volumes["Default"] = vol_ref_masked_norm
 
     plt.figure(figsize=(15, 10))
+    comparisons = []
     for i, (param1, vol1) in enumerate(volumes.items()):
         for j, (param2, vol2) in enumerate(volumes.items()):
-            if i >= j:
-                continue
+            if i < j:
+                hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
+                bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
 
-            hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
-            bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
+                hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
+                hist2, bins2 = np.histogram(vol2, bins=bins, density=True, range=hist_range)
 
-            hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
-            hist2, bins2 = np.histogram(vol2, bins=bins, density=True, range=hist_range)
+                bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
+                wasserstein_dist = stats.wasserstein_distance(bin_centers, bin_centers, hist1 * np.diff(bins1),
+                                                              hist2 * np.diff(bins2))
 
-            bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
-            wasserstein_dist = stats.wasserstein_distance(bin_centers, bin_centers, hist1 * np.diff(bins1), hist2 * np.diff(bins2))
-
-            plt.plot(bin_centers, hist1, label=f"{param1} vs {param2} (WD: {wasserstein_dist:.4f})", linestyle='-', alpha=0.7)
-            plt.plot(bin_centers, hist2, label=f"{param2} vs {param1} (WD: {wasserstein_dist:.4f})", linestyle='--', alpha=0.7)
+                plt.plot(bin_centers, hist1, label=f"{param1} vs {param2} (WD: {wasserstein_dist:.4f})", linestyle='-',
+                         alpha=0.7)
+                plt.plot(bin_centers, hist2, label=f"{param2} vs {param1} (WD: {wasserstein_dist:.4f})", linestyle='--',
+                         alpha=0.7)
+                comparisons.append((param1, param2, wasserstein_dist))
 
     plt.title(f"{subj_session} Histogram Comparisons")
     plt.legend()
@@ -496,7 +500,6 @@ def plot_histo(subj_path, mode, subject, subj_session):
     plt.ylabel("Densité")
     plt.grid()
     plt.tight_layout()
-
     plt.savefig(output_filename_path)
     plt.close()
 
