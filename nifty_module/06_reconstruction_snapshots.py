@@ -14,8 +14,11 @@ from sklearn.preprocessing import StandardScaler
 def apply_pca(vol1, vol2, n_components=2):
     vol1_flat = vol1.flatten()
     vol2_flat = vol2.flatten()
-    
+
+    print(vol1_flat.shape)
+    print(vol2_flat.shape)
     data = np.vstack([vol1_flat, vol2_flat])
+    print(data.shape)
 
     scaler = StandardScaler()
     data_normalized = scaler.fit_transform(data)
