@@ -436,11 +436,8 @@ def freedman_diaconis_bins(data):
     """Calcule le nombre optimal de bins selon la règle de Freedman-Diaconis."""
     q75, q25 = np.percentile(data, [75, 25])
     iqr = q75 - q25
-    print(iqr)
     n = len(data)
-    print(n)
     bin_width = 2 * iqr / (n ** (1/3))
-    print(data.max(), data.min(), bin_width)
     return int((data.max() - data.min()) / bin_width)
 
 
@@ -453,7 +450,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
     vol_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
     mask_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")).get_fdata()
 
-    vol_ref_masked = vol_ref * mask_ref
+    vol_ref_masked = vol_ref[mask_ref > 0]
 
     for file in os.listdir(os.path.join(nib_path, "exp_param")):
         if file.endswith("pipeline.nii.gz"):
@@ -469,7 +466,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
             if os.path.exists(output_filename_path):
                 continue
 
-            vol_dst_masked = vol_dst * mask_dst
+            vol_dst_masked = vol_dst[mask_dst > 0]
 
             vol1 = normalize_min_max(vol_ref_masked)
             vol2 = normalize_min_max(vol_dst_masked)
