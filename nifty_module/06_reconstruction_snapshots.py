@@ -35,7 +35,7 @@ def plot_histo(vol1, vol2, title):
     plt.xlabel("Intensité")
     plt.ylabel("Densité")
     plt.grid()
-    plt.savefig("tmp.png")
+    plt.savefig(f"{title}.png")
 
 
 if __name__ == "__main__":
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     modes = ["manual"]
     datas = {}
 
-    param = "T-1"
+    param = "T13"
     session = "09"
 
     vol_1 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz").get_fdata()
