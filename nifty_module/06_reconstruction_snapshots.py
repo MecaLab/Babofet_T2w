@@ -90,6 +90,9 @@ if __name__ == "__main__":
     bm_1 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz").get_fdata()
     bm_2 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/exp_param/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_{param}_pipeline.nii.gz").get_fdata()
 
+    print(vol_1.shape, bm_1.shape)
+    print(vol_2.shape, bm_2.shape)
+    
     volume1_masked = vol_1[bm_1 > 0]
     volume2_masked = vol_2[bm_2 > 0]
 
