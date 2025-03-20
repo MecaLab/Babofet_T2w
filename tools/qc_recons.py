@@ -436,7 +436,9 @@ def freedman_diaconis_bins(data):
     """Calcule le nombre optimal de bins selon la règle de Freedman-Diaconis."""
     q75, q25 = np.percentile(data, [75, 25])
     iqr = q75 - q25
+    print(iqr)
     n = len(data)
+    print(n)
     bin_width = 2 * iqr / (n ** (1/3))
     print(data.max(), data.min(), bin_width)
     return int((data.max() - data.min()) / bin_width)
