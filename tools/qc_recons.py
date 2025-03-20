@@ -459,11 +459,14 @@ def plot_histo(subj_path, mode, subject, subj_session):
     for file in os.listdir(os.path.join(nib_path, "exp_param")):
         if file.endswith("pipeline.nii.gz"):
             vol_dst = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
-            print(file)
-            exit()
+            mask_dst = nib.load(os.path.join(nib_path, "exp_param", file.replace(".nii.gz", "_mask.nii.gz"))).get_fdata()
+
             param = file.split("bm_")[-1].split("_pipeline")[0]
 
             title = f"{subj_session} default vs {param}"
+
+            print(title)
+            exit()
 
             vol1 = normalize_min_max(vol_ref)
             vol2 = normalize_min_max(vol_dst)
