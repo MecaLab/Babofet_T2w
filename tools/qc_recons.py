@@ -466,10 +466,10 @@ def plot_histo(subj_path, mode, subject, subj_session):
             if os.path.exists(output_filename_path):
                 continue
 
-            vol_dst_mask = vol_dst[mask_dst > 0]
+            vol_dst_masked = vol_dst[mask_dst > 0]
 
             vol1 = normalize_min_max(vol_ref_masked)
-            vol2 = normalize_min_max(vol_dst_mask)
+            vol2 = normalize_min_max(vol_dst_masked)
 
             hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
             bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
@@ -482,9 +482,9 @@ def plot_histo(subj_path, mode, subject, subj_session):
             # print(f"Wasserstein distance: {wasserstein_dist}")
 
             plt.figure(figsize=(10, 6))
-            plt.plot(bin_centers, hist1, label='Volume 1', linestyle='-', alpha=0.7)
-            plt.plot(bin_centers, hist2, label='Volume 2', linestyle='--', alpha=0.7)
-            plt.title(f"{title}\n(Wasserstein Distance = {wasserstein_dist:.4f})")
+            plt.plot(bin_centers, hist1, label='Default param', linestyle='-', alpha=0.7)
+            plt.plot(bin_centers, hist2, label=f"{param} param", linestyle='--', alpha=0.7)
+            plt.title(f"{title}\nWasserstein Distance = {wasserstein_dist:.4f}")
             plt.legend()
             plt.xlabel("Intensité")
             plt.ylabel("Densité")
