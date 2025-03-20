@@ -14,6 +14,7 @@ from sklearn.preprocessing import StandardScaler
 def apply_pca(vol1, vol2, n_components=2):
     vol1_flat = vol1.flatten().reshape(1, -1)
     vol2_flat = vol2.flatten().reshape(1, -1)
+    
     print(vol1_flat.shape, vol2_flat.shape)
     data = np.stack([vol1_flat, vol2_flat])
 
@@ -92,13 +93,13 @@ if __name__ == "__main__":
 
     print(vol_1.shape, bm_1.shape)
     print(vol_2.shape, bm_2.shape)
-    
+
     volume1_masked = vol_1[bm_1 > 0]
     volume2_masked = vol_2[bm_2 > 0]
 
     # plot_histo(volume1_masked, volume2_masked, f"Fabienne_ses{session} default vs {param}")
     print("Starting PCA")
-    apply_pca(volume1_masked, volume2_masked, n_components=2)
+    apply_pca(vol_1, vol_2, n_components=2)
 
     """
     exp_list = [False, True, True, True, ] # True, True, True, True]
