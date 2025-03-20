@@ -460,6 +460,11 @@ def plot_histo(subj_path, mode, subject, subj_session):
             param = file.split("bm_")[-1].split("_pipeline")[0]
 
             title = f"{subj_session} default vs {param}"
+            output_filename = "_".join(title.split()).lower()
+            output_filename_path = os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}",
+                                                f"histo_{output_filename}.png")
+            if os.path.exists(output_filename_path):
+                continue
 
             vol_dst_mask = vol_dst[mask_dst > 0]
 
@@ -484,8 +489,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
             plt.xlabel("Intensité")
             plt.ylabel("Densité")
             plt.grid()
-            output_filename = "_".join(title.split()).lower()
-            output_filename_path = os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}", f"histo_{output_filename}.png")
+            plt.tight_layout()
             plt.savefig(output_filename_path)
             plt.close()
 

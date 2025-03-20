@@ -15,21 +15,6 @@ if __name__ == "__main__":
     modes = ["manual"]
     datas = {}
 
-    param = "T13"
-    session = "09"
-
-    vol_1 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz").get_fdata()
-    vol_2 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/exp_param/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_{param}_pipeline.nii.gz").get_fdata()
-
-    bm_1 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz").get_fdata()
-    bm_2 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/exp_param/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_{param}_pipeline.nii.gz").get_fdata()
-
-    volume1_masked = vol_1[bm_1 > 0]
-    volume2_masked = vol_2[bm_2 > 0]
-
-    # plot_histo(volume1_masked, volume2_masked, f"Fabienne_ses{session} default vs {param}")
-    print("Starting PCA")
-
     exp_list = [False, True, True, True, ] # True, True, True, True]
     params = [None, "T-1", "T13", "T46", ] # "B1", "B1_T-1", "B1_T13", "B1_T46"]
     names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6", ] # "bias-field-correction", "bias-field-correction_threshold_-1", "bias-field-correction_threshold_0.1_0.3", "bias-field-correction_threshold_0.4_0.6"]
