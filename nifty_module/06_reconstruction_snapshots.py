@@ -77,7 +77,7 @@ if __name__ == "__main__":
     datas = {}
 
     param = "T13"
-    session = "01"
+    session = "09"
 
     vol_1 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz").get_fdata()
     vol_2 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/exp_param/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_{param}_pipeline.nii.gz").get_fdata()
