@@ -10,8 +10,8 @@ session = "01"
 
 vol_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz")
 mask_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")
-vol_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T46_pipeline.nii.gz")
-mask_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T46_pipeline_mask.nii.gz")
+vol_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
+mask_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T-1_pipeline_mask.nii.gz")
 
 volume1_data = nib.load(vol_1_path).get_fdata()
 volume2_data = nib.load(vol_2_path).get_fdata()
@@ -60,7 +60,7 @@ difference = np.abs(volume1_power_spectrum - volume2_power_spectrum)
 total_difference = np.sum(difference)
 
 plt.subplot(2, 3, 3)
-plt.imshow(np.log1p(difference[:, :, difference.shape[2]//2]), cmap='gray')
+plt.imshow(np.log1p(difference[:, :, difference.shape[2]//2]), cmap='jet')
 plt.title('Différence des spectres de puissance (coupe centrale)')
 plt.colorbar()
 
