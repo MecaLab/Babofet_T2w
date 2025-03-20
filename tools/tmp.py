@@ -25,12 +25,12 @@ volume2_power_spectrum = np.abs(volume2_fft)**2
 plt.figure(figsize=(12, 6))
 
 plt.subplot(1, 2, 1)
-plt.imshow(np.log1p(volume1_power_spectrum[:, :, volume1_power_spectrum.shape[2]//2]), cmap='gray')
+plt.imshow(np.log1p(volume1_power_spectrum[:, :, volume1_power_spectrum.shape[2]//2]), cmap='jet')
 plt.title('Spectre de puissance Volume 1')
 plt.colorbar()
 
 plt.subplot(1, 2, 2)
-plt.imshow(np.log1p(volume2_power_spectrum[:, :, volume2_power_spectrum.shape[2]//2]), cmap='gray')
+plt.imshow(np.log1p(volume2_power_spectrum[:, :, volume2_power_spectrum.shape[2]//2]), cmap='jet')
 plt.title('Spectre de puissance Volume 2')
 plt.colorbar()
 
