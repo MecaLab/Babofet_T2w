@@ -5,7 +5,7 @@ from scipy.ndimage import correlate
 
 
 subject = "Fabienne"
-base_path = f"../data/recons_folder{subject}/"
+base_path = f"../data/recons_folder/{subject}/"
 session = "01"
 
 vol_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz")
