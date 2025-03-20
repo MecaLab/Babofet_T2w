@@ -473,7 +473,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
             vol2 = normalize_min_max(vol_dst_masked)
 
             hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
-            bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
+            bins = freedman_diaconis_bins(np.concatenate([vol_ref_masked, vol_dst_masked]))
 
             hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
             hist2, bins2 = np.histogram(vol2, bins=bins, density=True, range=hist_range)
