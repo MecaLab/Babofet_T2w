@@ -15,10 +15,7 @@ def apply_pca(vol1, vol2, n_components=2):
     vol1_flat = vol1.flatten()
     vol2_flat = vol2.flatten()
 
-    print(vol1_flat.shape)
-    print(vol2_flat.shape)
     data = np.vstack([vol1_flat, vol2_flat])
-    print(data.shape)
 
     scaler = StandardScaler()
     data_normalized = scaler.fit_transform(data)
@@ -96,6 +93,8 @@ if __name__ == "__main__":
     print(vol_1.shape, bm_1.shape)
     print(vol_2.shape, bm_2.shape)
 
+    print(vol_1[:, :, 100].shape)
+    exit()
     volume1_masked = vol_1[bm_1 > 0]
     volume2_masked = vol_2[bm_2 > 0]
 
