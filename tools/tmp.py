@@ -1,7 +1,7 @@
 import os
 import nibabel as nib
 import numpy as np
-from scipy.ndimage import correlate
+import matplotlib.pyplot as plt
 
 
 subject = "Fabienne"
@@ -14,16 +14,30 @@ vol_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param",
 volume1_data = nib.load(vol_1_path).get_fdata()
 volume2_data = nib.load(vol_2_path).get_fdata()
 
-volume1_data = (volume1_data - np.mean(volume1_data)) / np.std(volume1_data)
-volume2_data = (volume2_data - np.mean(volume2_data)) / np.std(volume2_data)
+volume1_fft = np.fft.fftn(volume1_data)
+volume2_fft = np.fft.fftn(volume2_data)
 
-print(volume1_data.flatten().shape)
-print(volume2_data.flatten().shape)
+# Calculer le spectre de puissance
+volume1_power_spectrum = np.abs(volume1_fft)**2
+volume2_power_spectrum = np.abs(volume2_fft)**2
 
-# Calculer la corrélation croisée
-correlation = correlate(volume1_data.flatten(), volume2_data.flatten())
+# Visualiser les spectres de puissance
+plt.figure(figsize=(12, 6))
 
-# Normaliser la corrélation croisée
-correlation_normalized = correlation / np.sqrt(np.sum(volume1_data**2) * np.sum(volume2_data**2))
+plt.subplot(1, 2, 1)
+plt.imshow(np.log1p(volume1_power_spectrum[:, :, volume1_power_spectrum.shape[2]//2]), cmap='gray')
+plt.title('Spectre de puissance Volume 1')
+plt.colorbar()
 
-print("Corrélation croisée normalisée :", correlation_normalized)
+plt.subplot(1, 2, 2)
+plt.imshow(np.log1p(volume2_power_spectrum[:, :, volume2_power_spectrum.shape[2]//2]), cmap='gray')
+plt.title('Spectre de puissance Volume 2')
+plt.colorbar()
+
+plt.savefig("tmp.png")
+
+# Comparer les spectres de puissance
+difference = np.abs(volume1_power_spectrum - volume2_power_spectrum)
+total_difference = np.sum(difference)
+
+print("Différence totale entre les spectres de puissance :", total_difference)
