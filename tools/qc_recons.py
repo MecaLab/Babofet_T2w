@@ -446,30 +446,37 @@ def normalize_min_max(volume):
 
 
 def plot_histo(subj_path, mode, subject, subj_session):
+    output_filename_path = os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}",
+                                        f"histo_{subj_session}_comparisons.png")
+    if os.path.exists(output_filename_path):
+        return None
+    
     nib_path = os.path.join(subj_path, f"{mode}_brainmask")
     vol_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
     mask_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")).get_fdata()
 
     vol_ref_masked = vol_ref[mask_ref > 0]
+    vol_ref_masked_norm = normalize_min_max(vol_ref_masked)
 
+    volumes = {}
     for file in os.listdir(os.path.join(nib_path, "exp_param")):
         if file.endswith("pipeline.nii.gz"):
             vol_dst = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
             mask_dst = nib.load(os.path.join(nib_path, "exp_param", file.replace(".nii.gz", "_mask.nii.gz"))).get_fdata()
 
             param = file.split("bm_")[-1].split("_pipeline")[0]
-
-            title = f"{subj_session} default vs {param}"
-            output_filename = "_".join(title.split()).lower()
-            output_filename_path = os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}",
-                                                f"histo_{output_filename}.png")
-            if os.path.exists(output_filename_path):
-                continue
-
             vol_dst_masked = vol_dst[mask_dst > 0]
+            volumes[param] = normalize_min_max(vol_dst_masked)
 
-            vol1 = normalize_min_max(vol_ref_masked)
-            vol2 = normalize_min_max(vol_dst_masked)
+    params = list(volumes.keys())
+    params.insert(0, "Default")
+    volumes["Default"] = vol_ref_masked_norm
+
+    plt.figure(figsize=(15, 10))
+    for i, (param1, vol1) in enumerate(volumes.items()):
+        for j, (param2, vol2) in enumerate(volumes.items()):
+            if i >= j:
+                continue
 
             hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
             bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
@@ -479,19 +486,19 @@ def plot_histo(subj_path, mode, subject, subj_session):
 
             bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
             wasserstein_dist = stats.wasserstein_distance(bin_centers, bin_centers, hist1 * np.diff(bins1), hist2 * np.diff(bins2))
-            # print(f"Wasserstein distance: {wasserstein_dist}")
 
-            plt.figure(figsize=(10, 6))
-            plt.plot(bin_centers, hist1, label='Default param', linestyle='-', alpha=0.7)
-            plt.plot(bin_centers, hist2, label=f"{param} param", linestyle='--', alpha=0.7)
-            plt.title(f"{title}\nWasserstein Distance: {wasserstein_dist:.4f}\nBins: {bins}")
-            plt.legend()
-            plt.xlabel("Intensité")
-            plt.ylabel("Densité")
-            plt.grid()
-            plt.tight_layout()
-            plt.savefig(output_filename_path)
-            plt.close()
+            plt.plot(bin_centers, hist1, label=f"{param1} vs {param2} (WD: {wasserstein_dist:.4f})", linestyle='-', alpha=0.7)
+            plt.plot(bin_centers, hist2, label=f"{param2} vs {param1} (WD: {wasserstein_dist:.4f})", linestyle='--', alpha=0.7)
+
+    plt.title(f"{subj_session} Histogram Comparisons")
+    plt.legend()
+    plt.xlabel("Intensité")
+    plt.ylabel("Densité")
+    plt.grid()
+    plt.tight_layout()
+
+    plt.savefig(output_filename_path)
+    plt.close()
 
 
 if __name__ == "__main__":
