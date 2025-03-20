@@ -473,7 +473,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
     params.insert(0, "Default")
     volumes["Default"] = vol_ref_masked_norm
 
-    plt.figure(figsize=(15, 10))
+    plt.figure(figsize=(22, 12))
     comparisons = {}
     for i, (param1, vol1) in enumerate(volumes.items()):
         for j, (param2, vol2) in enumerate(volumes.items()):
