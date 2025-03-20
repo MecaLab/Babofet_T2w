@@ -7,72 +7,6 @@ import numpy as np
 import nibabel as nib
 import matplotlib.pyplot as plt
 from scipy import stats
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-
-
-def apply_pca(vol1, vol2, n_components=2):
-    vol1_flat = vol1.flatten()
-    vol2_flat = vol2.flatten()
-
-    data = np.vstack([vol1_flat, vol2_flat])
-
-    scaler = StandardScaler()
-    data_normalized = scaler.fit_transform(data)
-
-    pca = PCA(n_components=n_components)
-    pca_result = pca.fit_transform(data_normalized)
-
-    plt.figure(figsize=(10, 6))
-    plt.scatter(pca_result[0, 0], pca_result[0, 1], label='Volume 1')
-    plt.scatter(pca_result[1, 0], pca_result[1, 1], label='Volume 2')
-    plt.xlabel('Composante Principale 1')
-    plt.ylabel('Composante Principale 2')
-    plt.legend()
-    plt.title('PCA des Volumes 3D')
-    plt.grid()
-    plt.savefig("pca_volumes.png")
-    plt.close()
-
-
-def freedman_diaconis_bins(data):
-    """Calcule le nombre optimal de bins selon la règle de Freedman-Diaconis."""
-    q75, q25 = np.percentile(data, [75, 25])
-    iqr = q75 - q25
-    n = len(data)
-    bin_width = 2 * iqr / (n ** (1/3))
-    return int((data.max() - data.min()) / bin_width)
-
-
-def normalize_min_max(volume):
-    return (volume - volume.min()) / (volume.max() - volume.min())
-
-
-def plot_histo(vol1, vol2, title):
-    vol1 = normalize_min_max(vol1)
-    vol2 = normalize_min_max(vol2)
-
-    hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
-    bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
-
-    hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
-    hist2, bins2 = np.histogram(vol2, bins=bins, density=True, range=hist_range)
-
-    bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
-    wasserstein_dist = stats.wasserstein_distance(bin_centers, bin_centers, hist1 * np.diff(bins1), hist2 * np.diff(bins2))
-    print(f"Wasserstein distance: {wasserstein_dist}")
-
-    plt.figure(figsize=(10, 6))
-    plt.plot(bin_centers, hist1, label='Volume 1', linestyle='-', alpha=0.7)
-    plt.plot(bin_centers, hist2, label='Volume 2', linestyle='--', alpha=0.7)
-    plt.title(f"{title}\n(Wasserstein Distance = {wasserstein_dist:.4f})")
-    plt.legend()
-    plt.xlabel("Intensité")
-    plt.ylabel("Densité")
-    plt.grid()
-    output_filename = "_".join(title.split()).lower()
-    plt.savefig(f"{output_filename}.png")
-    plt.close()
 
 
 if __name__ == "__main__":
@@ -90,19 +24,12 @@ if __name__ == "__main__":
     bm_1 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz").get_fdata()
     bm_2 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/exp_param/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_{param}_pipeline.nii.gz").get_fdata()
 
-    print(vol_1.shape, bm_1.shape)
-    print(vol_2.shape, bm_2.shape)
-
-    print(vol_1[:, :, 100].shape)
-    exit()
     volume1_masked = vol_1[bm_1 > 0]
     volume2_masked = vol_2[bm_2 > 0]
 
     # plot_histo(volume1_masked, volume2_masked, f"Fabienne_ses{session} default vs {param}")
     print("Starting PCA")
-    apply_pca(vol_1, vol_2, n_components=2)
 
-    """
     exp_list = [False, True, True, True, ] # True, True, True, True]
     params = [None, "T-1", "T13", "T46", ] # "B1", "B1_T-1", "B1_T13", "B1_T46"]
     names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6", ] # "bias-field-correction", "bias-field-correction_threshold_-1", "bias-field-correction_threshold_0.1_0.3", "bias-field-correction_threshold_0.4_0.6"]
@@ -118,12 +45,12 @@ if __name__ == "__main__":
             for mode in modes:
                 print(f"Running {mode} for {session} with {param} param")
                 # Plot the anat image with the BM using the rejected slices file
-                qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode, exp_param_folder=exp_param_folder, param=param, name=name)
+                # qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
                 # Plot 1 snapshot per reconstruction
-                qc_recons.qc_recons_bis(subj_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
+                # qc_recons.qc_recons_bis(subj_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
-                qc_recons.qc_intensity(subj_path, subject, mode, subj_session)
+                # qc_recons.qc_intensity(subj_path, subject, mode, subj_session)
 
                 datas[session][mode] = {}
                 if not exp_param_folder:
@@ -131,7 +58,8 @@ if __name__ == "__main__":
                 else:
                     datas[session][mode]["anat"] = os.path.join(base_path, session, f"exp_param/{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
 
-            qc_recons.qc_plot_table_params(subj_path, mode, subject, subj_session)
+            # qc_recons.qc_plot_table_params(subj_path, mode, subject, subj_session)
+            qc_recons.plot_histo(subj_path, mode, subject, subj_session)
         # plot the matplotlib table format for the qc:
         # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
         # qc_recons.qc_plot_table_recons(datas, subject, name)
