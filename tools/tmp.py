@@ -36,25 +36,25 @@ plt.figure(figsize=(18, 12))
 
 # Spectre de puissance Volume 1
 plt.subplot(2, 3, 1)
-plt.imshow(np.log1p(volume1_power_spectrum[:, :, volume1_power_spectrum.shape[2]//2]), cmap='gray')
+plt.imshow(np.log1p(volume1_power_spectrum[:, :, volume1_power_spectrum.shape[2]//2]), cmap='jet')
 plt.title('Spectre de puissance Volume 1 (coupe centrale)')
 plt.colorbar()
 
 # Spectre de puissance Volume 2
 plt.subplot(2, 3, 2)
-plt.imshow(np.log1p(volume2_power_spectrum[:, :, volume2_power_spectrum.shape[2]//2]), cmap='gray')
+plt.imshow(np.log1p(volume2_power_spectrum[:, :, volume2_power_spectrum.shape[2]//2]), cmap='jet')
 plt.title('Spectre de puissance Volume 2 (coupe centrale)')
 plt.colorbar()
 
 # Volume 1 (coupe centrale)
 plt.subplot(2, 3, 4)
-plt.imshow(volume1_data[:, :, volume1_data.shape[2]//2], cmap='gray')
+plt.imshow(volume1_data[:, :, volume1_data.shape[2]//2], cmap='jet')
 plt.title('Volume 1 (coupe centrale)')
 plt.colorbar()
 
 # Volume 2 (coupe centrale)
 plt.subplot(2, 3, 5)
-plt.imshow(volume2_data[:, :, volume2_data.shape[2]//2], cmap='gray')
+plt.imshow(volume2_data[:, :, volume2_data.shape[2]//2], cmap='jet')
 plt.title('Volume 2 (coupe centrale)')
 plt.colorbar()
 
@@ -63,7 +63,7 @@ difference = np.abs(volume1_power_spectrum - volume2_power_spectrum)
 total_difference = np.sum(difference)
 
 plt.subplot(2, 3, 3)
-plt.imshow(np.log1p(difference[:, :, difference.shape[2]//2]), cmap='gray')
+plt.imshow(np.log1p(difference[:, :, difference.shape[2]//2]), cmap='jet')
 plt.title('Différence des spectres de puissance (coupe centrale)')
 plt.colorbar()
 
