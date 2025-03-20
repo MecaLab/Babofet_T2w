@@ -22,13 +22,13 @@ mask2_data = nib.load(mask_2_path).get_fdata()
 print(mask1_data.shape)
 print(mask2_data.shape)
 
-"""volume1_data = volume1_data[mask1_data > 0]
-volume2_data = volume2_data[mask2_data > 0]"""
+volume1_data = volume1_data * mask1_data
+volume2_data = volume2_data * mask2_data
 
 volume1_fft = np.fft.fftn(volume1_data)
 volume2_fft = np.fft.fftn(volume2_data)
 
-# Calculer le spectre de puissance
+# Calculer le spectre de puissance  
 volume1_power_spectrum = np.abs(volume1_fft)**2
 volume2_power_spectrum = np.abs(volume2_fft)**2
 
