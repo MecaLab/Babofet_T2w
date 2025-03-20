@@ -438,6 +438,7 @@ def freedman_diaconis_bins(data):
     iqr = q75 - q25
     n = len(data)
     bin_width = 2 * iqr / (n ** (1/3))
+    print(data.max(), data.min(), bin_width)
     return int((data.max() - data.min()) / bin_width)
 
 
