@@ -7,6 +7,27 @@ import numpy as np
 import nibabel as nib
 import matplotlib.pyplot as plt
 from scipy import stats
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+
+def apply_pca(vol1, vol2, n_components=2):
+    data = np.stack([vol1, vol2])
+    scaler = StandardScaler()
+    data_normalized = scaler.fit_transform(data)
+    pca = PCA(n_components=n_components)
+    pca_result = pca.fit_transform(data_normalized)
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(pca_result[0, 0], pca_result[0, 1], label='Volume 1')
+    plt.scatter(pca_result[1, 0], pca_result[1, 1], label='Volume 2')
+    plt.xlabel('Composante Principale 1')
+    plt.ylabel('Composante Principale 2')
+    plt.legend()
+    plt.title('PCA des Volumes 3D')
+    plt.grid()
+    plt.savefig("pca_volumes.png")
+    plt.close()
 
 
 def freedman_diaconis_bins(data):
@@ -46,6 +67,7 @@ def plot_histo(vol1, vol2, title):
     plt.grid()
     output_filename = "_".join(title.split()).lower()
     plt.savefig(f"{output_filename}.png")
+    plt.close()
 
 
 if __name__ == "__main__":
@@ -63,15 +85,12 @@ if __name__ == "__main__":
     bm_1 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz").get_fdata()
     bm_2 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/exp_param/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_{param}_pipeline.nii.gz").get_fdata()
 
-    print(vol_1.shape)
-    print(vol_2.shape)
-    
     volume1_masked = vol_1[bm_1 > 0]
     volume2_masked = vol_2[bm_2 > 0]
-    print(volume1_masked.shape)
-    print(volume2_masked.shape)
 
     plot_histo(volume1_masked, volume2_masked, f"Fabienne_ses{session} default vs {param}")
+    print("Starting PCA")
+    apply_pca(volume1_masked, volume2_masked, n_components=2)
 
     """
     exp_list = [False, True, True, True, ] # True, True, True, True]
