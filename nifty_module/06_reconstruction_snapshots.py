@@ -18,15 +18,24 @@ def freedman_diaconis_bins(data):
     return int((data.max() - data.min()) / bin_width)
 
 
+def normalize_min_max(volume):
+    return (volume - volume.min()) / (volume.max() - volume.min())
+
+
 def plot_histo(vol1, vol2, title):
+    vol1 = normalize_min_max(vol1)
+    vol2 = normalize_min_max(vol2)
+
     hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
     bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
-    print(bins)
+
     hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
     hist2, bins2 = np.histogram(vol2, bins=bins, density=True, range=hist_range)
+
     bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
     wasserstein_dist = stats.wasserstein_distance(bin_centers, bin_centers, hist1 * np.diff(bins1), hist2 * np.diff(bins2))
     print(f"Wasserstein distance: {wasserstein_dist}")
+
     plt.figure(figsize=(10, 6))
     plt.plot(bin_centers, hist1, label='Volume 1', linestyle='-', alpha=0.7)
     plt.plot(bin_centers, hist2, label='Volume 2', linestyle='--', alpha=0.7)
