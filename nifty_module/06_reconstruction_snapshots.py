@@ -44,7 +44,8 @@ def plot_histo(vol1, vol2, title):
     plt.xlabel("Intensité")
     plt.ylabel("Densité")
     plt.grid()
-    plt.savefig(f"{title}.png")
+    output_filename = "_".join(title.split()).lower()
+    plt.savefig(f"{output_filename}.png")
 
 
 if __name__ == "__main__":
@@ -54,7 +55,7 @@ if __name__ == "__main__":
     datas = {}
 
     param = "T13"
-    session = "09"
+    session = "01"
 
     vol_1 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz").get_fdata()
     vol_2 = nib.load(f"../data/recons_folder/Fabienne/ses{session}/manual_brainmask/exp_param/sub-Fabienne_ses-{session}_haste_3DHR_manual_bm_{param}_pipeline.nii.gz").get_fdata()
@@ -65,7 +66,7 @@ if __name__ == "__main__":
     volume1_masked = vol_1[bm_1 > 0]
     volume2_masked = vol_2[bm_2 > 0]
 
-    plot_histo(volume1_masked, volume2_masked, f"Fabienne_ses09 default vs {param}")
+    plot_histo(volume1_masked, volume2_masked, f"Fabienne_ses{session} default vs {param}")
 
     """
     exp_list = [False, True, True, True, ] # True, True, True, True]
