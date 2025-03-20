@@ -450,7 +450,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
     vol_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
     mask_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")).get_fdata()
 
-    vol_ref_masked = vol_ref[mask_ref > 0]
+    vol_ref_masked = vol_ref * mask_ref
 
     for file in os.listdir(os.path.join(nib_path, "exp_param")):
         if file.endswith("pipeline.nii.gz"):
@@ -466,7 +466,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
             if os.path.exists(output_filename_path):
                 continue
 
-            vol_dst_masked = vol_dst[mask_dst > 0]
+            vol_dst_masked = vol_dst * mask_dst
 
             vol1 = normalize_min_max(vol_ref_masked)
             vol2 = normalize_min_max(vol_dst_masked)
