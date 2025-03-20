@@ -68,6 +68,6 @@ plt.title('Différence des spectres de puissance (coupe centrale)')
 plt.colorbar()
 
 plt.tight_layout()
-plt.show()
+plt.savefig("tmp.png")
 
 print("Différence totale entre les spectres de puissance :", total_difference)
