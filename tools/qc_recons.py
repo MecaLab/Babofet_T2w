@@ -474,8 +474,8 @@ def plot_histo(subj_path, mode, subject, subj_session):
             hist_range = (min(vol1.min(), vol2.min()), max(vol1.max(), vol2.max()))
             bins = freedman_diaconis_bins(np.concatenate([vol1, vol2]))
 
-            hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
-            hist2, bins2 = np.histogram(vol2, bins=bins, density=True, range=hist_range)
+            hist1, bins1 = np.histogram(vol1, bins=20, density=True, range=hist_range)
+            hist2, bins2 = np.histogram(vol2, bins=20, density=True, range=hist_range)
 
             bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
             wasserstein_dist = stats.wasserstein_distance(bin_centers, bin_centers, hist1 * np.diff(bins1), hist2 * np.diff(bins2))
