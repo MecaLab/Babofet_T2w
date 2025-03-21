@@ -529,25 +529,25 @@ def plot_fft(subj_path, mode, subject, subj_session):
             # Spectre de puissance Volume 1
             plt.subplot(2, 3, 1)
             plt.imshow(np.log1p(volume1_power_spectrum[:, :, volume1_power_spectrum.shape[2] // 2]), cmap='jet')
-            plt.title('Spectre de puissance Volume 1 (coupe centrale)')
+            plt.title('Spectre de puissance Volume default (coupe centrale)')
             plt.colorbar()
 
             # Spectre de puissance Volume 2
             plt.subplot(2, 3, 2)
             plt.imshow(np.log1p(volume2_power_spectrum[:, :, volume2_power_spectrum.shape[2] // 2]), cmap='jet')
-            plt.title('Spectre de puissance Volume 2 (coupe centrale)')
+            plt.title(f'Spectre de puissance Volume {param} (coupe centrale)')
             plt.colorbar()
 
             # Volume 1 (coupe centrale)
             plt.subplot(2, 3, 4)
             plt.imshow(vol_ref_masked[:, :, vol_ref_masked.shape[2] // 2], cmap='gray')
-            plt.title('Volume 1 (coupe centrale)')
+            plt.title('Volume default (coupe centrale)')
             plt.colorbar()
 
             # Volume 2 (coupe centrale)
             plt.subplot(2, 3, 5)
             plt.imshow(vol_dst_masked[:, :, vol_dst_masked.shape[2] // 2], cmap='gray')
-            plt.title('Volume 2 (coupe centrale)')
+            plt.title(f'Volume {param} (coupe centrale)')
             plt.colorbar()
 
             # Comparer les spectres de puissance
@@ -559,8 +559,8 @@ def plot_fft(subj_path, mode, subject, subj_session):
             plt.title('Différence des spectres de puissance (coupe centrale)')
             plt.colorbar()
 
+            plt.suptitle(f"{title}\nDifférence entre les spectres: {total_difference:.3f}\n")
             plt.tight_layout()
-            plt.title(f"{title}\nDifférence entre les spectres: {total_difference}")
             plt.savefig(output_filename_path)
             plt.close()
 
