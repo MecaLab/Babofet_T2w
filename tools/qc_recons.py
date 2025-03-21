@@ -560,9 +560,10 @@ def plot_fft(subj_path, mode, subject, subj_session):
             plt.colorbar()
 
             plt.tight_layout()
-            plt.title(f"Différence entre les spectres: {total_difference}")
+            plt.title(f"{title}\nDifférence entre les spectres: {total_difference}")
             plt.savefig(output_filename_path)
             plt.close()
+
 
 if __name__ == "__main__":
     pass
