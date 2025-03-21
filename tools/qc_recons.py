@@ -494,6 +494,76 @@ def plot_histo(subj_path, mode, subject, subj_session):
             plt.close()
 
 
+def plot_fft(subj_path, mode, subject, subj_session):
+    nib_path = os.path.join(subj_path, f"{mode}_brainmask")
+    vol_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline.nii.gz")).get_fdata()
+    mask_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")).get_fdata()
+
+    vol_ref_masked = vol_ref * mask_ref
+
+    volume1_fft = np.fft.fftn(vol_ref_masked)
+    volume1_power_spectrum = np.abs(volume1_fft) ** 2
+
+    for file in os.listdir(os.path.join(nib_path, "exp_param")):
+        if file.endswith("pipeline.nii.gz"):
+            vol_dst = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
+            mask_dst = nib.load(
+                os.path.join(nib_path, "exp_param", file.replace(".nii.gz", "_mask.nii.gz"))).get_fdata()
+
+            param = file.split("bm_")[-1].split("_pipeline")[0]
+
+            title = f"{subj_session} default vs {param}"
+            output_filename = "_".join(title.split()).lower()
+            output_filename_path = os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}",
+                                                f"fft_{output_filename}.png")
+            if os.path.exists(output_filename_path):
+                continue
+
+            vol_dst_masked = vol_dst * mask_dst
+
+            volume2_fft = np.fft.fftn(vol_dst_masked)
+            volume2_power_spectrum = np.abs(volume2_fft) ** 2
+
+            plt.figure(figsize=(18, 12))
+
+            # Spectre de puissance Volume 1
+            plt.subplot(2, 3, 1)
+            plt.imshow(np.log1p(volume1_power_spectrum[:, :, volume1_power_spectrum.shape[2] // 2]), cmap='jet')
+            plt.title('Spectre de puissance Volume 1 (coupe centrale)')
+            plt.colorbar()
+
+            # Spectre de puissance Volume 2
+            plt.subplot(2, 3, 2)
+            plt.imshow(np.log1p(volume2_power_spectrum[:, :, volume2_power_spectrum.shape[2] // 2]), cmap='jet')
+            plt.title('Spectre de puissance Volume 2 (coupe centrale)')
+            plt.colorbar()
+
+            # Volume 1 (coupe centrale)
+            plt.subplot(2, 3, 4)
+            plt.imshow(vol_ref_masked[:, :, vol_ref_masked.shape[2] // 2], cmap='gray')
+            plt.title('Volume 1 (coupe centrale)')
+            plt.colorbar()
+
+            # Volume 2 (coupe centrale)
+            plt.subplot(2, 3, 5)
+            plt.imshow(vol_dst_masked[:, :, vol_dst_masked.shape[2] // 2], cmap='gray')
+            plt.title('Volume 2 (coupe centrale)')
+            plt.colorbar()
+
+            # Comparer les spectres de puissance
+            difference = np.abs(volume1_power_spectrum - volume2_power_spectrum)
+            total_difference = np.sum(difference)
+
+            plt.subplot(2, 3, 3)
+            plt.imshow(np.log1p(difference[:, :, difference.shape[2] // 2]), cmap='jet')
+            plt.title('Différence des spectres de puissance (coupe centrale)')
+            plt.colorbar()
+
+            plt.tight_layout()
+            plt.title(f"Différence entre les spectres: {total_difference}")
+            plt.savefig(output_filename_path)
+            plt.close()
+
 if __name__ == "__main__":
     pass
 
