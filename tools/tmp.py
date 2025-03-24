@@ -2,13 +2,13 @@ import os
 import nibabel as nib
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.feature import greycomatrix, greycoprops
+from skimage.feature import graycoprops
 from scipy.stats import pearsonr
 
 
 def calculate_glcm(volume, distances=[1], angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]):
     """Calcule les matrices de co-occurrence pour un volume 3D."""
-    glcm = greycomatrix(volume.astype(np.uint8), distances=distances, angles=angles, symmetric=True, normed=True)
+    glcm = graycoprops(volume.astype(np.uint8), distances=distances, angles=angles, symmetric=True, normed=True)
     return glcm
 
 
