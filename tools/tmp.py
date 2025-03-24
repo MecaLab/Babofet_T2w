@@ -2,25 +2,25 @@ import os
 import nibabel as nib
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.feature import graycoprops
+from skimage.feature import graycomatrix, graycoprops
 from scipy.stats import pearsonr
 
 
-def calculate_glcm(volume, distances=[1], angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]):
+def calculate_glcm(volume):
     """Calcule les matrices de co-occurrence pour un volume 3D."""
-    glcm = graycoprops(volume.astype(np.uint8), distances=distances, angles=angles, symmetric=True, normed=True)
+    glcm = graycomatrix(volume.astype(np.uint8))
     return glcm
 
 
 def calculate_haralick_features(glcm):
     """Calcule les caractéristiques de Haralick à partir des matrices de co-occurrence."""
     features = {}
-    features['dissimilarity'] = greycoprops(glcm, 'dissimilarity')[0, 0]
-    features['correlation'] = greycoprops(glcm, 'correlation')[0, 0]
-    features['homogeneity'] = greycoprops(glcm, 'homogeneity')[0, 0]
-    features['contrast'] = greycoprops(glcm, 'contrast')[0, 0]
-    features['ASM'] = greycoprops(glcm, 'ASM')[0, 0]
-    features['energy'] = greycoprops(glcm, 'energy')[0, 0]
+    features['dissimilarity'] = graycoprops(glcm, 'dissimilarity')[0, 0]
+    features['correlation'] = graycoprops(glcm, 'correlation')[0, 0]
+    features['homogeneity'] = graycoprops(glcm, 'homogeneity')[0, 0]
+    features['contrast'] = graycoprops(glcm, 'contrast')[0, 0]
+    features['ASM'] = graycoprops(glcm, 'ASM')[0, 0]
+    features['energy'] = graycoprops(glcm, 'energy')[0, 0]
     return features
 
 
