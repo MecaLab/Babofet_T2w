@@ -6,9 +6,9 @@ from skimage.feature import graycomatrix, graycoprops
 from scipy.stats import pearsonr
 
 
-def calculate_glcm(volume):
+def calculate_glcm(volume, distances=[1], angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]):
     """Calcule les matrices de co-occurrence pour un volume 3D."""
-    glcm = graycomatrix(volume.astype(np.uint8))
+    glcm = graycomatrix(volume.astype(np.uint8), distances=distances, angles=angles, symmetric=True, normed=True)
     return glcm
 
 
