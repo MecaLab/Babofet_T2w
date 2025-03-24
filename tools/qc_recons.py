@@ -524,7 +524,7 @@ def plot_fft(subj_path, mode, subject, subj_session):
             volume2_fft = np.fft.fftn(vol_dst_masked)
             volume2_power_spectrum = np.abs(volume2_fft) ** 2
 
-            plt.figure(figsize=(18, 12))
+            plt.figure(figsize=(18, 12), facecolor='white')
 
             # Spectre de puissance Volume 1
             plt.subplot(2, 3, 1)
