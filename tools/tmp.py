@@ -19,13 +19,14 @@ def calculate_glcm_3d(volume, distances=[1], angles=[0, np.pi/4, np.pi/2, 3*np.p
 
 def calculate_haralick_features(glcm):
     """Calcule les caractéristiques de Haralick à partir des matrices de co-occurrence."""
-    features = {}
-    features['dissimilarity'] = graycoprops(glcm, 'dissimilarity')[0, 0]
-    features['correlation'] = graycoprops(glcm, 'correlation')[0, 0]
-    features['homogeneity'] = graycoprops(glcm, 'homogeneity')[0, 0]
-    features['contrast'] = graycoprops(glcm, 'contrast')[0, 0]
-    features['ASM'] = graycoprops(glcm, 'ASM')[0, 0]
-    features['energy'] = graycoprops(glcm, 'energy')[0, 0]
+    features = {
+        'dissimilarity': graycoprops(glcm, 'dissimilarity')[0, 0],
+        'correlation': graycoprops(glcm, 'correlation')[0, 0],
+        'homogeneity': graycoprops(glcm, 'homogeneity')[0, 0],
+        'contrast': graycoprops(glcm, 'contrast')[0, 0],
+        'ASM': graycoprops(glcm, 'ASM')[0, 0],
+        'energy': graycoprops(glcm, 'energy')[0, 0]
+    }
     return features
 
 
@@ -51,8 +52,8 @@ session = "01"
 
 vol_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz")
 mask_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")
-vol_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
-mask_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T-1_pipeline_mask.nii.gz")
+vol_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T46_pipeline.nii.gz")
+mask_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T46_pipeline_mask.nii.gz")
 
 volume1_data = nib.load(vol_1_path).get_fdata()
 volume2_data = nib.load(vol_2_path).get_fdata()
