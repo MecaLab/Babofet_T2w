@@ -37,6 +37,9 @@ def compare_volumes(volume1_masked, volume2_masked):
     glcm1 = calculate_glcm_3d(volume1_masked)
     glcm2 = calculate_glcm_3d(volume2_masked)
 
+    print(glcm1)
+    print(glcm2)
+
     # Calculer les caractéristiques de Haralick
     features1 = calculate_haralick_features(glcm1)
     features2 = calculate_haralick_features(glcm2)
@@ -52,8 +55,8 @@ session = "01"
 
 vol_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz")
 mask_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")
-vol_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T46_pipeline.nii.gz")
-mask_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T46_pipeline_mask.nii.gz")
+vol_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T-1_pipeline.nii.gz")
+mask_2_path = os.path.join(base_path, f"ses{session}/manual_brainmask/exp_param", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_T-1_pipeline_mask.nii.gz")
 
 volume1_data = nib.load(vol_1_path).get_fdata()
 volume2_data = nib.load(vol_2_path).get_fdata()
