@@ -6,10 +6,15 @@ from skimage.feature import graycomatrix, graycoprops
 from scipy.stats import pearsonr
 
 
-def calculate_glcm(volume, distances=[1], angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]):
-    """Calcule les matrices de co-occurrence pour un volume 3D."""
-    glcm = graycomatrix(volume, distances=distances, angles=angles, symmetric=True, normed=True)
-    return glcm
+def calculate_glcm_3d(volume, distances=[1], angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]):
+    """Calcule les matrices de co-occurrence pour un volume 3D en moyennant les résultats des tranches 2D."""
+    glcm_list = []
+    for slice_2d in volume:
+        glcm = graycomatrix(slice_2d.astype(np.uint8), distances=distances, angles=angles, symmetric=True, normed=True)
+        glcm_list.append(glcm)
+    # Moyenne des matrices de co-occurrence
+    glcm_mean = np.mean(glcm_list, axis=0)
+    return glcm_mean
 
 
 def calculate_haralick_features(glcm):
