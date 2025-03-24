@@ -558,13 +558,11 @@ def plot_fft(subj_path, mode, subject, subj_session):
             plt.imshow(np.log1p(difference[:, :, difference.shape[2] // 2]), cmap='jet')
             plt.title('Différence des spectres de puissance (coupe centrale)')
             plt.colorbar()
-            # TODO: Change display diff from 2525258954 to 2.5e10
+
             plt.suptitle(f"{title}\nDifférence entre les spectres: {total_difference:.3e}\n")
             plt.tight_layout()
             plt.savefig(output_filename_path)
             plt.close()
-
-            exit()
 
 
 if __name__ == "__main__":
