@@ -2,6 +2,42 @@ import os
 import nibabel as nib
 import numpy as np
 import matplotlib.pyplot as plt
+from skimage.feature import greycomatrix, greycoprops
+from scipy.stats import pearsonr
+
+
+def calculate_glcm(volume, distances=[1], angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]):
+    """Calcule les matrices de co-occurrence pour un volume 3D."""
+    glcm = greycomatrix(volume.astype(np.uint8), distances=distances, angles=angles, symmetric=True, normed=True)
+    return glcm
+
+
+def calculate_haralick_features(glcm):
+    """Calcule les caractéristiques de Haralick à partir des matrices de co-occurrence."""
+    features = {}
+    features['dissimilarity'] = greycoprops(glcm, 'dissimilarity')[0, 0]
+    features['correlation'] = greycoprops(glcm, 'correlation')[0, 0]
+    features['homogeneity'] = greycoprops(glcm, 'homogeneity')[0, 0]
+    features['contrast'] = greycoprops(glcm, 'contrast')[0, 0]
+    features['ASM'] = greycoprops(glcm, 'ASM')[0, 0]
+    features['energy'] = greycoprops(glcm, 'energy')[0, 0]
+    return features
+
+
+def compare_volumes(volume1_masked, volume2_masked):
+    """Compare deux volumes 3D en utilisant les caractéristiques de texture."""
+
+    # Calculer les matrices de co-occurrence
+    glcm1 = calculate_glcm(volume1_masked)
+    glcm2 = calculate_glcm(volume2_masked)
+
+    # Calculer les caractéristiques de Haralick
+    features1 = calculate_haralick_features(glcm1)
+    features2 = calculate_haralick_features(glcm2)
+
+    # Comparer les caractéristiques
+    correlation, _ = pearsonr(list(features1.values()), list(features2.values()))
+    return correlation
 
 
 subject = "Fabienne"
@@ -22,49 +58,5 @@ mask2_data = nib.load(mask_2_path).get_fdata()
 volume1_data = volume1_data * mask1_data
 volume2_data = volume2_data * mask2_data
 
-volume1_fft = np.fft.fftn(volume1_data)
-volume2_fft = np.fft.fftn(volume2_data)
-
-# Calculer le spectre de puissance
-volume1_power_spectrum = np.abs(volume1_fft)**2
-volume2_power_spectrum = np.abs(volume2_fft)**2
-
-plt.figure(figsize=(18, 12))
-
-# Spectre de puissance Volume 1
-plt.subplot(2, 3, 1)
-plt.imshow(np.log1p(volume1_power_spectrum[:, :, volume1_power_spectrum.shape[2]//2]), cmap='jet')
-plt.title('Spectre de puissance Volume 1 (coupe centrale)')
-plt.colorbar()
-
-# Spectre de puissance Volume 2
-plt.subplot(2, 3, 2)
-plt.imshow(np.log1p(volume2_power_spectrum[:, :, volume2_power_spectrum.shape[2]//2]), cmap='jet')
-plt.title('Spectre de puissance Volume 2 (coupe centrale)')
-plt.colorbar()
-
-# Volume 1 (coupe centrale)
-plt.subplot(2, 3, 4)
-plt.imshow(volume1_data[:, :, volume1_data.shape[2]//2], cmap='gray')
-plt.title('Volume 1 (coupe centrale)')
-plt.colorbar()
-
-# Volume 2 (coupe centrale)
-plt.subplot(2, 3, 5)
-plt.imshow(volume2_data[:, :, volume2_data.shape[2]//2], cmap='gray')
-plt.title('Volume 2 (coupe centrale)')
-plt.colorbar()
-
-# Comparer les spectres de puissance
-difference = np.abs(volume1_power_spectrum - volume2_power_spectrum)
-total_difference = np.sum(difference)
-
-plt.subplot(2, 3, 3)
-plt.imshow(np.log1p(difference[:, :, difference.shape[2]//2]), cmap='jet')
-plt.title('Différence des spectres de puissance (coupe centrale)')
-plt.colorbar()
-
-plt.tight_layout()
-plt.savefig("tmp.png")
-
-print("Différence totale entre les spectres de puissance :", total_difference)
+correlation = compare_volumes(volume1_data, volume2_data)
+print(f'Corrélation de Pearson entre les caractéristiques de texture des volumes: {correlation}')
