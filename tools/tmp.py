@@ -37,12 +37,15 @@ def compare_volumes(volume1_masked, volume2_masked):
     glcm1 = calculate_glcm_3d(volume1_masked)
     glcm2 = calculate_glcm_3d(volume2_masked)
 
-    print(glcm1)
-    print(glcm2)
+    print(glcm1.shape)
+    print(glcm2.shape)
 
     # Calculer les caractéristiques de Haralick
     features1 = calculate_haralick_features(glcm1)
     features2 = calculate_haralick_features(glcm2)
+
+    print(features1)
+    print(features2)
 
     # Comparer les caractéristiques
     correlation, _ = pearsonr(list(features1.values()), list(features2.values()))
