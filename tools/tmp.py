@@ -33,8 +33,8 @@ def compare_volumes(volume1_masked, volume2_masked):
     """Compare deux volumes 3D en utilisant les caractéristiques de texture."""
 
     # Calculer les matrices de co-occurrence
-    glcm1 = calculate_glcm(volume1_masked)
-    glcm2 = calculate_glcm(volume2_masked)
+    glcm1 = calculate_glcm_3d(volume1_masked)
+    glcm2 = calculate_glcm_3d(volume2_masked)
 
     # Calculer les caractéristiques de Haralick
     features1 = calculate_haralick_features(glcm1)
