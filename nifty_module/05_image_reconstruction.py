@@ -55,9 +55,6 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
-        --bias-field-correction 1 \\
-        --threshold-first -1 \\
-        --threshold -1 \\
         
 ./mv_recons.sh {subj} {mode_bm}
 """
@@ -90,7 +87,7 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    list_subjs = ["sub-Aziza_ses-01"]
+    list_subjs = ["sub-Aziza_ses-05"]
 
     for subject in subject_IDs:
         if subject not in list_subjs:
