@@ -55,8 +55,6 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
-        --threshold-first 0.1 \\
-        --threshold 0.3
         
 ./mv_recons.sh {subj} {mode_bm}
 """
@@ -89,7 +87,7 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    list_subjs = ["sub-Aziza_ses-05", "sub-Aziza_ses-09"]
+    list_subjs = ["sub-Formule_ses-01", "sub-Formule_ses-05"]
 
     for subject in subject_IDs:
         if subject not in list_subjs:
@@ -154,7 +152,7 @@ if __name__ == "__main__":
             if not os.path.exists(motion_subfolder):
                 os.mkdir(motion_subfolder)
 
-            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_T13_pipeline.nii.gz"
+            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_pipeline.nii.gz"
 
             write_slurm_file_nifty(
                 subj=subject,
