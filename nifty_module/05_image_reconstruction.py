@@ -56,7 +56,7 @@ singularity exec \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\w
         --threshold -1 \\
-        --threshold-first -1 \\
+        --threshold-first -1
         
 ./mv_recons.sh {subj} {mode_bm}
 """
