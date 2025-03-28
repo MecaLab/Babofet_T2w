@@ -55,8 +55,8 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
-        --threshold 0.4 \\
-        --threshold-first 0.6
+        --threshold 0.6 \\
+        --threshold-first 0.4
         
 ./mv_recons.sh {subj} {mode_bm}
 """
