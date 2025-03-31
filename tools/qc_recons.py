@@ -419,7 +419,7 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
             ax = axes[i, j]
             axes[0, j].set_title(f"{param}", fontsize=12, fontweight='bold')
             slice_data = vol[:, :, idx]
-            ax.imshow(slice_data, cmap="gray")
+            ax.imshow(slice_data, cmap="jet")
             ax.axis("off")
 
     # Ajustement de la mise en page
