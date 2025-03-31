@@ -89,7 +89,7 @@ if __name__ == "__main__":
     # Vérifier que les unités ont été mises à jour
     print("Nouvelles unités :", bm.header.get_xyzt_units())
 
-    print(bm.header)
+    nib.save(bm, "/envau/work/meca/data/babofet_DB/2024_new_stuff/tmp_bm_ax2_10_sub-aziza_ses-01.nii.gz")
 
     """
     input_path = sys.argv[1]
