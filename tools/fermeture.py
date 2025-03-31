@@ -80,11 +80,12 @@ if __name__ == "__main__":
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
         output_file_path = os.path.join(output_dir, file)
-        fermeture_3D(file_path, output_file_path, kernel_size=2, kernel_object="sphere")
+        dilation_2D(file_path, output_file_path, kernel_size=2, kernel_object="sphere")
+        fermeture_3D(output_file_path, output_file_path, kernel_size=2, kernel_object="sphere")
 
     """input_file = sys.argv[1]
     output_file = sys.argv[2]
-    kernel_size = sys.argv[3]
+    kernel_size = sys.argv[3]x2
     kernel_object = sys.argv[4]
 
     output_file = output_file.replace(".nii.gz", f"_{kernel_object}_{kernel_size}.nii.gz")
