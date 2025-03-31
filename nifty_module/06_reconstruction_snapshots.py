@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
             qc_recons.qc_plot_table_params(subj_path, mode, subject, subj_session)
             qc_recons.plot_histo(subj_path, mode, subject, subj_session)
-            qc_recons.plot_fft(subj_path, mode, subject, subj_session)
+            # qc_recons.plot_fft(subj_path, mode, subject, subj_session)
         # plot the matplotlib table format for the qc:
         # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
         # qc_recons.qc_plot_table_recons(datas, subject, name)
