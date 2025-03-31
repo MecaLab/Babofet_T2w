@@ -79,7 +79,8 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
 
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
-    mask_model = "manual"  # could be 'nifty' or 'mattia' or 'manual'
+    mask_model = "mattia"  # could be 'nifty' or 'mattia' or 'manual'
+
     if mask_model == "manual":
         bm_folder = "manual_masks"
     elif mask_model == "nifty":
@@ -87,7 +88,7 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    list_subjs = ["sub-Formule_ses-09"]
+    list_subjs = ["sub-Aziza_ses-01"]
 
     for subject in subject_IDs:
         if subject not in list_subjs:
