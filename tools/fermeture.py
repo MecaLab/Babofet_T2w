@@ -81,8 +81,6 @@ if __name__ == "__main__":
 
     input_path = sys.argv[1]
     subject_name = input_path.split("/")[-1]
-    print(subject_name)
-    exit()
     output_path = sys.argv[2]
 
     for file in os.listdir(input_path):
