@@ -24,8 +24,6 @@ if __name__ == "__main__":
         param = params[i]
         name = names[i]
         for session in os.listdir(base_path):
-            if session != "ses01":
-                continue
             datas[session] = {}
             subj_path = os.path.join(base_path, session)  # ../data/recons_folder/subj/session
             subj_session = f"sub-{subject}_ses-{session[3:]}"
