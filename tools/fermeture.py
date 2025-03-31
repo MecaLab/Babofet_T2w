@@ -79,19 +79,6 @@ def format_header(input_anat_path, input_mask_path):
 
 if __name__ == "__main__":
 
-    bm = nib.load("/envau/work/meca/data/babofet_DB/2024_new_stuff/fetalBET_masks/sub-Aziza_ses-01/sub-Aziza_ses-01_T2_HASTE_AX2_10_denoised_mask.nii.gz")
-
-    print("Unités actuelles :", bm.header.get_xyzt_units())
-
-    # Forcer les unités en millimètres
-    bm.header.set_xyzt_units('mm')
-
-    # Vérifier que les unités ont été mises à jour
-    print("Nouvelles unités :", bm.header.get_xyzt_units())
-
-    nib.save(bm, "/envau/work/meca/data/babofet_DB/2024_new_stuff/tmp_bm_ax2_10_sub-aziza_ses-01.nii.gz")
-
-    """
     input_path = sys.argv[1]
     subject_name = input_path.split("/")[-1]
     output_path = sys.argv[2]
@@ -105,10 +92,10 @@ if __name__ == "__main__":
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
         output_file_path = os.path.join(output_dir, file)
-        dilation_2D(file_path, output_file_path, kernel_size=2, kernel_object="sphere")
+        # dilation_2D(file_path, output_file_path, kernel_size=2, kernel_object="sphere")
         fermeture_3D(output_file_path, output_file_path, kernel_size=2, kernel_object="sphere")
 
-    input_file = sys.argv[1]
+    """input_file = sys.argv[1]
     output_file = sys.argv[2]
     kernel_size = sys.argv[3]x2
     kernel_object = sys.argv[4]
