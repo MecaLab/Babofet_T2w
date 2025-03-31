@@ -81,6 +81,14 @@ if __name__ == "__main__":
 
     bm = nib.load("/envau/work/meca/data/babofet_DB/2024_new_stuff/fetalBET_masks/sub-Aziza_ses-01/sub-Aziza_ses-01_T2_HASTE_AX2_10_denoised_mask.nii.gz")
 
+    print("Unités actuelles :", bm.header.get_xyzt_units())
+
+    # Forcer les unités en millimètres
+    bm.header.set_xyzt_units('mm')
+
+    # Vérifier que les unités ont été mises à jour
+    print("Nouvelles unités :", bm.header.get_xyzt_units())
+
     print(bm.header)
 
     """
