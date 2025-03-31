@@ -1,4 +1,5 @@
 import subprocess
+import nibabel as nib
 import tempfile
 import sys
 import os
@@ -65,8 +66,24 @@ def dilation_2D_voxel(input_file, output_file, kernel_size=None):
     print("Dilation en voxel 2D OK")
 
 
+def format_header(input_anat_path, input_mask_path):
+    """
+    Function used to force the unit for the header['xyzt_units'] to be mm
+    :param input_anat_path:
+    :param input_mask_path:
+    :return:
+    """
+    for file in os.listdir(input_anat_path):
+        print(file)
+
+
 if __name__ == "__main__":
 
+    bm = nib.load("/envau/work/meca/data/babofet_DB/2024_new_stuff/fetalBET_masks/sub-Aziza_ses-01/sub-Aziza_ses-01_T2_HASTE_AX2_10_denoised_mask.nii.gz")
+
+    print(bm.header)
+
+    """
     input_path = sys.argv[1]
     subject_name = input_path.split("/")[-1]
     output_path = sys.argv[2]
@@ -83,7 +100,7 @@ if __name__ == "__main__":
         dilation_2D(file_path, output_file_path, kernel_size=2, kernel_object="sphere")
         fermeture_3D(output_file_path, output_file_path, kernel_size=2, kernel_object="sphere")
 
-    """input_file = sys.argv[1]
+    input_file = sys.argv[1]
     output_file = sys.argv[2]
     kernel_size = sys.argv[3]x2
     kernel_object = sys.argv[4]
