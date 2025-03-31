@@ -195,6 +195,8 @@ def qc_rejected_slices(subj_path, subj_name, subj, mode, exp_param_folder=False,
         bm_folder = "brainmask_niftymic"
     elif mode == "manual":
         bm_folder = "manual_masks"
+    elif mode == "mattia":
+        bm_folder = "mattia_masks"
 
     output_folder = f"{mode}_brainmask"
 
@@ -254,6 +256,9 @@ def qc_rejected_slices(subj_path, subj_name, subj, mode, exp_param_folder=False,
                 except FileNotFoundError:
                     bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii")
                     bm = nib.load(bm_path)
+            elif mode == "mattia":
+                bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii.gz")
+                bm = nib.load(bm_path)
 
             bm_data = bm.get_fdata()
             bm_data = (bm_data > 0).astype(int)
