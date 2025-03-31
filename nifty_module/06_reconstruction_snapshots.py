@@ -12,12 +12,12 @@ from scipy import stats
 if __name__ == "__main__":
     subject = sys.argv[1]
     base_path = os.path.join(cfg.DATA_PATH, subject)
-    modes = ["manual"]
+    modes = ["mattia"]
     datas = {}
 
-    exp_list = [False, True, True, True, True, ] #    True, True, True, True]
-    params = [None, "T-1", "T13", "T46", "MSRR1", ] # "B1", "B1_T-1", "B1_T13", "B1_T46"]
-    names = ["default-param", "threshold_-1", "threshold_0.1_0.3", "threshold_0.4_0.6", "mask_srr", ] #  "bias-field-correction", "bias-field-correction_threshold_-1", "bias-field-correction_threshold_0.1_0.3", "bias-field-correction_threshold_0.4_0.6"]
+    exp_list = [False, True] #    True, True, True, True]
+    params = [None, "T-1"] # "B1", "B1_T-1", "B1_T13", "B1_T46"]
+    names = ["default-param", "threshold_-1"] #  "bias-field-correction", "bias-field-correction_threshold_-1", "bias-field-correction_threshold_0.1_0.3", "bias-field-correction_threshold_0.4_0.6"]
 
     for i in range(len(exp_list)):
         exp_param_folder = exp_list[i]
@@ -30,12 +30,12 @@ if __name__ == "__main__":
             for mode in modes:
                 print(f"Running {mode} for {session} with {param} param")
                 # Plot the anat image with the BM using the rejected slices file
-                # qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode, exp_param_folder=exp_param_folder, param=param, name=name)
+                qc_recons.qc_rejected_slices(subj_path, subject, subj_session, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
                 # Plot 1 snapshot per reconstruction
-                # qc_recons.qc_recons_bis(subj_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
+                qc_recons.qc_recons_bis(subj_path, subject, mode, exp_param_folder=exp_param_folder, param=param, name=name)
 
-                # qc_recons.qc_intensity(subj_path, subject, mode, subj_session)
+                qc_recons.qc_intensity(subj_path, subject, mode, subj_session)
 
                 datas[session][mode] = {}
                 if not exp_param_folder:
@@ -43,7 +43,7 @@ if __name__ == "__main__":
                 else:
                     datas[session][mode]["anat"] = os.path.join(base_path, session, f"exp_param/{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
 
-            # qc_recons.qc_plot_table_params(subj_path, mode, subject, subj_session)
+            qc_recons.qc_plot_table_params(subj_path, mode, subject, subj_session)
             qc_recons.plot_histo(subj_path, mode, subject, subj_session)
         # plot the matplotlib table format for the qc:
         # 1 row per slice in the anat img, 1 col per method (manual, nifty, etc) / 1 file per session
