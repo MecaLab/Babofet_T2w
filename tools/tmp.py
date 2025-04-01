@@ -19,5 +19,7 @@ volume2_data = nib.load(vol_2_path).get_fdata()
 mask1_data = nib.load(mask_1_path).get_fdata()
 mask2_data = nib.load(mask_2_path).get_fdata()
 
-plt.imshow(volume1_data[:, volume1_data.shape[1]//2, :])
+print(volume1_data.shape)
+
+plt.imshow(volume1_data[:, volume1_data.shape[1]//2, :], cmap="gray")
 plt.savefig("tmp.png")
