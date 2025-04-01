@@ -19,18 +19,15 @@ volume2_data = nib.load(vol_2_path).get_fdata()
 mask1_data = nib.load(mask_1_path).get_fdata()
 mask2_data = nib.load(mask_2_path).get_fdata()
 
-print(volume1_data.shape)
-print(volume2_data.shape)
+line_position = 50
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 8), facecolor="white")
 
-ax1.imshow(volume1_data[:, volume1_data.shape[1]//2, :].T.T, cmap="gray")
-middle_x = volume1_data.shape[2] // 2
-ax1.plot([middle_x, middle_x], [0, volume1_data.shape[0]-1], color='red', linewidth=2)
+ax1.imshow(volume1_data[:, volume1_data.shape[1]//2, :], cmap="gray")
+ax1.plot([line_position, line_position], [0, volume1_data.shape[0]-1], color='red', linewidth=2)
 
 ax2.imshow(volume2_data[:, volume2_data.shape[1]//2, :], cmap="gray")
-middle_x = volume2_data.shape[2] // 2
-ax2.plot([middle_x, middle_x], [0, volume2_data.shape[0]-1], color='red', linewidth=2)
+ax2.plot([line_position, line_position], [0, volume2_data.shape[0]-1], color='red', linewidth=2)
 
 plt.tight_layout()
 plt.savefig("tmp.png")
