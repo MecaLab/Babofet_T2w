@@ -412,6 +412,9 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
     }
     indices = [20, 30, 40, 50, 60, 70, 80]
 
+    if not os.path.exists(os.path.join(nib_path, "exp_param")):
+        return None
+
     for file in os.listdir(os.path.join(nib_path, "exp_param")):
         if file.endswith("pipeline.nii.gz"):
             vol = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
