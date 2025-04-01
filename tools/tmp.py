@@ -50,26 +50,25 @@ world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
 # Convertir les coordonnées mondiales en coordonnées voxel dans le second volume
 voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
 
-
 # Extraire les tranches 2D correspondantes dans les deux volumes
-slice_z_index_vol1 = int(round(voxel_coords_vol1[0, 2]))
-slice_z_index_vol2 = int(round(voxel_coords_vol2[0, 2]))
+slice_y_index_vol1 = int(round(voxel_coords_vol1[0, 1]))
+slice_y_index_vol2 = int(round(voxel_coords_vol2[0, 1]))
 
-slice_2d_vol1 = vol1_data[:, :, slice_z_index_vol1]
-slice_2d_vol2 = vol2_data[:, :, slice_z_index_vol2]
+slice_2d_vol1 = vol1_data[:, slice_y_index_vol1, :]
+slice_2d_vol2 = vol2_data[:, slice_y_index_vol2, :]
 
 # Afficher les deux tranches 2D côte à côte
 fig, axes = plt.subplots(1, 2, figsize=(12, 6))
 
 axes[0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
-axes[0].set_title(f'Volume 1 - Slice at Z = {voxel_y_index}')
+axes[0].set_title(f'Volume 1 - Slice at Y = {voxel_y_index}')
 axes[0].set_xlabel('X')
-axes[0].set_ylabel('Y')
+axes[0].set_ylabel('Z')
 
 axes[1].imshow(slice_2d_vol2.T, cmap='gray', origin='lower')
-axes[1].set_title(f'Volume 2 - Slice at corresponding Z')
+axes[1].set_title(f'Volume 2 - Slice at corresponding Y')
 axes[1].set_xlabel('X')
-axes[1].set_ylabel('Y')
+axes[1].set_ylabel('Z')
 plt.tight_layout()
 plt.savefig("tmp.png")
 # volume1_data = volume1_data * mask1_data
