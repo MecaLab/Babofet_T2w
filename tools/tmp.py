@@ -23,8 +23,8 @@ brainmask2 = nib.load(mask_2_path).get_fdata()
 vol1_data = vol1.get_fdata()
 vol2_data = vol2.get_fdata()
 
-vol1_data = vol1_data * brainmask1
-vol2_data = vol2_data * brainmask2
+"""vol1_data = vol1_data * brainmask1
+vol2_data = vol2_data * brainmask2"""
 
 affine_matrix_vol1 = vol1.affine
 affine_matrix_vol2 = vol2.affine
