@@ -29,36 +29,53 @@ def voxel_to_world(voxel_coords, affine_matrix):
     world_coords = np.dot(affine_matrix, homogeneous_coords.T).T
     return world_coords[:, :3]
 
+# Fonction pour convertir les coordonnées mondiales en coordonnées voxel
 def world_to_voxel(world_coords, affine_matrix):
     inv_affine_matrix = np.linalg.inv(affine_matrix)
     homogeneous_coords = np.concatenate([world_coords, np.ones((world_coords.shape[0], 1))], axis=1)
     voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
     return voxel_coords[:, :3]
 
+
 # Sélection d'une coupe sagittale
 voxel_y_index = vol1_data.shape[1] // 2
-voxel_coords_vol1 = np.array([[0, voxel_y_index, 0], [vol1_data.shape[0]-1, voxel_y_index, vol1_data.shape[2]-1]])
+voxel_coords_vol1 = np.array([
+    [0, voxel_y_index, 0],
+    [vol1_data.shape[0]-1, voxel_y_index, vol1_data.shape[2]-1]
+])
 
-# Conversion en coordonnées mondiales puis en voxel pour vol2
+# Convertir les coordonnées voxel en coordonnées mondiales
 world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
+
+# Ajuster les coordonnées mondiales en tenant compte du décalage de 0.25 mm sur la composante Y
+world_coords[:, 1] += 0.25
+
+# Convertir les coordonnées mondiales ajustées en coordonnées voxel dans le second volume
 voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
 
+# Extraire les tranches 2D correspondantes dans les deux volumes
 slice_y_index_vol1 = int(round(voxel_coords_vol1[0, 1]))
 slice_y_index_vol2 = int(round(voxel_coords_vol2[0, 1]))
 
 slice_2d_vol1 = vol1_data[:, slice_y_index_vol1, :]
 slice_2d_vol2 = vol2_data[:, slice_y_index_vol2, :]
 
-# Position de la ligne horizontale en coordonnées voxel
+# Position de la ligne horizontale à afficher dans le premier volume
 line_position_vol1 = 50
 
-# Convertir la position en coordonnées mondiales et la retranscrire en voxel pour vol2
-line_position_world = voxel_to_world(np.array([[0, line_position_vol1, 0]]), affine_matrix_vol1)
-line_position_voxel_vol2 = world_to_voxel(line_position_world, affine_matrix_vol2)
+# Convertir la position de la ligne en coordonnées mondiales
+line_world_coords = voxel_to_world(np.array([[0, line_position_vol1, 0], [vol1_data.shape[0]-1, line_position_vol1, vol1_data.shape[2]-1]]), affine_matrix_vol1)
 
-line_position_vol2 = int(round(line_position_voxel_vol2[0, 1]))
+# Ajuster les coordonnées mondiales de la ligne en tenant compte du décalage de 0.25 mm sur la composante Y
+line_world_coords[:, 1] += 0.25
 
-# Affichage
+# Convertir les coordonnées mondiales de la ligne en coordonnées voxel dans le second volume
+line_voxel_coords_vol2 = world_to_voxel(line_world_coords, affine_matrix_vol2)
+
+# Position de la ligne horizontale à afficher dans le second volume
+line_position_vol2 = int(round(line_voxel_coords_vol2[0, 1]))
+
+# Afficher les deux tranches 2D côte à côte avec une ligne horizontale à la même position
 fig, axes = plt.subplots(1, 2, figsize=(12, 6))
 
 axes[0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
