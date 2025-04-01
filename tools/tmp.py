@@ -38,10 +38,10 @@ def world_to_voxel(world_coords, affine_matrix):
 
 # Exemple de coordonnées voxel pour une tranche 2D dans le premier volume
 # Par exemple, si vous voulez une tranche axiale (XY) à une position Z spécifique
-voxel_z_index = 30  # Remplacez par l'index Z souhaité dans le premier volume
+voxel_y_index = vol1_data.shape[1] // 2
 voxel_coords_vol1 = np.array([
-    [0, 0, voxel_z_index],
-    [vol1_data.shape[0]-1, vol1_data.shape[1]-1, voxel_z_index]
+    [0, voxel_y_index, 0],
+    [vol1_data.shape[0]-1, voxel_y_index, vol1_data.shape[2]-1]
 ])
 
 # Convertir les coordonnées voxel en coordonnées mondiales
@@ -49,6 +49,7 @@ world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
 
 # Convertir les coordonnées mondiales en coordonnées voxel dans le second volume
 voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
+
 
 # Extraire les tranches 2D correspondantes dans les deux volumes
 slice_z_index_vol1 = int(round(voxel_coords_vol1[0, 2]))
@@ -61,7 +62,7 @@ slice_2d_vol2 = vol2_data[:, :, slice_z_index_vol2]
 fig, axes = plt.subplots(1, 2, figsize=(12, 6))
 
 axes[0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
-axes[0].set_title(f'Volume 1 - Slice at Z = {voxel_z_index}')
+axes[0].set_title(f'Volume 1 - Slice at Z = {voxel_y_index}')
 axes[0].set_xlabel('X')
 axes[0].set_ylabel('Y')
 
