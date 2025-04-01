@@ -26,7 +26,7 @@ volume2_data = nib.load(vol_2_path).get_fdata()
 mask1_data = nib.load(mask_1_path).get_fdata()
 mask2_data = nib.load(mask_2_path).get_fdata()
 
-affine_matrix1 = volume1_data.affines
+affine_matrix1 = volume1_data.affine
 
 world_z_coord = 30  # Remplacez par la coordonnée Z souhaitée
 world_coords = np.array([
