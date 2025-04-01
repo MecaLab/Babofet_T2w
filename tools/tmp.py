@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-subject = "Fabienne"
+subject = "Aziza"
 base_path = f"../data/recons_folder/{subject}/"
 session = "01"
 
