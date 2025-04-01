@@ -31,7 +31,6 @@ affine_matrix_vol2 = vol2.affine
 
 
 # Fonction pour convertir les coordonnées voxel en coordonnées mondiales
-# Fonction pour convertir les coordonnées voxel en coordonnées mondiales
 def voxel_to_world(voxel_coords, affine_matrix):
     homogeneous_coords = np.concatenate([voxel_coords, np.ones((voxel_coords.shape[0], 1))], axis=1)
     world_coords = np.dot(affine_matrix, homogeneous_coords.T).T
@@ -60,6 +59,10 @@ voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
 slice_2d_vol1 = vol1_data[:, voxel_y_index, :]
 slice_2d_vol2 = vol2_data[:, voxel_coords_vol2[0, 1], :]
 
+# Extraire les brainmasks correspondants
+mask_2d_vol1 = brainmask1[:, voxel_y_index, :]
+mask_2d_vol2 = brainmask2[:, voxel_coords_vol2[0, 1], :]
+
 # Position de la ligne horizontale dans le premier volume
 line_position_voxel1 = slice_2d_vol1.shape[0] // 2
 
@@ -72,9 +75,9 @@ line_voxel_coords_vol2 = world_to_voxel(line_world_coords, affine_matrix_vol2)
 # Position de la ligne horizontale dans le second volume
 line_position_voxel2 = line_voxel_coords_vol2[0, 0]
 
-# Extraire les intensités le long de la ligne rouge
-intensity_profile_vol1 = slice_2d_vol1[line_position_voxel1, :]
-intensity_profile_vol2 = slice_2d_vol2[line_position_voxel2, :]
+# Extraire les intensités le long de la ligne rouge en utilisant le brainmask
+intensity_profile_vol1 = slice_2d_vol1[line_position_voxel1, :] * mask_2d_vol1[line_position_voxel1, :]
+intensity_profile_vol2 = slice_2d_vol2[line_position_voxel2, :] * mask_2d_vol2[line_position_voxel2, :]
 
 # Affichage des tranches et des courbes d'intensité
 fig, axes = plt.subplots(3, 1, figsize=(12, 9))
@@ -94,7 +97,7 @@ axes[1].plot([0, slice_2d_vol2.shape[0]-1], [line_position_voxel2, line_position
 # Affichage des courbes d'intensité
 axes[2].plot(intensity_profile_vol1, label='Volume 1', color='blue')
 axes[2].plot(intensity_profile_vol2, label='Volume 2', color='green')
-axes[2].set_title('Intensity Profiles along the Red Line')
+axes[2].set_title('Intensity Profiles along the Red Line (Brainmask Applied)')
 axes[2].set_xlabel('Z')
 axes[2].set_ylabel('Intensity')
 axes[2].legend()
