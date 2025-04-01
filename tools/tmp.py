@@ -48,7 +48,7 @@ def world_to_voxel(world_coords, affine_matrix):
 # Positions de la ligne rouge
 idxs = [50, 60, 70, 80]
 
-fig, axes = plt.subplots(len(idxs), 3, figsize=(12, 3 * len(idxs)))
+fig, axes = plt.subplots(len(idxs), 3, figsize=(15, 3 * len(idxs)))
 
 for i, idx in enumerate(idxs):
     voxel_y_index = vol1_data.shape[1] // 2  # Y au centre
