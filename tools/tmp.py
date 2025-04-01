@@ -24,8 +24,8 @@ print(volume2_data.shape)
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 8), facecolor="white")
 
-ax1.imshow(volume1_data[:, volume1_data.shape[1]//2, :], cmap="gray")
-ax2.imshow(volume2_data[:, volume2_data.shape[1]//2, :], cmap="gray")
+ax1.imshow(volume1_data[:, volume1_data.shape[1]//2, :].T, cmap="gray")
+ax2.imshow(volume2_data[:, volume2_data.shape[1]//2, :].T, cmap="gray")
 
 plt.tight_layout()
 plt.savefig("tmp.png")
