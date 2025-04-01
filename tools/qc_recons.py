@@ -412,12 +412,13 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
     }
     indices = [20, 30, 40, 50, 60, 70, 80]
 
-    if os.path.exists(os.path.join(nib_path, "exp_param")):
-        for file in os.listdir(os.path.join(nib_path, "exp_param")):
-            if file.endswith("pipeline.nii.gz"):
-                vol = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
-                param = file.split("bm_")[-1].split("_pipeline")[0]
-                vols[param] = vol
+    if not os.path.exists(os.path.join(nib_path, "exp_param")):
+        return None
+    for file in os.listdir(os.path.join(nib_path, "exp_param")):
+        if file.endswith("pipeline.nii.gz"):
+            vol = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
+            param = file.split("bm_")[-1].split("_pipeline")[0]
+            vols[param] = vol
 
     fig, axes = plt.subplots(len(indices), len(vols), figsize=(3*len(vols), 2*len(indices)), facecolor='white')
     for i, idx in enumerate(indices):
