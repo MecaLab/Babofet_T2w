@@ -20,13 +20,15 @@ mask_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{s
 vol_2_path = os.path.join(base_path, f"ses{session}/mattia_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_mattia_bm_pipeline.nii.gz")
 mask_2_path = os.path.join(base_path, f"ses{session}/mattia_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_mattia_bm_pipeline_mask.nii.gz")
 
-volume1_data = nib.load(vol_1_path).get_fdata()
+volume1_data = nib.load(vol_1_path)
+affine_matrix1 = volume1_data.affine
+volume1_data = volume1_data.get_fdata()
+
 volume2_data = nib.load(vol_2_path).get_fdata()
 
 mask1_data = nib.load(mask_1_path).get_fdata()
 mask2_data = nib.load(mask_2_path).get_fdata()
 
-affine_matrix1 = volume1_data.affine
 
 world_z_coord = 30  # Remplacez par la coordonnée Z souhaitée
 world_coords = np.array([
