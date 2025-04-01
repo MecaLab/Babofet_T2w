@@ -44,7 +44,7 @@ def world_to_voxel(world_coords, affine_matrix):
     voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
     return np.round(voxel_coords[:, :3]).astype(int)
 
-modes = ["sagittal", "coronal", "axial"]
+modes = ["axial"]
 idxs = [50, 60, 70, 80]
 
 for view_mode in modes:
@@ -75,8 +75,8 @@ for view_mode in modes:
             line_position_voxel2 = voxel_coords_vol2[0, 1]
 
         elif view_mode == 'axial':
-            voxel_z_index = idx
-            voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, vol1_data.shape[1] // 2, voxel_z_index]])
+            voxel_z_index = vol1_data.shape[0] // 2
+            voxel_coords_vol1 = np.array([[idx, vol1_data.shape[1] // 2, voxel_z_index]])
             slice_2d_vol1 = vol1_data[:, :, voxel_z_index]
             mask_2d_vol1 = brainmask1[:, :, voxel_z_index]
             line_position_voxel1 = voxel_coords_vol1[0, 0]
