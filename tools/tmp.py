@@ -4,13 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def world_to_voxel(world_coords, affine_matrix):
-    inv_affine_matrix = np.linalg.inv(affine_matrix)
-    homogeneous_coords = np.concatenate([world_coords, np.ones((world_coords.shape[0], 1))], axis=1)
-    voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
-    return voxel_coords[:, :3]
-
-
 subject = "Aziza"
 base_path = f"../data/recons_folder/{subject}/"
 session = "01"
@@ -20,33 +13,62 @@ mask_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{s
 vol_2_path = os.path.join(base_path, f"ses{session}/mattia_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_mattia_bm_pipeline.nii.gz")
 mask_2_path = os.path.join(base_path, f"ses{session}/mattia_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_mattia_bm_pipeline_mask.nii.gz")
 
-volume1_data = nib.load(vol_1_path)
-affine_matrix1 = volume1_data.affine
-volume1_data = volume1_data.get_fdata()
+vol1 = nib.load(vol_1_path)
+vol2 = nib.load(vol_2_path)
 
-volume2_data = nib.load(vol_2_path).get_fdata()
+vol1_data = vol1.get_fdata()
+vol2_data = vol2.get_fdata()
 
-mask1_data = nib.load(mask_1_path).get_fdata()
-mask2_data = nib.load(mask_2_path).get_fdata()
+affine_matrix_vol1 = vol1.affine
+affine_matrix_vol2 = vol2.affine
 
 
-world_z_coord = 30  # Remplacez par la coordonnée Z souhaitée
-world_coords = np.array([
-    [0, 0, world_z_coord],
-    [volume1_data.shape[0]-1, volume1_data.shape[1]-1, world_z_coord]
+# Fonction pour convertir les coordonnées voxel en coordonnées mondiales
+def voxel_to_world(voxel_coords, affine_matrix):
+    homogeneous_coords = np.concatenate([voxel_coords, np.ones((voxel_coords.shape[0], 1))], axis=1)
+    world_coords = np.dot(affine_matrix, homogeneous_coords.T).T
+    return world_coords[:, :3]
+
+# Fonction pour convertir les coordonnées mondiales en coordonnées voxel
+def world_to_voxel(world_coords, affine_matrix):
+    inv_affine_matrix = np.linalg.inv(affine_matrix)
+    homogeneous_coords = np.concatenate([world_coords, np.ones((world_coords.shape[0], 1))], axis=1)
+    voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
+    return voxel_coords[:, :3]
+
+# Exemple de coordonnées voxel pour une tranche 2D dans le premier volume
+# Par exemple, si vous voulez une tranche axiale (XY) à une position Z spécifique
+voxel_z_index = 30  # Remplacez par l'index Z souhaité dans le premier volume
+voxel_coords_vol1 = np.array([
+    [0, 0, voxel_z_index],
+    [vol1_data.shape[0]-1, vol1_data.shape[1]-1, voxel_z_index]
 ])
 
-voxel_coords = world_to_voxel(world_coords, affine_matrix1)
+# Convertir les coordonnées voxel en coordonnées mondiales
+world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
 
+# Convertir les coordonnées mondiales en coordonnées voxel dans le second volume
+voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
 
-slice_z_index = int(round(voxel_coords[0, 2]))
-slice_2d = volume1_data[:, :, slice_z_index]
+# Extraire les tranches 2D correspondantes dans les deux volumes
+slice_z_index_vol1 = int(round(voxel_coords_vol1[0, 2]))
+slice_z_index_vol2 = int(round(voxel_coords_vol2[0, 2]))
 
-# Afficher la tranche 2D
-plt.imshow(slice_2d.T, cmap='gray', origin='lower')
-plt.title(f'Slice at Z = {world_z_coord} (world coordinates)')
-plt.xlabel('X')
-plt.ylabel('Y')
+slice_2d_vol1 = vol1_data[:, :, slice_z_index_vol1]
+slice_2d_vol2 = vol2_data[:, :, slice_z_index_vol2]
+
+# Afficher les deux tranches 2D côte à côte
+fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+
+axes[0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
+axes[0].set_title(f'Volume 1 - Slice at Z = {voxel_z_index}')
+axes[0].set_xlabel('X')
+axes[0].set_ylabel('Y')
+
+axes[1].imshow(slice_2d_vol2.T, cmap='gray', origin='lower')
+axes[1].set_title(f'Volume 2 - Slice at corresponding Z')
+axes[1].set_xlabel('X')
+axes[1].set_ylabel('Y')
 plt.tight_layout()
 plt.savefig("tmp.png")
 # volume1_data = volume1_data * mask1_data
