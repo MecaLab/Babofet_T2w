@@ -25,7 +25,8 @@ print(volume2_data.shape)
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 8), facecolor="white")
 
 ax1.imshow(volume1_data[:, volume1_data.shape[1]//2, :], cmap="gray")
-ax1.plot(volume1_data[:, volume1_data.shape[1]//2, 50], color="red")
+middle_x = volume1_data.shape[2] // 2
+ax1.plot([middle_x, middle_x], [0, volume1_data.shape[0]-1], color='red', linewidth=2)
 
 ax2.imshow(volume2_data[:, volume2_data.shape[1]//2, :], cmap="gray")
 
