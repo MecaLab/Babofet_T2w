@@ -460,6 +460,9 @@ def plot_histo(subj_path, mode, subject, subj_session):
 
     vol_ref_masked = vol_ref[mask_ref > 0]
 
+    if not os.path.exists(os.path.join(nib_path, "exp_param")):
+        return None
+
     for file in os.listdir(os.path.join(nib_path, "exp_param")):
         if file.endswith("pipeline.nii.gz"):
             vol_dst = nib.load(os.path.join(nib_path, "exp_param", file)).get_fdata()
