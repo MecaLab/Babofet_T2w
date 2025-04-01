@@ -466,7 +466,9 @@ def plot_histo(subj_path, mode, subject, subj_session):
 
         hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
         bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
-
+        
+        title = f"{subj_session} default ({mode})"
+        output_filename = "_".join(title.split()).lower()
         output_filename_path = os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}",
                                             f"histo_{output_filename}.png")
 
@@ -487,7 +489,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
 
                 param = file.split("bm_")[-1].split("_pipeline")[0]
 
-                title = f"{subj_session} default vs {param}"
+                title = f"{subj_session} default vs {param} ({mode})"
                 output_filename = "_".join(title.split()).lower()
                 output_filename_path = os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}",
                                                     f"histo_{output_filename}.png")
