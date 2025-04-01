@@ -29,15 +29,14 @@ def voxel_to_world(voxel_coords, affine_matrix):
     world_coords = np.dot(affine_matrix, homogeneous_coords.T).T
     return world_coords[:, :3]
 
-
+# Fonction pour convertir les coordonnées mondiales en coordonnées voxel
 def world_to_voxel(world_coords, affine_matrix):
     inv_affine_matrix = np.linalg.inv(affine_matrix)
     homogeneous_coords = np.concatenate([world_coords, np.ones((world_coords.shape[0], 1))], axis=1)
     voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
     return voxel_coords[:, :3]
 
-
-# Sélection d'une coupe sagittale
+# Sélection d'une tranche sagittale (YZ) dans le premier volume
 voxel_y_index = vol1_data.shape[1] // 2
 voxel_coords_vol1 = np.array([
     [0, voxel_y_index, 0],
@@ -98,6 +97,7 @@ axes[2].legend()
 
 plt.tight_layout()
 plt.savefig("tmp.png")
+
 # volume1_data = volume1_data * mask1_data
 # volume2_data = volume2_data * mask2_data
 
