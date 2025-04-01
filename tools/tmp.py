@@ -37,7 +37,7 @@ def world_to_voxel(world_coords, affine_matrix):
     return voxel_coords[:, :3]
 
 # Exemple de coordonnées voxel pour une tranche 2D dans le premier volume
-# Par exemple, si vous voulez une tranche axiale (XY) à une position Z spécifique
+# Par exemple, si vous voulez une tranche sagittale (YZ) au milieu du volume
 voxel_y_index = vol1_data.shape[1] // 2
 voxel_coords_vol1 = np.array([
     [0, voxel_y_index, 0],
@@ -57,23 +57,32 @@ slice_y_index_vol2 = int(round(voxel_coords_vol2[0, 1]))
 slice_2d_vol1 = vol1_data[:, slice_y_index_vol1, :]
 slice_2d_vol2 = vol2_data[:, slice_y_index_vol2, :]
 
-# Position de la ligne horizontale à afficher
-line_position = 50
+# Position de la ligne horizontale à afficher dans le premier volume
+line_position_vol1 = 50
 
-# Afficher les deux tranches 2D côte à côte avec une ligne horizontale à la position spécifiée
+# Convertir la position de la ligne en coordonnées mondiales
+line_world_coords = voxel_to_world(np.array([[0, line_position_vol1, 0], [vol1_data.shape[0]-1, line_position_vol1, vol1_data.shape[2]-1]]), affine_matrix_vol1)
+
+# Convertir les coordonnées mondiales de la ligne en coordonnées voxel dans le second volume
+line_voxel_coords_vol2 = world_to_voxel(line_world_coords, affine_matrix_vol2)
+
+# Position de la ligne horizontale à afficher dans le second volume
+line_position_vol2 = int(round(line_voxel_coords_vol2[0, 1]))
+
+# Afficher les deux tranches 2D côte à côte avec une ligne horizontale à la même position
 fig, axes = plt.subplots(1, 2, figsize=(12, 6))
 
 axes[0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
 axes[0].set_title(f'Volume 1 - Slice at Y = {voxel_y_index}')
 axes[0].set_xlabel('X')
 axes[0].set_ylabel('Z')
-axes[0].plot([0, slice_2d_vol1.shape[0]-1], [line_position, line_position], color='red', linewidth=2)
+axes[0].plot([0, slice_2d_vol1.shape[0]-1], [line_position_vol1, line_position_vol1], color='red', linewidth=2)
 
 axes[1].imshow(slice_2d_vol2.T, cmap='gray', origin='lower')
 axes[1].set_title(f'Volume 2 - Slice at corresponding Y')
 axes[1].set_xlabel('X')
 axes[1].set_ylabel('Z')
-axes[1].plot([0, slice_2d_vol2.shape[0]-1], [line_position, line_position], color='red', linewidth=2)
+axes[1].plot([0, slice_2d_vol2.shape[0]-1], [line_position_vol2, line_position_vol2], color='red', linewidth=2)
 
 plt.tight_layout()
 plt.savefig("tmp.png")
