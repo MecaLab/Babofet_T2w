@@ -11,7 +11,7 @@ def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files,
     
 #SBATCH --account='b219'
 #SBATCH --partition=volta
-#SBATCH --time=5:00:00
+#SBATCH --time=6:00:00
 #SBATCH --gres=gpu:1
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=50G
@@ -91,7 +91,9 @@ if __name__ == "__main__":
     SUFFIX_EXP = "_ISO3"  # need to be updated for every exp
 
     list_subjs = [
-        "sub-Aziza_ses-01", "sub-Aziza_ses-05",
+        "sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09"
+        "sub-Aziza_ses-01", "sub-Aziza_ses-05", "sub-Aziza_ses-09",
+        "sub-Formule_ses-01", "sub-Formule_ses-05", "sub-Formule_ses-09",
     ]
 
     for subject in subject_IDs:
