@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 
 subject = "Aziza"
 base_path = f"../data/recons_folder/{subject}/"
-session = "09"
+session = "01"
+
+png_filename = f"comparaison_{subject.lower()}_ses-{session}.png"
 
 vol_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz")
 mask_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")
@@ -73,8 +75,8 @@ for i, axial_index in enumerate(axial_indices):
     plt.subplot(len(axial_indices), 3, 3 * i + 3)
     intensity_profile1 = data1[x_min1:x_max1, mid_sagittal_index1, axial_index]
     intensity_profile2 = data2[x_min2:x_max2, mid_sagittal_index1, axial_index]
-    plt.plot(intensity_profile1, label='Volume 1')
-    plt.plot(intensity_profile2, label='Volume 2')
+    plt.plot(intensity_profile1, label='Volume manual BM')
+    plt.plot(intensity_profile2, label='Volume mattia BM')
     plt.title(f'Intensity Profile - Axial Index {axial_index}')
     plt.xlabel('Voxel Index')
     plt.ylabel('Intensity')
@@ -82,5 +84,5 @@ for i, axial_index in enumerate(axial_indices):
     plt.legend()
 
 plt.tight_layout()
-plt.savefig("tmp.png")
+plt.savefig(png_filename)
 plt.close()
