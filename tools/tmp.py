@@ -50,73 +50,61 @@ idxs = [50, 60, 70, 80]
 
 
 for view_mode in modes:
+
     fig, axes = plt.subplots(len(idxs), 3, figsize=(15, 3 * len(idxs)))
+
     for i, idx in enumerate(idxs):
-        if view_mode == 'sagittal':
-            voxel_y_index = vol1_data.shape[1] // 2  # Y au centre
-            voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, voxel_y_index, idx]])
-            slice_2d_vol1 = vol1_data[:, voxel_y_index, :]
-            mask_2d_vol1 = brainmask1[:, voxel_y_index, :]
-            line_position_voxel1 = voxel_coords_vol1[0, 0]
-            line_world_coords = voxel_to_world(np.array([[line_position_voxel1, voxel_y_index, 0]]), affine_matrix_vol1)
-            voxel_coords_vol2 = world_to_voxel(line_world_coords, affine_matrix_vol2)
-            slice_2d_vol2 = vol2_data[:, voxel_coords_vol2[0, 1], :]
-            mask_2d_vol2 = brainmask2[:, voxel_coords_vol2[0, 1], :]
-            line_position_voxel2 = voxel_coords_vol2[0, 0]
+        if view_mode == 'axial':  # Vue AXIALE (XY)
+            slice_2d_vol1 = vol1_data[:, :, idx]
+            slice_2d_vol2 = vol2_data[:, :, idx]
 
-            # Extraire les profils d'intensité en appliquant le brainmask
-            intensity_profile_vol1 = slice_2d_vol1[line_position_voxel1, :] * mask_2d_vol1[line_position_voxel1, :]
-            intensity_profile_vol2 = slice_2d_vol2[line_position_voxel2, :] * mask_2d_vol2[line_position_voxel2, :]
+            mask_2d_vol1 = brainmask1[:, :, idx]
+            mask_2d_vol2 = brainmask2[:, :, idx]
 
-        elif view_mode == 'coronal':
-            voxel_x_index = vol1_data.shape[0] // 2  # X au centre
-            voxel_coords_vol1 = np.array([[voxel_x_index, vol1_data.shape[1] // 2, idx]])
-            slice_2d_vol1 = vol1_data[voxel_x_index, :, :]
-            mask_2d_vol1 = brainmask1[voxel_x_index, :, :]
-            line_position_voxel1 = voxel_coords_vol1[0, 1]
-            line_world_coords = voxel_to_world(np.array([[voxel_x_index, line_position_voxel1, 0]]), affine_matrix_vol1)
-            voxel_coords_vol2 = world_to_voxel(line_world_coords, affine_matrix_vol2)
-            slice_2d_vol2 = vol2_data[voxel_coords_vol2[0, 0], :, :]
-            mask_2d_vol2 = brainmask2[voxel_coords_vol2[0, 0], :, :]
-            line_position_voxel2 = voxel_coords_vol2[0, 1]
+            line_position = slice_2d_vol1.shape[0] // 2  # Ligne horizontale à X = centre
 
-            # Extraire les profils d'intensité en appliquant le brainmask
-            intensity_profile_vol1 = slice_2d_vol1[:, line_position_voxel1] * mask_2d_vol1[:, line_position_voxel1]
-            intensity_profile_vol2 = slice_2d_vol2[:, line_position_voxel2] * mask_2d_vol2[:, line_position_voxel2]
+            intensity_profile_vol1 = slice_2d_vol1[line_position, :] * mask_2d_vol1[line_position, :]
+            intensity_profile_vol2 = slice_2d_vol2[line_position, :] * mask_2d_vol2[line_position, :]
 
-        elif view_mode == 'axial':
-            voxel_z_index = idx
-            voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, vol1_data.shape[1] // 2, voxel_z_index]])
-            slice_2d_vol1 = vol1_data[:, :, voxel_z_index]
-            mask_2d_vol1 = brainmask1[:, :, voxel_z_index]
-            line_position_voxel1 = voxel_coords_vol1[0, 0]
-            line_world_coords = voxel_to_world(np.array([[line_position_voxel1, vol1_data.shape[1] // 2, 0]]),
-                                               affine_matrix_vol1)
-            voxel_coords_vol2 = world_to_voxel(line_world_coords, affine_matrix_vol2)
-            slice_2d_vol2 = vol2_data[:, :, voxel_z_index]
-            mask_2d_vol2 = brainmask2[:, :, voxel_z_index]
-            line_position_voxel2 = voxel_coords_vol2[0, 0]
+        elif view_mode == 'sagittal':  # Vue SAGITTALE (YZ)
+            y_index = vol1_data.shape[1] // 2  # Prendre la coupe au centre en Y
+            slice_2d_vol1 = vol1_data[:, y_index, :]
+            slice_2d_vol2 = vol2_data[:, y_index, :]
 
-            # Extraire les profils d'intensité en appliquant le brainmask
-            intensity_profile_vol1 = slice_2d_vol1[line_position_voxel1, :] * mask_2d_vol1[line_position_voxel1, :]
-            intensity_profile_vol2 = slice_2d_vol2[line_position_voxel2, :] * mask_2d_vol2[line_position_voxel2, :]
+            mask_2d_vol1 = brainmask1[:, y_index, :]
+            mask_2d_vol2 = brainmask2[:, y_index, :]
 
-        # Affichage des images avec la ligne rouge
+            line_position = slice_2d_vol1.shape[0] // 2  # Ligne horizontale à X = centre
+
+            intensity_profile_vol1 = slice_2d_vol1[line_position, :] * mask_2d_vol1[line_position, :]
+            intensity_profile_vol2 = slice_2d_vol2[line_position, :] * mask_2d_vol2[line_position, :]
+
+        elif view_mode == 'coronal':  # Vue CORONALE (XZ)
+            slice_2d_vol1 = vol1_data[:, vol1_data.shape[1] // 2, :]
+            slice_2d_vol2 = vol2_data[:, vol2_data.shape[1] // 2, :]
+
+            mask_2d_vol1 = brainmask1[:, brainmask1.shape[1] // 2, :]
+            mask_2d_vol2 = brainmask2[:, brainmask2.shape[1] // 2, :]
+
+            line_position = slice_2d_vol1.shape[0] // 2  # Ligne horizontale à X = centre
+
+            intensity_profile_vol1 = slice_2d_vol1[line_position, :] * mask_2d_vol1[line_position, :]
+            intensity_profile_vol2 = slice_2d_vol2[line_position, :] * mask_2d_vol2[line_position, :]
+
+        # Affichage des images et des profils d'intensité
         axes[i, 0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
-        axes[i, 0].set_title(f'Vol 1 - {view_mode.capitalize()} Slice at Z={idx}')
-        axes[i, 0].plot([0, slice_2d_vol1.shape[0] - 1], [line_position_voxel1, line_position_voxel1], color='red',
-                        linewidth=2)
+        axes[i, 0].set_title(f'Vol 1 - {view_mode.capitalize()} Slice {idx}')
+        axes[i, 0].plot([0, slice_2d_vol1.shape[1] - 1], [line_position, line_position], color='red', linewidth=2)
 
         axes[i, 1].imshow(slice_2d_vol2.T, cmap='gray', origin='lower')
-        axes[i, 1].set_title(f'Vol 2 - {view_mode.capitalize()} Slice at corresponding Z={idx}')
-        axes[i, 1].plot([0, slice_2d_vol2.shape[0] - 1], [line_position_voxel2, line_position_voxel2], color='red',
-                        linewidth=2)
+        axes[i, 1].set_title(f'Vol 2 - {view_mode.capitalize()} Slice {idx}')
+        axes[i, 1].plot([0, slice_2d_vol2.shape[1] - 1], [line_position, line_position], color='red', linewidth=2)
 
         # Affichage des profils d'intensité
-        axes[i, 2].plot(intensity_profile_vol1, label='Volume with manual BM', color='blue')
-        axes[i, 2].plot(intensity_profile_vol2, label='Volume with mattia BM', color='green')
-        axes[i, 2].set_title(f'Intensity Profile at Z={idx}')
-        axes[i, 2].set_xlabel('Z')
+        axes[i, 2].plot(intensity_profile_vol1, label='Volume 1', color='blue')
+        axes[i, 2].plot(intensity_profile_vol2, label='Volume 2', color='green')
+        axes[i, 2].set_title(f'Intensity Profile - {view_mode.capitalize()} Slice {idx}')
+        axes[i, 2].set_xlabel('Position')
         axes[i, 2].set_ylabel('Intensity')
         axes[i, 2].legend()
 
