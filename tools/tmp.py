@@ -42,7 +42,7 @@ def world_to_voxel(world_coords, affine_matrix):
     inv_affine_matrix = np.linalg.inv(affine_matrix)
     homogeneous_coords = np.concatenate([world_coords, np.ones((world_coords.shape[0], 1))], axis=1)
     voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
-    return np.round(voxel_coords[:, :3]).astype(int)
+    return np.floor(voxel_coords[:, :3]).astype(int)
 
 
 modes = ["sagittal", "axial", "coronal"]
