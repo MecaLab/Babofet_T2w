@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 subject = "Aziza"
 base_path = f"../data/recons_folder/{subject}/"
-session = "01"
+session = "09"
 
 vol_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz")
 mask_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")
