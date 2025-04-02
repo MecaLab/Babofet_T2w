@@ -55,41 +55,49 @@ for view_mode in modes:
 
     for i, idx in enumerate(idxs):
         if view_mode == 'axial':  # Vue AXIALE (XY)
+            voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, vol1_data.shape[1] // 2, idx]])
+        elif view_mode == 'sagittal':  # Vue SAGITTALE (YZ)
+            voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, idx, vol1_data.shape[2] // 2]])
+        elif view_mode == 'coronal':  # Vue CORONALE (XZ)
+            voxel_coords_vol1 = np.array([[idx, vol1_data.shape[1] // 2, vol1_data.shape[2] // 2]])
+
+        # Conversion vers le repère du monde
+        world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
+
+        # Transformation vers le second volume
+        voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
+
+        # Extraction des coupes
+        if view_mode == 'axial':
             slice_2d_vol1 = vol1_data[:, :, idx]
-            slice_2d_vol2 = vol2_data[:, :, idx]
+            slice_2d_vol2 = vol2_data[:, :, voxel_coords_vol2[0, 2]]
 
             mask_2d_vol1 = brainmask1[:, :, idx]
-            mask_2d_vol2 = brainmask2[:, :, idx]
+            mask_2d_vol2 = brainmask2[:, :, voxel_coords_vol2[0, 2]]
 
-            line_position = slice_2d_vol1.shape[0] // 2  # Ligne horizontale à X = centre
+            line_position = voxel_coords_vol1[0, 0]  # Ligne horizontale en X
 
-            intensity_profile_vol1 = slice_2d_vol1[line_position, :] * mask_2d_vol1[line_position, :]
-            intensity_profile_vol2 = slice_2d_vol2[line_position, :] * mask_2d_vol2[line_position, :]
+        elif view_mode == 'sagittal':
+            slice_2d_vol1 = vol1_data[:, idx, :]
+            slice_2d_vol2 = vol2_data[:, voxel_coords_vol2[0, 1], :]
 
-        elif view_mode == 'sagittal':  # Vue SAGITTALE (YZ)
-            y_index = vol1_data.shape[1] // 2  # Prendre la coupe au centre en Y
-            slice_2d_vol1 = vol1_data[:, y_index, :]
-            slice_2d_vol2 = vol2_data[:, y_index, :]
+            mask_2d_vol1 = brainmask1[:, idx, :]
+            mask_2d_vol2 = brainmask2[:, voxel_coords_vol2[0, 1], :]
 
-            mask_2d_vol1 = brainmask1[:, y_index, :]
-            mask_2d_vol2 = brainmask2[:, y_index, :]
+            line_position = voxel_coords_vol1[0, 0]  # Ligne horizontale en X
 
-            line_position = slice_2d_vol1.shape[0] // 2  # Ligne horizontale à X = centre
+        elif view_mode == 'coronal':
+            slice_2d_vol1 = vol1_data[idx, :, :]
+            slice_2d_vol2 = vol2_data[voxel_coords_vol2[0, 0], :, :]
 
-            intensity_profile_vol1 = slice_2d_vol1[line_position, :] * mask_2d_vol1[line_position, :]
-            intensity_profile_vol2 = slice_2d_vol2[line_position, :] * mask_2d_vol2[line_position, :]
+            mask_2d_vol1 = brainmask1[idx, :, :]
+            mask_2d_vol2 = brainmask2[voxel_coords_vol2[0, 0], :, :]
 
-        elif view_mode == 'coronal':  # Vue CORONALE (XZ)
-            slice_2d_vol1 = vol1_data[:, vol1_data.shape[1] // 2, :]
-            slice_2d_vol2 = vol2_data[:, vol2_data.shape[1] // 2, :]
+            line_position = voxel_coords_vol1[0, 1]  # Ligne horizontale en Y
 
-            mask_2d_vol1 = brainmask1[:, brainmask1.shape[1] // 2, :]
-            mask_2d_vol2 = brainmask2[:, brainmask2.shape[1] // 2, :]
-
-            line_position = slice_2d_vol1.shape[0] // 2  # Ligne horizontale à X = centre
-
-            intensity_profile_vol1 = slice_2d_vol1[line_position, :] * mask_2d_vol1[line_position, :]
-            intensity_profile_vol2 = slice_2d_vol2[line_position, :] * mask_2d_vol2[line_position, :]
+        # Extraire les profils d'intensité avec le brainmask
+        intensity_profile_vol1 = slice_2d_vol1[line_position, :] * mask_2d_vol1[line_position, :]
+        intensity_profile_vol2 = slice_2d_vol2[line_position, :] * mask_2d_vol2[line_position, :]
 
         # Affichage des images et des profils d'intensité
         axes[i, 0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
