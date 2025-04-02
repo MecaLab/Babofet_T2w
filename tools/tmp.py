@@ -34,6 +34,7 @@ mid_sagittal_index1 = shape1[1] // 2
 
 axial_indices = [50, 60, 70]
 
+
 # Fonction pour obtenir les limites de la ROI en fonction du brainmask
 def get_roi_bounds(mask_slice):
     coords = np.argwhere(mask_slice)
@@ -60,7 +61,6 @@ for i, axial_index in enumerate(axial_indices):
     plt.imshow(sagittal_slice1.T, cmap='gray', origin='lower')
     plt.axhline(y=axial_index - y_min1, color='r', linestyle='--')
     plt.title(f'Volume 1 - Sagittal Slice {mid_sagittal_index1}, Axial Index {axial_index}')
-    plt.axis('off')
 
     # Volume 2
     plt.subplot(len(axial_indices), 3, 3 * i + 2)
@@ -68,7 +68,6 @@ for i, axial_index in enumerate(axial_indices):
     plt.imshow(sagittal_slice2.T, cmap='gray', origin='lower')
     plt.axhline(y=axial_index - y_min2, color='r', linestyle='--')
     plt.title(f'Volume 2 - Sagittal Slice {mid_sagittal_index1}, Axial Index {axial_index}')
-    plt.axis('off')
 
     # Profil d'intensité
     plt.subplot(len(axial_indices), 3, 3 * i + 3)
@@ -79,6 +78,7 @@ for i, axial_index in enumerate(axial_indices):
     plt.title(f'Intensity Profile - Axial Index {axial_index}')
     plt.xlabel('Voxel Index')
     plt.ylabel('Intensity')
+    plt.grid()
     plt.legend()
 
 plt.tight_layout()
