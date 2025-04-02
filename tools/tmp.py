@@ -100,11 +100,11 @@ for view_mode in modes:
         intensity_profile_vol2 = slice_2d_vol2[line_position, :] * mask_2d_vol2[line_position, :]
 
         # Affichage des images et des profils d'intensité
-        axes[i, 0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
+        axes[i, 0].imshow(slice_2d_vol1.T, cmap='gray', origin='upper')
         axes[i, 0].set_title(f'Vol 1 - {view_mode.capitalize()} Slice {idx}')
         axes[i, 0].plot([0, slice_2d_vol1.shape[1] - 1], [line_position, line_position], color='red', linewidth=2)
 
-        axes[i, 1].imshow(slice_2d_vol2.T, cmap='gray', origin='lower')
+        axes[i, 1].imshow(slice_2d_vol2.T, cmap='gray', origin='upper')
         axes[i, 1].set_title(f'Vol 2 - {view_mode.capitalize()} Slice {idx}')
         axes[i, 1].plot([0, slice_2d_vol2.shape[1] - 1], [line_position, line_position], color='red', linewidth=2)
 
