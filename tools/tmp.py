@@ -29,37 +29,47 @@ shape1 = vol1_data.shape
 shape2 = vol2_data.shape
 
 # Déterminer le nombre de coupes sagittales
-num_slices1 = shape1[2]
-num_slices2 = shape2[2]
+mid_sagittal_index1 = shape1[2] // 2
+axial_index1 = 50
+voxel_coords1_sagittal = np.array([shape1[0] // 2, shape1[1] // 2, mid_sagittal_index1, 1])
+voxel_coords1_axial = np.array([shape1[0] // 2, shape1[1] // 2, axial_index1, 1])
 
-# Calculer les indices des coupes à afficher
-num_slices1 = shape1[2]
-indices1 = np.linspace(0, num_slices1 - 1, num=min(num_slices1, shape2[2]), dtype=int)
+# Convertir en coordonnées mondiales
+world_coords_sagittal = affine_matrix_vol1 @ voxel_coords1_sagittal
+world_coords_axial = affine_matrix_vol1 @ voxel_coords1_axial
 
-# Afficher les coupes sagittales
-for i in range(min(num_slices1, shape2[2])):
-    # Coordonnées du voxel dans le volume 1
-    voxel_coords1 = np.array([shape1[0] // 2, shape1[1] // 2, indices1[i], 1])
+# Convertir les coordonnées mondiales en coordonnées de voxels dans le volume 2
+voxel_coords2_sagittal = np.linalg.inv(affine_matrix_vol2) @ world_coords_sagittal
+voxel_coords2_sagittal = np.round(voxel_coords2_sagittal[:3]).astype(int)
 
-    # Convertir en coordonnées mondiales
-    world_coords = affine_matrix_vol1 @ voxel_coords1
+voxel_coords2_axial = np.linalg.inv(affine_matrix_vol2) @ world_coords_axial
+voxel_coords2_axial = np.round(voxel_coords2_axial[:3]).astype(int)
 
-    # Convertir les coordonnées mondiales en coordonnées de voxels dans le volume 2
-    voxel_coords2 = np.linalg.inv(affine_matrix_vol2) @ world_coords
-    voxel_coords2 = np.round(voxel_coords2[:3]).astype(int)
+# Vérifier que les coordonnées sont dans les limites du volume 2
+if (0 <= voxel_coords2_sagittal[2] < shape2[2]) and (0 <= voxel_coords2_axial[2] < shape2[2]):
+    plt.figure(figsize=(10, 10))
 
-    # Vérifier que les coordonnées sont dans les limites du volume 2
-    if (0 <= voxel_coords2[2] < shape2[2]):
-        plt.figure(figsize=(10, 5))
+    # Afficher la coupe sagittale au milieu
+    plt.subplot(2, 2, 1)
+    plt.imshow(vol1_data[:, :, mid_sagittal_index1].T, cmap='gray', origin='lower')
+    plt.title(f'Volume 1 - Sagittal Slice {mid_sagittal_index1}')
+    plt.axis('off')
 
-        plt.subplot(1, 2, 1)
-        plt.imshow(vol1_data[:, :, indices1[i]].T, cmap='gray', origin='lower')
-        plt.title(f'Volume 1 - Slice {indices1[i]}')
-        plt.axis('off')
+    plt.subplot(2, 2, 2)
+    plt.imshow(vol2_data[:, :, voxel_coords2_sagittal[2]].T, cmap='gray', origin='lower')
+    plt.title(f'Volume 2 - Sagittal Slice {voxel_coords2_sagittal[2]}')
+    plt.axis('off')
 
-        plt.subplot(1, 2, 2)
-        plt.imshow(vol2_data[:, :, voxel_coords2[2]].T, cmap='gray', origin='lower')
-        plt.title(f'Volume 2 - Slice {voxel_coords2[2]}')
-        plt.axis('off')
+    # Afficher la coupe axiale à l'indice 50
+    plt.subplot(2, 2, 3)
+    plt.imshow(data1[:, axial_index1, :].T, cmap='gray', origin='lower')
+    plt.title(f'Volume 1 - Axial Slice {axial_index1}')
+    plt.axis('off')
+
+    plt.subplot(2, 2, 4)
+    plt.imshow(data2[:, voxel_coords2_axial[1], :].T, cmap='gray', origin='lower')
+    plt.title(f'Volume 2 - Axial Slice {voxel_coords2_axial[1]}')
+    plt.axis('off')
 
 plt.savefig("tmp.png")
+plt.close()
