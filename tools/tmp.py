@@ -3,7 +3,7 @@ import nibabel as nib
 import numpy as np
 import matplotlib.pyplot as plt
 
-subject = "Aziza"
+subject = "Formule"
 base_path = f"../data/recons_folder/{subject}/"
 sessions = ["01", "05", "09"]
 
