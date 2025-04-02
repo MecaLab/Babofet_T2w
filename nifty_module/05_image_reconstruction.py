@@ -88,12 +88,10 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    SUFFIX_EXP = "ISO3"  # need to be updated for every exp
+    SUFFIX_EXP = "_ISO3"  # need to be updated for every exp
 
     list_subjs = [
-        "sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09",
-        "sub-Aziza_ses-01", "sub-Aziza_ses-05", "sub-Aziza_ses-09",
-        "sub-Formule_ses-01", "sub-Formule_ses-05", "sub-Formule_ses-09"
+        "sub-Aziza_ses-01", "sub-Aziza_ses-05",
     ]
 
     for subject in subject_IDs:
@@ -159,7 +157,7 @@ if __name__ == "__main__":
             if not os.path.exists(motion_subfolder):
                 os.mkdir(motion_subfolder)
 
-            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_pipeline.nii.gz"
+            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm{SUFFIX_EXP}_pipeline.nii.gz"
 
             write_slurm_file_nifty(
                 subj=subject,
