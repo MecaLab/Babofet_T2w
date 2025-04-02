@@ -40,11 +40,11 @@ def world_to_voxel(world_coords, affine_matrix):
 
 # Fonction pour normaliser les coordonnées voxel
 def normalize_voxel_coords(voxel_coords, shape):
-    return voxel_coords / (shape - 1)
+    return voxel_coords / (np.array(shape) - 1)
 
 # Fonction pour dénormaliser les coordonnées voxel
 def denormalize_voxel_coords(norm_coords, shape):
-    return np.round(norm_coords * (shape - 1)).astype(int)
+    return np.round(norm_coords * (np.array(shape) - 1)).astype(int)
 
 modes = ["sagittal", "axial", "coronal"]
 idxs = [50, 60, 70, 80]
