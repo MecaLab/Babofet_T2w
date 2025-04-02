@@ -62,12 +62,12 @@ if (0 <= voxel_coords2_sagittal[2] < shape2[2]) and (0 <= voxel_coords2_axial[2]
 
     # Afficher la coupe axiale à l'indice 50
     plt.subplot(2, 2, 3)
-    plt.imshow(data1[:, axial_index1, :].T, cmap='gray', origin='lower')
+    plt.imshow(vol1_data[:, axial_index1, :].T, cmap='gray', origin='lower')
     plt.title(f'Volume 1 - Axial Slice {axial_index1}')
     plt.axis('off')
 
     plt.subplot(2, 2, 4)
-    plt.imshow(data2[:, voxel_coords2_axial[1], :].T, cmap='gray', origin='lower')
+    plt.imshow(vol2_data[:, voxel_coords2_axial[1], :].T, cmap='gray', origin='lower')
     plt.title(f'Volume 2 - Axial Slice {voxel_coords2_axial[1]}')
     plt.axis('off')
 
