@@ -68,10 +68,7 @@ for view_mode in modes:
         # Transformation vers le second volume
         voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
 
-        print("Affine Matrix Vol 1:")
-        print(affine_matrix_vol1)
-        print("Affine Matrix Vol 2:")
-        print(affine_matrix_vol2)
+        affine_matrix_vol2[:, 3] = affine_matrix_vol1[:, 3]
 
         # Vérifier les conversions de coordonnées
         voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, vol1_data.shape[1] // 2, idx]])
