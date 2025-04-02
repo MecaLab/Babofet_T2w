@@ -44,8 +44,10 @@ def world_to_voxel(world_coords, affine_matrix):
     voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
     return np.round(voxel_coords[:, :3]).astype(int)
 
-modes = ["axial"]
+
+modes = ["sagittal"]
 idxs = [50, 60, 70, 80]
+
 
 for view_mode in modes:
     fig, axes = plt.subplots(len(idxs), 3, figsize=(15, 3 * len(idxs)))
