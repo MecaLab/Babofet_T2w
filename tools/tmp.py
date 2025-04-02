@@ -34,53 +34,36 @@ shape2 = data2.shape
 # Calculer l'indice du milieu de l'axe sagittal pour le volume 1
 mid_sagittal_index1 = shape1[1] // 2
 
+# Indices axiaux (z) à afficher
 axial_indices = [50, 60, 70]
-
-
-# Fonction pour obtenir les limites de la ROI en fonction du brainmask
-def get_roi_bounds(mask_slice):
-    coords = np.argwhere(mask_slice)
-    x_min, y_min = coords.min(axis=0)
-    x_max, y_max = coords.max(axis=0)
-    return x_min, x_max, y_min, y_max
-
 
 # Afficher les coupes sagittales et les profils d'intensité pour chaque indice axial dans un format de len(axial_indices) lignes et 3 colonnes
 plt.figure(figsize=(15, 15))
 
 for i, axial_index in enumerate(axial_indices):
-    # Obtenir les limites de la ROI pour la slice sagittale du volume 1
-    mask_slice1 = mask_data1[:, mid_sagittal_index1, :]
-    x_min1, x_max1, y_min1, y_max1 = get_roi_bounds(mask_slice1)
-
-    # Obtenir les limites de la ROI pour la slice sagittale du volume 2
-    mask_slice2 = mask_data2[:, mid_sagittal_index1, :]
-    x_min2, x_max2, y_min2, y_max2 = get_roi_bounds(mask_slice2)
-
     # Volume 1
     plt.subplot(len(axial_indices), 3, 3 * i + 1)
-    sagittal_slice1 = data1[x_min1:x_max1, mid_sagittal_index1, y_min1:y_max1]
+    sagittal_slice1 = data1[:, mid_sagittal_index1, :]
     plt.imshow(sagittal_slice1.T, cmap='gray', origin='lower')
-    plt.axhline(y=axial_index - y_min1, color='r', linestyle='--')
+    plt.axhline(y=axial_index, color='r', linestyle='--')
     plt.title(f'Volume 1 - Sagittal Slice {mid_sagittal_index1}, Axial Index {axial_index}')
 
     # Volume 2
     plt.subplot(len(axial_indices), 3, 3 * i + 2)
-    sagittal_slice2 = data2[x_min2:x_max2, mid_sagittal_index1, y_min2:y_max2]
+    sagittal_slice2 = data2[:, mid_sagittal_index1, :]
     plt.imshow(sagittal_slice2.T, cmap='gray', origin='lower')
-    plt.axhline(y=axial_index - y_min2, color='r', linestyle='--')
+    plt.axhline(y=axial_index, color='r', linestyle='--')
     plt.title(f'Volume 2 - Sagittal Slice {mid_sagittal_index1}, Axial Index {axial_index}')
 
     # Profil d'intensité
     plt.subplot(len(axial_indices), 3, 3 * i + 3)
-    intensity_profile1 = data1[x_min1:x_max1, mid_sagittal_index1, axial_index]
-    intensity_profile2 = data2[x_min2:x_max2, mid_sagittal_index1, axial_index]
+    intensity_profile1 = data1[:, mid_sagittal_index1, axial_index]
+    intensity_profile2 = data2[:, mid_sagittal_index1, axial_index]
     plt.plot(intensity_profile1, label='Volume manual BM')
     plt.plot(intensity_profile2, label='Volume mattia BM')
     plt.title(f'Intensity Profile - Axial Index {axial_index}')
     plt.xlabel('Voxel Index')
     plt.ylabel('Intensity')
-    plt.grid()
     plt.legend()
 
 plt.tight_layout()
