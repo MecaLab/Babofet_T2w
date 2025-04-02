@@ -25,95 +25,72 @@ vol2_data = vol2.get_fdata()
 affine_matrix_vol1 = vol1.affine
 affine_matrix_vol2 = vol2.affine
 
-# Fonction pour convertir les coordonnées voxel en coordonnées mondiales
+
 def voxel_to_world(voxel_coords, affine_matrix):
+    # Fonction pour convertir les coordonnées voxel en coordonnées mondiales
     homogeneous_coords = np.concatenate([voxel_coords, np.ones((voxel_coords.shape[0], 1))], axis=1)
     world_coords = np.dot(affine_matrix, homogeneous_coords.T).T
     return world_coords[:, :3]
 
-# Fonction pour convertir les coordonnées mondiales en coordonnées voxel
+
 def world_to_voxel(world_coords, affine_matrix):
+    # Fonction pour convertir les coordonnées mondiales en coordonnées voxel
     inv_affine_matrix = np.linalg.inv(affine_matrix)
     homogeneous_coords = np.concatenate([world_coords, np.ones((world_coords.shape[0], 1))], axis=1)
     voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
     return np.round(voxel_coords[:, :3]).astype(int)
 
-# Fonction pour normaliser les coordonnées voxel
-def normalize_voxel_coords(voxel_coords, shape):
-    return voxel_coords / (np.array(shape) - 1)
 
-# Fonction pour dénormaliser les coordonnées voxel
-def denormalize_voxel_coords(norm_coords, shape):
-    return np.round(norm_coords * (np.array(shape) - 1)).astype(int)
+voxel_y_index = vol1_data.shape[1] // 2
+voxel_coords_vol1 = np.array([
+    [0, voxel_y_index, 0],
+    [vol1_data.shape[0]-1, voxel_y_index, vol1_data.shape[2]-1]
+])
 
-modes = ["sagittal", "axial", "coronal"]
-idxs = [50, 60, 70, 80]
+# Convertir les coordonnées voxel en coordonnées mondiales
+world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
 
-for view_mode in modes:
-    fig, axes = plt.subplots(len(idxs), 3, figsize=(15, 3 * len(idxs)))
+# Ajuster les coordonnées mondiales en tenant compte du décalage de 0.25 mm sur la composante Y
+world_coords[:, 1] += 0.25
 
-    for i, idx in enumerate(idxs):
-        if view_mode == 'axial':  # Vue AXIALE (XY)
-            voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, vol1_data.shape[1] // 2, idx]])
-        elif view_mode == 'sagittal':  # Vue SAGITTALE (YZ)
-            voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, idx, vol1_data.shape[2] // 2]])
-        elif view_mode == 'coronal':  # Vue CORONALE (XZ)
-            voxel_coords_vol1 = np.array([[idx, vol1_data.shape[1] // 2, vol1_data.shape[2] // 2]])
+# Convertir les coordonnées mondiales ajustées en coordonnées voxel dans le second volume
+voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
 
-        # Normaliser les coordonnées voxel
-        norm_coords_vol1 = normalize_voxel_coords(voxel_coords_vol1, vol1_data.shape)
+# Extraire les tranches 2D correspondantes dans les deux volumes
+slice_y_index_vol1 = int(round(voxel_coords_vol1[0, 1]))
+slice_y_index_vol2 = int(round(voxel_coords_vol2[0, 1]))
 
-        # Dénormaliser les coordonnées voxel pour le second volume
-        voxel_coords_vol2 = denormalize_voxel_coords(norm_coords_vol1, vol2_data.shape)
+slice_2d_vol1 = vol1_data[:, slice_y_index_vol1, :]
+slice_2d_vol2 = vol2_data[:, slice_y_index_vol2, :]
 
-        # Extraction des coupes
-        if view_mode == 'axial':
-            slice_2d_vol1 = vol1_data[:, :, idx]
-            slice_2d_vol2 = vol2_data[:, :, voxel_coords_vol2[0, 2]]
+# Position de la ligne horizontale à afficher dans le premier volume
+line_position_vol1 = 50
 
-            mask_2d_vol1 = brainmask1[:, :, idx]
-            mask_2d_vol2 = brainmask2[:, :, voxel_coords_vol2[0, 2]]
+# Convertir la position de la ligne en coordonnées mondiales
+line_world_coords = voxel_to_world(np.array([[0, line_position_vol1, 0], [vol1_data.shape[0]-1, line_position_vol1, vol1_data.shape[2]-1]]), affine_matrix_vol1)
 
-            line_position = voxel_coords_vol1[0, 0]  # Ligne horizontale en X
+# Ajuster les coordonnées mondiales de la ligne en tenant compte du décalage de 0.25 mm sur la composante Y
+line_world_coords[:, 1] += 0.25
 
-        elif view_mode == 'sagittal':
-            slice_2d_vol1 = vol1_data[:, idx, :]
-            slice_2d_vol2 = vol2_data[:, voxel_coords_vol2[0, 1], :]
+# Convertir les coordonnées mondiales de la ligne en coordonnées voxel dans le second volume
+line_voxel_coords_vol2 = world_to_voxel(line_world_coords, affine_matrix_vol2)
 
-            mask_2d_vol1 = brainmask1[:, idx, :]
-            mask_2d_vol2 = brainmask2[:, voxel_coords_vol2[0, 1], :]
+# Position de la ligne horizontale à afficher dans le second volume
+line_position_vol2 = int(round(line_voxel_coords_vol2[0, 1]))
 
-            line_position = voxel_coords_vol1[0, 0]  # Ligne horizontale en X
+# Afficher les deux tranches 2D côte à côte avec une ligne horizontale à la même position
+fig, axes = plt.subplots(1, 2, figsize=(12, 6))
 
-        elif view_mode == 'coronal':
-            slice_2d_vol1 = vol1_data[idx, :, :]
-            slice_2d_vol2 = vol2_data[voxel_coords_vol2[0, 0], :, :]
+axes[0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
+axes[0].set_title(f'Volume 1 - Slice at Y = {voxel_y_index}')
+axes[0].set_xlabel('X')
+axes[0].set_ylabel('Z')
+axes[0].plot([0, slice_2d_vol1.shape[0]-1], [line_position_vol1, line_position_vol1], color='red', linewidth=2)
 
-            mask_2d_vol1 = brainmask1[idx, :, :]
-            mask_2d_vol2 = brainmask2[voxel_coords_vol2[0, 0], :, :]
+axes[1].imshow(slice_2d_vol2.T, cmap='gray', origin='lower')
+axes[1].set_title(f'Volume 2 - Slice at corresponding Y')
+axes[1].set_xlabel('X')
+axes[1].set_ylabel('Z')
+axes[1].plot([0, slice_2d_vol2.shape[0]-1], [line_position_vol2, line_position_vol2], color='red', linewidth=2)
 
-            line_position = voxel_coords_vol1[0, 1]  # Ligne horizontale en Y
-
-        # Extraire les profils d'intensité avec le brainmask
-        intensity_profile_vol1 = slice_2d_vol1[line_position, :] * mask_2d_vol1[line_position, :]
-        intensity_profile_vol2 = slice_2d_vol2[line_position, :] * mask_2d_vol2[line_position, :]
-
-        # Affichage des images et des profils d'intensité
-        axes[i, 0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
-        axes[i, 0].set_title(f'Vol 1 - {view_mode.capitalize()} Slice {idx}')
-        axes[i, 0].plot([0, slice_2d_vol1.shape[1] - 1], [line_position, line_position], color='red', linewidth=2)
-
-        axes[i, 1].imshow(slice_2d_vol2.T, cmap='gray', origin='lower')
-        axes[i, 1].set_title(f'Vol 2 - {view_mode.capitalize()} Slice {idx}')
-        axes[i, 1].plot([0, slice_2d_vol2.shape[1] - 1], [line_position, line_position], color='red', linewidth=2)
-
-        # Affichage des profils d'intensité
-        axes[i, 2].plot(intensity_profile_vol1, label='Volume 1', color='blue')
-        axes[i, 2].plot(intensity_profile_vol2, label='Volume 2', color='green')
-        axes[i, 2].set_title(f'Intensity Profile - {view_mode.capitalize()} Slice {idx}')
-        axes[i, 2].set_xlabel('Position')
-        axes[i, 2].set_ylabel('Intensity')
-        axes[i, 2].legend()
-
-    plt.tight_layout()
-    plt.savefig(f"tmp_{view_mode}.png")
+plt.savefig("tmp.png")
