@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 subject = "Aziza"
 base_path = f"../data/recons_folder/{subject}/"
-session = "01"
+session = "09"
 
 png_filename = f"comparaison_{subject.lower()}_ses-{session}.png"
 
