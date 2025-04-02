@@ -107,6 +107,7 @@ for view_mode in modes:
         axes[i, 2].set_title(f'Intensity Profile at Z={idx}')
         axes[i, 2].set_xlabel('Z')
         axes[i, 2].set_ylabel('Intensity')
+        axes[i, 2].grid()
         axes[i, 2].legend()
 
     plt.tight_layout()
