@@ -37,29 +37,23 @@ axial_indices = [50, 60, 70]
 
 # Afficher les coupes sagittales pour chaque indice axial
 for axial_index in axial_indices:
-    # Coordonnées du voxel au milieu de l'axe sagittal (y) et à l'indice axial (z) donné pour le volume 1
-    voxel_coords1 = np.array([shape1[0] // 2, mid_sagittal_index1, axial_index, 1])
+    plt.figure(figsize=(10, 5))
 
-    # Convertir en coordonnées mondiales
-    world_coords = affine1 @ voxel_coords1
+    # Volume 1
+    plt.subplot(1, 2, 1)
+    sagittal_slice1 = data1[:, mid_sagittal_index1, :]
+    plt.imshow(sagittal_slice1.T, cmap='gray', origin='lower')
+    plt.axhline(y=axial_index, color='r', linestyle='--')
+    plt.title(f'Volume 1 - Sagittal Slice {mid_sagittal_index1}, Axial Index {axial_index}')
+    plt.axis('off')
 
-    # Convertir les coordonnées mondiales en coordonnées de voxels dans le volume 2
-    voxel_coords2 = np.linalg.inv(affine2) @ world_coords
-    voxel_coords2 = np.round(voxel_coords2[:3]).astype(int)
-
-    # Vérifier que les coordonnées sont dans les limites du volume 2
-    if (0 <= voxel_coords2[2] < shape2[2]) and (0 <= voxel_coords2[1] < shape2[1]):
-        plt.figure(figsize=(10, 5))
-
-        plt.subplot(1, 2, 1)
-        plt.imshow(data1[:, mid_sagittal_index1, axial_index].T, cmap='gray', origin='lower')
-        plt.title(f'Volume 1 - Sagittal Slice {mid_sagittal_index1}, Axial Index {axial_index}')
-        plt.axis('off')
-
-        plt.subplot(1, 2, 2)
-        plt.imshow(data2[:, voxel_coords2[1], voxel_coords2[2]].T, cmap='gray', origin='lower')
-        plt.title(f'Volume 2 - Sagittal Slice {voxel_coords2[1]}, Axial Index {voxel_coords2[2]}')
-        plt.axis('off')
+    # Volume 2
+    plt.subplot(1, 2, 2)
+    sagittal_slice2 = data2[:, mid_sagittal_index1, :]
+    plt.imshow(sagittal_slice2.T, cmap='gray', origin='lower')
+    plt.axhline(y=axial_index, color='r', linestyle='--')
+    plt.title(f'Volume 2 - Sagittal Slice {mid_sagittal_index1}, Axial Index {axial_index}')
+    plt.axis('off')
 
 plt.savefig("tmp.png")
 plt.close()
