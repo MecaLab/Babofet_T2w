@@ -48,11 +48,12 @@ fig, axes = plt.subplots(len(idxs), 3, figsize=(12, 3 * len(idxs)))
 for i, idx in enumerate(idxs):
     voxel_y_index = vol1_data.shape[1] // 2
     voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, voxel_y_index, idx]])
-    print(voxel_coords_vol1)
+
     world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
     voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
 
     slice_2d_vol1 = vol1_data[:, voxel_y_index, :]
+    print(slice_2d_vol1.shape)
     slice_2d_vol2 = vol2_data[:, voxel_coords_vol2[0, 1], :]
 
     mask_2d_vol1 = brainmask1[:, voxel_y_index, :]
