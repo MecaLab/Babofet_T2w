@@ -39,7 +39,7 @@ mid_sagittal_index1 = shape1[1] // 2
 axial_indices = [50, 60, 70]
 
 # Afficher les coupes sagittales pour chaque indice axial dans un format de len(axial_indices) lignes et 2 colonnes
-plt.figure(figsize=(10, 15))
+plt.figure(figsize=(15, 8))
 
 for i, axial_index in enumerate(axial_indices):
     # Volume 1
@@ -48,7 +48,6 @@ for i, axial_index in enumerate(axial_indices):
     plt.imshow(sagittal_slice1.T, cmap='gray', origin='lower')
     plt.axhline(y=axial_index, color='r', linestyle='--')
     plt.title(f'Volume 1 - Sagittal Slice {mid_sagittal_index1}, Axial Index {axial_index}')
-    plt.axis('off')
 
     # Volume 2
     plt.subplot(len(axial_indices), 2, 2 * i + 2)
