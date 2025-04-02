@@ -42,7 +42,7 @@ def world_to_voxel(world_coords, affine_matrix):
     inv_affine_matrix = np.linalg.inv(affine_matrix)
     homogeneous_coords = np.concatenate([world_coords, np.ones((world_coords.shape[0], 1))], axis=1)
     voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
-    return np.floor(voxel_coords[:, :3]).astype(int)
+    return np.round(voxel_coords[:, :3]).astype(int)
 
 
 modes = ["sagittal", "axial", "coronal"]
@@ -100,11 +100,11 @@ for view_mode in modes:
         intensity_profile_vol2 = slice_2d_vol2[line_position, :] * mask_2d_vol2[line_position, :]
 
         # Affichage des images et des profils d'intensité
-        axes[i, 0].imshow(slice_2d_vol1.T, cmap='gray', origin='upper')
+        axes[i, 0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
         axes[i, 0].set_title(f'Vol 1 - {view_mode.capitalize()} Slice {idx}')
         axes[i, 0].plot([0, slice_2d_vol1.shape[1] - 1], [line_position, line_position], color='red', linewidth=2)
 
-        axes[i, 1].imshow(slice_2d_vol2.T, cmap='gray', origin='upper')
+        axes[i, 1].imshow(slice_2d_vol2.T, cmap='gray', origin='lower')
         axes[i, 1].set_title(f'Vol 2 - {view_mode.capitalize()} Slice {idx}')
         axes[i, 1].plot([0, slice_2d_vol2.shape[1] - 1], [line_position, line_position], color='red', linewidth=2)
 
