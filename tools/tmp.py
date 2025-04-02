@@ -45,7 +45,7 @@ def world_to_voxel(world_coords, affine_matrix):
     return np.round(voxel_coords[:, :3]).astype(int)
 
 
-modes = ["sagittal", "axial", "coronal"]
+modes = ["axial", "axial", "coronal"]
 idxs = [50, 60, 70, 80]
 
 
@@ -82,9 +82,9 @@ for view_mode in modes:
         print("Voxel Coords Vol 2:")
         print(voxel_coords_vol2)
 
-        exit()
+        print("\n")
 
-        # Extraction des coupes
+        """# Extraction des coupes
         if view_mode == 'axial':
             slice_2d_vol1 = vol1_data[:, :, idx]
             slice_2d_vol2 = vol2_data[:, :, voxel_coords_vol2[0, 2]]
@@ -134,4 +134,4 @@ for view_mode in modes:
         axes[i, 2].legend()
 
         plt.tight_layout()
-        plt.savefig(f"tmp_{view_mode}.png")
+        plt.savefig(f"tmp_{view_mode}.png")"""
