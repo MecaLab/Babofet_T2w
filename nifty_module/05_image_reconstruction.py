@@ -5,7 +5,7 @@ import configuration as cfg
 import subprocess
 
 
-def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file, mode_bm="manual"):
+def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file, mode_bm="manual", suffix=""):
     filename = "nifty_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
     
@@ -54,9 +54,9 @@ singularity exec \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
-        --isotropic-resolution 0.5 \\
+        --isotropic-resolution 0.3 \\
         
-./mv_recons.sh {subj} {mode_bm}
+./mv_recons.sh {subj} {mode_bm} {suffix}
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
 
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
-    mask_model = "mattia"  # could be 'nifty' or 'mattia' or 'manual'
+    mask_model = "manual"  # could be 'nifty' or 'mattia' or 'manual'
 
     if mask_model == "manual":
         bm_folder = "manual_masks"
@@ -87,6 +87,8 @@ if __name__ == "__main__":
         bm_folder = "brainmask_niftymic"
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
+
+    SUFFIX_EXP = "ISO3"  # need to be updated for every exp
 
     list_subjs = ["sub-Aziza_ses-01", "sub-Aziza_ses-05", "sub-Aziza_ses-09",
                   "sub-Formule_ses-01", "sub-Formule_ses-05", "sub-Formule_ses-09"]
@@ -163,8 +165,9 @@ if __name__ == "__main__":
                 bm_folder=bm_folder,
                 bm_files=bm_img,
                 output_file=recons_haste_subj_output,
-                mode_bm=mask_model
+                mode_bm=mask_model,
+                suffix=SUFFIX_EXP,
             )
 
-            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
