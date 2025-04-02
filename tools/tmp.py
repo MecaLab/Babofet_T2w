@@ -61,6 +61,11 @@ for view_mode in modes:
         # Transformation vers le second volume
         voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
 
+        print(f"{view_mode.capitalize()} Slice {idx}:")
+        print("\tVoxel Coords Vol 1:", voxel_coords_vol1)
+        print("\tWorld Coords:", world_coords)
+        print("\tVoxel Coords Vol 2:", voxel_coords_vol2)
+
         # Extraction des coupes
         if view_mode == 'axial':
             slice_2d_vol1 = vol1_data[:, :, idx]
