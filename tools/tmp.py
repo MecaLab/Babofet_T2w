@@ -3,7 +3,6 @@ import nibabel as nib
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 subject = "Aziza"
 base_path = f"../data/recons_folder/{subject}/"
 session = "01"
@@ -23,19 +22,17 @@ brainmask2 = nib.load(mask_2_path).get_fdata()
 vol1_data = vol1.get_fdata()
 vol2_data = vol2.get_fdata()
 
-"""vol1_data = vol1_data * brainmask1
-vol2_data = vol2_data * brainmask2"""
-
 affine_matrix_vol1 = vol1.affine
 affine_matrix_vol2 = vol2.affine
 
+# Ajuster manuellement les termes de translation des matrices d'affinité
+affine_matrix_vol2[:, 3] = affine_matrix_vol1[:, 3]
 
 # Fonction pour convertir les coordonnées voxel en coordonnées mondiales
 def voxel_to_world(voxel_coords, affine_matrix):
     homogeneous_coords = np.concatenate([voxel_coords, np.ones((voxel_coords.shape[0], 1))], axis=1)
     world_coords = np.dot(affine_matrix, homogeneous_coords.T).T
     return world_coords[:, :3]
-
 
 # Fonction pour convertir les coordonnées mondiales en coordonnées voxel
 def world_to_voxel(world_coords, affine_matrix):
@@ -44,17 +41,13 @@ def world_to_voxel(world_coords, affine_matrix):
     voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
     return np.round(voxel_coords[:, :3]).astype(int)
 
-
-modes = ["axial", "axial", "coronal"]
-idxs = [50, 80]
-
+modes = ["sagittal", "axial", "coronal"]
+idxs = [50, 60, 70, 80]
 
 for view_mode in modes:
-
     fig, axes = plt.subplots(len(idxs), 3, figsize=(15, 3 * len(idxs)))
 
     for i, idx in enumerate(idxs):
-        print(f"{view_mode}: {idx}")
         if view_mode == 'axial':  # Vue AXIALE (XY)
             voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, vol1_data.shape[1] // 2, idx]])
         elif view_mode == 'sagittal':  # Vue SAGITTALE (YZ)
@@ -62,27 +55,13 @@ for view_mode in modes:
         elif view_mode == 'coronal':  # Vue CORONALE (XZ)
             voxel_coords_vol1 = np.array([[idx, vol1_data.shape[1] // 2, vol1_data.shape[2] // 2]])
 
-
         # Conversion vers le repère du monde
         world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
 
         # Transformation vers le second volume
         voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
 
-        affine_matrix_vol2[:, 3] = affine_matrix_vol1[:, 3]
-
-        # Vérifier les conversions de coordonnées
-        voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, vol1_data.shape[1] // 2, idx]])
-        world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
-        voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
-
-        print("\tVoxel Coords Vol 1:", voxel_coords_vol1)
-        print("\tWorld Coords:", world_coords)
-        print("\tVoxel Coords Vol 2:", voxel_coords_vol2)
-
-        print("\n")
-
-        """# Extraction des coupes
+        # Extraction des coupes
         if view_mode == 'axial':
             slice_2d_vol1 = vol1_data[:, :, idx]
             slice_2d_vol2 = vol2_data[:, :, voxel_coords_vol2[0, 2]]
@@ -131,5 +110,5 @@ for view_mode in modes:
         axes[i, 2].set_ylabel('Intensity')
         axes[i, 2].legend()
 
-        plt.tight_layout()
-        plt.savefig(f"tmp_{view_mode}.png")"""
+    plt.tight_layout()
+    plt.savefig(f"tmp_{view_mode}.png")
