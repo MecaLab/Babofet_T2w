@@ -25,62 +25,29 @@ vol2_data = vol2.get_fdata()
 affine_matrix_vol1 = vol1.affine
 affine_matrix_vol2 = vol2.affine
 
+shape1 = vol1_data.shape
+shape2 = vol2_data.shape
 
-# Fonction pour convertir les coordonnées voxel en coordonnées mondiales
-def voxel_to_world(voxel_coords, affine_matrix):
-    homogeneous_coords = np.concatenate([voxel_coords, np.ones((voxel_coords.shape[0], 1))], axis=1)
-    world_coords = np.dot(affine_matrix, homogeneous_coords.T).T
-    return world_coords[:, :3]
+# Déterminer le nombre de coupes sagittales
+num_slices1 = shape1[2]
+num_slices2 = shape2[2]
 
+# Calculer les indices des coupes à afficher
+indices1 = np.linspace(0, num_slices1 - 1, num=min(num_slices1, num_slices2), dtype=int)
+indices2 = np.linspace(0, num_slices2 - 1, num=min(num_slices1, num_slices2), dtype=int)
 
-# Fonction pour convertir les coordonnées mondiales en coordonnées voxel
-def world_to_voxel(world_coords, affine_matrix):
-    inv_affine_matrix = np.linalg.inv(affine_matrix)
-    homogeneous_coords = np.concatenate([world_coords, np.ones((world_coords.shape[0], 1))], axis=1)
-    voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
-    return np.round(voxel_coords[:, :3]).astype(int)
+# Afficher les coupes sagittales
+for i in range(min(num_slices1, num_slices2)):
+    plt.figure(figsize=(10, 5))
 
+    plt.subplot(1, 2, 1)
+    plt.imshow(vol1_data[:, :, indices1[i]].T, cmap='gray', origin='lower')
+    plt.title(f'Volume 1 - Slice {indices1[i]}')
+    plt.axis('off')
 
-idxs = [50, 60, 70, 80]
+    plt.subplot(1, 2, 2)
+    plt.imshow(vol2_data[:, :, indices2[i]].T, cmap='gray', origin='lower')
+    plt.title(f'Volume 2 - Slice {indices2[i]}')
+    plt.axis('off')
 
-fig, axes = plt.subplots(len(idxs), 3, figsize=(12, 3 * len(idxs)))
-
-for i, idx in enumerate(idxs):
-    voxel_y_index = vol1_data.shape[1] // 2
-    voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, voxel_y_index, idx]])
-
-    world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
-    voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
-
-    slice_2d_vol1 = vol1_data[:, voxel_y_index, :]
-    print(slice_2d_vol1.shape)
-    slice_2d_vol2 = vol2_data[:, voxel_coords_vol2[0, 1], :]
-
-    mask_2d_vol1 = brainmask1[:, voxel_y_index, :]
-    mask_2d_vol2 = brainmask2[:, voxel_coords_vol2[0, 1], :]
-
-    line_position_voxel1 = voxel_coords_vol1[0, 0]
-    line_world_coords = voxel_to_world(np.array([[line_position_voxel1, voxel_y_index, 0]]), affine_matrix_vol1)
-    line_voxel_coords_vol2 = world_to_voxel(line_world_coords, affine_matrix_vol2)
-    line_position_voxel2 = line_voxel_coords_vol2[0, 0]
-
-    intensity_profile_vol1 = slice_2d_vol1[line_position_voxel1, :] * mask_2d_vol1[line_position_voxel1, :]
-    intensity_profile_vol2 = slice_2d_vol2[line_position_voxel2, :] * mask_2d_vol2[line_position_voxel2, :]
-
-    axes[i, 0].imshow(slice_2d_vol1.T, cmap='gray', origin='lower')
-    axes[i, 0].set_title(f'Vol 1 - Slice at Y={voxel_y_index}, Z={idx}')
-    axes[i, 0].plot([0, slice_2d_vol1.shape[0]-1], [line_position_voxel1, line_position_voxel1], color='red', linewidth=2)
-
-    axes[i, 1].imshow(slice_2d_vol2.T, cmap='gray', origin='lower')
-    axes[i, 1].set_title(f'Vol 2 - Slice at corresponding Y, Z={idx}')
-    axes[i, 1].plot([0, slice_2d_vol2.shape[0]-1], [line_position_voxel2, line_position_voxel2], color='red', linewidth=2)
-
-    axes[i, 2].plot(intensity_profile_vol1, label='Volume 1', color='blue')
-    axes[i, 2].plot(intensity_profile_vol2, label='Volume 2', color='green')
-    axes[i, 2].set_title(f'Intensity Profile at Z={idx}')
-    axes[i, 2].set_xlabel('Z')
-    axes[i, 2].set_ylabel('Intensity')
-    axes[i, 2].legend()
-
-plt.tight_layout()
 plt.savefig("tmp.png")
