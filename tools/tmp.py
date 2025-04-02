@@ -33,14 +33,17 @@ shape2 = data2.shape
 mid_sagittal_index1 = shape1[1] // 2
 
 # Indices axiaux (z) à afficher
+mid_sagittal_index1 = shape1[1] // 2
+
+# Indices axiaux (z) à afficher
 axial_indices = [50, 60, 70]
 
-# Afficher les coupes sagittales pour chaque indice axial
-for axial_index in axial_indices:
-    plt.figure(figsize=(10, 5))
+# Afficher les coupes sagittales pour chaque indice axial dans trois sous-graphiques
+plt.figure(figsize=(15, 10))
 
+for i, axial_index in enumerate(axial_indices):
     # Volume 1
-    plt.subplot(1, 2, 1)
+    plt.subplot(2, 3, i + 1)
     sagittal_slice1 = data1[:, mid_sagittal_index1, :]
     plt.imshow(sagittal_slice1.T, cmap='gray', origin='lower')
     plt.axhline(y=axial_index, color='r', linestyle='--')
@@ -48,12 +51,13 @@ for axial_index in axial_indices:
     plt.axis('off')
 
     # Volume 2
-    plt.subplot(1, 2, 2)
+    plt.subplot(2, 3, i + 4)
     sagittal_slice2 = data2[:, mid_sagittal_index1, :]
     plt.imshow(sagittal_slice2.T, cmap='gray', origin='lower')
     plt.axhline(y=axial_index, color='r', linestyle='--')
     plt.title(f'Volume 2 - Sagittal Slice {mid_sagittal_index1}, Axial Index {axial_index}')
     plt.axis('off')
 
+plt.tight_layout()
 plt.savefig("tmp.png")
 plt.close()
