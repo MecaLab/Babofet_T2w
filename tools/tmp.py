@@ -61,11 +61,31 @@ for view_mode in modes:
         elif view_mode == 'coronal':  # Vue CORONALE (XZ)
             voxel_coords_vol1 = np.array([[idx, vol1_data.shape[1] // 2, vol1_data.shape[2] // 2]])
 
+
         # Conversion vers le repère du monde
         world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
 
         # Transformation vers le second volume
         voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
+
+        print("Affine Matrix Vol 1:")
+        print(affine_matrix_vol1)
+        print("Affine Matrix Vol 2:")
+        print(affine_matrix_vol2)
+
+        # Vérifier les conversions de coordonnées
+        voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, vol1_data.shape[1] // 2, idx]])
+        world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
+        voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
+
+        print("Voxel Coords Vol 1:")
+        print(voxel_coords_vol1)
+        print("World Coords:")
+        print(world_coords)
+        print("Voxel Coords Vol 2:")
+        print(voxel_coords_vol2)
+
+        exit()
 
         # Extraction des coupes
         if view_mode == 'axial':
