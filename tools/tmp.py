@@ -46,7 +46,7 @@ def world_to_voxel(world_coords, affine_matrix):
 
 
 modes = ["axial", "axial", "coronal"]
-idxs = [50, 60, 70, 80]
+idxs = [50, 80]
 
 
 for view_mode in modes:
@@ -54,6 +54,7 @@ for view_mode in modes:
     fig, axes = plt.subplots(len(idxs), 3, figsize=(15, 3 * len(idxs)))
 
     for i, idx in enumerate(idxs):
+        print(f"{view_mode}: {idx}")
         if view_mode == 'axial':  # Vue AXIALE (XY)
             voxel_coords_vol1 = np.array([[vol1_data.shape[0] // 2, vol1_data.shape[1] // 2, idx]])
         elif view_mode == 'sagittal':  # Vue SAGITTALE (YZ)
@@ -75,12 +76,9 @@ for view_mode in modes:
         world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
         voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
 
-        print("Voxel Coords Vol 1:")
-        print(voxel_coords_vol1)
-        print("World Coords:")
-        print(world_coords)
-        print("Voxel Coords Vol 2:")
-        print(voxel_coords_vol2)
+        print("\tVoxel Coords Vol 1:", voxel_coords_vol1)
+        print("\tWorld Coords:", world_coords)
+        print("\tVoxel Coords Vol 2:", voxel_coords_vol2)
 
         print("\n")
 
