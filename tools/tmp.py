@@ -120,5 +120,5 @@ for view_mode in modes:
         axes[i, 2].set_ylabel('Intensity')
         axes[i, 2].legend()
 
-    plt.tight_layout()
-    plt.savefig(f"tmp_{view_mode}.png")
+        plt.tight_layout()
+        plt.savefig(f"tmp_{view_mode}.png")
