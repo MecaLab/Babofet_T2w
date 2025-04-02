@@ -25,9 +25,6 @@ vol2_data = vol2.get_fdata()
 affine_matrix_vol1 = vol1.affine
 affine_matrix_vol2 = vol2.affine
 
-# Ajuster manuellement les termes de translation des matrices d'affinité
-affine_matrix_vol2[:, 3] = affine_matrix_vol1[:, 3]
-
 # Fonction pour convertir les coordonnées voxel en coordonnées mondiales
 def voxel_to_world(voxel_coords, affine_matrix):
     homogeneous_coords = np.concatenate([voxel_coords, np.ones((voxel_coords.shape[0], 1))], axis=1)
@@ -40,6 +37,14 @@ def world_to_voxel(world_coords, affine_matrix):
     homogeneous_coords = np.concatenate([world_coords, np.ones((world_coords.shape[0], 1))], axis=1)
     voxel_coords = np.dot(inv_affine_matrix, homogeneous_coords.T).T
     return np.round(voxel_coords[:, :3]).astype(int)
+
+# Fonction pour normaliser les coordonnées voxel
+def normalize_voxel_coords(voxel_coords, shape):
+    return voxel_coords / (shape - 1)
+
+# Fonction pour dénormaliser les coordonnées voxel
+def denormalize_voxel_coords(norm_coords, shape):
+    return np.round(norm_coords * (shape - 1)).astype(int)
 
 modes = ["sagittal", "axial", "coronal"]
 idxs = [50, 60, 70, 80]
@@ -55,16 +60,11 @@ for view_mode in modes:
         elif view_mode == 'coronal':  # Vue CORONALE (XZ)
             voxel_coords_vol1 = np.array([[idx, vol1_data.shape[1] // 2, vol1_data.shape[2] // 2]])
 
-        # Conversion vers le repère du monde
-        world_coords = voxel_to_world(voxel_coords_vol1, affine_matrix_vol1)
+        # Normaliser les coordonnées voxel
+        norm_coords_vol1 = normalize_voxel_coords(voxel_coords_vol1, vol1_data.shape)
 
-        # Transformation vers le second volume
-        voxel_coords_vol2 = world_to_voxel(world_coords, affine_matrix_vol2)
-
-        print(f"{view_mode.capitalize()} Slice {idx}:")
-        print("\tVoxel Coords Vol 1:", voxel_coords_vol1)
-        print("\tWorld Coords:", world_coords)
-        print("\tVoxel Coords Vol 2:", voxel_coords_vol2)
+        # Dénormaliser les coordonnées voxel pour le second volume
+        voxel_coords_vol2 = denormalize_voxel_coords(norm_coords_vol1, vol2_data.shape)
 
         # Extraction des coupes
         if view_mode == 'axial':
