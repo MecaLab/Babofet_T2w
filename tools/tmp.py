@@ -3,7 +3,7 @@ import nibabel as nib
 import numpy as np
 import matplotlib.pyplot as plt
 
-subject = "Aziza"
+subject = "Fabienne"
 base_path = f"../data/recons_folder/{subject}/"
 sessions = ["01", "05", "09"]
 
@@ -66,6 +66,7 @@ for session in sessions:
         plt.title(f'Intensity Profile - Axial Index {axial_index}')
         plt.xlabel('Voxel Index')
         plt.ylabel('Intensity')
+        plt.grid()
         plt.legend()
 
     plt.tight_layout()
