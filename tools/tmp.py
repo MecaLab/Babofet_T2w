@@ -30,7 +30,7 @@ shape2 = vol2_data.shape
 
 # Déterminer le nombre de coupes sagittales
 # Calculer l'indice du milieu de l'axe sagittal pour le volume 1
-mid_sagittal_index1 = shape1[2] // 2
+mid_sagittal_index1 = shape1[1] // 2
 
 # Indices axiaux à afficher
 axial_indices = [50, 60, 70]
