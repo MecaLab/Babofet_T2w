@@ -43,6 +43,7 @@ for session in sessions:
     # Déterminer le nombre de coupes sagittales
     # Calculer l'indice du milieu de l'axe sagittal pour le volume 1
     mid_sagittal_index1 = shape1[1] // 2
+    mid_sagittal_index2 = shape2[1] // 2
 
     # Indices axiaux (z) à afficher
     axial_indices = [50, 60, 70]
@@ -60,15 +61,15 @@ for session in sessions:
 
         # Volume 2
         plt.subplot(len(axial_indices), 3, 3 * i + 2)
-        sagittal_slice2 = data2[:, mid_sagittal_index1, :]
+        sagittal_slice2 = data2[:, mid_sagittal_index2, :]
         plt.imshow(sagittal_slice2.T, cmap='gray', origin='lower')
         plt.axhline(y=axial_index, color='r', linestyle='--')
-        plt.title(f'Volume 2 - Sagittal Slice {mid_sagittal_index1}, Axial Index {axial_index}')
+        plt.title(f'Volume 2 - Sagittal Slice {mid_sagittal_index2}, Axial Index {axial_index}')
 
         # Profil d'intensité
         plt.subplot(len(axial_indices), 3, 3 * i + 3)
         intensity_profile1 = data1[:, mid_sagittal_index1, axial_index]
-        intensity_profile2 = data2[:, mid_sagittal_index1, axial_index]
+        intensity_profile2 = data2[:, mid_sagittal_index2, axial_index]
         plt.plot(intensity_profile1, label='Volume 1')
         plt.plot(intensity_profile2, label='Volume 2')
         plt.title(f'Intensity Profile - Axial Index {axial_index}')
