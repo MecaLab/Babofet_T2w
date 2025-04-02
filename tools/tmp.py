@@ -8,6 +8,14 @@ base_path = f"../data/recons_folder/{subject}/"
 sessions = ["01", "05", "09"]
 
 
+# Fonction pour obtenir les limites de la ROI en fonction du brainmask
+def get_roi_bounds(mask_slice):
+    coords = np.argwhere(mask_slice)
+    x_min, y_min = coords.min(axis=0)
+    x_max, y_max = coords.max(axis=0)
+    return x_min, x_max, y_min, y_max
+
+
 for session in sessions:
     png_filename = f"comparaison_{subject.lower()}_ses-{session}.png"
 
@@ -38,15 +46,6 @@ for session in sessions:
 
     # Indices axiaux (z) à afficher
     axial_indices = [50, 60, 70]
-
-
-    # Fonction pour obtenir les limites de la ROI en fonction du brainmask
-    def get_roi_bounds(mask_slice):
-        coords = np.argwhere(mask_slice)
-        x_min, y_min = coords.min(axis=0)
-        x_max, y_max = coords.max(axis=0)
-        return x_min, x_max, y_min, y_max
-
 
     # Afficher les coupes sagittales et les profils d'intensité pour chaque indice axial dans un format de len(axial_indices) lignes et 3 colonnes
     plt.figure(figsize=(15, 15))
