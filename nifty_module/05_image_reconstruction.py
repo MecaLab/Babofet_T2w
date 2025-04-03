@@ -54,7 +54,7 @@ singularity exec \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
         --output /output/$OUTPUT_FILE \\
-        --isotropic-resolution 0.3 \\
+        --isotropic-resolution 0.4 \\
         
 ./mv_recons.sh {subj} {mode_bm} {suffix}
 """
@@ -88,11 +88,11 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    SUFFIX_EXP = "_ISO3"  # need to be updated for every exp
+    SUFFIX_EXP = "_ISO4"  # need to be updated for every exp
 
     list_subjs = [
         # "sub-Fabienne_ses-09",
-        "sub-Aziza_ses-01",  # "sub-Aziza_ses-05", "sub-Aziza_ses-09",
+        "sub-Aziza_ses-01", "sub-Aziza_ses-05", "sub-Aziza_ses-09",
         # "sub-Formule_ses-01", "sub-Formule_ses-05", "sub-Formule_ses-09",
     ]
 
