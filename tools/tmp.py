@@ -36,10 +36,8 @@ slice_idx = 50  # Indice de la coupe
 
 # Identifier les lignes entièrement à l'intérieur du brainmask
 valid_y = []
-height, width = mask1_data[:, :, slice_idx].shape
-print(height, width)
 
-for y in range(height):
+for y in [50, 70, 90, 110]:
     line_mask = mask1_data[:, y, slice_idx]  # Extraire la ligne dans le brainmask
     if np.all(line_mask):  # Vérifier si toute la ligne est dans le brainmask
         valid_y.append(y)
