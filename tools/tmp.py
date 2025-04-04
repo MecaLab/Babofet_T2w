@@ -32,6 +32,8 @@ for session in sessions:
     nii2_resampled = resample_from_to(vol2, vol1)
     data2_resampled = nii2_resampled.get_fdata()
 
+    print(data1.shape)
+    exit()
     for view in views:
         png_filename = f"comparaison_{subject.lower()}_ses-{session}_{view}.png"
         if view == "axial":
