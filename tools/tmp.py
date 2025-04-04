@@ -32,11 +32,13 @@ for session in sessions:
     nii2_resampled = resample_from_to(vol2, vol1)
     data2_resampled = nii2_resampled.get_fdata()
 
-    ax_idxs = [30, 50, data1.shape[1]//2, 90]
+
     for view in views:
+        axi_idxs = [30, 50, data1.shape[2] // 2, 90]
+        sag_idxs = [25, 45, data1.shape[1]//2, 85]
         png_filename = f"comparaison_{subject.lower()}_ses-{session}_{view}.png"
         if view == "axial":
-            slice_idx = 40 #  data1.shape[2]//2  # Coupe axiale
+            slice_idx = 30 #  data1.shape[2]//2  # Coupe axiale
             slice_data1 = data1[:, :, slice_idx]
             slice_data_resampled = data2_resampled[:, :, slice_idx]
         elif view == "sagital":
@@ -44,7 +46,7 @@ for session in sessions:
             slice_data1 = data1[:, slice_idx, :]
             slice_data_resampled = data2_resampled[:, slice_idx, :]
         elif view == "coronal":
-            slice_idx = data1.shape[0] // 2  # Coupe sagital
+            slice_idx = 30 #  data1.shape[0] // 2  # Coupe sagital
             slice_data1 = data1[slice_idx, :, :]
             slice_data_resampled = data2_resampled[slice_idx, :, :]
 
