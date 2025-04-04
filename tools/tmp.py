@@ -1,6 +1,6 @@
 import os
 import nibabel as nib
-from nibabel.processing import resample_to_img
+from nibabel.processing import resample_from_to
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -31,7 +31,6 @@ affine2 = vol2.affine
 shape1 = data1.shape
 shape2 = data2.shape
 
-
-nii2_resampled = resample_to_img(vol2, vol1, interpolation='nearest')
+nii2_resampled = resample_from_to(vol2, vol1, interpolation='nearest')
 data2_resampled = nii2_resampled.get_fdata()
 
