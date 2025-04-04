@@ -21,16 +21,9 @@ vol1 = nib.load(vol_1_path)
 vol2 = nib.load(vol_2_path)
 
 mask1_data = nib.load(mask_1_path).get_fdata()
-mask_data2 = nib.load(mask_2_path).get_fdata()
+mask_data2 = nib.load(mask_2_path)
 
 data1 = vol1.get_fdata()
-data2 = vol2.get_fdata()
-
-affine1 = vol1.affine
-affine2 = vol2.affine
-
-shape1 = data1.shape
-shape2 = data2.shape
 
 nii2_resampled = resample_from_to(vol2, vol1)
 data2_resampled = nii2_resampled.get_fdata()
