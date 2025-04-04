@@ -32,12 +32,7 @@ for session in sessions:
     nii2_resampled = resample_from_to(vol2, vol1)
     data2_resampled = nii2_resampled.get_fdata()
 
-    axi_idxs = [30, 50, data1.shape[2] // 2, 90]
-    sag_idxs = [25, 45, data1.shape[1] // 2, 85]
-
-    cor_idxs = [30, 50, data1.shape[0] // 2, 90]
-
-    view_idxs = [25, 50, 65, 75, 80]
+    view_idxs = [25, 50, 65, 75, 90]
 
     for view_idx in view_idxs:
         for view in views:
