@@ -9,7 +9,7 @@ subject = "Aziza"
 base_path = f"../data/recons_folder/{subject}/"
 sessions = ["01", "05", "09"]
 
-views = ["axial", "sagital", "coronal"]
+views = ["axial"]
 
 
 for session in sessions:
@@ -32,12 +32,10 @@ for session in sessions:
     nii2_resampled = resample_from_to(vol2, vol1)
     data2_resampled = nii2_resampled.get_fdata()
 
-    print(data1.shape)
-    exit()
     for view in views:
         png_filename = f"comparaison_{subject.lower()}_ses-{session}_{view}.png"
         if view == "axial":
-            slice_idx = data1.shape[2]//2  # Coupe axiale
+            slice_idx = 50 #  data1.shape[2]//2  # Coupe axiale
             slice_data1 = data1[:, :, slice_idx]
             slice_data_resampled = data2_resampled[:, :, slice_idx]
         elif view == "sagital":
@@ -91,5 +89,5 @@ for session in sessions:
 
         # Affichage global
         plt.tight_layout()
-        plt.savefig(png_filename)
+        plt.savefig("tmp.png")
         plt.close()
