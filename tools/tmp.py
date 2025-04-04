@@ -9,7 +9,7 @@ subject = "Aziza"
 base_path = f"../data/recons_folder/{subject}/"
 sessions = ["01", "05", "09"]
 
-views = ["sagital", "coronal", "axial"]
+views = ["coronal", "axial", "sagital"]
 
 
 for session in sessions:
