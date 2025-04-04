@@ -35,11 +35,15 @@ mask2_resampled_data = resample_from_to(mask_data2, vol1, order=0).get_fdata()
 slice_idx = data1.shape[1] // 2  # Coupe centrale (ou ajuster selon tes besoins)
 
 # Identifier les lignes entièrement à l'intérieur du brainmask
-valid_y = []
-height, width = mask1_data[:, :, slice_idx].shape
+height, width = mask1_data.shape[0], mask1_data.shape[1]
 
-# Boucle sur les indices des lignes pour vérifier si elles sont dans le brainmask
+# Identifier les lignes entièrement à l'intérieur du brainmask
+valid_y = []
+
 for y in range(height):
+    if y >= mask1_data.shape[0]:  # Vérifier si l'indice y est dans les limites de la dimension
+        break
+
     line_mask = mask1_data[:, y, slice_idx]  # Extraire la ligne dans le brainmask
     if np.all(line_mask):  # Vérifier si toute la ligne est dans le brainmask
         valid_y.append(y)
