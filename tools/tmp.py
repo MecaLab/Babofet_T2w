@@ -90,6 +90,6 @@ for session in sessions:
 
         # Affichage global
         plt.tight_layout()
-        plt.savefig(png_filename)
+        plt.savefig("tmp.png")
         plt.close()
         exit()
