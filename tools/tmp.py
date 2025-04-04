@@ -66,9 +66,12 @@ for session in sessions:
                 y_values = y_values[::max(1, len(y_values) // 3)]  # Évite un pas de 0
 
             # Déterminer le nombre de lignes
-            n_rows = len(y_values)
 
-            # Créer une figure avec n lignes et 3 colonnes
+            if len(y_values) == 0:
+                print(f"Aucune ligne trouvée pour {view} à l'indice {view_idx}, masque vide ?")
+                continue  # Passe à l'itération suivante
+
+            n_rows = len(y_values)
             fig, axes = plt.subplots(n_rows, 4, figsize=(19, 5 * n_rows))
 
             for i, y in enumerate(y_values):
