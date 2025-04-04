@@ -40,7 +40,7 @@ for session in sessions:
             slice_data1 = data1[:, :, slice_idx]
             slice_data_resampled = data2_resampled[:, :, slice_idx]
         elif view == "sagital":
-            slice_idx = 20 #  data1.shape[1] // 2  # Coupe sagital
+            slice_idx = 25 #  data1.shape[1] // 2  # Coupe sagital
             slice_data1 = data1[:, slice_idx, :]
             slice_data_resampled = data2_resampled[:, slice_idx, :]
         elif view == "coronal":
