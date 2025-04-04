@@ -64,7 +64,7 @@ for session in sessions:
             y_values = np.where(np.any(slice_mask1 > 0, axis=1))[0]  # Prend les lignes contenant du masque
             print(y_values)
             print(y_values.shape)
-            y_values = y_values[::len(y_values) // 5]
+            y_values = y_values[::len(y_values) // 3]  # Prend 3 lignes au maximums
 
             # Déterminer le nombre de lignes
             n_rows = len(y_values)
