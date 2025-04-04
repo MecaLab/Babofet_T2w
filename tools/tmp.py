@@ -97,6 +97,5 @@ for session in sessions:
 
             # Affichage global
             plt.tight_layout()
-            plt.savefig("tmp.png")
+            plt.savefig(png_filename)
             plt.close()
-            exit()
