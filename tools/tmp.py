@@ -112,4 +112,3 @@ for session in sessions:
             plt.tight_layout()
             plt.savefig(png_filename)
             plt.close()
-        exit()
