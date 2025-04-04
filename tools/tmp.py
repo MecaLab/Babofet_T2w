@@ -32,57 +32,31 @@ mask2_resampled_data = resample_from_to(mask_data2, vol1, order=0).get_fdata()
 
 # Choisir une coupe et une ligne
 # Choisir une coupe axiale
-slice_idx = data1.shape[1] // 2  # Coupe centrale (ou ajuster selon tes besoins)
 
-# Identifier les lignes entièrement à l'intérieur du brainmask
-height, width = mask1_data.shape[0], mask1_data.shape[1]
+slice_idx = 50  # Coupe axiale
 
-# Identifier les lignes entièrement à l'intérieur du brainmask
-valid_y = []
+# Définir plusieurs lignes horizontales à analyser
+y_values = [50, 100, 150, 200]  # Plusieurs valeurs de y
+x1, x2 = 0, 120  # Début et fin de la ligne
 
-for y in range(height):
-    if y >= mask1_data.shape[0]:  # Vérifier si l'indice y est dans les limites de la dimension
-        break
+# Déterminer le nombre de lignes
+n_rows = len(y_values)
 
-    line_mask = mask1_data[:, y, slice_idx]  # Extraire la ligne dans le brainmask
-    if np.all(line_mask):  # Vérifier si toute la ligne est dans le brainmask
-        valid_y.append(y)
-
-# Si il y a assez de lignes valides, on peut les sélectionner de manière plus flexible
-n_lines = 4  # Nombre de lignes que tu veux afficher
-
-if len(valid_y) >= n_lines:
-    # Si on a plus de lignes valides que nécessaire, choisir dynamiquement
-    selected_y = np.linspace(min(valid_y), max(valid_y), n_lines, dtype=int)  # Sélectionner des indices uniformément espacés
-else:
-    # Si pas assez de lignes, prendre toutes les lignes valides
-    selected_y = valid_y
-
-print(f"Lignes sélectionnées à l'intérieur du brainmask: {selected_y}")
-
-# Nombre de lignes valides à afficher
-n_rows = len(selected_y)
-
-# Définir les bornes de la ligne horizontale (trouver les limites du cerveau dans le brainmask)
-x1, x2 = np.where(mask1_data[:, slice_idx, :].sum(axis=0) > 0)[0][[0, -1]]  # Trouver les bords du cerveau
-
-# 5️⃣ Tracer les résultats
+# Créer une figure avec n lignes et 3 colonnes
 fig, axes = plt.subplots(n_rows, 3, figsize=(15, 5 * n_rows))
 
-for i, y in enumerate(selected_y):
-    # Extraire les profils d'intensité le long de la ligne
-    intensity1 = profile_line(data1[:, slice_idx, :], (y, x1), (y, x2))
-    intensity2 = profile_line(data2_resampled[:, slice_idx, :], (y, x1), (y, x2))
+for i, y in enumerate(y_values):
+    # Extraire les profils d'intensité pour cette ligne y
+    intensity1 = profile_line(data1[:, :, slice_idx], (y, x1), (y, x2))
+    intensity2 = profile_line(data2_resampled[:, :, slice_idx], (y, x1), (y, x2))
 
-    # 1️⃣ Affichage de la coupe originale avec brainmask
-    axes[i, 0].imshow(data1[:, slice_idx, :], cmap="gray")
-    axes[i, 0].imshow(mask1_data[:, slice_idx, :], cmap="jet", alpha=0.3)  # Superposition du brainmask
+    # 1️⃣ Affichage de la coupe originale avec ligne en rouge
+    axes[i, 0].imshow(data1[:, :, slice_idx], cmap="gray")
     axes[i, 0].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
     axes[i, 0].set_title(f"Coupe originale (y={y})")
 
-    # 2️⃣ Affichage de la coupe rééchantillonnée avec brainmask
-    axes[i, 1].imshow(data2_resampled[:, slice_idx, :], cmap="gray")
-    axes[i, 1].imshow(mask2_resampled_data[:, slice_idx, :], cmap="jet", alpha=0.3)  # Superposition du brainmask
+    # 2️⃣ Affichage de la coupe rééchantillonnée avec ligne en rouge
+    axes[i, 1].imshow(data2_resampled[:, :, slice_idx], cmap="gray")
     axes[i, 1].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
     axes[i, 1].set_title(f"Coupe rééchantillonnée (y={y})")
 
