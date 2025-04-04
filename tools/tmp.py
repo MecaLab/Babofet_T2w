@@ -32,15 +32,17 @@ mask2_resampled_data = resample_from_to(mask_data2, vol1, order=0).get_fdata()
 
 # Choisir une coupe et une ligne
 # Choisir une coupe axiale
-slice_idx = 50  # Indice de la coupe
+slice_idx = data1.shape[1]//2  # Indice de la coupe
 
 # Identifier les lignes entièrement à l'intérieur du brainmask
 valid_y = []
+height, width = mask1_data[:, :, slice_idx].shape
 
-for y in [50, 70, 90, 110]:
-    line_mask = mask1_data[:, y, slice_idx]  # Extraire la ligne dans le brainmask
+indices = [50, 70, 90, 110]
+for idx in indices:
+    line_mask = mask1_data[:, slice_idx, idx]  # Extraire la ligne dans le brainmask
     if np.all(line_mask):  # Vérifier si toute la ligne est dans le brainmask
-        valid_y.append(y)
+        valid_y.append(idx)
 
 # Sélectionner des lignes bien réparties
 n_lines = 4  # Nombre de lignes à tracer
@@ -55,25 +57,25 @@ print(f"✅ Lignes sélectionnées à l'intérieur du brainmask: {selected_y}")
 n_rows = len(selected_y)
 
 # Définir les bornes de la ligne horizontale (limites valides dans le brainmask)
-x1, x2 = np.where(mask1_data[:, :, slice_idx].sum(axis=0) > 0)[0][[0, -1]]  # Trouver les bords du cerveau
+x1, x2 = np.where(mask1_data[:, slice_idx, :].sum(axis=0) > 0)[0][[0, -1]]  # Trouver les bords du cerveau
 
 # 5️⃣ Tracer les résultats
 fig, axes = plt.subplots(n_rows, 3, figsize=(15, 5 * n_rows))
 
 for i, y in enumerate(selected_y):
     # Extraire les profils d'intensité
-    intensity1 = profile_line(data1[:, :, slice_idx], (y, x1), (y, x2))
-    intensity2 = profile_line(data2_resampled[:, :, slice_idx], (y, x1), (y, x2))
+    intensity1 = profile_line(data1[:, slice_idx, :], (y, x1), (y, x2))
+    intensity2 = profile_line(data2_resampled[:, slice_idx, :], (y, x1), (y, x2))
 
     # 1️⃣ Affichage de la coupe originale avec brainmask
-    axes[i, 0].imshow(data1[:, :, slice_idx], cmap="gray")
-    axes[i, 0].imshow(mask1_data[:, :, slice_idx], cmap="jet", alpha=0.3)  # Superposition du brainmask
+    axes[i, 0].imshow(data1[:, slice_idx, :], cmap="gray")
+    axes[i, 0].imshow(mask1_data[:, slice_idx, :], cmap="jet", alpha=0.3)  # Superposition du brainmask
     axes[i, 0].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
     axes[i, 0].set_title(f"Coupe originale (y={y})")
 
     # 2️⃣ Affichage de la coupe rééchantillonnée avec brainmask
-    axes[i, 1].imshow(data2_resampled[:, :, slice_idx], cmap="gray")
-    axes[i, 1].imshow(mask2_resampled_data[:, :, slice_idx], cmap="jet", alpha=0.3)  # Superposition du brainmask
+    axes[i, 1].imshow(data2_resampled[:, slice_idx, :], cmap="gray")
+    axes[i, 1].imshow(mask2_resampled_data[:, slice_idx, :], cmap="jet", alpha=0.3)  # Superposition du brainmask
     axes[i, 1].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
     axes[i, 1].set_title(f"Coupe rééchantillonnée (y={y})")
 
