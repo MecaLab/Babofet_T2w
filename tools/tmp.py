@@ -62,9 +62,8 @@ for session in sessions:
             """y_values = [50, 60, 70, 80, 90]  # Plusieurs valeurs de y
             x1, x2 = 0, 120  # Début et fin de la ligne"""
             y_values = np.where(np.any(slice_mask1 > 0, axis=1))[0]  # Prend les lignes contenant du masque
-            print(y_values)
-            print(y_values.shape)
-            y_values = y_values[::len(y_values) // 3]  # Prend 3 lignes au maximums
+            if len(y_values) > 3:
+                y_values = y_values[::max(1, len(y_values) // 3)]  # Évite un pas de 0
 
             # Déterminer le nombre de lignes
             n_rows = len(y_values)
