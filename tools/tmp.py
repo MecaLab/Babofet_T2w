@@ -16,21 +16,23 @@ for session in sessions:
 
 
     vol_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz")
-    # mask_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")
+    mask_1_path = os.path.join(base_path, f"ses{session}/manual_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz")
 
     vol_2_path = os.path.join(base_path, f"ses{session}/mattia_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_mattia_bm_pipeline.nii.gz")
-    # mask_2_path = os.path.join(base_path, f"ses{session}/mattia_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_mattia_bm_pipeline_mask.nii.gz")
+    mask_2_path = os.path.join(base_path, f"ses{session}/mattia_brainmask", f"sub-{subject}_ses-{session}_haste_3DHR_mattia_bm_pipeline_mask.nii.gz")
 
     vol1 = nib.load(vol_1_path)
     vol2 = nib.load(vol_2_path)
 
-    # mask1_data = nib.load(mask_1_path).get_fdata()
-    # mask_data2 = nib.load(mask_2_path)
+    mask1_data = nib.load(mask_1_path).get_fdata()
+    mask_data2 = nib.load(mask_2_path)
 
     data1 = vol1.get_fdata()
 
     nii2_resampled = resample_from_to(vol2, vol1)
     data2_resampled = nii2_resampled.get_fdata()
+
+    mask2_resampled = resample_from_to(mask_data2, vol1, order=0).get_fdata()
 
     view_idxs = [25, 50, 65, 75, 90]
 
@@ -41,18 +43,26 @@ for session in sessions:
                 slice_idx = view_idx  # data1.shape[2]//2  # Coupe axiale
                 slice_data1 = data1[:, :, slice_idx]
                 slice_data_resampled = data2_resampled[:, :, slice_idx]
+                slice_mask1 = mask1_data[:, :, slice_idx]
+                slice_mask2 = mask2_resampled[:, :, slice_idx]
             elif view == "sagital":
                 slice_idx = view_idx  # data1.shape[1] // 2  # Coupe sagital
                 slice_data1 = data1[:, slice_idx, :]
                 slice_data_resampled = data2_resampled[:, slice_idx, :]
+                slice_mask1 = mask1_data[:, slice_idx, :]
+                slice_mask2 = mask2_resampled[:, slice_idx, :]
             elif view == "coronal":
                 slice_idx = view_idx  # data1.shape[0] // 2  # Coupe sagital
                 slice_data1 = data1[slice_idx, :, :]
                 slice_data_resampled = data2_resampled[slice_idx, :, :]
+                slice_mask1 = mask1_data[slice_idx, :, :]
+                slice_mask2 = mask2_resampled[slice_idx, :, :]
 
             # Définir plusieurs lignes horizontales à analyser
-            y_values = [50, 60, 70, 80, 90]  # Plusieurs valeurs de y
-            x1, x2 = 0, 120  # Début et fin de la ligne
+            """y_values = [50, 60, 70, 80, 90]  # Plusieurs valeurs de y
+            x1, x2 = 0, 120  # Début et fin de la ligne"""
+            y_values = np.where(np.any(slice_mask1 > 0, axis=1))[0]  # Prend les lignes contenant du masque
+            y_values = y_values[::len(y_values) // 5]
 
             # Déterminer le nombre de lignes
             n_rows = len(y_values)
@@ -61,6 +71,8 @@ for session in sessions:
             fig, axes = plt.subplots(n_rows, 4, figsize=(19, 5 * n_rows))
 
             for i, y in enumerate(y_values):
+                x1, x2 = np.where(slice_mask1[y, :] > 0)[0][[0, -1]]
+
                 # Extraire les profils d'intensité pour cette ligne y
                 intensity1 = profile_line(slice_data1, (y, x1), (y, x2))
                 intensity2 = profile_line(slice_data_resampled, (y, x1), (y, x2))
@@ -68,10 +80,12 @@ for session in sessions:
                 intensity_diff_percent = 100 * (np.array(intensity1) - np.array(intensity2)) / np.array(intensity1)
 
                 axes[i, 0].imshow(slice_data1, cmap="gray")
+                axes[i, 0].imshow(slice_mask1, cmap="Reds", alpha=0.3)  # Masque en transparence
                 axes[i, 0].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
                 axes[i, 0].set_title(f"Coupe originale (y={y})")
 
                 axes[i, 1].imshow(slice_data_resampled, cmap="gray")
+                axes[i, 1].imshow(slice_mask2, cmap="Reds", alpha=0.3)  # Masque en transparence
                 axes[i, 1].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
                 axes[i, 1].set_title(f"Coupe rééchantillonnée (y={y})")
 
@@ -94,3 +108,4 @@ for session in sessions:
             plt.tight_layout()
             plt.savefig(png_filename)
             plt.close()
+            exit()
