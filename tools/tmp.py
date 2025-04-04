@@ -37,6 +37,7 @@ slice_idx = 50  # Indice de la coupe
 # Identifier les lignes entièrement à l'intérieur du brainmask
 valid_y = []
 height, width = mask1_data[:, :, slice_idx].shape
+print(height, width)
 
 for y in range(height):
     line_mask = mask1_data[:, y, slice_idx]  # Extraire la ligne dans le brainmask
