@@ -43,7 +43,7 @@ x1, x2 = 0, 120  # Début et fin de la ligne
 n_rows = len(y_values)
 
 # Créer une figure avec n lignes et 3 colonnes
-fig, axes = plt.subplots(n_rows, 4, figsize=(15, 5 * n_rows))
+fig, axes = plt.subplots(n_rows, 4, figsize=(19, 5 * n_rows))
 
 for i, y in enumerate(y_values):
     # Extraire les profils d'intensité pour cette ligne y
