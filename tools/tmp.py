@@ -36,8 +36,8 @@ for session in sessions:
 
     view_idxs = [25, 50, 65, 75, 90]
 
-    for view_idx in view_idxs:
-        for view in views:
+    for view in views:
+        for view_idx in view_idxs:
             png_filename = f"comparaison_{subject.lower()}_ses-{session}_{view}_{view_idx}.png"
             if view == "axial":
                 slice_idx = view_idx  # data1.shape[2]//2  # Coupe axiale
