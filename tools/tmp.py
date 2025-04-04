@@ -33,7 +33,20 @@ mask2_resampled_data = resample_from_to(mask_data2, vol1, order=0).get_fdata()
 # Choisir une coupe et une ligne
 # Choisir une coupe axiale
 
-slice_idx = data1.shape[2]//2  # Coupe axiale
+view = "axial"
+
+if view == "axial":
+    slice_idx = data1.shape[2]//2  # Coupe axiale
+    slice_data1 = data1[:, :, slice_idx]
+    slice_data_resampled = data2_resampled[:, :, slice_idx]
+elif view == "sagital":
+    slice_idx = data1.shape[1] // 2  # Coupe sagital
+    slice_data1 = data1[:, slice_idx, :]
+    slice_data_resampled = data2_resampled[:, slice_idx, :]
+elif view == "coronal":
+    slice_idx = data1.shape[0] // 2  # Coupe sagital
+    slice_data1 = data1[slice_idx, :, :]
+    slice_data_resampled = data2_resampled[slice_idx, :, :]
 
 # Définir plusieurs lignes horizontales à analyser
 y_values = [50, 70, 90, 110]  # Plusieurs valeurs de y
@@ -51,11 +64,11 @@ for i, y in enumerate(y_values):
     intensity2 = profile_line(data2_resampled[:, :, slice_idx], (y, x1), (y, x2))
     intensity_diff = np.subtract(intensity1, intensity2)
 
-    axes[i, 0].imshow(data1[:, :, slice_idx], cmap="gray")
+    axes[i, 0].imshow(slice_data1, cmap="gray")
     axes[i, 0].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
     axes[i, 0].set_title(f"Coupe originale (y={y})")
 
-    axes[i, 1].imshow(data2_resampled[:, :, slice_idx], cmap="gray")
+    axes[i, 1].imshow(slice_data_resampled, cmap="gray")
     axes[i, 1].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
     axes[i, 1].set_title(f"Coupe rééchantillonnée (y={y})")
 
