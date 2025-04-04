@@ -32,38 +32,41 @@ mask2_resampled_data = resample_from_to(mask_data2, vol1, order=0).get_fdata()
 
 # Choisir une coupe et une ligne
 # Choisir une coupe axiale
-slice_idx = data1.shape[1]//2  # Indice de la coupe
+slice_idx = data1.shape[1] // 2  # Coupe centrale (ou ajuster selon tes besoins)
 
 # Identifier les lignes entièrement à l'intérieur du brainmask
 valid_y = []
 height, width = mask1_data[:, :, slice_idx].shape
 
-indices = [50, 70, 90, 110]
-for idx in indices:
-    line_mask = mask1_data[:, slice_idx, idx]  # Extraire la ligne dans le brainmask
+# Boucle sur les indices des lignes pour vérifier si elles sont dans le brainmask
+for y in range(height):
+    line_mask = mask1_data[:, y, slice_idx]  # Extraire la ligne dans le brainmask
     if np.all(line_mask):  # Vérifier si toute la ligne est dans le brainmask
-        valid_y.append(idx)
+        valid_y.append(y)
 
-# Sélectionner des lignes bien réparties
-n_lines = 4  # Nombre de lignes à tracer
+# Si il y a assez de lignes valides, on peut les sélectionner de manière plus flexible
+n_lines = 4  # Nombre de lignes que tu veux afficher
+
 if len(valid_y) >= n_lines:
-    selected_y = np.linspace(min(valid_y), max(valid_y), n_lines, dtype=int)  # Échantillonnage uniforme
+    # Si on a plus de lignes valides que nécessaire, choisir dynamiquement
+    selected_y = np.linspace(min(valid_y), max(valid_y), n_lines, dtype=int)  # Sélectionner des indices uniformément espacés
 else:
-    selected_y = valid_y  # Si moins de n_lines, prendre toutes les lignes disponibles
+    # Si pas assez de lignes, prendre toutes les lignes valides
+    selected_y = valid_y
 
-print(f"✅ Lignes sélectionnées à l'intérieur du brainmask: {selected_y}")
+print(f"Lignes sélectionnées à l'intérieur du brainmask: {selected_y}")
 
-# Nombre de lignes valides
+# Nombre de lignes valides à afficher
 n_rows = len(selected_y)
 
-# Définir les bornes de la ligne horizontale (limites valides dans le brainmask)
+# Définir les bornes de la ligne horizontale (trouver les limites du cerveau dans le brainmask)
 x1, x2 = np.where(mask1_data[:, slice_idx, :].sum(axis=0) > 0)[0][[0, -1]]  # Trouver les bords du cerveau
 
 # 5️⃣ Tracer les résultats
 fig, axes = plt.subplots(n_rows, 3, figsize=(15, 5 * n_rows))
 
 for i, y in enumerate(selected_y):
-    # Extraire les profils d'intensité
+    # Extraire les profils d'intensité le long de la ligne
     intensity1 = profile_line(data1[:, slice_idx, :], (y, x1), (y, x2))
     intensity2 = profile_line(data2_resampled[:, slice_idx, :], (y, x1), (y, x2))
 
