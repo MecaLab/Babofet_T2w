@@ -36,23 +36,36 @@ nii2_resampled = resample_from_to(vol2, vol1)
 data2_resampled = nii2_resampled.get_fdata()
 
 # Choisir une coupe et une ligne
+# Choisir une coupe et une ligne
 slice_idx = 50  # Coupe axiale
 y = 100  # Ligne horizontale à y = 100
-
-# Points de départ et d’arrivée de la ligne
 x1, x2 = 50, 150  # Début et fin de la ligne
 
-# Extraire le profil d'intensité dans les 2 volumes
+# Extraire les profils d'intensité dans les 2 volumes
 intensity1 = profile_line(data1[:, :, slice_idx], (y, x1), (y, x2))
 intensity2 = profile_line(data2_resampled[:, :, slice_idx], (y, x1), (y, x2))
 
-# Comparer les deux profils
-plt.figure(figsize=(8, 4))
-plt.plot(intensity1, label="Original", linestyle="dashed")
-plt.plot(intensity2, label="Resampled", linestyle="solid")
-plt.xlabel("Position le long de la ligne")
-plt.ylabel("Intensité")
-plt.legend()
-plt.title("Comparaison des profils d'intensité")
+# Créer une figure avec 3 colonnes
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+# 1️⃣ Affichage de la coupe originale
+axes[0].imshow(data1[:, :, slice_idx], cmap="gray")
+axes[0].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
+axes[0].set_title("Coupe originale")
+
+# 2️⃣ Affichage de la coupe rééchantillonnée
+axes[1].imshow(data2_resampled[:, :, slice_idx], cmap="gray")
+axes[1].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
+axes[1].set_title("Coupe rééchantillonnée")
+
+# 3️⃣ Affichage du profil d'intensité
+axes[2].plot(intensity1, label="Original", linestyle="dashed")
+axes[2].plot(intensity2, label="Resampled", linestyle="solid")
+axes[2].set_xlabel("Position le long de la ligne")
+axes[2].set_ylabel("Intensité")
+axes[2].legend()
+axes[2].set_title("Comparaison des profils d'intensité")
+
+# Affichage global
 plt.tight_layout()
 plt.savefig("tmp.png")
