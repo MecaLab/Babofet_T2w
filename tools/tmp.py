@@ -9,7 +9,7 @@ subject = "Aziza"
 base_path = f"../data/recons_folder/{subject}/"
 sessions = ["01", "05", "09"]
 
-views = ["axial"]
+views = ["axial", "sagital", "coronal"]
 
 
 for session in sessions:
@@ -86,8 +86,10 @@ for session in sessions:
             axes[i, 3].set_ylabel("Variation d'intensité (%)")
             axes[i, 3].grid()
             axes[i, 3].set_title(f"Variation en pourcentage (y={y})")
+            break
 
         # Affichage global
         plt.tight_layout()
-        plt.savefig("tmp.png")
+        plt.savefig(png_filename)
         plt.close()
+        exit()
