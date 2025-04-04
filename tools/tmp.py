@@ -31,6 +31,6 @@ affine2 = vol2.affine
 shape1 = data1.shape
 shape2 = data2.shape
 
-nii2_resampled = resample_from_to(vol2, vol1, interpolation='nearest')
+nii2_resampled = resample_from_to(vol2, vol1)
 data2_resampled = nii2_resampled.get_fdata()
 
