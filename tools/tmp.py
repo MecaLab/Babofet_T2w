@@ -43,30 +43,35 @@ x1, x2 = 0, 120  # Début et fin de la ligne
 n_rows = len(y_values)
 
 # Créer une figure avec n lignes et 3 colonnes
-fig, axes = plt.subplots(n_rows, 3, figsize=(15, 5 * n_rows))
+fig, axes = plt.subplots(n_rows, 4, figsize=(15, 5 * n_rows))
 
 for i, y in enumerate(y_values):
     # Extraire les profils d'intensité pour cette ligne y
     intensity1 = profile_line(data1[:, :, slice_idx], (y, x1), (y, x2))
     intensity2 = profile_line(data2_resampled[:, :, slice_idx], (y, x1), (y, x2))
+    intensity_diff = np.subtract(intensity1, intensity2)
 
-    # 1️⃣ Affichage de la coupe originale avec ligne en rouge
     axes[i, 0].imshow(data1[:, :, slice_idx], cmap="gray")
     axes[i, 0].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
     axes[i, 0].set_title(f"Coupe originale (y={y})")
 
-    # 2️⃣ Affichage de la coupe rééchantillonnée avec ligne en rouge
     axes[i, 1].imshow(data2_resampled[:, :, slice_idx], cmap="gray")
     axes[i, 1].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
     axes[i, 1].set_title(f"Coupe rééchantillonnée (y={y})")
 
-    # 3️⃣ Comparaison des profils d’intensité
     axes[i, 2].plot(intensity1, label="Original", linestyle="dashed")
     axes[i, 2].plot(intensity2, label="Resampled", linestyle="solid")
     axes[i, 2].set_xlabel("Position le long de la ligne")
     axes[i, 2].set_ylabel("Intensité")
     axes[i, 2].legend()
+    axes[i, 2].grid()
     axes[i, 2].set_title(f"Profil d'intensité (y={y})")
+
+    axes[i, 3].plot(intensity_diff, label="Difference", color="purple")
+    axes[i, 3].set_xlabel("Position le long de la ligne")
+    axes[i, 3].set_ylabel("Différence d'intensité")
+    axes[i, 3].grid()
+    axes[i, 3].set_title(f"Différence (y={y})")
 
 # Affichage global
 plt.tight_layout()
