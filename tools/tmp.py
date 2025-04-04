@@ -35,7 +35,7 @@ for session in sessions:
     for view in views:
         png_filename = f"comparaison_{subject.lower()}_ses-{session}_{view}.png"
         if view == "axial":
-            slice_idx = 50 #  data1.shape[2]//2  # Coupe axiale
+            slice_idx = 30 #  data1.shape[2]//2  # Coupe axiale
             slice_data1 = data1[:, :, slice_idx]
             slice_data_resampled = data2_resampled[:, :, slice_idx]
         elif view == "sagital":
@@ -59,8 +59,8 @@ for session in sessions:
 
         for i, y in enumerate(y_values):
             # Extraire les profils d'intensité pour cette ligne y
-            intensity1 = profile_line(data1[:, :, slice_idx], (y, x1), (y, x2))
-            intensity2 = profile_line(data2_resampled[:, :, slice_idx], (y, x1), (y, x2))
+            intensity1 = profile_line(slice_data1, (y, x1), (y, x2))
+            intensity2 = profile_line(slice_data_resampled, (y, x1), (y, x2))
             intensity_diff = np.subtract(intensity1, intensity2)
             intensity_diff_percent = 100 * (np.array(intensity1) - np.array(intensity2)) / np.array(intensity1)
 
