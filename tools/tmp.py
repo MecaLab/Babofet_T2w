@@ -62,6 +62,8 @@ for session in sessions:
             """y_values = [50, 60, 70, 80, 90]  # Plusieurs valeurs de y
             x1, x2 = 0, 120  # Début et fin de la ligne"""
             y_values = np.where(np.any(slice_mask1 > 0, axis=1))[0]  # Prend les lignes contenant du masque
+            print(y_values)
+            print(y_values.shape)
             y_values = y_values[::len(y_values) // 5]
 
             # Déterminer le nombre de lignes
