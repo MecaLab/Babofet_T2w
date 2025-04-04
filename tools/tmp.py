@@ -33,10 +33,10 @@ mask2_resampled_data = resample_from_to(mask_data2, vol1, order=0).get_fdata()
 # Choisir une coupe et une ligne
 # Choisir une coupe axiale
 
-slice_idx = 50  # Coupe axiale
+slice_idx = data1.shape[2]//2  # Coupe axiale
 
 # Définir plusieurs lignes horizontales à analyser
-y_values = [50, 100, 150, 200]  # Plusieurs valeurs de y
+y_values = [50, 70, 90, 110]  # Plusieurs valeurs de y
 x1, x2 = 0, 120  # Début et fin de la ligne
 
 # Déterminer le nombre de lignes
