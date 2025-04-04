@@ -33,7 +33,7 @@ mask2_resampled_data = resample_from_to(mask_data2, vol1, order=0).get_fdata()
 # Choisir une coupe et une ligne
 # Choisir une coupe axiale
 
-view = "axial"
+view = "sagital"
 
 if view == "axial":
     slice_idx = data1.shape[2]//2  # Coupe axiale
