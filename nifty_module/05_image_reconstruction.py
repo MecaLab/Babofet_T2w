@@ -88,7 +88,7 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    SUFFIX_EXP = "_ISO4"  # need to be updated for every exp
+    SUFFIX_EXP = ""  # need to be updated for every exp
 
     list_subjs = [
         # "sub-Fabienne_ses-09",
