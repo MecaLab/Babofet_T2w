@@ -258,9 +258,12 @@ def qc_rejected_slices(subj_path, subj_name, subj, mode, exp_param_folder=False,
                     bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii.gz")
                     bm = nib.load(bm_path)
                 except FileNotFoundError:
-                    print("here")
                     bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii")
-                    bm = nib.load(bm_path)
+                    try:
+                        bm = nib.load(bm_path)
+                    except FileNotFoundError:
+                        print(f"{bm_path} not found")
+                        continue
 
             elif mode == "mattia":
                 bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii.gz")
