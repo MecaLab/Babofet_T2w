@@ -256,6 +256,9 @@ def qc_rejected_slices(subj_path, subj_name, subj, mode, exp_param_folder=False,
                 except FileNotFoundError:
                     bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii")
                     bm = nib.load(bm_path)
+                finally:
+                    print(f"File not found: {bm_path}")
+                    continue
             elif mode == "mattia":
                 bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii.gz")
                 bm = nib.load(bm_path)
@@ -385,7 +388,9 @@ def qc_intensity(subj_path, subject, mode, subj_session):
             # vol shape is (x, y, z).
             # x is COR, y is SAG, z is AX
             # get the intensity on the AX slice (x-y view) at indice idx along z-view
-            intensity = vol[:, vol.shape[1]//2, idx]
+            intensity = vol[:, vol.shape[1]//2, idx]  # sagital view
+            # intensity = vol[vol.shape[0]//2, :, idx]  # coronal view
+            # intensity = vol[vol.shape[0]//2, idx, :]  # axial view
             ax.plot(intensity, label=f"{param_name[j]}")
 
         ax.set_ylabel("Intensity")
@@ -466,7 +471,7 @@ def plot_histo(subj_path, mode, subject, subj_session):
 
         hist1, bins1 = np.histogram(vol1, bins=bins, density=True, range=hist_range)
         bin_centers = (bins1[:-1] + bins1[1:]) / 2  # Centres des bins
-        
+
         title = f"{subj_session} default ({mode})"
         output_filename = "_".join(title.split()).lower()
         output_filename_path = os.path.join(f"snapshots/recons/niftymic/{subject}/{mode}",
