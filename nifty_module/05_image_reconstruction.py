@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     list_subjs = [
         # "sub-Fabienne_ses-09",
-        "sub-Aziza_ses-01", "sub-Aziza_ses-05", "sub-Aziza_ses-09",
+        "sub-Aziza_ses-01",  # "sub-Aziza_ses-05", "sub-Aziza_ses-09",
         # "sub-Formule_ses-01", "sub-Formule_ses-05", "sub-Formule_ses-09",
     ]
 
@@ -172,5 +172,5 @@ if __name__ == "__main__":
                 suffix=SUFFIX_EXP,
             )
 
-            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
