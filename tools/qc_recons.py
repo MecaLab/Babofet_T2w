@@ -208,8 +208,9 @@ def qc_rejected_slices(subj_path, subj_name, subj, mode, exp_param_folder=False,
     with open(json_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    print(data)
-    exit()
+    if param == "ISO4":
+        print(data)
+        exit()
 
     red_cmap = mcolors.ListedColormap(['red'])
     green_cmap = mcolors.ListedColormap(['green'])
