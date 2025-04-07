@@ -87,12 +87,12 @@ for session in sessions:
                 axes[i, 0].imshow(slice_data1, cmap="gray")
                 axes[i, 0].imshow(slice_mask1, cmap="Reds", alpha=0.3)  # Masque en transparence
                 axes[i, 0].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
-                axes[i, 0].set_title(f"Coupe originale (y={y})")
+                axes[i, 0].set_title(f"Coupe originale {view_idx} with y={y}")
 
                 axes[i, 1].imshow(slice_data_resampled, cmap="gray")
                 axes[i, 1].imshow(slice_mask2, cmap="Reds", alpha=0.3)  # Masque en transparence
                 axes[i, 1].plot([x1, x2], [y, y], 'r-')  # Ligne rouge sur la coupe
-                axes[i, 1].set_title(f"Coupe rééchantillonnée (y={y})")
+                axes[i, 1].set_title(f"Coupe rééchantillonnée {view_idx} with y={y}")
 
                 axes[i, 2].plot(intensity1, label="Original", linestyle="dashed")
                 axes[i, 2].plot(intensity2, label="Resampled", linestyle="solid")
