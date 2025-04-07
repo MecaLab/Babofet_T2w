@@ -208,6 +208,9 @@ def qc_rejected_slices(subj_path, subj_name, subj, mode, exp_param_folder=False,
     with open(json_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
+    print(data)
+    exit()
+
     red_cmap = mcolors.ListedColormap(['red'])
     green_cmap = mcolors.ListedColormap(['green'])
 
@@ -257,7 +260,7 @@ def qc_rejected_slices(subj_path, subj_name, subj, mode, exp_param_folder=False,
                     print("here")
                     bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii")
                     bm = nib.load(bm_path)
-                    
+
             elif mode == "mattia":
                 bm_path = os.path.join(cfg.MESO_OUTPUT_PATH, subj, bm_folder, stack_name + "_mask.nii.gz")
                 bm = nib.load(bm_path)
