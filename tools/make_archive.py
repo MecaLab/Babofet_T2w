@@ -32,9 +32,13 @@ for subject in subjects:
 
         print(subject, session)
         # Copy the stacks
+        stack_output_path = os.path.join(subject_session_output_path, "stacks")
+        if not os.path.exists(stack_output_path):
+            os.makedirs(stack_output_path)
+
         stacks_path = os.path.join(stacks_base_path, f"sub-{subject}_ses-{session}", "denoising")
         for file in os.listdir(stacks_path):
             if "HASTE" in file:
                 file_path = os.path.join(stacks_path, file)
-                subprocess.run(["cp", file_path, subject_session_output_path])
+                subprocess.run(["cp", file_path, stack_output_path])
         exit()
