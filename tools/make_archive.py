@@ -22,9 +22,12 @@ for subject in subjects:
 
     for session in sessions:
         subject_session_output_path = os.path.join(subject_output_path, f"ses-{session}")
+
+        if not os.path.exists(os.path.join(recons_base_path, subject, f"ses-{session}")):
+            continue 
         if not os.path.exists(subject_session_output_path):
             os.makedirs(subject_session_output_path)
         subj_session = f"sub-{subject}_ses-{session}"
-        
+
         # get all stacks
         stacks_path = os.path.join(stacks_base_path, subj_session, "denoising")
