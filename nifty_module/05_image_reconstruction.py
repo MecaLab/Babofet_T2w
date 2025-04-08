@@ -53,8 +53,9 @@ singularity exec \\
     niftymic_run_reconstruction_pipeline \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --dir-output reconstruction_pipeline_{subj} \\
+        ----dir-output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
+        
 
 """
     # ./mv_recons.sh {subj} {mode_bm} {suffix}
