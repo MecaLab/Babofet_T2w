@@ -25,7 +25,7 @@ for subject in subjects:
         if not os.path.exists(os.path.join(recons_base_path, subject, f"ses{session}")):
             continue
 
-        subject_session_output_path = os.path.join(subject_output_path, f"ses-{session}")
+        subject_session_output_path = os.path.join(subject_output_path, f"ses{session}")
 
         if not os.path.exists(subject_session_output_path):
             os.makedirs(subject_session_output_path)
@@ -51,5 +51,22 @@ for subject in subjects:
         for file in os.listdir(bm_path):
             file_path = os.path.join(bm_path, file)
             subprocess.run(["cp", file_path, bm_output_path])
+
+        # Copy the reconstructions
+        recons_output_path = os.path.join(subject_session_output_path, "reconstructions")
+        if not os.path.exists(recons_output_path):
+            os.makedirs(recons_output_path)
+
+        recons_file = [
+            f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz",  # anat recons
+            f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz"  # mask recons
+        ]
+        recons_path = os.path.join(recons_base_path, subject, f"ses{session}", "manual_brainmask")
+
+        for file_recons in recons_file:
+            file_output_path = os.path.join(recons_path, file_recons)
+            subprocess.run(["cp", file_output_path, recons_output_path])
+
+        
 
         exit()
