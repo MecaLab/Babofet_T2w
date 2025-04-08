@@ -55,10 +55,9 @@ singularity exec \\
         --filenames-masks {mask_stacks} \\
         --dir-output reconstruction_pipeline_{subj} \\
         --isotropic-resolution 0.5 \\
-        
-./mv_recons.sh {subj} {mode_bm} {suffix}
-"""
 
+"""
+    # ./mv_recons.sh {subj} {mode_bm} {suffix}
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
