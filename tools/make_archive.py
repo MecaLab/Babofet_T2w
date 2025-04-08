@@ -66,7 +66,3 @@ for subject in subjects:
         for file_recons in recons_file:
             file_output_path = os.path.join(recons_path, file_recons)
             subprocess.run(["cp", file_output_path, recons_output_path])
-
-        
-
-        exit()
