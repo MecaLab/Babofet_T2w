@@ -12,5 +12,5 @@ recons_base_path = cfg.DATA_PATH
 
 for subject in subjects:
     for session in sessions:
-        subj_session = f"sub-{subject}_ses-{session[3:]}"
+        subj_session = f"sub-{subject}_ses-{session}"
         print(subj_session)
