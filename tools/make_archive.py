@@ -2,6 +2,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
+import subprocess
 
 
 subjects = ["Fabienne", "Aziza", "Formule"]
@@ -15,10 +16,15 @@ if not os.path.exists(archive_output_path):
     os.makedirs(archive_output_path)
 
 for subject in subjects:
+    subject_output_path = os.path.join(archive_output_path, subject)
+    if not os.path.exists(subject_output_path):
+        os.makedirs(subject_output_path)
+
     for session in sessions:
+        subject_session_output_path = os.path.join(subject_output_path, f"ses-{session}")
+        if not os.path.exists(subject_session_output_path):
+            os.makedirs(subject_session_output_path)
         subj_session = f"sub-{subject}_ses-{session}"
-        print(subj_session)
+        
         # get all stacks
         stacks_path = os.path.join(stacks_base_path, subj_session, "denoising")
-        print(os.listdir(stacks_path))
-        exit()
