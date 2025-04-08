@@ -41,4 +41,15 @@ for subject in subjects:
             if "HASTE" in file:
                 file_path = os.path.join(stacks_path, file)
                 subprocess.run(["cp", file_path, stack_output_path])
+
+        # Copy the BM
+        bm_output_path = os.path.join(subject_session_output_path, "brainmask")
+        if not os.path.exists(bm_output_path):
+            os.makedirs(bm_output_path)
+
+        bm_path = os.path.join(stacks_base_path, f"sub-{subject}_ses-{session}", "manual_masks")
+        for file in os.listdir(bm_path):
+            file_path = os.path.join(bm_path, file)
+            subprocess.run(["cp", file_path, bm_output_path])
+
         exit()
