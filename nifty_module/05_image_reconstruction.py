@@ -53,7 +53,7 @@ singularity exec \\
     niftymic_reconstruct_volume \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --output /output/$OUTPUT_FILE \\
+        --dir-output reconstruction_pipeline_{subj} \\
         --isotropic-resolution 0.5 \\
         
 ./mv_recons.sh {subj} {mode_bm} {suffix}
@@ -92,8 +92,8 @@ if __name__ == "__main__":
 
     list_subjs = [
         # "sub-Fabienne_ses-09",
-        # "sub-Aziza_ses-09",  # "sub-Aziza_ses-05", "sub-Aziza_ses-09",
-        "sub-Formule_ses-08", # "sub-Formule_ses-05", "sub-Formule_ses-09",
+        "sub-Aziza_ses-01",  # "sub-Aziza_ses-05", "sub-Aziza_ses-09",
+        # "sub-Formule_ses-08", # "sub-Formule_ses-05", "sub-Formule_ses-09",
     ]
 
     for subject in subject_IDs:
