@@ -17,6 +17,7 @@ if not os.path.exists(archive_output_path):
 
 for subject in subjects:
     subject_output_path = os.path.join(archive_output_path, subject)
+
     if not os.path.exists(subject_output_path):
         os.makedirs(subject_output_path)
 
@@ -28,3 +29,11 @@ for subject in subjects:
 
         if not os.path.exists(subject_session_output_path):
             os.makedirs(subject_session_output_path)
+
+        print(subject, session)
+        # Copy the stacks
+        stacks_path = os.path.join(stacks_base_path, f"sub-{subject}_ses-{session}", "denoising")
+        for file in os.listdir(stacks_path):
+            if "HASTE" in file:
+                print(file)
+        exit()
