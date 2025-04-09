@@ -135,7 +135,6 @@ if __name__ == "__main__":
             for f in haste_files:
                 filename = f.split(".")
                 anat_path_subj_path = os.path.join(denoised_subj_output_dir, f)
-                print(f, filename)
                 if mask_model == "nifty":  # for brainmask_niftymic folder
                     bm_nifti_filename = filename[0] + "_seg.nii.gz"
                     bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, filename[0], bm_nifti_filename)
@@ -151,6 +150,7 @@ if __name__ == "__main__":
                     bm_nifti_filename = filename[0] + "_mask.nii.gz"
                     bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
+                print(f, filename, bm_path_subj_path)
                 if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
                     anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
