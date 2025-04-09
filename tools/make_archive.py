@@ -44,7 +44,8 @@ for subject in subjects:
                 full_path = os.path.join(stacks_path, folder, "resources", "NIFTI", "files")
                 for file in os.listdir(full_path):
                     if file.endswith(".nii"):
-                        print(file)
+                        file_full_path = os.path.join(full_path, file)
+                        print(file_full_path, os.path.exists(file_full_path))
 
         """
         # Uncomment the following lines to access the denoised files
