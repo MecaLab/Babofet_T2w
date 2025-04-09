@@ -50,13 +50,13 @@ singularity exec \\
     -B "$MASK_PATH":/masks \\
     -B "$OUTPUT_PATH":/output \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
-    niftymic_run_reconstruction_pipeline \\
+    niftymic_reconstruct_volume  \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --dir-output /output/$OUTPUT_FILE \\
+        --output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
         
-
+./mv_recons.sh {subj} {mode_bm} {suffix}
 """
     # ./mv_recons.sh {subj} {mode_bm} {suffix}
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    SUFFIX_EXP = ""  # need to be updated for every exp
+    SUFFIX_EXP = "_denoised_scunet"  # need to be updated for every exp
 
     list_subjs = [
         # "sub-Fabienne_ses-09",
@@ -108,7 +108,7 @@ if __name__ == "__main__":
 
         print("Starting {}".format(subject))
 
-        dir_list = os.listdir(os.path.join(subj_output_dir, "denoising"))
+        dir_list = os.listdir(os.path.join(subj_output_dir, "denoising_scunet"))
         haste_files = list()
         truefisp_files = list()
 
@@ -172,5 +172,5 @@ if __name__ == "__main__":
                 suffix=SUFFIX_EXP,
             )
 
-            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
