@@ -41,9 +41,10 @@ for subject in subjects:
 
         for folder in os.listdir(stacks_path):
             if "HASTE" in folder:
-                filename = f"sub-{subject}_ses-{session}_{folder}.nii"
-                haste_path = os.path.join(stacks_path, folder, "resources/NIFTI/files", filename)
-                print(haste_path, os.path.exists(haste_path))
+                full_path = os.path.join(stacks_path, folder, "resources", "NIFTI", "files")
+                for file in os.listdir(full_path):
+                    if file.endswith(".nii"):
+                        print(file)
 
         """
         # Uncomment the following lines to access the denoised files
