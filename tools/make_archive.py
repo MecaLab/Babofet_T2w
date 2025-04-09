@@ -9,6 +9,7 @@ subjects = ["Aziza", ] # "Formule", "Fabienne"]
 sessions = ["01", ] # "05", "08", "09"]
 
 stacks_base_path = cfg.MESO_DATA_PATH  # cfg.MESO_OUTPUT_PATH  DATA_PATH is for raw data / OUTPUT_PATH is for denoised data
+bm_base_path = cfg.MESO_OUTPUT_PATH
 recons_base_path = cfg.DATA_PATH
 
 archive_output_path = "archive/"
@@ -63,7 +64,7 @@ for subject in subjects:
         if not os.path.exists(bm_output_path):
             os.makedirs(bm_output_path)
 
-        bm_path = os.path.join(stacks_base_path, f"sub-{subject}_ses-{session}", "manual_masks")
+        bm_path = os.path.join(bm_base_path, f"sub-{subject}_ses-{session}", "manual_masks")
         for file in os.listdir(bm_path):
             file_path = os.path.join(bm_path, file)
             subprocess.run(["cp", file_path, bm_output_path])
