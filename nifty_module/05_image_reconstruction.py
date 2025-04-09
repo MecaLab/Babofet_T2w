@@ -53,7 +53,7 @@ singularity exec \\
     niftymic_run_reconstruction_pipeline \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        ----dir-output /output/$OUTPUT_FILE \\
+        --dir-output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
         
 
