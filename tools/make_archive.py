@@ -42,7 +42,7 @@ for subject in subjects:
         for folder in os.listdir(stacks_path):
             if "HASTE" in folder:
                 filename = f"sub-{subject}_ses-{session}_{folder}.nii"
-                haste_path = os.path.join(stacks_path, folder, filename)
+                haste_path = os.path.join(stacks_path, folder, "resources/NIFTI/files", filename)
                 print(os.path.exists(haste_path))
 
         """
