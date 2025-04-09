@@ -43,7 +43,7 @@ for subject in subjects:
             if "HASTE" in folder:
                 filename = f"sub-{subject}_ses-{session}_{folder}.nii"
                 haste_path = os.path.join(stacks_path, folder, "resources/NIFTI/files", filename)
-                print(os.path.exists(haste_path))
+                print(haste_path, os.path.exists(haste_path))
 
         """
         # Uncomment the following lines to access the denoised files
