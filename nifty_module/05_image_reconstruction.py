@@ -124,7 +124,7 @@ if __name__ == "__main__":
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, bm_folder)
 
-            denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising")
+            denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising_scunet")
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_niftymic')
 
             if not os.path.exists(recons_haste_subj_output_dir):
