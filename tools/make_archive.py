@@ -30,17 +30,31 @@ for subject in subjects:
         if not os.path.exists(subject_session_output_path):
             os.makedirs(subject_session_output_path)
 
-        print(subject, session)
+        print(f"Processing {subject}: session {session}")
+
         # Copy the stacks
         stack_output_path = os.path.join(subject_session_output_path, "stacks")
         if not os.path.exists(stack_output_path):
             os.makedirs(stack_output_path)
 
+        stacks_path = os.path.join(stacks_base_path, f"sub-{subject}_ses-{session}", "scans")
+
+        for folder in os.listdir(stacks_path):
+            if "HASTE" in folder:
+                filename = f"sub-{subject}_ses-{session}_{folder}.nii"
+                haste_path = os.path.join(stacks_path, folder, filename)
+                print(os.path.exists(haste_path))
+
+        """
+        # Uncomment the following lines to access the denoised files
         stacks_path = os.path.join(stacks_base_path, f"sub-{subject}_ses-{session}", "denoising")
         for file in os.listdir(stacks_path):
             if "HASTE" in file:
                 file_path = os.path.join(stacks_path, file)
                 subprocess.run(["cp", file_path, stack_output_path])
+        """
+
+        exit()
 
         # Copy the BM
         bm_output_path = os.path.join(subject_session_output_path, "brainmask")
