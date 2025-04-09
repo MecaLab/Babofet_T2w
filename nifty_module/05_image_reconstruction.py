@@ -10,7 +10,7 @@ def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files,
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='b219'
-#SBATCH --partition=volta
+#SBATCH --partition=skylake
 #SBATCH --time=6:00:00
 #SBATCH --gres=gpu:1
 #SBATCH -c 1
@@ -150,11 +150,6 @@ if __name__ == "__main__":
                     bm_nifti_filename = filename[0] + "_mask.nii.gz"
                     bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
-                print(f)
-                print(filename[0])
-                print(bm_path_subj_path)
-                print(anat_path_subj_path)
-                print("\n\n")
                 if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
                     anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
