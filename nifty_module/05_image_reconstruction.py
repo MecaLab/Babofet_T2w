@@ -177,5 +177,5 @@ if __name__ == "__main__":
                 suffix=SUFFIX_EXP,
             )
 
-            # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
