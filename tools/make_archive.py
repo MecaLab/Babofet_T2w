@@ -5,8 +5,8 @@ import configuration as cfg
 import subprocess
 
 
-subjects = ["Aziza", "Formule", "Fabienne"]
-sessions = ["01", "05", "08", "09"]
+subjects = ["Aziza", ] # "Formule", "Fabienne"]
+sessions = ["01", ] # "05", "08", "09"]
 
 stacks_base_path = cfg.MESO_DATA_PATH  # cfg.MESO_OUTPUT_PATH  DATA_PATH is for raw data / OUTPUT_PATH is for denoised data
 recons_base_path = cfg.DATA_PATH
@@ -39,24 +39,24 @@ for subject in subjects:
 
         stacks_path = os.path.join(stacks_base_path, f"sub-{subject}_ses-{session}", "scans")
 
+        # Accesing raw data
         for folder in os.listdir(stacks_path):
             if "HASTE" in folder:
                 full_path = os.path.join(stacks_path, folder, "resources", "NIFTI", "files")
                 for file in os.listdir(full_path):
                     if file.endswith(".nii"):
                         file_full_path = os.path.join(full_path, file)
-                        print(file_full_path, os.path.exists(file_full_path))
+                        subprocess.run(["cp", file_full_path, stack_output_path])
 
-        """
+
         # Uncomment the following lines to access the denoised files
+        """
         stacks_path = os.path.join(stacks_base_path, f"sub-{subject}_ses-{session}", "denoising")
         for file in os.listdir(stacks_path):
             if "HASTE" in file:
                 file_path = os.path.join(stacks_path, file)
                 subprocess.run(["cp", file_path, stack_output_path])
         """
-
-        exit()
 
         # Copy the BM
         bm_output_path = os.path.join(subject_session_output_path, "brainmask")
