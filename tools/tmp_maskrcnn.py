@@ -7,10 +7,13 @@ from torchvision.ops.boxes import masks_to_boxes
 from torchvision.transforms import ToTensor
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
+from engine import train_one_epoch, evaluate
+import utils
 
-sys.path.insert(0, os.path.abspath(os.curdir))
 
 base_path = os.path.join("/scratch/lbaptiste", "Mask_RCNN", "MRI_dataset_png")
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+print(device)
 
 
 class BrainDataset(torch.utils.data.Dataset):
@@ -57,9 +60,6 @@ class BrainDataset(torch.utils.data.Dataset):
         return len(self.imgs)
 
 
-custom_ds = BrainDataset(root=base_path, transforms=None)
-
-
 def get_model_instance_segmentation(num_classes):
     # load an instance segmentation model pre-trained on COCO
     model = torchvision.models.detection.maskrcnn_resnet50_fpn(weights="DEFAULT")
@@ -86,5 +86,12 @@ def get_transform():
     return ToTensor()
 
 
-device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-print(device)
+custom_ds = BrainDataset(root=base_path, transforms=None)
+num_classes = 2
+
+data_loader = torch.utils.data.DataLoader(
+    dataset,
+    batch_size=2,
+    shuffle=True,
+    collate_fn=utils.collate_fn
+)
