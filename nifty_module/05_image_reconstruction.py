@@ -15,8 +15,8 @@ def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files,
 #SBATCH --gres=gpu:1
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=50G
-#SBATCH -o recon_niftymic_{subj}.out
-#SBATCH -e recon_niftymic_{subj}.err
+#SBATCH -o recon_pipeline_niftymic_{subj}.out
+#SBATCH -e recon_pipeline_niftymic_{subj}.err
 
 module purge
 module load userspace/all
