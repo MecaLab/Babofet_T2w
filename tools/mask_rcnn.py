@@ -22,7 +22,7 @@ def get_data_for_subj(subject, session):
     for anat_file in os.listdir(subject_anat_path):
         if "HASTE" in anat_file:
             anat_file_path = os.path.join(subject_anat_path, anat_file)
-            bm_file_path = os.path.join(subject_bm_path, anat_file.replace(".nii.gz", "_mask.nii.gz"))
+            bm_file_path = os.path.join(subject_bm_path, anat_file.replace(".nii", "_mask.nii.gz"))
             print(os.path.exists(anat_file_path), os.path.exists(bm_file_path), bm_file_path)
 
 
