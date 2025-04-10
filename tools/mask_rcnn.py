@@ -12,8 +12,7 @@ subjects = ["Aziza"]
 sessions = ["01"]
 
 
-
-def get_data_for_subj(i, subject, session):
+def get_data_for_subj(subject, session):
     full_subject_name = f"sub-{subject}_ses-{session}"
     subject_path = os.path.join(cfg.MESO_OUTPUT_PATH, full_subject_name)
 
