@@ -4,7 +4,7 @@ import torch
 import torchvision
 from torchvision.io import read_image
 from torchvision.ops.boxes import masks_to_boxes
-from torchvision.transforms import v2
+from torchvision.transforms import ToTensorV2
 from torchvision.transforms.v2 import functional as F
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
@@ -38,11 +38,9 @@ class BrainDataset(torch.utils.data.Dataset):
         area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
         iscrowd = torch.zeros((num_objects, ), dtype=torch.int64)
 
-        img = v2.tv_tensors.Image(img)
-
         target = {
-            "boxes": tv_tensors.BoundingBoxes(boxes, format="XYXY", canvas_size=F.get_size(img)),
-            "masks": tv_tensors.Mask(masks),
+            "boxes": boxes,
+            "masks": masks,
             "labels": labels,
             "image_id": image_id,
             "area": area,
