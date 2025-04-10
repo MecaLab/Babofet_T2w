@@ -62,7 +62,8 @@ class BrainDataset(torch.utils.data.Dataset):
 
 def get_model_instance_segmentation(num_classes):
     # load an instance segmentation model pre-trained on COCO
-    model = torchvision.models.detection.maskrcnn_resnet50_fpn(weights="DEFAULT")
+    weights = torchvision.models.detection.MaskRCNN_ResNet50_FPN_Weights.DEFAULT
+    model = torchvision.models.detection.maskrcnn_resnet50_fpn(weights=weights)
 
     # get number of input features for the classifier
     in_features = model.roi_heads.box_predictor.cls_score.in_features
