@@ -23,8 +23,8 @@ def get_data_for_subj(subject, session):
         if "HASTE" in anat_file:
             anat_file_path = os.path.join(subject_anat_path, anat_file)
             bm_file_path = os.path.join(subject_bm_path, anat_file.replace(".nii.gz", "_mask.nii.gz"))
-            print(os.path.exists(anat_file_path), os.path.exists(bm_file_path))
-            
+            print(os.path.exists(anat_file_path), os.path.exists(bm_file_path), bm_file_path)
+
 
 if __name__ == "__main__":
     for subject in subjects:
