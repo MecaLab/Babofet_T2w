@@ -30,6 +30,8 @@ class BrainDataset(torch.utils.data.Dataset):
         img = read_image(img_path, mode=torchvision.io.ImageReadMode.RGB)
         mask = read_image(mask_path, mode=torchvision.io.ImageReadMode.RGB)
 
+        img = img.float() / 255.0
+
         obj_ids = torch.unique(mask)
         obj_ids = obj_ids[1:]  # remove background id
         num_objects = len(obj_ids)
