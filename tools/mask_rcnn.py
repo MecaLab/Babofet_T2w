@@ -74,7 +74,7 @@ def normalize_slice(slice_data):
 
 
 def stack2png(input_dir):
-    nii_files = sorted([f for f in os.listdir(input_dir) if f.endswith(".nii.gz") and not f.endswith("_mask.nii.gz")])
+    nii_files = sorted([f for f in os.listdir(input_dir) if f.endswith(".nii") and not f.endswith("_mask.nii.gz")])
     print(nii_files)
 
 
