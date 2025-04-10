@@ -123,13 +123,24 @@ lr_scheduler = torch.optim.lr_scheduler.StepLR(
 num_epochs = 2
 writer = SummaryWriter(log_dir='runs/brain_seg')
 
+
+# Fonction pour enregistrer les métriques dans TensorBoard
+def log_metrics_to_tensorboard(metric_logger, writer, step):
+    for name, meter in metric_logger.meters.items():
+        value = meter.global_avg if hasattr(meter, 'global_avg') else meter.avg
+        writer.add_scalar(name, value, step)
+
+
 for epoch in range(num_epochs):
     # train for one epoch, printing every 10 iterations
-    train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=10)
+    metric_logger = train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=10)
     # update the learning rate
     lr_scheduler.step()
     # evaluate on the test dataset
     # evaluate(model, data_loader_test, device=device)
+    log_metrics_to_tensorboard(metric_logger, writer, epoch)
+
+writer.close()
 
 
 print("That's it!")
