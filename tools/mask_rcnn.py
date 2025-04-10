@@ -81,7 +81,7 @@ def stack2png(input_dir):
         match = re.match(r"(.*)_(axial|coronal|sagittal)_(\d+)\.nii", nii)
         sujet_id, orientation, slice_index = match.groups()
 
-        mask_file = f"{sujet_id}_{orientation}_{slice_index}_mask.nii"
+        mask_file = f"{sujet_id}_{orientation}_{slice_index}_mask.nii.gz"
 
         nii_path = os.path.join(input_dir, nii)
         mask_path = os.path.join(input_dir, mask_file)
