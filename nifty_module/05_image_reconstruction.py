@@ -5,7 +5,7 @@ import configuration as cfg
 import subprocess
 
 
-def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file, mode_bm="manual", suffix=""):
+def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file, mode_bm="manual", suffix="", denoising_folder="denoising"):
     filename = "nifty_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
     
@@ -24,7 +24,7 @@ module load cuda/10.2
 
 MAIN_PATH="{main_path}"
 
-INPUT_PATH="${{MAIN_PATH}}/denoising_scunet"
+INPUT_PATH="${{MAIN_PATH}}/{denoising_folder}"
 MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
 
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic"
@@ -53,10 +53,9 @@ singularity exec \\
     niftymic_reconstruct_volume  \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --output /output/$OUTPUT_FILE \\
+        --dir-output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
         
-./mv_recons.sh {subj} {mode_bm} {suffix}
 """
     # ./mv_recons.sh {subj} {mode_bm} {suffix}
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -88,7 +87,9 @@ if __name__ == "__main__":
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
 
-    SUFFIX_EXP = "_denoised_scunet"  # need to be updated for every exp
+    denoising_folder = "denoising"
+
+    SUFFIX_EXP = ""  # need to be updated for every exp
 
     list_subjs = [
         # "sub-Fabienne_ses-09",
@@ -108,7 +109,7 @@ if __name__ == "__main__":
 
         print("Starting {}".format(subject))
 
-        dir_list = os.listdir(os.path.join(subj_output_dir, "denoising_scunet"))
+        dir_list = os.listdir(os.path.join(subj_output_dir, denoising_folder))
         haste_files = list()
         truefisp_files = list()
 
@@ -124,7 +125,7 @@ if __name__ == "__main__":
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
             bm_haste_subj_output_dir = os.path.join(subj_output_dir, bm_folder)
 
-            denoised_subj_output_dir = os.path.join(subj_output_dir, "denoising_scunet")
+            denoised_subj_output_dir = os.path.join(subj_output_dir, denoising_folder)
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_niftymic')
 
             if not os.path.exists(recons_haste_subj_output_dir):
@@ -170,6 +171,7 @@ if __name__ == "__main__":
                 output_file=recons_haste_subj_output,
                 mode_bm=mask_model,
                 suffix=SUFFIX_EXP,
+                denoising_folder=denoising_folder
             )
 
             subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
