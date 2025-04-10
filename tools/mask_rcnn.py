@@ -78,10 +78,9 @@ def normalize_slice(slice_data):
 
 def stack2png(input_dir):
     nii_files = sorted([f for f in os.listdir(input_dir) if f.endswith(".nii") and not f.endswith("_mask.nii.gz")])
-    for nii in nii_files:
-        if "Formule" in nii or "Fabienne" in nii:
-            break
-
+    n = len(nii_files)
+    for i, nii in enumerate(nii_files):
+        print(f"Processing {i + 1}/{n}: {nii}")
         match = re.match(r"(.*)_(axial|coronal|sagittal)_(\d+)\.nii", nii)
         sujet_id, orientation, nb_stack = match.groups()
 
