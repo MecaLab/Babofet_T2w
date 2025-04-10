@@ -90,7 +90,7 @@ custom_ds = BrainDataset(root=base_path, transforms=None)
 num_classes = 2
 
 data_loader = torch.utils.data.DataLoader(
-    dataset,
+    custom_ds,
     batch_size=2,
     shuffle=True,
     collate_fn=utils.collate_fn
