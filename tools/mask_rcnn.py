@@ -79,12 +79,16 @@ def stack2png(input_dir):
     nii_files = sorted([f for f in os.listdir(input_dir) if f.endswith(".nii") and not f.endswith("_mask.nii.gz")])
     for nii in nii_files:
         match = re.match(r"(.*)_(axial|coronal|sagittal)_(\d+)\.nii", nii)
-        sujet_id, orientation, slice_index = match.groups()
+        sujet_id, orientation, nb_stack = match.groups()
 
-        mask_file = f"{sujet_id}_{orientation}_{slice_index}_mask.nii.gz"
+        mask_file = f"{sujet_id}_{orientation}_{nb_stack}_mask.nii.gz"
 
         nii_path = os.path.join(input_dir, nii)
         mask_path = os.path.join(input_dir, mask_file)
+
+        if not os.path.exists(mask_path):
+            print(f"Mask file not found for {nii}")
+            continue
 
         img_vol = nib.load(nii_path).get_fdata()
         mask_vol = nib.load(mask_path).get_fdata()
