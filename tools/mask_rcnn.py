@@ -10,8 +10,8 @@ output_folder = os.path.join(cfg.BASE_PATH, "Mask_RCNN", "MRI_dataset", "train")
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
-subjects = ["Aziza"]
-sessions = ["01"]
+subjects = ["Aziza", "Formule", "Fabienne"]
+sessions = ["01", "05", "09"]
 
 
 def get_data_for_subj(subject, session):
