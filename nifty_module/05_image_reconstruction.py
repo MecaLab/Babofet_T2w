@@ -56,8 +56,9 @@ singularity exec \\
         --dir-output /output/$OUTPUT_FILE \\
         --isotropic-resolution 0.5 \\
         
+./mv_recons.sh {subj} {mode_bm} {suffix}
 """
-    # ./mv_recons.sh {subj} {mode_bm} {suffix}
+    #
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
@@ -89,7 +90,7 @@ if __name__ == "__main__":
 
     denoising_folder = "denoising"
 
-    SUFFIX_EXP = ""  # need to be updated for every exp
+    SUFFIX_EXP = "_pipeline"  # need to be updated for every exp
 
     list_subjs = [
         # "sub-Fabienne_ses-09",
