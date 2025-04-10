@@ -1,6 +1,7 @@
 import os
 import sys
 import shutil
+import numpy as np
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -54,7 +55,30 @@ def get_data_for_subj(subject, session):
             print(f"OK for {os.path.basename(anat_file_path)} and {os.path.basename(bm_file_path)}")
 
 
+output_img_dir = os.path.join(cfg.BASE_PATH, "Mask_RCNN", "MRI_dataset_png", "images")
+output_mask_dir = os.path.join(cfg.BASE_PATH, "Mask_RCNN", "MRI_dataset_png", "masks")
+
+os.makedirs(output_img_dir, exist_ok=True)
+os.makedirs(output_mask_dir, exist_ok=True)
+
+
+def normalize_slice(slice_data):
+    """ Normalise une slice entre 0 et 255 pour le PNG """
+    slice_data = np.nan_to_num(slice_data)
+    slice_min = np.min(slice_data)
+    slice_max = np.max(slice_data)
+    if slice_max - slice_min == 0:
+        return np.zeros_like(slice_data, dtype=np.uint8)
+    normalized = (slice_data - slice_min) / (slice_max - slice_min)
+    return (normalized * 255).astype(np.uint8)
+
+def stack2png(input_dir):
+    for file in os.listdir(input_dir):
+        print(file)
+
+
 if __name__ == "__main__":
-    for i, subject in enumerate(subjects):
+    """for i, subject in enumerate(subjects):
         for session in sessions:
-            get_data_for_subj(subject, session)
+            get_data_for_subj(subject, session)"""
+    stack2png(input_dir=output_folder)
