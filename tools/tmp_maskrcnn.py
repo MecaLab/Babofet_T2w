@@ -4,8 +4,6 @@ import torch
 import torchvision
 from torchvision.io import read_image
 from torchvision.ops.boxes import masks_to_boxes
-from torchvision.transforms import ToTensorV2
-from torchvision.transforms.v2 import functional as F
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
