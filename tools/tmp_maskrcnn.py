@@ -22,7 +22,7 @@ class BrainDataset(torch.utils.data.Dataset):
         mask_path = os.path.join(self.root, "masks", self.masks[idx])
 
         img = read_image(img_path, mode=torchvision.io.ImageReadMode.RGB)
-        mask = read_image(mask_path, mode=torchvision.io.ImageReadMode.UINT8)
+        mask = read_image(mask_path, mode=torchvision.io.ImageReadMode.RGB)
 
         obj_ids = torch.unique(mask)
         obj_ids = obj_ids[1:]  # remove background id
