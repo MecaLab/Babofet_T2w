@@ -92,7 +92,9 @@ def stack2png(input_dir):
         print(nii)
         print(img_vol.shape)
         print(mask_vol.shape)
-        break
+
+        if "Formule" in nii or "Fabienne" in nii:
+            break
 
 
 
