@@ -1,9 +1,11 @@
 import os
 import sys
+import shutil
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
-output_folder = os.path.join(cfg.BASE_PATH, "Mask_RCNN", "MRI_dataset")
+
+output_folder = os.path.join(cfg.BASE_PATH, "Mask_RCNN", "MRI_dataset", "train")
 
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
@@ -18,8 +20,6 @@ def get_data_for_subj(subject, session):
 
     subject_anat_path = os.path.join(subject_path, "denoising")
     subject_bm_path = os.path.join(subject_path, "manual_masks")
-
-    datas = []
 
     subj_name = f"{subject}_{session}"
     cpt_orientation = {}
@@ -44,7 +44,8 @@ def get_data_for_subj(subject, session):
             new_filename_anat = f"{subj_name}_{orientation}_{cpt_orientation[orientation]}.nii"
             new_filename_bm = f"{subj_name}_{orientation}_{cpt_orientation[orientation]}_mask.nii.gz"
 
-            print(new_filename_anat, new_filename_bm)
+            shutil.copy2(anat_file_path, os.path.join(output_folder, new_filename_anat))
+            shutil.copy2(bm_file_path, os.path.join(output_folder, new_filename_bm))
 
 
 if __name__ == "__main__":
