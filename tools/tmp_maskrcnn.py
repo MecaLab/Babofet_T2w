@@ -140,6 +140,8 @@ for epoch in range(num_epochs):
     # evaluate(model, data_loader_test, device=device)
     log_metrics_to_tensorboard(metric_logger, writer, epoch)
 
+    torch.save(model.state_dict(), f"brain_segmentation_model_epoch_{epoch}.pth")
+
 writer.close()
 
 
