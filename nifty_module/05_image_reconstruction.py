@@ -24,7 +24,7 @@ module load cuda/10.2
 
 MAIN_PATH="{main_path}"
 
-INPUT_PATH="${{MAIN_PATH}}/denoising"
+INPUT_PATH="${{MAIN_PATH}}/denoising_scunet"
 MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
 
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic"
