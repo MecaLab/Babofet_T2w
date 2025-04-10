@@ -9,7 +9,6 @@ from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 
 sys.path.insert(0, os.path.abspath(os.curdir))
-import configuration as cfg
 
 base_path = os.path.join("/scratch/lbaptiste", "Mask_RCNN", "MRI_dataset_png")
 
