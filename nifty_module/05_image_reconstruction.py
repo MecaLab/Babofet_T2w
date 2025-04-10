@@ -27,7 +27,7 @@ MAIN_PATH="{main_path}"
 INPUT_PATH="${{MAIN_PATH}}/{denoising_folder}"
 MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
 
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic"
+OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_full_pipeline"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
 """
@@ -53,12 +53,12 @@ singularity exec \\
     niftymic_run_reconstruction_pipeline  \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --dir-output /output/$OUTPUT_FILE \\
+        --dir-output /output/ \\
         --isotropic-resolution 0.5 \\
         
-./mv_recons.sh {subj} {mode_bm} {suffix}
+
 """
-    #
+    # ./mv_recons.sh {subj} {mode_bm} {suffix}
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
