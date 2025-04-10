@@ -4,6 +4,7 @@ import shutil
 import numpy as np
 import nibabel as nib
 import re
+from PIL import Image
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -78,6 +79,9 @@ def normalize_slice(slice_data):
 def stack2png(input_dir):
     nii_files = sorted([f for f in os.listdir(input_dir) if f.endswith(".nii") and not f.endswith("_mask.nii.gz")])
     for nii in nii_files:
+        if "Formule" in nii or "Fabienne" in nii:
+            break
+
         match = re.match(r"(.*)_(axial|coronal|sagittal)_(\d+)\.nii", nii)
         sujet_id, orientation, nb_stack = match.groups()
 
@@ -93,17 +97,30 @@ def stack2png(input_dir):
         img_vol = nib.load(nii_path).get_fdata()
         mask_vol = nib.load(mask_path).get_fdata()
 
-        print(nii)
-        print(img_vol.shape)
-        print(mask_vol.shape)
+        depth = img_vol.shape[2]
 
-        if "Formule" in nii or "Fabienne" in nii:
-            break
+        for i in range(depth):
+            img_slice = img_vol[:, :, i]
+            mask_slice = mask_vol[:, :, i]
 
+            if np.max(mask_slice) == 0:
+                continue
+
+            img_png = normalize_slice(img_slice)
+            mask_png = (mask_slice > 0).astype(np.uint8) * 255
+
+            img_name = f"{sujet_id}_{orientation}_{i:03d}.png"
+            mask_name = f"{sujet_id}_{orientation}_{i:03d}_mask.png"
+
+            # Sauvegarder les images et masques dans le dossier respectif
+            Image.fromarray(img_png).save(os.path.join(output_img_dir, img_name))
+            Image.fromarray(mask_png).save(os.path.join(output_mask_dir, mask_name))
 
 
 if __name__ == "__main__":
-    """for i, subject in enumerate(subjects):
+    """
+    for i, subject in enumerate(subjects):
         for session in sessions:
-            get_data_for_subj(subject, session)"""
+            get_data_for_subj(subject, session)
+    """
     stack2png(input_dir=output_folder)
