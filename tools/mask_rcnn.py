@@ -47,6 +47,8 @@ def get_data_for_subj(subject, session):
             shutil.copy2(anat_file_path, os.path.join(output_folder, new_filename_anat))
             shutil.copy2(bm_file_path, os.path.join(output_folder, new_filename_bm))
 
+            print(f"OK for {os.path.basename(anat_file_path)} and {os.path.basename(bm_file_path)}")
+
 
 if __name__ == "__main__":
     for i, subject in enumerate(subjects):
