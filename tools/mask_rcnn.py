@@ -17,7 +17,7 @@ def get_data_for_subj(subject):
     subject_anat_path = os.path.join(subject_path, "denoising")
     subject_bm_path = os.path.join(subject_path, "manual_brainmask")
 
-    for anat_file, bm_file in zip(os.listdir(subject_anat_path, subject_bm_path)):
+    for anat_file, bm_file in zip(os.listdir(subject_anat_path), os.listdir(subject_bm_path)):
         print(anat_file, bm_file)
 
 
