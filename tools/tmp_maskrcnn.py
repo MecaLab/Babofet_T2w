@@ -4,7 +4,7 @@ import torch
 import torchvision
 from torchvision.io import read_image
 from torchvision.ops.boxes import masks_to_boxes
-from torchvision.transforms import v2 as T
+from torchvision.transforms import ToTensor
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 
@@ -83,10 +83,9 @@ def get_model_instance_segmentation(num_classes):
     return model
 
 
-def get_transform(train):
-    transforms = []
-    if train:
-        transforms.append(T.RandomHorizontalFlip(0.5))
-    transforms.append(T.ToDtype(torch.float, scale=True))
-    transforms.append(T.ToPureTensor())
-    return T.Compose(transforms)
+def get_transform():
+    return ToTensor()
+
+
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+print(device)
