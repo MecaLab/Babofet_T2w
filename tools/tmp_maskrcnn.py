@@ -7,6 +7,7 @@ from torchvision.ops.boxes import masks_to_boxes
 from torchvision.transforms import ToTensor
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
+from torch.utils.tensorboard import SummaryWriter
 from engine import train_one_epoch, evaluate
 import utils
 
@@ -93,7 +94,7 @@ num_classes = 2
 
 data_loader = torch.utils.data.DataLoader(
     custom_ds,
-    batch_size=2,
+    batch_size=8,
     shuffle=True,
     collate_fn=utils.collate_fn
 )
@@ -120,6 +121,7 @@ lr_scheduler = torch.optim.lr_scheduler.StepLR(
 
 # let's train it just for 2 epochs
 num_epochs = 2
+writer = SummaryWriter(log_dir='runs/brain_seg')
 
 for epoch in range(num_epochs):
     # train for one epoch, printing every 10 iterations
@@ -129,4 +131,6 @@ for epoch in range(num_epochs):
     # evaluate on the test dataset
     # evaluate(model, data_loader_test, device=device)
 
+
 print("That's it!")
+# ssh -N -f -p 8822 -L localhost:16006:localhost:6006 lbaptiste@login.mesocentre.univ-amu.fr
