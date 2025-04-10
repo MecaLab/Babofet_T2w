@@ -2,6 +2,8 @@ import os
 import sys
 import shutil
 import numpy as np
+import nibabel as nib
+import re
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -75,7 +77,23 @@ def normalize_slice(slice_data):
 
 def stack2png(input_dir):
     nii_files = sorted([f for f in os.listdir(input_dir) if f.endswith(".nii") and not f.endswith("_mask.nii.gz")])
-    print(nii_files)
+    for nii in nii_files:
+        match = re.match(r"(.*)_(axial|coronal|sagittal)_(\d+)\.nii", nii)
+        sujet_id, orientation, slice_index = match.groups()
+
+        mask_file = f"{sujet_id}_{orientation}_{slice_index}_mask.nii"
+
+        nii_path = os.path.join(input_dir, nii)
+        mask_path = os.path.join(input_dir, mask_file)
+
+        img_vol = nib.load(nii_path).get_fdata()
+        mask_vol = nib.load(mask_path).get_fdata()
+
+        print(nii)
+        print(img_vol.shape)
+        print(mask_vol.shape)
+        break
+
 
 
 if __name__ == "__main__":
