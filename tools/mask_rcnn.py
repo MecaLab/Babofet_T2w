@@ -28,6 +28,10 @@ def get_data_for_subj(subject, session):
             anat_file_path = os.path.join(subject_anat_path, anat_file)
             bm_file_path = os.path.join(subject_bm_path, anat_file.replace(".nii", "_mask.nii.gz"))
 
+            if not os.path.exists(bm_file_path):
+                print(f"Brain mask not found for {os.path.basename(anat_file_path)}")
+                continue
+
             orientation = anat_file.split("HASTE")[-1].split("_")[1]
             if 'AX' in orientation:
                 orientation = "axial"
