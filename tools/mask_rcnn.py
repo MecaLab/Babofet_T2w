@@ -72,9 +72,10 @@ def normalize_slice(slice_data):
     normalized = (slice_data - slice_min) / (slice_max - slice_min)
     return (normalized * 255).astype(np.uint8)
 
+
 def stack2png(input_dir):
-    for file in os.listdir(input_dir):
-        print(file)
+    nii_files = sorted([f for f in os.listdir(input_dir) if f.endswith(".nii.gz") and not f.endswith("_mask.nii.gz")])
+    print(nii_files)
 
 
 if __name__ == "__main__":
