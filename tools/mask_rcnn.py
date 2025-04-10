@@ -46,8 +46,6 @@ def get_data_for_subj(subject, session):
 
             print(new_filename_anat, new_filename_bm)
 
-            break
-
 
 if __name__ == "__main__":
     for i, subject in enumerate(subjects):
