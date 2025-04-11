@@ -2,9 +2,11 @@ import os
 import sys
 import torch
 import torchvision
+import matplotlib.pyplot as plt
 from torchvision.io import read_image
 from torchvision.ops.boxes import masks_to_boxes
 from torchvision.transforms import ToTensor
+from torchvision.utils import draw_bounding_boxes, draw_segmentation_masks
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 from torch.utils.tensorboard import SummaryWriter
@@ -131,19 +133,43 @@ def log_metrics_to_tensorboard(metric_logger, writer, step):
         writer.add_scalar(name, value, step)
 
 
-for epoch in range(num_epochs):
-    # train for one epoch, printing every 10 iterations
-    metric_logger = train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=10)
-    # update the learning rate
-    lr_scheduler.step()
-    # evaluate on the test dataset
-    # evaluate(model, data_loader_test, device=device)
-    log_metrics_to_tensorboard(metric_logger, writer, epoch)
+def train_model(num_epochs):
+    # To follow tensorboard on local
+    # ssh -N -f -p 8822 -L localhost:16006:localhost:6006 lbaptiste@login.mesocentre.univ-amu.fr
 
-    torch.save(model.state_dict(), f"brain_segmentation_model_epoch_{epoch}.pth")
+    for epoch in range(num_epochs):
+        # train for one epoch, printing every 10 iterations
+        metric_logger = train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=10)
+        # update the learning rate
+        lr_scheduler.step()
+        # evaluate on the test dataset
+        # evaluate(model, data_loader_test, device=device)
+        log_metrics_to_tensorboard(metric_logger, writer, epoch)
 
-writer.close()
+        torch.save(model.state_dict(), f"brain_segmentation_model_epoch_{epoch}.pth")
+
+    writer.close()
 
 
-print("That's it!")
-# ssh -N -f -p 8822 -L localhost:16006:localhost:6006 lbaptiste@login.mesocentre.univ-amu.fr
+def inference_model(img_path):
+    image = read_image(img_path, mode=torchvision.io.ImageReadMode.RGB)
+
+    eval_transform = get_transform()
+
+    model.eval()
+    with torch.no_grad():
+        image = image.float() / 255.0
+        x = eval_transform(image)
+        x = x[:3, ...].to(device)
+        predictions = model([x, ])
+        pred = predictions[0]
+
+    pred_labels = [f"pedestrian: {score:.3f}" for label, score in zip(pred["labels"], pred["scores"])]
+    pred_boxes = pred["boxes"].long()
+    output_image = draw_bounding_boxes(image, pred_boxes, pred_labels, colors="red")
+
+    masks = (pred["masks"] > 0.7).squeeze(1)
+    output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="blue")
+
+    plt.figure(figsize=(12, 12))
+    plt.savefig("tmp.png")
