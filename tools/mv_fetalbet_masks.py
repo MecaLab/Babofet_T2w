@@ -12,6 +12,7 @@ for subj in os.listdir(source_folder):
 
     folder_output = os.path.join(subj_path_dst, "fetalBet_masks_v2")
 
+    print(folder_output, subj_path_dst)
     if not os.path.exists(folder_output):
         os.makedirs(folder_output)
 
