@@ -172,7 +172,6 @@ def inference_model(img_path):
     output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="blue")
 
     plt.imshow(output_image.permute(1, 2, 0).numpy())
-    plt.figure(figsize=(12, 12))
     plt.savefig("tmp.png")
 
 
