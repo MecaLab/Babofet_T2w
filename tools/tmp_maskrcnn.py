@@ -157,13 +157,14 @@ def inference_model(img_path):
 
     model.eval()
     with torch.no_grad():
-        image = image.float() / 255.0
-        predictions = model([image.to(device), ])
+        image_float = image.float() / 255.0
+        predictions = model([image_float.to(device), ])
         pred = predictions[0]
 
     pred_labels = [f"pedestrian: {score:.3f}" for label, score in zip(pred["labels"], pred["scores"])]
     pred_boxes = pred["boxes"].long()
-    output_image = draw_bounding_boxes(image, pred_boxes, pred_labels, colors="red")
+    image_uint8 = (image_float * 255).byte()
+    output_image = draw_bounding_boxes(image_uint8, pred_boxes, pred_labels, colors="red")
 
     masks = (pred["masks"] > 0.7).squeeze(1)
     output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="blue")
