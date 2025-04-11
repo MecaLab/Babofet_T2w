@@ -15,10 +15,8 @@ for subj in os.listdir(source_folder):
     if not os.path.exists(folder_output):
         os.makedirs(folder_output)
 
-    print(folder_output, subj_path_dst)
-    print(os.path.exists(folder_output), os.path.exists(subj_path_dst))
-
     for file in os.listdir(subj_path_src):
+        print(file)
         if "HASTE" in file:
             file_path = os.path.join(subj_path_src, file)
 
