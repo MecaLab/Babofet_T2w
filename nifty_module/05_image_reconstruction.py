@@ -56,7 +56,7 @@ singularity exec \\
         --output /output/ \\
         --isotropic-resolution 0.5 \\
         
-
+./mv_recons.sh {subj} {mode_bm} {suffix}
 """
     # ./mv_recons.sh {subj} {mode_bm} {suffix}
     with open(filename, "w", encoding="utf-8") as slurm_file:
