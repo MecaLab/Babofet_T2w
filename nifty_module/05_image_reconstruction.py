@@ -73,6 +73,14 @@ Parametres:
 """
 
 
+def get_all_subjects(path):
+    list_subjs = []
+    for subj in os.listdir(path):
+        list_subjs.append(subj)
+    return list_subjs
+
+
+
 if __name__ == "__main__":
     base_path = cfg.MESO_DATA_PATH
 
@@ -81,7 +89,7 @@ if __name__ == "__main__":
     subject_IDs = os.listdir(base_path)
 
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
-    mask_model = "manual"  # could be 'nifty' or 'mattia' or 'manual'
+    mask_model = "fetalbet"  # could be 'nifty' or 'mattia' or 'manual'
 
     if mask_model == "manual":
         bm_folder = "manual_masks"
@@ -89,16 +97,20 @@ if __name__ == "__main__":
         bm_folder = "brainmask_niftymic"
     elif mask_model == "mattia":
         bm_folder = "mattia_masks"
+    elif mask_model == "fetalbet":
+        bm_folder = "fetalbet_masks_v2"
 
     denoising_folder = "denoising"
 
-    SUFFIX_EXP = ""  # need to be updated for every exp
+    SUFFIX_EXP = "_FETALBET"  # need to be updated for every exp
 
-    list_subjs = [
+    """list_subjs = [
         # "sub-Fabienne_ses-09",
         "sub-Aziza_ses-01",  # "sub-Aziza_ses-05", "sub-Aziza_ses-09",
         # "sub-Formule_ses-08", # "sub-Formule_ses-05", "sub-Formule_ses-09",
-    ]
+    ]"""
+
+    list_subjs = get_all_subjects(cfg.MESO_OUTPUT_PATH)
 
     for subject in subject_IDs:
         if subject not in list_subjs:
@@ -154,6 +166,10 @@ if __name__ == "__main__":
                     bm_nifti_filename = filename[0] + "_mask.nii.gz"
                     bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
+                elif mask_model == "fetalbet":  # with fetalbet brainmask
+                    bm_nifti_filename = filename[0] + "_mask.nii.gz"
+                    bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, subject, bm_nifti_filename)
+
                 if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
                     anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
@@ -177,5 +193,6 @@ if __name__ == "__main__":
                 denoising_folder=denoising_folder
             )
 
-            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
+            exit()
