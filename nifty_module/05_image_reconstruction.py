@@ -171,6 +171,7 @@ if __name__ == "__main__":
                     bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, subject, bm_nifti_filename)
 
                 print(anat_path_subj_path, bm_path_subj_path)
+                print(os.path.exists(anat_path_subj_path), os.path.exists(bm_path_subj_path))
                 if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
                     anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
