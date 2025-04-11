@@ -178,4 +178,5 @@ def inference_model(img_path):
 
 if __name__ == "__main__":
 
+    model.load_state_dict(torch.load("brain_segmentation_model_epoch_1.pth"))
     inference_model(os.path.join(base_path, "images", "Aziza_09_axial_022.png"))
