@@ -158,7 +158,7 @@ def inference_model(img_path):
     model.eval()
     with torch.no_grad():
         image = image.float() / 255.0
-        predictions = model([image, ])
+        predictions = model([image.to(device), ])
         pred = predictions[0]
 
     pred_labels = [f"pedestrian: {score:.3f}" for label, score in zip(pred["labels"], pred["scores"])]
