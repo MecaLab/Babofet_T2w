@@ -27,7 +27,7 @@ MAIN_PATH="{main_path}"
 INPUT_PATH="${{MAIN_PATH}}/{denoising_folder}"
 MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
 
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_full_pipeline"
+OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
 """
@@ -76,6 +76,8 @@ Parametres:
 if __name__ == "__main__":
     base_path = cfg.MESO_DATA_PATH
 
+    fetalbet_mask_path = "/scratch/lbaptiste/data/fetalBet_masks_V2"
+
     subject_IDs = os.listdir(base_path)
 
     # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
@@ -90,7 +92,7 @@ if __name__ == "__main__":
 
     denoising_folder = "denoising"
 
-    SUFFIX_EXP = "_pipeline"  # need to be updated for every exp
+    SUFFIX_EXP = ""  # need to be updated for every exp
 
     list_subjs = [
         # "sub-Fabienne_ses-09",
@@ -104,6 +106,8 @@ if __name__ == "__main__":
             continue
 
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
+
+        bm_haste_subj_output_dir = os.path.join(fetalbet_mask_path, subject)
 
         if not os.path.exists(subj_output_dir):
             os.makedirs(subj_output_dir)
@@ -124,7 +128,7 @@ if __name__ == "__main__":
         if len(haste_files) > 0:
             print("\tStarting HASTE {}".format(subject))
             haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
-            bm_haste_subj_output_dir = os.path.join(subj_output_dir, bm_folder)
+            # bm_haste_subj_output_dir = os.path.join(subj_output_dir, bm_folder)
 
             denoised_subj_output_dir = os.path.join(subj_output_dir, denoising_folder)
             recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_niftymic')
@@ -175,5 +179,5 @@ if __name__ == "__main__":
                 denoising_folder=denoising_folder
             )
 
-            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
