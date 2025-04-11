@@ -23,4 +23,3 @@ for subj in os.listdir(source_folder):
             shutil.copy2(src_file_path, dst_file_path)
 
     print(f"OK for {subj}")
-    break
