@@ -175,7 +175,7 @@ def inference_model(img_path):
     print(output_image)
     print(image_uint8.shape)
     plt.imshow(output_image.permute(1, 2, 0).numpy())
-    plt.savefig("tmp.png")
+    plt.savefig("tmp.png", bbox_inches='tight', pad_inches=0)
 
 
 if __name__ == "__main__":
