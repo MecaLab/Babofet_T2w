@@ -18,10 +18,14 @@ for subj in os.listdir(source_folder):
     for file in os.listdir(subj_path_src):
         if "HASTE" in file:
             src_file_path = os.path.join(subj_path_src, file)
+            print(os.path.exists(src_file_path))
             dst_file_path = os.path.join(folder_output, file)
+            print(os.path.exists(dst_file_path))
 
             shutil.copy2(src_file_path, dst_file_path)
-            print("OK")
+            print(os.path.exists(dst_file_path))
+
+            print()
 
     print(f"OK for {subj}")
     break
