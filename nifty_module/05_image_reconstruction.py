@@ -27,7 +27,7 @@ MAIN_PATH="{main_path}"
 INPUT_PATH="${{MAIN_PATH}}/{denoising_folder}"
 MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
 
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_full_pipeline"
+OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
 """
@@ -50,10 +50,10 @@ singularity exec \\
     -B "$MASK_PATH":/masks \\
     -B "$OUTPUT_PATH":/output \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
-    niftymic_run_reconstruction_pipeline  \\
+    niftymic_reconstruct_volume  \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --dir-output /output/ \\
+        --output /output/ \\
         --isotropic-resolution 0.5 \\
         
 
@@ -170,6 +170,7 @@ if __name__ == "__main__":
                     bm_nifti_filename = filename[0] + "_mask.nii.gz"
                     bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, subject, bm_nifti_filename)
 
+                print(anat_path_subj_path, bm_path_subj_path)
                 if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
                     anat_img.append(f)
                     bm_img.append(bm_nifti_filename)
