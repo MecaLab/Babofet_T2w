@@ -22,7 +22,7 @@ for subj in os.listdir(source_folder):
             dst_file_path = os.path.join(folder_output, file)
             print(os.path.exists(dst_file_path))
 
-            shutil.copy2(src_file_path, dst_file_path)
+            shutil.move(src_file_path, dst_file_path)
             print(os.path.exists(dst_file_path))
 
             print()
