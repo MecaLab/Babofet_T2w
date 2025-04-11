@@ -171,5 +171,11 @@ def inference_model(img_path):
     masks = (pred["masks"] > 0.7).squeeze(1)
     output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="blue")
 
+    plt.imshow(output_image.permute(1, 2, 0))
     plt.figure(figsize=(12, 12))
     plt.savefig("tmp.png")
+
+
+if __name__ == "__main__":
+
+    inference_model(os.path.join(base_path, "images", "Aziza_09_axial_022.png"))
