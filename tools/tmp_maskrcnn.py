@@ -162,7 +162,7 @@ def inference_model(img_path):
         predictions = model([image_float.to(device), ])
         pred = predictions[0]
 
-    pred_labels = [f"pedestrian: {score:.3f}" for label, score in zip(pred["labels"], pred["scores"])]
+    pred_labels = [f"brain: {score:.3f}" for label, score in zip(pred["labels"], pred["scores"])]
     pred_boxes = pred["boxes"].long()
     image_uint8 = (image_float * 255).to(torch.uint8)
 
