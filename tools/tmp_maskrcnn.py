@@ -152,16 +152,13 @@ def train_model(num_epochs):
 
 
 def inference_model(img_path):
+    print("Start inference")
     image = read_image(img_path, mode=torchvision.io.ImageReadMode.RGB)
-
-    eval_transform = get_transform()
 
     model.eval()
     with torch.no_grad():
         image = image.float() / 255.0
-        x = eval_transform(image)
-        x = x[:3, ...].to(device)
-        predictions = model([x, ])
+        predictions = model([image, ])
         pred = predictions[0]
 
     pred_labels = [f"pedestrian: {score:.3f}" for label, score in zip(pred["labels"], pred["scores"])]
