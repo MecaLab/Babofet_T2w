@@ -1,7 +1,7 @@
 import os
 import shutil
 
-source_folder = "/scratch/lbaptiste/data/dataset/babofet/fetalBet_masks_V2"
+source_folder = "/scratch/lbaptiste/data/dataset/babofet/fetalBET_masks_V2"
 
 main_dst_folder = "scratch/lbaptiste/data/dataset/babofet/derivatives"
 
