@@ -10,11 +10,13 @@ for subj in os.listdir(source_folder):
 
     subj_path_dst = os.path.join(main_dst_folder, subj)
 
-    folder_output = os.path.join(subj_path_dst, "fetalBet_masks_v2")
+    folder_output = os.path.join(subj_path_dst, "fetalbet_masks_v2")
 
-    print(folder_output, subj_path_dst)
     if not os.path.exists(folder_output):
         os.makedirs(folder_output)
+
+    print(folder_output, subj_path_dst)
+    print(os.path.exists(folder_output), os.path.exists(subj_path_dst))
 
     for file in os.listdir(subj_path_src):
         if "HASTE" in file:
