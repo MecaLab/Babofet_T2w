@@ -165,12 +165,15 @@ def inference_model(img_path):
     pred_labels = [f"pedestrian: {score:.3f}" for label, score in zip(pred["labels"], pred["scores"])]
     pred_boxes = pred["boxes"].long()
     image_uint8 = (image_float * 255).to(torch.uint8)
-    print(image_uint8.shape)
+
     output_image = draw_bounding_boxes(image_uint8, pred_boxes, pred_labels, colors="red")
 
     masks = (pred["masks"] > 0.7).squeeze(1)
-    output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="blue")
+    print(masks)
 
+    output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="blue")
+    print(output_image)
+    print(image_uint8.shape)
     plt.imshow(output_image.permute(1, 2, 0).numpy())
     plt.savefig("tmp.png")
 
