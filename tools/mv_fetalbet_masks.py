@@ -16,8 +16,9 @@ for subj in os.listdir(source_folder):
         os.makedirs(folder_output)
 
     for file in os.listdir(subj_path_src):
-        print(file)
         if "HASTE" in file:
+            print("here")
+            exit()
             file_path = os.path.join(subj_path_src, file)
 
             shutil.copy2(file_path, os.path.join(folder_output, file))
