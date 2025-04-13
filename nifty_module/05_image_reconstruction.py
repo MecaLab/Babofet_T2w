@@ -77,14 +77,13 @@ def get_all_subjects(path):
     list_subjs = []
     for subj in os.listdir(path):
         list_subjs.append(subj)
+        break
+    print(list_subjs)
     return list_subjs
-
 
 
 if __name__ == "__main__":
     base_path = cfg.MESO_DATA_PATH
-
-    fetalbet_mask_path = "/scratch/lbaptiste/data/fetalBet_masks_V2"
 
     subject_IDs = os.listdir(base_path)
 
