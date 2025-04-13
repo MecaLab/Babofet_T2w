@@ -77,8 +77,6 @@ def get_all_subjects(path):
     list_subjs = []
     for subj in os.listdir(path):
         list_subjs.append(subj)
-        break
-    print(list_subjs)
     return list_subjs
 
 
