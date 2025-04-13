@@ -178,7 +178,8 @@ if __name__ == "__main__":
             if not os.path.exists(motion_subfolder):
                 os.mkdir(motion_subfolder)
 
-            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm{SUFFIX_EXP}_pipeline.nii.gz"
+            #recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm{SUFFIX_EXP}_pipeline.nii.gz"
+            recons_haste_subj_output_dir = "tmp.nii.gz"
 
             write_slurm_file_nifty(
                 subj=subject,
