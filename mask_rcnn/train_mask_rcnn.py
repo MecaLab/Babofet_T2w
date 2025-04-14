@@ -65,6 +65,7 @@ class MRISlicesDataset(Dataset):
             if subject not in LIST_SUBJECTS:
                 continue
 
+            print(subject)
             subject_path = os.path.join(self.root_dir, subject)
 
             anats_path = os.path.join(subject_path, "denoising")
@@ -374,7 +375,6 @@ train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True, collate_fn=
 val_loader = DataLoader(val_dataset, batch_size=8, shuffle=False, collate_fn=collate_fn)
 test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False, collate_fn=collate_fn)
 
-
 num_classes = 1 + 1  # background + class, ie brain
 model = get_model(num_classes).to(device)
 
@@ -386,8 +386,9 @@ scaler = torch.cuda.amp.GradScaler()
 save_dir = "checkpoints"
 os.makedirs(save_dir, exist_ok=True)
 
-# checkpoint_weight = train_model(num_epochs)
-checkpoint_weight = os.path.join(save_dir, "best_model_checkpoint_epoch_7.pth")
+best_epoch_model = train_model(num_epochs)
+
+checkpoint_weight = os.path.join(save_dir, f"best_model_checkpoint_epoch_{best_epoch_model}.pth")
 
 model = load_model(checkpoint_weight, device)
 
