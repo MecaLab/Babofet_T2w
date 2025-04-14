@@ -273,6 +273,7 @@ def train_one_epoch(model, data_loader, device, optimizer, print_freq, epoch, sc
             writer.add_scalar('Loss/train', losses.item(), epoch * len(data_loader) + i)
             for k, v in loss_dict.items():
                 writer.add_scalar(f'Loss/train_{k}', v.item(), epoch * len(data_loader) + i)
+            break
 
     print(f"Average Loss: {metric_logger.meters['loss'].global_avg:.4f}")
     writer.add_scalar('Loss/avg_train', metric_logger.meters['loss'].global_avg, epoch)
@@ -281,6 +282,8 @@ def train_one_epoch(model, data_loader, device, optimizer, print_freq, epoch, sc
 def evaluate(model, data_loader, device, epoch, save_dir):
     model.eval()
     metric = MeanAveragePrecision(iou_type="bbox")
+
+    metric = metric.to(device)
     total_iou = 0
     total_detections = 0
     header = "Validation:"
