@@ -27,7 +27,7 @@ MAIN_PATH="{main_path}"
 INPUT_PATH="${{MAIN_PATH}}/{denoising_folder}"
 MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
 
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_pipeline"
+OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_full_pipeline"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
 """
@@ -106,7 +106,6 @@ if __name__ == "__main__":
         "sub-Aziza_ses-05",  # "sub-Aziza_ses-05", "sub-Aziza_ses-09",
         # "sub-Formule_ses-08", # "sub-Formule_ses-05", "sub-Formule_ses-09",
     ]
-
 
     # list_subjs = get_all_subjects(cfg.MESO_OUTPUT_PATH)
 
