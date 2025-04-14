@@ -10,17 +10,12 @@ def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files,
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='b219'
-#SBATCH --partition=volta
+#SBATCH --partition=skylake
 #SBATCH --time=6:00:00
-#SBATCH --gres=gpu:1
 #SBATCH -c 1
-#SBATCH --mem-per-cpu=50G
+#SBATCH --mem-per-cpu=48G
 #SBATCH -o recon_pipeline_niftymic_{subj}.out
 #SBATCH -e recon_pipeline_niftymic_{subj}.err
-
-module purge
-module load userspace/all
-module load cuda/10.2
 
 MAIN_PATH="{main_path}"
 
