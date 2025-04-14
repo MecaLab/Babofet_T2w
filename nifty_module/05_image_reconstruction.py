@@ -27,7 +27,7 @@ MAIN_PATH="{main_path}"
 INPUT_PATH="${{MAIN_PATH}}/{denoising_folder}"
 MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
 
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic"
+OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_pipeline"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
 """
@@ -53,10 +53,10 @@ singularity exec \\
     niftymic_reconstruct_volume  \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --output /output/$OUTPUT_FILE \\
+        --dir-output /output/ \\
         --isotropic-resolution 0.5 \\
+        --bias-field-correction 0 \\
         
-./mv_recons.sh {subj} {mode_bm} {suffix}
 """
     # ./mv_recons.sh {subj} {mode_bm} {suffix}
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -99,15 +99,16 @@ if __name__ == "__main__":
 
     denoising_folder = "denoising"
 
-    SUFFIX_EXP = "_FETALBET"  # need to be updated for every exp
+    SUFFIX_EXP = "_run_pipeline"  # need to be updated for every exp
 
-    """list_subjs = [
+    list_subjs = [
         # "sub-Fabienne_ses-09",
-        "sub-Aziza_ses-01",  # "sub-Aziza_ses-05", "sub-Aziza_ses-09",
+        "sub-Aziza_ses-05",  # "sub-Aziza_ses-05", "sub-Aziza_ses-09",
         # "sub-Formule_ses-08", # "sub-Formule_ses-05", "sub-Formule_ses-09",
-    ]"""
+    ]
 
-    list_subjs = get_all_subjects(cfg.MESO_OUTPUT_PATH)
+
+    # list_subjs = get_all_subjects(cfg.MESO_OUTPUT_PATH)
 
     for subject in subject_IDs:
         if subject not in list_subjs:
