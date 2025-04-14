@@ -350,14 +350,13 @@ def train_model(num_epochs):
 
 
 def load_model(checkpoint_weight, device):
-    checkpoint_path = os.path.join(save_dir, f"best_model_checkpoint_epoch_{checkpoint_weight}.pth")
-    print(f"Loaded {checkpoint_path}")
-    # model = detection.fasterrcnn_mobilenet_v3_large_fpn(pretrained=False, num_classes=num_classes, box_nms_thresh=0.3)
     model = get_model(2)
-    checkpoint = torch.load(checkpoint_path, map_location=device)
+    checkpoint = torch.load(checkpoint_weight, map_location=device)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)
     model.eval()
+
+    print(f"Loaded {checkpoint_path}")
     return model
 
 custom_ds = MRISlicesDataset(base_path)
@@ -367,6 +366,8 @@ train_idx, val_idx, test_idx = split_dataset_by_subject(custom_ds)
 train_dataset = Subset(custom_ds, train_idx)
 val_dataset = Subset(custom_ds, val_idx)
 test_dataset = Subset(custom_ds, test_idx)
+
+print(len(train_dataset), len(val_dataset), len(test_dataset))
 
 # Exemple d’utilisation
 train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True, collate_fn=collate_fn)
