@@ -418,7 +418,7 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
         return None
 
     nib_path = os.path.join(subj_path, f"{mode}_brainmask")
-    vol_ref = nib.load(os.path.join(nib_path, f"{subj_session}_haste_3DHR_{mode}_bm_pipeline.nii.gz")).get_fdata()
+    vol_ref = nib.load(os.path.join(nib_path, f"exp_param/{subj_session}_haste_3DHR_{mode}_bm_pipeline.nii.gz")).get_fdata()
 
     vols = {
         "default": vol_ref
