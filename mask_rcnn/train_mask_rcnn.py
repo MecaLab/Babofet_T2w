@@ -316,6 +316,7 @@ def evaluate(model, data_loader, device, epoch, save_dir):
             metric.update(preds, targs)
 
             progress_bar.update(1)
+            break 
 
     results = metric.compute()
     print("mAP results:")
