@@ -39,8 +39,8 @@ device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cp
 
 LIST_SUBJECTS = [
     "sub-Aziza_ses-01", "sub-Aziza_ses-05", "sub-Aziza_ses-09" 
-    "sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-08", "sub-Fabienne_ses-09",
-    "sub-Formule_ses-01", "sub-Formule_ses-05", "sub-Formule_ses-09"
+    "sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09",
+    "sub-Formule_ses-01", "sub-Formule_ses-05", "sub-Formule_ses-08", "sub-Formule_ses-09"
 ]
 
 
@@ -390,7 +390,7 @@ os.makedirs(save_dir, exist_ok=True)
 
 best_epoch_model = train_model(num_epochs)
 
-checkpoint_weight = os.path.join(save_dir, f"best_model_checkpoint_epoch_{best_epoch_model}.pth")
+# checkpoint_weight = os.path.join(save_dir, f"best_model_checkpoint_epoch_{best_epoch_model}.pth")
 
 model = load_model(checkpoint_weight, device)
 
