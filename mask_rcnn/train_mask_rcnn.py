@@ -370,9 +370,9 @@ test_dataset = Subset(custom_ds, test_idx)
 print(len(train_dataset), len(val_dataset), len(test_dataset))
 
 # Exemple d’utilisation
-train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True, collate_fn=collate_fn)
-val_loader = DataLoader(val_dataset, batch_size=8, shuffle=False, collate_fn=collate_fn)
-test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False, collate_fn=collate_fn)
+train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True, collate_fn=collate_fn)
+val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False, collate_fn=collate_fn)
+test_loader = DataLoader(test_dataset, batch_size=16, shuffle=False, collate_fn=collate_fn)
 
 num_classes = 1 + 1  # background + class, ie brain
 model = get_model(num_classes).to(device)
