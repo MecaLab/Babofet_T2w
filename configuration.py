@@ -8,7 +8,6 @@ import os
 
 # LOCAL PATH
 MAIN_PATH = "W:/meca/data/Fetus/datasets/Babofet"
-DATA_PATH = os.path.join(MAIN_PATH, "subjects")
 OUTPUT_PATH = os.path.join(MAIN_PATH, "processing")
 
 # MESOCENTRE PATH
