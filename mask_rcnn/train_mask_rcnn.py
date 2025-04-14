@@ -34,11 +34,14 @@ import nibabel as nib
 import os
 
 
-base_path = "/scratch/lbaptiste/data/recons_folder"
+base_path = "/scratch/lbaptiste/data/dataset/babofet/derivatives"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-LIST_SUBJECTS = ["Aziza", "Fabienne", "Formule"]
-LIST_SESSION = ["ses01", "ses05", "ses09"]
+LIST_SUBJECTS = [
+    "sub-Aziza_ses-01", "sub-Aziza_ses-05", "sub-Aziza_ses-09" 
+    "sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-08", "sub-Fabienne_ses-09",
+    "sub-Formule_ses-01", "sub-Formule_ses-05", "sub-Formule_ses-09"
+]
 
 
 def load_nii_file(file_path):
@@ -58,6 +61,33 @@ class MRISlicesDataset(Dataset):
         self._load_all()
 
     def _load_all(self):
+        for subject in os.listdir(self.root_dir):
+            if subject not in LIST_SUBJECTS:
+                continue
+
+            subject_path = os.path.join(self.root_dir, subject)
+
+            anats_path = os.path.join(subject_path, "denoising")
+            bms_path = os.path.join(subject_path, "manual_masks")
+
+            for file in os.listdir(anats_path):
+                bm_filename = file.replace(".nii", "_mask.nii.gz")
+
+                anat_path = os.path.join(anats_path, file)
+                bm_path = os.path.join(bms_path, bm_filename)
+
+                if not os.path.exists(bm_path):
+                    continue
+
+                img = load_nii_file(anat_path)
+                if img.shape[2] < 20:
+                    continue
+                for i in range(0, img.shape[2], self.slice_step):
+                    self.samples.append((anat_path, bm_path, i, subject))
+
+        print("Fin chargement des donnees")
+
+    """def _load_all(self):
         for subject in os.listdir(self.root_dir):
             if subject not in LIST_SUBJECTS:
                 continue
@@ -82,8 +112,8 @@ class MRISlicesDataset(Dataset):
                         continue
                     for i in range(0, img.shape[2], self.slice_step):
                         self.samples.append((anat_path, bm_path, i, subject))
-        
-        print("Fin chargement des donnees")
+
+        print("Fin chargement des donnees")"""
 
     def __getitem__(self, idx):
         anat_path, bm_path, slice_idx, _ = self.samples[idx]
