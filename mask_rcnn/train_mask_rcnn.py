@@ -34,7 +34,7 @@ import nibabel as nib
 import os
 
 
-base_path = "/scratch/lbaptiste/data/dataset/babofet/derivatives"
+base_path = "/scratch/lbaptiste/data/recons_folder"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 LIST_SUBJECTS = ["Aziza", "Fabienne", "Formule"]
