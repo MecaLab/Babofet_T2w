@@ -161,7 +161,7 @@ class MRISlicesDataset(Dataset):
         return len(self.samples)
 
 
-def split_dataset_by_subject(dataset, test_size=0.1, val_size=0.1, random_state=42):
+def split_dataset_by_subject(dataset, test_size=0.1, val_size=0.2, random_state=42):
     # Organiser les indices par subject
     subject_to_indices = defaultdict(list)
     for idx, sample in enumerate(dataset.samples):
@@ -235,6 +235,7 @@ def get_model(num_classes):
 
 writer = SummaryWriter(log_dir='runs/brain_seg')
 
+
 def train_one_epoch(model, data_loader, device, optimizer, print_freq, epoch, scaler=None):
     model.train()
     metric_logger = utils.MetricLogger(delimiter="  ")
@@ -301,6 +302,12 @@ def evaluate(model, data_loader, device, epoch, save_dir):
                 {"boxes": tgt["boxes"].to(device), "labels": tgt["labels"].to(device)}
                 for tgt in targets
             ]
+
+            for j, pred in enumerate(preds):
+                print(
+                    f"Prediction {j} - boxes device: {pred['boxes'].device}, scores device: {pred['scores'].device}, labels device: {pred['labels'].device}")
+            for j, targ in enumerate(targs):
+                print(f"Target {j} - boxes device: {targ['boxes'].device}, labels device: {targ['labels'].device}")
 
             # Update metric for mAP calculation
             metric.update(preds, targs)
