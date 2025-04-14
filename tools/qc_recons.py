@@ -437,11 +437,18 @@ def qc_plot_table_params(subj_path, mode, subject, subj_session):
     fig, axes = plt.subplots(len(indices), len(vols), figsize=(3*len(vols), 2*len(indices)), facecolor='white')
     for i, idx in enumerate(indices):
         for j, (param, vol) in enumerate(vols.items()):
-            ax = axes[i, j]
-            axes[0, j].set_title(f"{param}", fontsize=12, fontweight='bold')
-            slice_data = vol[:, :, idx]
-            ax.imshow(slice_data, cmap="jet")
-            ax.axis("off")
+            try:
+                ax = axes[i, j]
+                axes[0, j].set_title(f"{param}", fontsize=12, fontweight='bold')
+                slice_data = vol[:, :, idx]
+                ax.imshow(slice_data, cmap="jet")
+                ax.axis("off")
+            except IndexError:
+                ax = axes[i]
+                axes[i, j].set_title(f"{param}", fontsize=12, fontweight='bold')
+                slice_data = vol[:, :, idx]
+                ax.imshow(slice_data, cmap="jet")
+                ax.axis("off")
 
     # Ajustement de la mise en page
     plt.suptitle(subj_session)
