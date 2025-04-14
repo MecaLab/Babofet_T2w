@@ -16,7 +16,7 @@ if __name__ == "__main__":
     datas = {}
 
     exp_list = [True]  # True] #    True, True, True, True]
-    params = ["_FETALBET"]  # "T-1" # "B1", "B1_T-1", "B1_T13", "B1_T46"]
+    params = ["FETALBET"]  # "T-1" # "B1", "B1_T-1", "B1_T13", "B1_T46"]
     names = ["fetalbet_mask"]  # "threshold_-1"] #  "bias-field-correction", "bias-field-correction_threshold_-1", "bias-field-correction_threshold_0.1_0.3", "bias-field-correction_threshold_0.4_0.6"]
 
     for i in range(len(exp_list)):
