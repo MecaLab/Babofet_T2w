@@ -273,7 +273,6 @@ def train_one_epoch(model, data_loader, device, optimizer, print_freq, epoch, sc
             writer.add_scalar('Loss/train', losses.item(), epoch * len(data_loader) + i)
             for k, v in loss_dict.items():
                 writer.add_scalar(f'Loss/train_{k}', v.item(), epoch * len(data_loader) + i)
-            break
 
     print(f"Average Loss: {metric_logger.meters['loss'].global_avg:.4f}")
     writer.add_scalar('Loss/avg_train', metric_logger.meters['loss'].global_avg, epoch)
@@ -316,7 +315,6 @@ def evaluate(model, data_loader, device, epoch, save_dir):
             metric.update(preds, targs)
 
             progress_bar.update(1)
-            break 
 
     results = metric.compute()
     print("mAP results:")
@@ -388,7 +386,7 @@ test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False, collate_fn=c
 num_classes = 1 + 1  # background + class, ie brain
 model = get_model(num_classes).to(device)
 
-num_epochs = 10
+num_epochs = 5
 params = [p for p in model.parameters() if p.requires_grad]
 optimizer = torch.optim.SGD(params, lr=0.0005, momentum=0.9, weight_decay=0.0005)
 scaler = torch.cuda.amp.GradScaler()
