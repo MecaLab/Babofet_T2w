@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import torchvision
-import torchaudio
 from torchvision import models
 from torchsummary import summary
 import torch.nn.functional as F
