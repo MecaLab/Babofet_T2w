@@ -37,6 +37,9 @@ import os
 base_path = "/scratch/lbaptiste/data/dataset/babofet/derivatives"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
+LIST_SUBJECTS = ["Aziza", "Fabienne", "Formule"]
+LIST_SESSION = ["ses01", "ses05", "ses09"]
+
 
 def load_nii_file(file_path):
     img = nib.load(file_path)
@@ -56,8 +59,12 @@ class MRISlicesDataset(Dataset):
 
     def _load_all(self):
         for subject in os.listdir(self.root_dir):
+            if subject not in LIST_SUBJECTS:
+                continue
             subject_path = os.path.join(self.root_dir, subject)
             for session in os.listdir(subject_path):
+                if session not in LIST_SESSION:
+                    continue
                 anats_path = os.path.join(subject_path, session, "stacks")
                 bms_path = os.path.join(subject_path, session, "brainmask")
 
