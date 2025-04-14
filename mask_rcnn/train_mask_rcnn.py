@@ -31,17 +31,10 @@ from torchmetrics.detection.mean_ap import MeanAveragePrecision
 
 import PIL
 import nibabel as nib
-
-import json
-
 import os
-import sys
-sys.path.insert(0, os.path.abspath(os.curdir))
-import configuration as cfg
-import subprocess
 
 
-base_path = cfg.MESO_OUTPUT_PATH
+base_path = "/scratch/lbaptiste/data/dataset/babofet/derivatives"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 
