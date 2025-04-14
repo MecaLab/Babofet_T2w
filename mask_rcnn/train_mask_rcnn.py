@@ -294,11 +294,11 @@ def evaluate(model, data_loader, device, epoch, save_dir):
 
             # Convert outputs for torchmetrics
             preds = [
-                {"boxes": out["boxes"], "scores": out["scores"], "labels": out["labels"]}
+                {"boxes": out["boxes"].to(device), "scores": out["scores"].to(device), "labels": out["labels"].to(device)}
                 for out in outputs
             ]
             targs = [
-                {"boxes": tgt["boxes"], "labels": tgt["labels"]}
+                {"boxes": tgt["boxes"].to(device), "labels": tgt["labels"].to(device)}
                 for tgt in targets
             ]
 
