@@ -356,7 +356,7 @@ def load_model(checkpoint_weight, device):
     model.to(device)
     model.eval()
 
-    print(f"Loaded {checkpoint_path}")
+    print(f"Loaded {checkpoint_weight}")
     return model
 
 custom_ds = MRISlicesDataset(base_path)
