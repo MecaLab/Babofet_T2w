@@ -82,7 +82,7 @@ class MRISlicesDataset(Dataset):
                         continue
                     for i in range(0, img.shape[2], self.slice_step):
                         self.samples.append((anat_path, bm_path, i, subject))
-
+        
         print("Fin chargement des donnees")
 
     def __getitem__(self, idx):
