@@ -312,7 +312,6 @@ def evaluate(model, data_loader, device, epoch, save_dir):
     print(results)
 
     # Log mAP to TensorBoard
-
     for k, v in results.items():
         if v.numel() == 1:  # Single element tensor
             writer.add_scalar(f'mAP/{k}', v.item(), epoch)
