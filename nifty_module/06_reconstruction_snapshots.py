@@ -47,8 +47,5 @@ if __name__ == "__main__":
 
             # qc_recons.qc_plot_table_params(subj_path, mode, subject, subj_session)
             # qc_recons.plot_histo(subj_path, mode, subject, subj_session)
-            print("OK")
-            exit()
-
 
 
