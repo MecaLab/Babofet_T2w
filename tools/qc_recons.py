@@ -375,7 +375,8 @@ def extract_param_name(file):
 
 def qc_intensity(subj_path, subject, mode, subj_session):
     base_path = os.path.join(subj_path, f"{mode}_brainmask")
-    volumes = [nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_{mode}_bm_pipeline.nii.gz")).get_fdata()]
+    """volumes = [nib.load(os.path.join(base_path, f"{subj_session}_haste_3DHR_{mode}_bm_pipeline.nii.gz")).get_fdata()]"""
+    volumes = []
     param_name = ["default"]
     exp_param_folder = os.path.join(base_path, "exp_param")
     if os.path.exists(exp_param_folder):
