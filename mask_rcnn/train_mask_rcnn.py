@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import torchvision
 from torchvision import models
-from torchsummary import summary
 import torch.nn.functional as F
 import torchvision.transforms as T
 from torchvision import datasets, transforms
@@ -10,9 +9,6 @@ from tqdm import tqdm
 from torch.utils.data import DataLoader, Dataset, random_split, Subset
 from torch.utils.tensorboard import SummaryWriter
 
-from torchvision.datasets import CocoDetection
-from torchvision.transforms import ToTensor
-from torchvision.models.detection import fasterrcnn_resnet50_fpn
 from torchvision.transforms.functional import to_pil_image
 from torchvision.ops.boxes import masks_to_boxes
 from torchvision.utils import draw_bounding_boxes, draw_segmentation_masks
@@ -20,11 +16,8 @@ from torchvision.utils import draw_bounding_boxes, draw_segmentation_masks
 import utils
 
 import torchvision.models.detection as detection
-from torchvision.models.detection import FasterRCNN
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
-from torchvision.models.detection.transform import GeneralizedRCNNTransform
-
 import random
 from sklearn.model_selection import train_test_split
 from collections import defaultdict
