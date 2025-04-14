@@ -368,3 +368,5 @@ checkpoint_weight = os.path.join(save_dir, "best_model_checkpoint_epoch_7.pth")
 
 model = load_model(checkpoint_weight, device)
 
+print("OK")
+
