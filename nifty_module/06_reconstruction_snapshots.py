@@ -45,8 +45,8 @@ if __name__ == "__main__":
                 else:
                     datas[session][mode]["anat"] = os.path.join(base_path, session, f"exp_param/{mode}_brainmask", f"sub-{subject}_ses-{session[3:]}_haste_3DHR_{mode}_bm_{param}_pipeline.nii.gz")
 
-            qc_recons.qc_plot_table_params(subj_path, mode, subject, subj_session)
-            qc_recons.plot_histo(subj_path, mode, subject, subj_session)
+            # qc_recons.qc_plot_table_params(subj_path, mode, subject, subj_session)
+            # qc_recons.plot_histo(subj_path, mode, subject, subj_session)
             print("OK")
             exit()
 
