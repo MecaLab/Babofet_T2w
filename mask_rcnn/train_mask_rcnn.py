@@ -305,12 +305,6 @@ def evaluate(model, data_loader, device, epoch, save_dir):
                 for tgt in targets
             ]
 
-            for j, pred in enumerate(preds):
-                print(
-                    f"Prediction {j} - boxes device: {pred['boxes'].device}, scores device: {pred['scores'].device}, labels device: {pred['labels'].device}")
-            for j, targ in enumerate(targs):
-                print(f"Target {j} - boxes device: {targ['boxes'].device}, labels device: {targ['labels'].device}")
-
             # Update metric for mAP calculation
             metric.update(preds, targs)
 
@@ -386,7 +380,7 @@ test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False, collate_fn=c
 num_classes = 1 + 1  # background + class, ie brain
 model = get_model(num_classes).to(device)
 
-num_epochs = 5
+num_epochs = 10
 params = [p for p in model.parameters() if p.requires_grad]
 optimizer = torch.optim.SGD(params, lr=0.0005, momentum=0.9, weight_decay=0.0005)
 scaler = torch.cuda.amp.GradScaler()
