@@ -423,7 +423,7 @@ for images, targets in test_loader:
         output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="blue")
 
         plt.figure(figsize=(12, 12))
-        plt.imshow(output_image.permute(1, 2, 0))
+        plt.imshow(output_image.cpu().permute(1, 2, 0))
         plt.savefig("tmp.png")
 
         break
