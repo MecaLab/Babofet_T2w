@@ -33,13 +33,12 @@ import PIL
 import nibabel as nib
 import os
 
-
 base_path = "/scratch/lbaptiste/data/dataset/babofet/derivatives"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 LIST_SUBJECTS = [
-    "sub-Aziza_ses-01", "sub-Aziza_ses-05", "sub-Aziza_ses-09" 
-    "sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09",
+    "sub-Aziza_ses-01", "sub-Aziza_ses-05", "sub-Aziza_ses-09"
+                                            "sub-Fabienne_ses-01", "sub-Fabienne_ses-05", "sub-Fabienne_ses-09",
     "sub-Formule_ses-01", "sub-Formule_ses-05", "sub-Formule_ses-08", "sub-Formule_ses-09"
 ]
 
@@ -297,7 +296,8 @@ def evaluate(model, data_loader, device, epoch, save_dir):
 
             # Convert outputs for torchmetrics
             preds = [
-                {"boxes": out["boxes"].to(device), "scores": out["scores"].to(device), "labels": out["labels"].to(device)}
+                {"boxes": out["boxes"].to(device), "scores": out["scores"].to(device),
+                 "labels": out["labels"].to(device)}
                 for out in outputs
             ]
             targs = [
@@ -362,6 +362,7 @@ def load_model(checkpoint_weight, device):
     print(f"Loaded {checkpoint_weight}")
     return model
 
+
 custom_ds = MRISlicesDataset(base_path)
 
 train_idx, val_idx, test_idx = split_dataset_by_subject(custom_ds)
@@ -395,5 +396,19 @@ os.makedirs(save_dir, exist_ok=True)
 best_weights = os.path.join(save_dir, f"best_model_checkpoint_epoch_{8}.pth")
 model = load_model(best_weights, device)
 
-print("OK")
+for images, targets in test_loader:
+    images = [img.to(device) for img in images]
+    targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
+    with torch.no_grad():
+        outputs = model(images)
+
+    # Afficher les résultats
+    for i, output in enumerate(outputs):
+        print(f"Image {i}:")
+        print(f"Boxes: {output['boxes']} | True: {targets[i]['boxes']}")
+        print(f"Labels: {output['labels']} | True: {targets[i]['labels']}")
+        print(f"Scores: {output['scores']} | True: {targets[i]['scores']}")
+        print(f"Masks: {output['masks']} | True: {targets[i]['masks']}")
+
+    break
