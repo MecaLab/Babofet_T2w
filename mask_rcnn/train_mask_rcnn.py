@@ -421,7 +421,7 @@ for images, targets in test_loader:
 
         masks = (output["masks"] > 0.7).squeeze(1)
         for mask in masks:
-            output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="red")
+            output_image = draw_segmentation_masks(output_image, mask, alpha=0.3, colors="red")
 
         plt.figure(figsize=(12, 12))
         plt.imshow(to_pil_image(output_image))
