@@ -406,9 +406,9 @@ for images, targets in test_loader:
     # Afficher les résultats
     for i, output in enumerate(outputs):
         print(f"Image {i}:")
-        print(f"Boxes: {output['boxes']} | True: {targets[i]['boxes']}")
-        print(f"Labels: {output['labels']} | True: {targets[i]['labels']}")
-        print(f"Scores: {output['scores']} | True: {targets[i]['scores']}")
-        print(f"Masks: {output['masks']} | True: {targets[i]['masks']}")
+        print(f"\tScores: {output['scores']}")
+        print(f"\tBoxes: {output['boxes']} | True: {targets[i]['boxes']}")
+        print(f"\tLabels: {output['labels']} | True: {targets[i]['labels']}")
+        print(f"\tMasks: {output['masks']} | True: {targets[i]['masks']}")
 
     break
