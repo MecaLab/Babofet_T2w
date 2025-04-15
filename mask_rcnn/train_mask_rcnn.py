@@ -409,21 +409,24 @@ for images, targets in test_loader:
         print(f"\tScores: {output['scores']}")
         print(f"\tBoxes: {output['boxes']} | True: {targets[i]['boxes']}")
         print(f"\tLabels: {output['labels']} | True: {targets[i]['labels']}")
-        print(f"\tMasks: {output['masks']} | True: {targets[i]['masks']}")
 
         image = images[i]
 
-        image = (255.0 * (image - image.min()) / (image.max() - image.min())).to(torch.uint8)
-        image = image[:3, ...]
+        if image.dtype != torch.uint8:
+            image = (image * 255).clamp(0, 255).to(torch.uint8)
+        if image.shape[0] == 1:
+            image = image.repeat(3, 1, 1)
+
+
         pred_labels = [f"brain: {score:.3f}" for label, score in zip(output["labels"], output["scores"])]
         pred_boxes = output["boxes"].long()
         output_image = draw_bounding_boxes(image, pred_boxes, pred_labels, colors="red")
 
         masks = (output["masks"] > 0.7).squeeze(1)
-        output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="blue")
+        output_image = draw_segmentation_masks(image, masks, alpha=0.5, colors="blue")
 
         plt.figure(figsize=(12, 12))
-        plt.imshow(output_image.cpu().permute(1, 2, 0))
+        plt.imshow(to_pil_image(output_image))
         plt.savefig("tmp.png")
 
         break
