@@ -415,11 +415,11 @@ for images, targets in test_loader:
 
         image = (255.0 * (image - image.min()) / (image.max() - image.min())).to(torch.uint8)
         image = image[:3, ...]
-        pred_labels = [f"brain: {score:.3f}" for label, score in zip(outputs["labels"], outputs["scores"])]
-        pred_boxes = outputs["boxes"].long()
+        pred_labels = [f"brain: {score:.3f}" for label, score in zip(output["labels"], output["scores"])]
+        pred_boxes = output["boxes"].long()
         output_image = draw_bounding_boxes(image, pred_boxes, pred_labels, colors="red")
 
-        masks = (outputs["masks"] > 0.7).squeeze(1)
+        masks = (output["masks"] > 0.7).squeeze(1)
         output_image = draw_segmentation_masks(output_image, masks, alpha=0.5, colors="blue")
 
         plt.figure(figsize=(12, 12))
