@@ -396,7 +396,7 @@ os.makedirs(save_dir, exist_ok=True)
 best_weights = os.path.join(save_dir, f"best_model_checkpoint_epoch_{8}.pth")
 model = load_model(best_weights, device)
 
-for images, targets in test_loader:
+for i, (images, targets) in enumerate(test_loader):
     images = [img.to(device) for img in images]
     targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
@@ -404,9 +404,9 @@ for images, targets in test_loader:
         outputs = model(images)
 
     # Afficher les résultats
-    for i, output in enumerate(outputs):
+    for j, output in enumerate(outputs):
 
-        image = images[i]
+        image = images[j]
 
         if image.dtype != torch.uint8:
             image = (image * 255).clamp(0, 255).to(torch.uint8)
@@ -425,5 +425,4 @@ for images, targets in test_loader:
 
         plt.figure(figsize=(12, 12))
         plt.imshow(to_pil_image(output_image))
-        plt.savefig(f"tmp_{i}.png")
-    break
+        plt.savefig(f"output_png/tmp_{j}.png")
