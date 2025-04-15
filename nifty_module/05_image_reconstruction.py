@@ -101,7 +101,7 @@ if __name__ == "__main__":
         # "sub-Fabienne_ses-09",
         # "sub-Aziza_ses-05",  # "sub-Aziza_ses-05", "sub-Aziza_ses-09",
         # "sub-Formule_ses-08", # "sub-Formule_ses-05", "sub-Formule_ses-09",
-        "sub-Borgne_ses-01", # "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
+        "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
     ]
 
     # list_subjs = get_all_subjects(cfg.MESO_OUTPUT_PATH)
@@ -187,6 +187,6 @@ if __name__ == "__main__":
                 denoising_folder=denoising_folder
             )
 
-            # subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
             # exit()
