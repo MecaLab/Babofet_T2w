@@ -417,6 +417,7 @@ for images, targets in test_loader:
         if image.shape[0] == 1:
             image = image.repeat(3, 1, 1)
 
+        image = image.cpu()
 
         pred_labels = [f"brain: {score:.3f}" for label, score in zip(output["labels"], output["scores"])]
         pred_boxes = output["boxes"].long()
