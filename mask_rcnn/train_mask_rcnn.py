@@ -388,11 +388,12 @@ scaler = torch.cuda.amp.GradScaler()
 save_dir = "checkpoints"
 os.makedirs(save_dir, exist_ok=True)
 
-best_epoch_model = train_model(num_epochs)
+# best_epoch_model = train_model(num_epochs)
 
-checkpoint_weight = os.path.join(save_dir, f"best_model_checkpoint_epoch_{best_epoch_model}.pth")
+# checkpoint_weight = os.path.join(save_dir, f"best_model_checkpoint_epoch_{best_epoch_model}.pth")
 
-model = load_model(checkpoint_weight, device)
+best_weights = os.path.join(save_dir, f"best_model_checkpoint_epoch_{8}.pth")
+model = load_model(best_weights, device)
 
 print("OK")
 
