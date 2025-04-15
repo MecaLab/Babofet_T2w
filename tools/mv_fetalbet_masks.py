@@ -15,7 +15,10 @@ for subj in os.listdir(source_folder):
 
     folder_output = os.path.join(subj_path_dst, "fetalbet_masks_v2")
 
-    if not os.path.exists(folder_output):
+    if os.path.exists(folder_output):
+        print(f"Skip {subj} bc it already exists")
+        continue
+    else:
         os.makedirs(folder_output)
 
     for file in os.listdir(subj_path_src):
