@@ -405,10 +405,6 @@ for images, targets in test_loader:
 
     # Afficher les résultats
     for i, output in enumerate(outputs):
-        print(f"Image {i}:")
-        print(f"\tScores: {output['scores']}")
-        print(f"\tBoxes: {output['boxes']} | True: {targets[i]['boxes']}")
-        print(f"\tLabels: {output['labels']} | True: {targets[i]['labels']}")
 
         image = images[i]
 
@@ -430,5 +426,5 @@ for images, targets in test_loader:
         plt.figure(figsize=(12, 12))
         plt.imshow(to_pil_image(output_image))
         plt.savefig("tmp.png")
-
         break
+    break
