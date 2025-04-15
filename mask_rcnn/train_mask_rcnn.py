@@ -425,6 +425,5 @@ for images, targets in test_loader:
 
         plt.figure(figsize=(12, 12))
         plt.imshow(to_pil_image(output_image))
-        plt.savefig("tmp.png")
-        break
+        plt.savefig(f"tmp_{i}.png")
     break
