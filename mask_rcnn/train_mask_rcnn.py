@@ -419,10 +419,10 @@ for i, (images, targets) in enumerate(test_loader):
         pred_boxes = output["boxes"].long()
         output_image = draw_bounding_boxes(image, pred_boxes, pred_labels, colors="blue")
 
-        masks = (output["masks"] > 0.7).squeeze(1)
+        masks = (output["masks"] > 0.8).squeeze(1)
         for mask in masks:
             output_image = draw_segmentation_masks(output_image, mask, alpha=0.3, colors="red")
 
         plt.figure(figsize=(12, 12))
         plt.imshow(to_pil_image(output_image))
-        plt.savefig(f"output_png/tmp_{j}.png")
+        plt.savefig(f"output_png/tmp_{i}.png")
