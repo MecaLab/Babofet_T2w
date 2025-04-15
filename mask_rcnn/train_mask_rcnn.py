@@ -425,4 +425,4 @@ for i, (images, targets) in enumerate(test_loader):
 
         plt.figure(figsize=(12, 12))
         plt.imshow(to_pil_image(output_image))
-        plt.savefig(f"output_png/tmp_{i}.png")
+        plt.savefig(f"output_png/tmp_{i}_{j}.png")
