@@ -11,7 +11,7 @@ def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files,
     
 #SBATCH --account='b219'
 #SBATCH --partition=skylake
-#SBATCH --time=8:00:00
+#SBATCH --time=4:00:00
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=48G
 #SBATCH -o recon_pipeline_niftymic_{subj}.out
