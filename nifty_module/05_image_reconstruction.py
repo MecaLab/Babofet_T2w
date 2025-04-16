@@ -11,7 +11,7 @@ def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files,
     
 #SBATCH --account='b219'
 #SBATCH --partition=skylake
-#SBATCH --time=5:00:00
+#SBATCH --time=8:00:00
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=48G
 #SBATCH -o recon_pipeline_niftymic_{subj}.out
@@ -22,7 +22,7 @@ MAIN_PATH="{main_path}"
 INPUT_PATH="${{MAIN_PATH}}/{denoising_folder}"
 MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
 
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic"
+OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_full_pipeline"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
 """
@@ -45,14 +45,14 @@ singularity exec \\
     -B "$MASK_PATH":/masks \\
     -B "$OUTPUT_PATH":/output \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
-    niftymic_reconstruct_volume \\
+    niftymic_run_reconstruction_pipeline \\
         --filenames {input_stacks} \\
         --filenames-masks {mask_stacks} \\
-        --output /output/$OUTPUT_FILE \\
+        --dir-output /output/ \\
         --isotropic-resolution 0.5 \\
+        --bias-field-correction 0 \\
         
-        
-./mv_recons.sh {subj} {mode_bm} {suffix}       
+              
 """
     # ./mv_recons.sh {subj} {mode_bm} {suffix}
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -99,9 +99,9 @@ if __name__ == "__main__":
 
     list_subjs = [
         # "sub-Fabienne_ses-09",
-        # "sub-Aziza_ses-05",  # "sub-Aziza_ses-05", "sub-Aziza_ses-09",
+        "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
         # "sub-Formule_ses-08", # "sub-Formule_ses-05", "sub-Formule_ses-09",
-        "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
+        # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
     ]
 
     # list_subjs = get_all_subjects(cfg.MESO_OUTPUT_PATH)
