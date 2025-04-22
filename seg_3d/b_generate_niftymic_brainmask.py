@@ -104,7 +104,7 @@ if __name__ == "__main__":
                     + cmd_os
                     + '"'
                     + " "
-                    + input_dir
+                    + base_path
             )
             print()
             print(cmd)
