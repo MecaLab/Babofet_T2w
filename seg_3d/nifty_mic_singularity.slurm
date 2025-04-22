@@ -14,4 +14,3 @@ COMMAND=$1
 DATA=$2
 
 singularity exec -B ${DATA}:/data /scratch/lbaptiste/softs/niftymic.multifact_latest.sif $COMMAND
-  
