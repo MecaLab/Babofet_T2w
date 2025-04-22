@@ -99,6 +99,8 @@ if __name__ == "__main__":
                     + " "
                     + input_dir
             )
+            print(cmd)
+            exit()
             os.system(cmd)
 
             exit()
