@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
             print(f"Processing {subject} {session}...")
 
-            srr_vol = os.path.join(subject_session_path, "recon_template_space", "srr_template.nii.gz")
+            srr_vol = os.path.join(subject_session_path, "recons_pipeline", "recon_template_space", "srr_template.nii.gz")
 
             path_subj = os.path.join(output_dir, subject)
             if not os.path.exists(path_subj):
