@@ -92,9 +92,12 @@ if __name__ == "__main__":
                 sing_masks, sing_recon_template,
             )
 
+            print(cmd_os)
+            print()
+
             cmd = (
                     "sbatch"
-                    + "  "
+                    + " "
                     + "/scratch/lbaptiste/Babofet_T2w/seg_3d/nifty_mic_singularity.slurm"
                     + " "
                     + '"'
