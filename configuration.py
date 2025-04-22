@@ -17,6 +17,7 @@ MESO_OUTPUT_PATH = os.path.join(BASE_PATH, "data/dataset/babofet/derivatives")
 
 # DATA PATH
 DATA_PATH = os.path.join(BASE_PATH, "data/recons_folder")
+BOUNTI_PATH = os.path.join(BASE_PATH, "data/bounti")
 
 TABLE_CSV_DATA_INFO = os.path.join("table_data", "info_table.csv")
 
