@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
             recon_template_space_dir = os.path.join(subject_session_path, "recons_pipeline", "recon_template_space")
 
-            subj_session_path = f"sub-{subject}_ses_{session[3:]}"
+            subj_session_path = f"sub-{subject}_ses-{session[3:]}"
             subj_derivatives_path = os.path.join(base_path, subj_session_path, "fetalbet_masks_v2")
             masks = get_all_masks(subj_derivatives_path)
 
