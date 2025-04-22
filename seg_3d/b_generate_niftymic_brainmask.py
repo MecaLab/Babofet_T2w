@@ -77,12 +77,16 @@ if __name__ == "__main__":
             files_dir_motion_correction = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
 
             for dn_f in files_dir_motion_correction:
-                bm_file = dn_f.replace("_denoised", "")
-                os.system("cp " + dn_f + " " + bm_file)
+                if "_denoised" in dn_f:
+                    bm_file = dn_f.replace("_denoised", "")
+                    os.system("cp " + dn_f + " " + bm_file)
 
             sing_recon_template = recon_template_space_dir.replace(
                 input_dir, "/data"
             )
+
+            print(sing_recon_template)
+            print()
 
             cmd_os = brainmask_reconstruction(
                 sing_masks, sing_recon_template,
@@ -99,6 +103,7 @@ if __name__ == "__main__":
                     + " "
                     + input_dir
             )
+            print()
             print(cmd)
             exit()
             os.system(cmd)
