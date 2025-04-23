@@ -5,8 +5,17 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def write_slurm_file(base_path, masks):
+def write_slurm_file(base_path, masks, dir_output_recon_template_space):
     filename = "nifty_mic_singularity.slurm"
+
+    image_3DHR = os.path.join(dir_output_recon_template_space, "srr_template.nii.gz")
+    image_3DHR_mask = os.path.join(
+        dir_output_recon_template_space, "srr_template_mask.nii.gz"
+    )
+    dir_motion_correction = os.path.join(
+        dir_output_recon_template_space, "motion_correction"
+    )
+
     slurm_content = f"""#!/bin/sh
 
 #SBATCH --account='b219'
@@ -17,7 +26,11 @@ def write_slurm_file(base_path, masks):
 #SBATCH -e %x_%j.err
 #SBATCH -o %x_%j.out
 
-MASK_PATH = "{base_path}"
+MASK_PATH="{base_path}"
+
+IMAGE_PATH="{image_3DHR}"
+OUTPUT_PATH="{image_3DHR_mask}"
+MOTION_CORRECTION="{dir_motion_correction}" 
 """
     slurm_content += "\n"
     for i, file in enumerate(masks, start=1):
@@ -28,9 +41,14 @@ MASK_PATH = "{base_path}"
     slurm_content += f"""
 singularity exec \\
     -B "$MASK_PATH":/data \\
+    -B "$OUTPUT_PATH":/output \\
+    -B "$MOTION_CORRECTION":/motion_correction \\
+    -B "$IMAGE_PATH":/image \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
     niftymic_reconstruct_volume_from_slices \\
-        --filenames {mask_stacks}
+        --filenames {mask_stacks} \\
+        --dir-input-mc /motion_correction/ \\
+        --reconstruction-space /image/ \\
 
 """
 
@@ -107,8 +125,6 @@ if __name__ == "__main__":
             subj_derivatives_path = os.path.join(base_path, subj_session_path, "fetalbet_masks_v2")
             masks = get_all_masks(subj_derivatives_path)
 
-            # sing_masks = [m.replace(base_path, "/data") for m in masks]
-
             dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
             files_dir_motion_correction = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
 
@@ -127,6 +143,8 @@ if __name__ == "__main__":
             )"""
 
             write_slurm_file(subj_derivatives_path, masks)
+
+            exit()
 
             cmd = (
                     "sbatch"
