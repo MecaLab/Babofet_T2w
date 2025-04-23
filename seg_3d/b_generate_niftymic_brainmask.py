@@ -28,7 +28,7 @@ def write_slurm_file(base_path, masks, dir_output_recon_template_space):
 
 MASK_PATH="{base_path}"
 
-OUTPUT_PATH = "{dir_output_recon_template_space}"
+OUTPUT_PATH="{dir_output_recon_template_space}"
 """
     slurm_content += "\n"
     for i, file in enumerate(masks, start=1):
