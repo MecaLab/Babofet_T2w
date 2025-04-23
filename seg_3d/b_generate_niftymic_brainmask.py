@@ -19,6 +19,10 @@ def write_slurm_file(base_path, masks):
 
 MASK_PATH = "{base_path}"
 """
+    slurm_content += "\n"
+    for i, file in enumerate(masks, start=1):
+        slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
+
     mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(masks) + 1)])
 
     slurm_content += f"""
