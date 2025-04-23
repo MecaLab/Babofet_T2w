@@ -13,7 +13,7 @@ def write_slurm_file(base_path, masks, dir_output_recon_template_space):
 
 #SBATCH --account='b219'
 #SBATCH --partition=skylake
-#SBATCH --time=4:00:00
+#SBATCH --time=10:00
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=48G
 #SBATCH -e %x_%j.err
@@ -35,7 +35,11 @@ singularity exec \\
     -B "$OUTPUT_PATH":/output \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
     niftymic_reconstruct_volume_from_slices \\
-        --filenames {mask_stacks} --dir-input-mc /output/motion_correction --output /output/srr_template_mask.nii.gz --reconstruction-space /output/srr_template.nii.gz --alpha 1 --isotropic-resolution 0.5 --mask --sda
+        --filenames {mask_stacks} \\
+        --dir-input-mc /output/motion_correction\\
+        --output /output/srr_template_mask.nii.gz\\
+        --reconstruction-space /output/srr_template.nii.gz\\
+        --alpha 1 --isotropic-resolution 0.5 --mask --sda\\
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
