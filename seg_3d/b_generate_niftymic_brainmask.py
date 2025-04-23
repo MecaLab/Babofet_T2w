@@ -117,9 +117,9 @@ if __name__ == "__main__":
             )
 
 
-            cmd_os = brainmask_reconstruction(
+            """cmd_os = brainmask_reconstruction(
                 sing_masks, sing_recon_template,
-            )
+            )"""
 
             write_slurm_file(base_path, masks)
 
