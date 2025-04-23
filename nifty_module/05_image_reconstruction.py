@@ -98,7 +98,7 @@ if __name__ == "__main__":
     SUFFIX_EXP = ""  # need to be updated for every exp
 
     list_subjs = [
-        "sub-Fabienne_ses-05", "sub-Fabienne_ses-09",
+        "sub-Fabienne_ses-02", "sub-Fabienne_ses-03", "sub-Fabienne_ses-04", "sub-Fabienne_ses-06", "sub-Fabienne_ses-07", "sub-Fabienne_ses-08"
         # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
         # "sub-Formule_ses-08", # "sub-Formule_ses-05", "sub-Formule_ses-09",
         # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
