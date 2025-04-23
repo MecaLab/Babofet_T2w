@@ -5,6 +5,30 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
+def write_slurm_file(base_path, masks):
+    slurm_content = f"""#!/bin/sh
+
+#SBATCH --account='b219'
+#SBATCH --partition=skylake
+#SBATCH --time=4:00:00
+#SBATCH -c 1
+#SBATCH --mem-per-cpu=48G
+#SBATCH -e %x_%j.err
+#SBATCH -o %x_%j.out
+
+singularity exec \\
+    -B ${base_path}:/data \\
+    /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
+    niftymic_reconstruct_volume_from_slices \\
+        --filenames /data/denoised_*.nii.gz \\
+
+
+"""
+    mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(masks) + 1)])
+
+
+
+
 def brainmask_reconstruction(masks, dir_output_recon_template_space):
 
     image_3DHR = os.path.join(dir_output_recon_template_space, "srr_template.nii.gz")
@@ -72,6 +96,8 @@ if __name__ == "__main__":
             masks = get_all_masks(subj_derivatives_path)
 
             sing_masks = [m.replace(base_path, "/data") for m in masks]
+
+            print("toto", sing_masks)
 
             dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
             files_dir_motion_correction = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
