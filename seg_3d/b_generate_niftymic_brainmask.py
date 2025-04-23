@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
             write_slurm_file(subj_derivatives_path, masks, recon_template_space_dir)
 
-            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            subprocess.run(["sbatch", "slurm_files/niftymic_reconstruct_3D_mask.slurm"])
 
     """
     # path for images HASTE et TRUEFISP
