@@ -49,6 +49,13 @@ singularity exec \\
         --filenames {mask_stacks} \\
         --dir-input-mc /motion_correction/ \\
         --reconstruction-space /image/ \\
+        --log-config 1 \\
+        --mask \\
+        --isotropic-resolution 0.5 \\
+        --sda \\
+        --alpha 1 \\
+        
+        
 
 """
 
@@ -133,31 +140,10 @@ if __name__ == "__main__":
                     bm_file = dn_f.replace("_denoised", "")
                     os.system("cp " + dn_f + " " + bm_file)
 
-            sing_recon_template = recon_template_space_dir.replace(
-                input_dir, "/data"
-            )
-
-
-            """cmd_os = brainmask_reconstruction(
-                sing_masks, sing_recon_template,
-            )"""
-
             write_slurm_file(subj_derivatives_path, masks, recon_template_space_dir)
 
             exit()
 
-            cmd = (
-                    "sbatch"
-                    + " "
-                    + "/scratch/lbaptiste/Babofet_T2w/seg_3d/nifty_mic_singularity.slurm"
-                    + " "
-                    + '"'
-                    + cmd_os
-                    + '"'
-                    + " "
-                    + base_path
-            )
-            # os.system(cmd)
 
 
     """
