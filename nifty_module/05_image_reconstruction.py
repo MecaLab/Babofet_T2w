@@ -6,7 +6,7 @@ import subprocess
 
 
 def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file, mode_bm="manual", suffix="", denoising_folder="denoising"):
-    filename = "nifty_reconstruction.slurm"
+    filename = "slurm_files/nifty_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='b219'
@@ -187,6 +187,6 @@ if __name__ == "__main__":
                 denoising_folder=denoising_folder
             )
 
-            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
+            subprocess.run(["sbatch", "slurm_files/nifty_reconstruction.slurm"])
             print(f"\t\tComputing reconstruction for {subject}\n")
             # exit()
