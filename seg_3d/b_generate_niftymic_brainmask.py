@@ -28,9 +28,7 @@ def write_slurm_file(base_path, masks, dir_output_recon_template_space):
 
 MASK_PATH="{base_path}"
 
-IMAGE_PATH="{image_3DHR}"
-OUTPUT_PATH="{image_3DHR_mask}"
-MOTION_CORRECTION="{dir_motion_correction}" 
+OUTPUT_PATH = "{dir_output_recon_template_space}"
 """
     slurm_content += "\n"
     for i, file in enumerate(masks, start=1):
@@ -42,21 +40,17 @@ MOTION_CORRECTION="{dir_motion_correction}"
 singularity exec \\
     -B "$MASK_PATH":/data \\
     -B "$OUTPUT_PATH":/output \\
-    -B "$MOTION_CORRECTION":/motion_correction \\
-    -B "$IMAGE_PATH":/image \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
     niftymic_reconstruct_volume_from_slices \\
         --filenames {mask_stacks} \\
-        --dir-input-mc /motion_correction/ \\
-        --reconstruction-space /image/ \\
+        --dir-input-mc /output/motion_correction \\
+        --reconstruction-space /output/srr_template.nii.gz \\
+        --output /output/srr_template_mask.nii.gz \\ 
         --log-config 1 \\
         --mask \\
         --isotropic-resolution 0.5 \\
         --sda \\
         --alpha 1 \\
-        
-        
-
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
