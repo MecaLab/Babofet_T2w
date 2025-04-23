@@ -21,7 +21,7 @@ MASK_PATH = "{base_path}"
 """
     slurm_content += "\n"
     for i, file in enumerate(masks, start=1):
-        slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
+        slurm_content += f"$MASK_FILE{i}=\"{file}\"\n"
 
     mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(masks) + 1)])
 
@@ -79,8 +79,9 @@ def brainmask_reconstruction(masks, dir_output_recon_template_space):
 def get_all_masks(path):
     masks = []
     for file in os.listdir(path):
-        if file.endswith(".nii.gz"):
-            masks.append(os.path.join(path, file))
+        if "ND" not in file:
+            if file.endswith(".nii.gz"):
+                masks.append(os.path.join(path, file))
     return masks
 
 
@@ -125,7 +126,7 @@ if __name__ == "__main__":
                 sing_masks, sing_recon_template,
             )"""
 
-            write_slurm_file(base_path, masks)
+            write_slurm_file(subj_derivatives_path, masks)
 
             cmd = (
                     "sbatch"
