@@ -25,7 +25,7 @@ OUTPUT_PATH="{dir_output_recon_template_space}"
 """
     slurm_content += "\n"
     for i, file in enumerate(masks, start=1):
-        slurm_content += f"$MASK_FILE{i}=\"{file}\"\n"
+        slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
 
     mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(masks) + 1)])
 
