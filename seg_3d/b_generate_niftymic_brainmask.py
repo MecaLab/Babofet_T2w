@@ -6,6 +6,7 @@ import configuration as cfg
 
 
 def write_slurm_file(base_path, masks):
+    filename = "nifty_mic_singularity.slurm"
     slurm_content = f"""#!/bin/sh
 
 #SBATCH --account='b219'
@@ -16,17 +17,23 @@ def write_slurm_file(base_path, masks):
 #SBATCH -e %x_%j.err
 #SBATCH -o %x_%j.out
 
+MASK_PATH = "{base_path}"
+"""
+    mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(masks) + 1)])
+
+    slurm_content += f"""
 singularity exec \\
-    -B ${base_path}:/data \\
+    -B "$MASK_PATH":/data \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
     niftymic_reconstruct_volume_from_slices \\
-        --filenames /data/denoised_*.nii.gz \\
-
+        --filenames {mask_stacks}
 
 """
-    mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(masks) + 1)])
 
+    with open(filename, "w", encoding="utf-8") as slurm_file:
+        slurm_file.write(slurm_content)
 
+    os.chmod(filename, 0o700)
 
 
 def brainmask_reconstruction(masks, dir_output_recon_template_space):
@@ -95,9 +102,7 @@ if __name__ == "__main__":
             subj_derivatives_path = os.path.join(base_path, subj_session_path, "fetalbet_masks_v2")
             masks = get_all_masks(subj_derivatives_path)
 
-            sing_masks = [m.replace(base_path, "/data") for m in masks]
-
-            print("toto", sing_masks)
+            # sing_masks = [m.replace(base_path, "/data") for m in masks]
 
             dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
             files_dir_motion_correction = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
@@ -111,15 +116,12 @@ if __name__ == "__main__":
                 input_dir, "/data"
             )
 
-            print(sing_recon_template)
-            print()
 
             cmd_os = brainmask_reconstruction(
                 sing_masks, sing_recon_template,
             )
 
-            print(cmd_os)
-            print()
+            write_slurm_file(base_path, masks)
 
             cmd = (
                     "sbatch"
@@ -132,12 +134,8 @@ if __name__ == "__main__":
                     + " "
                     + base_path
             )
-            print()
-            print(cmd)
-            exit()
-            os.system(cmd)
+            # os.system(cmd)
 
-            exit()
 
     """
     # path for images HASTE et TRUEFISP
