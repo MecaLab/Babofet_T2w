@@ -100,6 +100,8 @@ if __name__ == "__main__":
 
             if not "recons_pipeline" in os.listdir(subject_session_path):
                 continue
+
+            print(f"Processing {subject} {session}...")
             reconst_dir = os.path.join(subject_session_path, "recons_pipeline")
 
             recon_template_space_dir = os.path.join(
