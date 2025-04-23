@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Generic configuration
 #SBATCH --account='b219'
