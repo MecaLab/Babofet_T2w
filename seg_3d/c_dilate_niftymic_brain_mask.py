@@ -3,10 +3,12 @@ TODO: create a slurm version of this python script
 """
 
 import os
-
+import sys
 import numpy as np
 import nibabel as nib
 from skimage import morphology as smo
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 
 
 def dilate_binary_mask(mask, nb_dilation):
@@ -85,58 +87,47 @@ def generate_masked_volume(
 if __name__ == "__main__":
 
     NB_DILATION = 3
-    DB = "/scratch/apron/data/datasets/MarsFet/derivatives"
-    input_DB_path = os.path.join(DB, "brain_seg")
-    # path for writing output
-    output_DB_path = os.path.join(DB, "srr_reconstruction", "default_pipeline_meso")
 
-    sequences = ["haste", "tru"]
+    output_DB_path = cfg.DATA_PATH
+
+    sequences = ["haste"]
 
     subjects = os.listdir(output_DB_path)
-    subjects.sort()
-    for subject in subjects[:10]:
-        subj_dir = os.path.join(output_DB_path, subject)
-        sessions = os.listdir(subj_dir)
-        for session in sessions:
-            session_dir = os.path.join(subj_dir, session)
-            for sequence in sequences:
-                reconst_dir = os.path.join(session_dir, sequence)
-                recon_template_space_dir = os.path.join(
-                    reconst_dir, "recon_template_space"
-                )
-                image_3DHR = os.path.join(
-                    recon_template_space_dir, "srr_template.nii.gz"
-                )
-                image_3DHR_mask = os.path.join(
-                    recon_template_space_dir, "srr_template_mask.nii.gz"
-                )
-                image_3DHR_masked = os.path.join(
-                    recon_template_space_dir, "srr_template_masked_test.nii.gz"
-                )
-                if os.path.exists(image_3DHR):
-                    if not os.path.exists(image_3DHR_masked):
-                        if os.path.exists(image_3DHR_mask):
-                            generate_masked_volume(
-                                image_3DHR_mask,
-                                image_3DHR,
-                                image_3DHR_masked,
-                                NB_DILATION,
-                            )
-                        else:
-                            print(
-                                f"Input 3D template mask of {subject}_"
-                                f"{session}_acq-{sequence} "
-                                f"does not exist"
-                            )
+    for subject in subjects:
+        subject_path = os.path.join(output_DB_path, subject)
+        for session in os.listdir(subject_path):
+            subject_session_path = os.path.join(subject_path, session)
 
-                    else:
-                        print(
-                            f" 3D masked template volume of {subject}_"
-                            f"{session}_acq-{sequence} "
-                            f" already exist"
+            if not "recons_pipeline" in os.listdir(subject_session_path):
+                continue
+            reconst_dir = os.path.join(subject_session_path, "recons_pipeline")
+
+            recon_template_space_dir = os.path.join(
+                reconst_dir, "recon_template_space"
+            )
+            image_3DHR = os.path.join(
+                recon_template_space_dir, "srr_template.nii.gz"
+            )
+            image_3DHR_mask = os.path.join(
+                recon_template_space_dir, "srr_template_mask.nii.gz"
+            )
+            image_3DHR_masked = os.path.join(
+                recon_template_space_dir, "srr_template_masked_test.nii.gz"
+            )
+            if os.path.exists(image_3DHR):
+                if not os.path.exists(image_3DHR_masked):
+                    if os.path.exists(image_3DHR_mask):
+                        generate_masked_volume(
+                            image_3DHR_mask,
+                            image_3DHR,
+                            image_3DHR_masked,
+                            NB_DILATION,
                         )
+                        exit()
+                    else:
+                        print(f"{image_3DHR_mask} does not exist for {subject} {session}")
+
                 else:
-                    print(
-                        f"Input 3D template  volume of {subject}_"
-                        f"{session}_acq-{sequence} does not exist"
-                    )
+                    print(f"{image_3DHR_masked} already exist for {subject} {session}")
+            else:
+                print(f"{image_3DHR} does not exist for {subject} {session}")
