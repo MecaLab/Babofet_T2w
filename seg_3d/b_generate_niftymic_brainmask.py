@@ -142,7 +142,7 @@ if __name__ == "__main__":
                 sing_masks, sing_recon_template,
             )"""
 
-            write_slurm_file(subj_derivatives_path, masks)
+            write_slurm_file(subj_derivatives_path, masks, recon_template_space_dir)
 
             exit()
 
