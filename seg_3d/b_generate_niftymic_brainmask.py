@@ -35,11 +35,7 @@ singularity exec \\
     -B "$OUTPUT_PATH":/output \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
     niftymic_reconstruct_volume_from_slices \\
-        --filenames {mask_stacks} \\
-        --dir-input-mc /output/motion_correction \\
-        --output /output/srr_template_mask.nii.gz \\ 
-        --reconstruction-space /output/srr_template.nii.gz \\
-        --alpha 1 --isotropic-resolution 0.5 --mask --sda
+        --filenames {mask_stacks} --dir-input-mc /output/motion_correction --output /output/srr_template_mask.nii.gz --reconstruction-space /output/srr_template.nii.gz --alpha 1 --isotropic-resolution 0.5 --mask --sda
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
