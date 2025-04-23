@@ -46,7 +46,6 @@ singularity exec \\
         --dir-input-mc /output/motion_correction \\
         --reconstruction-space /output/srr_template.nii.gz \\
         --output /output/srr_template_mask.nii.gz \\ 
-        --log-config 1 \\
         --mask \\
         --isotropic-resolution 0.5 \\
         --sda \\
