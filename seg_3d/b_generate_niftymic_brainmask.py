@@ -46,10 +46,10 @@ singularity exec \\
         --dir-input-mc /output/motion_correction \\
         --reconstruction-space /output/srr_template.nii.gz \\
         --output /output/srr_template_mask.nii.gz \\ 
-        --mask \\
-        --isotropic-resolution 0.5 \\
-        --sda \\
         --alpha 1 \\
+        --isotropic-resolution 0.5 \\
+        -mask \\
+        -sda \\
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
