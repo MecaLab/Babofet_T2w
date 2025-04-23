@@ -1,20 +1,13 @@
 import os
 import glob
 import sys
+import subprocess
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
 def write_slurm_file(base_path, masks, dir_output_recon_template_space):
-    filename = "nifty_mic_singularity.slurm"
-
-    image_3DHR = os.path.join(dir_output_recon_template_space, "srr_template.nii.gz")
-    image_3DHR_mask = os.path.join(
-        dir_output_recon_template_space, "srr_template_mask.nii.gz"
-    )
-    dir_motion_correction = os.path.join(
-        dir_output_recon_template_space, "motion_correction"
-    )
+    filename = "slurm_files/niftymic_reconstruct_3D_mask.slurm"
 
     slurm_content = f"""#!/bin/sh
 
@@ -48,8 +41,8 @@ singularity exec \\
         --output /output/srr_template_mask.nii.gz \\ 
         --alpha 1 \\
         --isotropic-resolution 0.5 \\
-        -mask \\
-        -sda \\
+        --mask \\
+        --sda \\
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -57,6 +50,10 @@ singularity exec \\
 
     os.chmod(filename, 0o700)
 
+"""
+singularity run -B /scratch/lbaptiste/data/dataset/babofet/derivatives/sub-Aziza_ses-05/fetalbet_masks_v2/:/data -B /scratch/lbaptiste/data/recons_folder/Aziza/ses05/recons_pipeline/recon_template_space/:/output ../softs/niftymic.multifact_latest.sif
+    niftymic_reconstruct_volume_from_slices --filenames /data/sub-Aziza_ses-05_T2_HASTE_AX2_11_denoised_mask.nii.gz /data/sub-Aziza_ses-05_T2_HASTE_AX_8_denoised_mask.nii.gz /data/sub-Aziza_ses-05_T2_HASTE_COR_10_denoised_mask.nii.gz /data/sub-Aziza_ses-05_T2_HASTE_COR_13_denoised_mask.nii.gz /data/sub-Aziza_ses-05_T2_HASTE_SAG2_12_denoised_mask.nii.gz /data/sub-Aziza_ses-05_T2_HASTE_SAG_9_denoised_mask.nii.gz --output /output/srr_template_mask.nii.gz --dir-input-mc /output/motion_correction/ --reconstruction-space /output/srr_template.nii.gz --isotropic-resolution 0.5 --alpha 1 --sda --mask
+"""
 
 def brainmask_reconstruction(masks, dir_output_recon_template_space):
 
@@ -135,9 +132,7 @@ if __name__ == "__main__":
 
             write_slurm_file(subj_derivatives_path, masks, recon_template_space_dir)
 
-            exit()
-
-
+            subprocess.run(["sbatch", "nifty_reconstruction.slurm"])
 
     """
     # path for images HASTE et TRUEFISP
