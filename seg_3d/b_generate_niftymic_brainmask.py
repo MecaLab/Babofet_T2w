@@ -37,12 +37,9 @@ singularity exec \\
     niftymic_reconstruct_volume_from_slices \\
         --filenames {mask_stacks} \\
         --dir-input-mc /output/motion_correction \\
-        --reconstruction-space /output/srr_template.nii.gz \\
         --output /output/srr_template_mask.nii.gz \\ 
-        --alpha 1 \\
-        --isotropic-resolution 0.5 \\
-        --mask \\
-        --sda \\
+        --reconstruction-space /output/srr_template.nii.gz \\
+        --alpha 1 --isotropic-resolution 0.5 --mask --sda
 """
 
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -133,6 +130,7 @@ if __name__ == "__main__":
             write_slurm_file(subj_derivatives_path, masks, recon_template_space_dir)
 
             subprocess.run(["sbatch", "slurm_files/niftymic_reconstruct_3D_mask.slurm"])
+            exit()
 
     """
     # path for images HASTE et TRUEFISP
