@@ -81,7 +81,7 @@ def get_all_masks(path):
     for file in os.listdir(path):
         if "ND" not in file:
             if file.endswith(".nii.gz"):
-                masks.append(os.path.join(path, file))
+                masks.append(file)
     return masks
 
 
