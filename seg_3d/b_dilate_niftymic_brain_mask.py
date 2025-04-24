@@ -125,7 +125,6 @@ if __name__ == "__main__":
                             image_3DHR_masked,
                             NB_DILATION,
                         )
-                        exit()
                     else:
                         print(f"{image_3DHR_mask} does not exist for {subject} {session}")
 
