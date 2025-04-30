@@ -18,6 +18,12 @@ MESO_OUTPUT_PATH = os.path.join(BASE_PATH, "data/dataset/babofet/derivatives")
 # DATA PATH
 DATA_PATH = os.path.join(BASE_PATH, "data/recons_folder")
 BOUNTI_PATH = os.path.join(BASE_PATH, "data/bounti")
+ATLAS_GHOLIPOUR_PATH = os.path.join(BASE_PATH, "data/STA_atlas_hemi_split")
+
+
+# Segmentation path
+SEG_INPUT_PATH = os.path.join(BOUNTI_PATH, "svrtk_BOUNTI", "input_SRR_niftymic")
+SEG_OUTPUT_PATH = os.path.join(BOUNTI_PATH, "svrtk_BOUNTI", "output_BOUNTI_seg")
 
 TABLE_CSV_DATA_INFO = os.path.join("table_data", "info_table.csv")
 
