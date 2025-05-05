@@ -25,6 +25,8 @@ MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
 OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_full_pipeline"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
+
+TEMPLATE_PATH="/scratch/lbaptiste/data/atlas_fetal_rhesus/"
 """
 
     slurm_content += "\n"
@@ -44,6 +46,7 @@ singularity exec \\
     -B "$INPUT_PATH":/data \\
     -B "$MASK_PATH":/masks \\
     -B "$OUTPUT_PATH":/output \\
+    -B "$TEMPLATE_PATH":/template \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
     niftymic_run_reconstruction_pipeline \\
         --filenames {input_stacks} \\
@@ -51,6 +54,8 @@ singularity exec \\
         --dir-output /output/ \\
         --isotropic-resolution 0.5 \\
         --bias-field-correction 0 \\
+        --template /template/Template_G85_T2W.nii.gz \\
+        --template-mask /template/Template_G85_T2W.nii.gz \\
         
               
 """
@@ -95,10 +100,10 @@ if __name__ == "__main__":
 
     denoising_folder = "denoising"
 
-    SUFFIX_EXP = ""  # need to be updated for every exp
+    SUFFIX_EXP = "_rhesus_macaque"  # need to be updated for every exp. If prexif exist, should start with _
 
     list_subjs = [
-        "sub-Fabienne_ses-10",
+        "sub-Fabienne_ses-01",
         # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
         # "sub-Formule_ses-08", # "sub-Formule_ses-05", "sub-Formule_ses-09",
         # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
