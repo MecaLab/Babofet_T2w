@@ -6,7 +6,7 @@ import subprocess
 
 
 subjects = ["Aziza", ] # "Formule", "Fabienne"]
-sessions = ["01", ] # "05", "08", "09"]
+sessions = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"] # "05", "08", "09"]
 
 stacks_base_path = cfg.MESO_DATA_PATH  # cfg.MESO_OUTPUT_PATH  DATA_PATH is for raw data / OUTPUT_PATH is for denoised data
 bm_base_path = cfg.MESO_OUTPUT_PATH
@@ -60,11 +60,11 @@ for subject in subjects:
         """
 
         # Copy the BM
-        bm_output_path = os.path.join(subject_session_output_path, "brainmask")
+        bm_output_path = os.path.join(subject_session_output_path, "fetalbet_brainmask")
         if not os.path.exists(bm_output_path):
             os.makedirs(bm_output_path)
 
-        bm_path = os.path.join(bm_base_path, f"sub-{subject}_ses-{session}", "manual_masks")
+        bm_path = os.path.join(bm_base_path, f"sub-{subject}_ses-{session}", "fetalbet_brainmask")
         for file in os.listdir(bm_path):
             file_path = os.path.join(bm_path, file)
             subprocess.run(["cp", file_path, bm_output_path])
@@ -74,7 +74,7 @@ for subject in subjects:
         if not os.path.exists(recons_output_path):
             os.makedirs(recons_output_path)
 
-        recons_file = [
+        """recons_file = [
             f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline.nii.gz",  # anat recons
             f"sub-{subject}_ses-{session}_haste_3DHR_manual_bm_pipeline_mask.nii.gz"  # mask recons
         ]
@@ -82,4 +82,4 @@ for subject in subjects:
 
         for file_recons in recons_file:
             file_output_path = os.path.join(recons_path, file_recons)
-            subprocess.run(["cp", file_output_path, recons_output_path])
+            subprocess.run(["cp", file_output_path, recons_output_path])"""
