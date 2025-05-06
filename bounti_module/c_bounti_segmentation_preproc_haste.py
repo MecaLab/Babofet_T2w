@@ -26,12 +26,12 @@ if __name__ == "__main__":
         for session in os.listdir(subject_path):
             subject_session_path = os.path.join(subject_path, session)
 
-            if not "tmp_exp" in os.listdir(subject_session_path):  # change 'tmp_exp' to 'recons_pipeline' if needed
+            if not "recons_rhesus" in os.listdir(subject_session_path):  # change 'tmp_exp' to 'recons_pipeline' if needed
                 continue
 
             print(f"Processing {subject} {session}...")
 
-            srr_vol = os.path.join(subject_session_path, "tmp_exp/rhesus_atlas", "recon_template_space", "srr_template_masked_test.nii.gz")
+            srr_vol = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space", "srr_template_masked_test.nii.gz")
 
             path_subj = os.path.join(output_dir, subject)
             if not os.path.exists(path_subj):
