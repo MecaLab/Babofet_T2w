@@ -41,7 +41,7 @@ if __name__ == "__main__":
             if not os.path.exists(output_path_subj):
                 os.makedirs(output_path_subj)
 
-            output_recon_file = os.path.join(output_path_subj, "reo-SVR-output-brain.nii.gz")
+            output_recon_file = os.path.join(output_path_subj, "reo-SVR-output-brain_rhesus.nii.gz")
             if os.path.exists(output_recon_file):
                 print(f"File {output_recon_file} already exists, skipping...")
                 continue
