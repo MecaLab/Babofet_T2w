@@ -22,7 +22,7 @@ MAIN_PATH="{main_path}"
 INPUT_PATH="${{MAIN_PATH}}/{denoising_folder}"
 MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
 
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_full_pipeline"
+OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_full_pipeline_rhesus_macaque"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="{output_file}"
 
@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
     denoising_folder = "denoising"
 
-    SUFFIX_EXP = "_rhesus_macaque"  # need to be updated for every exp. If prexif exist, should start with _
+    SUFFIX_EXP = ""  # need to be updated for every exp. If prexif exist, should start with _
 
     list_subjs = [
         "sub-Fabienne_ses-09",
