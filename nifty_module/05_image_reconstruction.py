@@ -55,7 +55,7 @@ singularity exec \\
         --isotropic-resolution 0.5 \\
         --bias-field-correction 0 \\
         --template /template/Template_G135_T2W.nii.gz \\
-        --template-mask /template/Template_G135_T2W.nii.gz \\
+        --template-mask /template/Template_G135_T2W_Labels_2019.nii.gz \\
         
               
 """
