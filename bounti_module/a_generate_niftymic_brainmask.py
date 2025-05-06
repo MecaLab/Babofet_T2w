@@ -71,10 +71,10 @@ if __name__ == "__main__":
         for session in os.listdir(subject_path):
             subject_session_path = os.path.join(subject_path, session)
 
-            if not "recons_pipeline" in os.listdir(subject_session_path):
+            if not "tmp_exp" in os.listdir(subject_session_path):  # change 'tmp_exp' to 'recons_pipeline' if needed
                 continue
 
-            recon_template_space_dir = os.path.join(subject_session_path, "recons_pipeline", "recon_template_space")
+            recon_template_space_dir = os.path.join(subject_session_path, "tmp_exp/rhesus_atlas", "recon_template_space")
 
             if os.path.exists(os.path.join(recon_template_space_dir, "srr_template_mask.nii.gz")):
                 continue

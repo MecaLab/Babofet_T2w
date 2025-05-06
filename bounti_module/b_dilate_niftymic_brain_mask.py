@@ -98,11 +98,12 @@ if __name__ == "__main__":
         for session in os.listdir(subject_path):
             subject_session_path = os.path.join(subject_path, session)
 
-            if not "recons_pipeline" in os.listdir(subject_session_path):
+            if not "tmp_exp" in os.listdir(subject_session_path): # change 'tmp_exp' to 'recons_pipeline' if needed
                 continue
 
             print(f"Processing {subject} {session}...")
-            reconst_dir = os.path.join(subject_session_path, "recons_pipeline")
+            # reconst_dir = os.path.join(subject_session_path, "recons_pipeline")
+            reconst_dir = os.path.join(subject_session_path, "tmp_exp/rhesus_atlas")
 
             recon_template_space_dir = os.path.join(
                 reconst_dir, "recon_template_space"
