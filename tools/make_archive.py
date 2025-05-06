@@ -64,7 +64,7 @@ for subject in subjects:
         if not os.path.exists(bm_output_path):
             os.makedirs(bm_output_path)
 
-        bm_path = os.path.join(bm_base_path, f"sub-{subject}_ses-{session}", "fetalbet_brainmask")
+        bm_path = os.path.join(bm_base_path, f"sub-{subject}_ses-{session}", "fetalbet_masks_v2")
         for file in os.listdir(bm_path):
             file_path = os.path.join(bm_path, file)
             subprocess.run(["cp", file_path, bm_output_path])
