@@ -54,8 +54,8 @@ singularity exec \\
         --dir-output /output/ \\
         --isotropic-resolution 0.5 \\
         --bias-field-correction 0 \\
-        --template /template/Template_G110_T2W.nii.gz \\
-        --template-mask /template/Template_G110_T2W_mask.nii.gz \\
+        --template /template/Template_G135_T2W.nii.gz \\
+        --template-mask /template/Template_G135_T2W_mask.nii.gz \\
         
               
 """
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     SUFFIX_EXP = ""  # need to be updated for every exp. If prexif exist, should start with _
 
     list_subjs = [
-        "sub-Fabienne_ses-05",
+        "sub-Fabienne_ses-08",
         # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
         # "sub-Formule_ses-08", # "sub-Formule_ses-05", "sub-Formule_ses-09",
         # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
