@@ -82,6 +82,7 @@ def get_all_subjects(path):
 
 
 if __name__ == "__main__":
+    print("OK")
     base_path = cfg.MESO_DATA_PATH
 
     subject_IDs = os.listdir(base_path)
