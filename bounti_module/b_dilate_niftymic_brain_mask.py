@@ -90,15 +90,13 @@ if __name__ == "__main__":
 
     output_DB_path = cfg.DATA_PATH
 
-    sequences = ["haste"]
-
     subjects = os.listdir(output_DB_path)
     for subject in subjects:
         subject_path = os.path.join(output_DB_path, subject)
         for session in os.listdir(subject_path):
             subject_session_path = os.path.join(subject_path, session)
 
-            if not "recons_rhesus" in os.listdir(subject_session_path): # change 'tmp_exp' to 'recons_pipeline' if needed
+            if not "recons_rhesus" in os.listdir(subject_session_path): # change 'recons_rhesus' to 'recons_pipeline' if needed
                 continue
 
             print(f"Processing {subject} {session}...")
