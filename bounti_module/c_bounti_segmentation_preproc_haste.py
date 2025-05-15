@@ -34,9 +34,8 @@ if __name__ == "__main__":
             srr_vol = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space", "srr_template_masked_test.nii.gz")
 
             if not os.path.exists(srr_vol):
-                print(f"File {srr_vol} does not exist, skipping...")
+                print(f"\tFile {srr_vol} does not exist, skipping...")
                 continue
-            
 
             path_subj = os.path.join(output_dir, subject)
             if not os.path.exists(path_subj):
@@ -48,7 +47,7 @@ if __name__ == "__main__":
 
             output_recon_file = os.path.join(output_path_subj, "reo-SVR-output-brain_rhesus.nii.gz")
             if os.path.exists(output_recon_file):
-                print(f"File {output_recon_file} already exists, skipping...")
+                print(f"\tFile {output_recon_file} already exists, skipping...")
                 continue
 
             shutil.copy(srr_vol, output_recon_file)
