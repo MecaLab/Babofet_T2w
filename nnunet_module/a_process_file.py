@@ -7,7 +7,7 @@ import configuration as cfg
 subject = "Aziza"
 
 input_path = os.path.join(cfg.SEG_INPUT_PATH, subject)
-output_path = os.path.join(cfg.NNUNET_RAW_PATH, "imagesTr")
+output_path = os.path.join(cfg.NNUNET_RAW_PATH, "Dataset001_BrainSeg", "imagesTr")
 
 for session in os.listdir(input_path):
     recons_file = os.path.join(input_path, session, "reo-SVR-output-brain_rhesus.nii.gz")
