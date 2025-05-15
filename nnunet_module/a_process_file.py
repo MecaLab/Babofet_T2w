@@ -22,7 +22,6 @@ for session in os.listdir(input_path):
     output_full_path = os.path.join(output_path, output_filename)
 
     shutil.copy2(recons_file, output_full_path)
-    exit()
 
 
 
