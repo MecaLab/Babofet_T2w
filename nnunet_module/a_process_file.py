@@ -17,7 +17,7 @@ for session in os.listdir(input_path):
 
     print(f"Processing {recons_file}...")
 
-    output_filename = f"{subject.lower()}_0{session[3:]}.nii.gz"
+    output_filename = f"{subject.lower()}_0{session[3:]}_0000.nii.gz"
     print(output_filename)
 
 
