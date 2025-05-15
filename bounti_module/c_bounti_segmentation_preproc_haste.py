@@ -33,6 +33,11 @@ if __name__ == "__main__":
 
             srr_vol = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space", "srr_template_masked_test.nii.gz")
 
+            if not os.path.exists(srr_vol):
+                print(f"File {srr_vol} does not exist, skipping...")
+                continue
+            
+
             path_subj = os.path.join(output_dir, subject)
             if not os.path.exists(path_subj):
                 os.makedirs(path_subj)
