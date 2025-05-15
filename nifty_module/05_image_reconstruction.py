@@ -117,6 +117,10 @@ if __name__ == "__main__":
 
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
 
+        output_dir = os.path.join(subj_output_dir, "haste", "reconstruction_niftymic_full_pipeline_rhesus_macaque")
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
         if not os.path.exists(subj_output_dir):
             os.makedirs(subj_output_dir)
 
