@@ -21,9 +21,12 @@ BOUNTI_PATH = os.path.join(BASE_PATH, "data/bounti")
 ATLAS_GHOLIPOUR_PATH = os.path.join(BASE_PATH, "data/STA_atlas_hemi_split")
 
 
-# Segmentation path
-SEG_INPUT_PATH = os.path.join(BOUNTI_PATH, "svrtk_BOUNTI", "input_SRR_niftymic")
-SEG_OUTPUT_PATH = os.path.join(BOUNTI_PATH, "svrtk_BOUNTI", "output_BOUNTI_seg")
+NNUNET_RAW_PATH = os.path.join(BASE_PATH, "data/nnUNet_raw")
+
+
+# Segmentation path bounti
+SEG_INPUT_PATH = os.path.join(BOUNTI_PATH, "svrtk_BOUNTI", "input_SRR_niftymic", "haste")
+SEG_OUTPUT_PATH = os.path.join(BOUNTI_PATH, "svrtk_BOUNTI", "output_BOUNTI_seg", "haste")
 
 TABLE_CSV_DATA_INFO = os.path.join("table_data", "info_table.csv")
 
