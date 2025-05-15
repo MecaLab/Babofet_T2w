@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
@@ -18,7 +19,10 @@ for session in os.listdir(input_path):
     print(f"Processing {recons_file}...")
 
     output_filename = f"{subject.lower()}_0{session[3:]}_0000.nii.gz"
-    print(output_filename)
+    output_full_path = os.path.join(output_path, output_filename)
+
+    shutil.copy2(recons_file, output_full_path)
+    exit()
 
 
 
