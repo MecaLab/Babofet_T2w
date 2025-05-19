@@ -1,5 +1,6 @@
 import os
 import sys
+import subprocess
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -8,9 +9,29 @@ if __name__ == "__main__":
     subject = "Formule"
 
     input_dir = os.path.join(cfg.MESO_OUTPUT_PATH)
+    output_dir = os.path.join(cfg.DATA_PATH, subject)
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
     for subject_sess in os.listdir(input_dir):
         if subject not in subject_sess:
             continue
 
-        print(subject_sess)
+        full_subject_input_dir = os.path.join(input_dir, subject_sess, "haste", "reconstruction_niftymic_full_pipeline_rhesus_macaque")
+
+        print(f"Processing {subject_sess}...")
+        session = "".join(subject_sess.split("_")[-1].split("-"))  # sub-SUBJECT_ses-XX  => sesXX
+
+        session_output_dir = os.path.join(output_dir, session)
+        if not os.path.exists(session_output_dir):
+            os.makedirs(session_output_dir)
+
+        output_path = os.path.join(session_output_dir, "recons_rhesus")
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+
+        subprocess.run(["cp", "-r", full_subject_input_dir + "/*", output_path])
+
+
+
