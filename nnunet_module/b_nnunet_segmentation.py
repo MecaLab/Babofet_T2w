@@ -18,6 +18,9 @@ def nnunet_slurm_file():
 #SBATCH -e nnunet_pred-%j_3d_full_res.err
 #SBATCH -o nnunet_pred-%j_3d_full_res.out
 
+source ~/.bashrc
+conda activate nnunet
+
 module purge
 module load userspace/all
 module load cuda/11.6
