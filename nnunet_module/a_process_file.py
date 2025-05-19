@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
-subject = "Aziza"
+subject = "Formule"
 
 input_path = os.path.join(cfg.SEG_INPUT_PATH, subject)
 output_path = os.path.join(cfg.NNUNET_RAW_PATH, "Dataset001_BrainSeg", "imagesTr")
