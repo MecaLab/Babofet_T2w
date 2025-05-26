@@ -56,7 +56,7 @@ def plot_histo(vol1_masked, vol2_masked):
 
 if __name__ == "__main__":
 
-    subject = "Fabienne"
+    subject = "Aziza"
 
     uncorrected_bias_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/input_SRR_niftymic/haste/", subject)
     corrected_bias_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/input_SRR_niftymic/haste/", f"{subject}_bc")
