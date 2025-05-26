@@ -1,7 +1,7 @@
 import os
 import sys
 import nibabel as nib
-import qc_recons as qc_recons
+#  import qc_recons as qc_recons
 from nibabel.processing import resample_from_to
 import numpy as np
 import matplotlib.pyplot as plt
