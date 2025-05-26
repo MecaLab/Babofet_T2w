@@ -26,11 +26,10 @@ if __name__ == "__main__":
             print(f"\tStack file {stack_path} does not exist, skipping...")
             continue
 
-        output_filename = f"{subject}_{session}_reo-SVR-output-brain_rhesus-bias-corrected.nii.gz"
+        output_filename = f"{subject}_{session}_reo-SVR-output-brain_rhesus_withbc.nii.gz"
 
         subprocess.run(["N4BiasFieldCorrection", "-d", "3", "-i", stack_path, "-x", mask_path, "-o", output_filename])
-        print("OK")
-        exit()
+        print(f"\t OK for {subject} {session}")
 
 
 
