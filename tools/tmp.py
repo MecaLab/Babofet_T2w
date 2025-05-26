@@ -1,10 +1,13 @@
 import os
+import sys
 import nibabel as nib
 import qc_recons as qc_recons
 from nibabel.processing import resample_from_to
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 
 
 def normalize_min_max(volume):
@@ -55,13 +58,13 @@ if __name__ == "__main__":
 
     subject = "Fabienne"
 
-    uncorrected_bias_path = f"W:/meca/data/babofet_DB/2024_new_stuff/bounti/svrtk_BOUNTI/input_SRR_niftymic/haste/{subject}"
-    corrected_bias_path = f"W:/meca/data/babofet_DB/2024_new_stuff/bounti/svrtk_BOUNTI/input_BOUNTI_seg/haste/{subject}_bc"
+    uncorrected_bias_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/input_SRR_niftymic/haste/", subject)
+    corrected_bias_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/input_SRR_niftymic/haste/", f"{subject}_bc")
 
     for session in os.listdir(uncorrected_bias_path):
         print(session)
 
-    
+
     """
     subject = "Formule"
     
