@@ -10,6 +10,9 @@ import os
 MAIN_PATH = "W:/meca/data/Fetus/datasets/Babofet"
 OUTPUT_PATH = os.path.join(MAIN_PATH, "processing")
 
+# NIOLON PATH
+BASE_NIOLON_PATH = "/envau/work/meca/data/babofet_DB/2024_new_stuff"
+
 # MESOCENTRE PATH
 BASE_PATH = "/scratch/lbaptiste/"
 MESO_DATA_PATH = os.path.join(BASE_PATH, "data/dataset/babofet/subjects")
@@ -19,7 +22,6 @@ MESO_OUTPUT_PATH = os.path.join(BASE_PATH, "data/dataset/babofet/derivatives")
 DATA_PATH = os.path.join(BASE_PATH, "data/recons_folder")
 BOUNTI_PATH = os.path.join(BASE_PATH, "data/bounti")
 ATLAS_GHOLIPOUR_PATH = os.path.join(BASE_PATH, "data/STA_atlas_hemi_split")
-
 
 NNUNET_RAW_PATH = os.path.join(BASE_PATH, "data/nnUNet_raw")
 
