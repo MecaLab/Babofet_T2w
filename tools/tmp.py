@@ -62,8 +62,14 @@ if __name__ == "__main__":
     corrected_bias_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/input_SRR_niftymic/haste/", f"{subject}_bc")
 
     for session in os.listdir(uncorrected_bias_path):
-        print(session)
+        print(f"Computing session {session}")
 
+        uncorrected_file = os.path.join(uncorrected_bias_path, session, "reo-SVR-output-brain_rhesus.nii.gz")
+        corrected_file = os.path.join(corrected_bias_path, session, f"{subject}_{session}_reo-SVR-output-brain_rhesus_withbc.nii.gz")
+
+        if not os.path.exists(uncorrected_file):
+            print(f"File {uncorrected_file} does not exist, skipping...")
+            continue
 
     """
     subject = "Formule"
