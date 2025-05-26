@@ -39,7 +39,7 @@ def plot_histo(vol1_masked, vol2_masked):
                                                   hist2 * np.diff(bins2))
 
     title = f"{subject} {session}"
-    output_path = "~/Images/"
+    output_path = "/home/leroux.b/Images"
     output_filename = f"{subject}_{session}_comparaison.png"
     plt.figure(figsize=(10, 6), facecolor='white')
     plt.plot(bin_centers, hist1, label='Uncorrected Bias', linestyle='-', alpha=0.7)
