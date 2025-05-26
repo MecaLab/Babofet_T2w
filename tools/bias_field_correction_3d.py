@@ -13,7 +13,7 @@ if __name__ == "__main__":
     N4BiasFieldCorrection -d 3 -i STACK_PATH -x MASK_PATH -o OUTPUT_PATH
     """
 
-    subject = "Fabienne"
+    subject = "Aziza"
     stack_base_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
     mask_base_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/output_BOUNTI_seg/haste", subject)
 
