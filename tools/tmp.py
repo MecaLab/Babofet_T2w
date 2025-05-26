@@ -39,11 +39,11 @@ def plot_histo(vol1_masked, vol2_masked):
                                                   hist2 * np.diff(bins2))
 
     title = f"{subject} {session}"
-    output_path = "C:/Users/leroux.b/Pictures"
-    output_filename = f"{subject}_{session}_comparison.png"
+    output_path = "~/Images/"
+    output_filename = f"{subject}_{session}_comparaison.png"
     plt.figure(figsize=(10, 6), facecolor='white')
-    plt.plot(bin_centers, hist1, label='Niftymic', linestyle='-', alpha=0.7)
-    plt.plot(bin_centers, hist2, label="Nesvor", linestyle='--', alpha=0.7)
+    plt.plot(bin_centers, hist1, label='Uncorrected Bias', linestyle='-', alpha=0.7)
+    plt.plot(bin_centers, hist2, label="Corrected Bias", linestyle='--', alpha=0.7)
     plt.title(f"{title}\nWasserstein Distance: {wasserstein_dist:.4f}\nBins: {bins}")
     plt.xlabel("Intensité")
     plt.ylabel("Densité")
@@ -72,8 +72,19 @@ if __name__ == "__main__":
         niftymic_bm_file = os.path.join(bm_path, session, "reo-SVR-output-brain_rhesus-mask-bet-1.nii.gz")
 
         if not os.path.exists(niftymic_bm_file):
-            print(f"File {uncorrected_file} does not exist, skipping...")
+            print(f"File {niftymic_bm_file} does not exist, skipping...")
             continue
+
+        uncorrected_data = nib.load(uncorrected_file).get_fdata()
+        corrected_data = nib.load(corrected_file).get_fdata()
+
+        bm_data = nib.load(niftymic_bm_file).get_fdata()
+
+        vol1_masked = uncorrected_data[bm_data > 0]
+        vol2_masked = corrected_data[bm_data > 0]
+
+        plot_histo(vol1_masked, vol2_masked)
+
 
     """
     subject = "Formule"
