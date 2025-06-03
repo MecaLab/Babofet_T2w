@@ -59,7 +59,7 @@ singularity exec \\
         
               
 """
-    # ./mv_recons.sh {subj} {mode_bm} {suffix}
+    # ./mv_recoans.sh {subj} {mode_bm} {suffix}
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     list_subjs = [
         # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
-        "sub-Formule_ses-07", "sub-Formule_ses-08", "sub-Formule_ses-09",
+        "sub-Formule_ses-06", "sub-Formule_ses-07", "sub-Formule_ses-08", "sub-Formule_ses-09",
         # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
     ]
 
