@@ -13,7 +13,27 @@ if __name__ == "__main__":
     N4BiasFieldCorrection -d 3 -i STACK_PATH -x MASK_PATH -o OUTPUT_PATH
     """
 
-    subject = "Aziza"
+    subject = "Formule"
+    base_path = os.path.join(cfg.DATA_PATH, subject)
+
+    for session in os.listdir(base_path):
+        session_path = os.path.join(base_path, session, "recons_rhesus/recon_template_space")
+
+        stack_path = os.path.join(session_path, "srr_template.nii.gz")
+        mask_path = os.path.join(session_path, "srr_template_mask.nii.gz")
+
+        if not os.path.exists(stack_path):
+            print(f"\tStack file {stack_path} does not exist, skipping...")
+            continue
+
+        output_filename = os.path.join(session_path, "srr_template_debiased.nii.gz")
+
+        subprocess.run([bias_field_correction_path, "-d", "3", "-i", stack_path, "-x", mask_path, "-o", output_filename])
+        print(f"\t OK for {subject} {session}")
+
+    """
+
+    
     stack_base_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
     mask_base_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/output_BOUNTI_seg/haste", subject)
 
@@ -30,6 +50,7 @@ if __name__ == "__main__":
 
         subprocess.run(["N4BiasFieldCorrection", "-d", "3", "-i", stack_path, "-x", mask_path, "-o", output_filename])
         print(f"\t OK for {subject} {session}")
+    """
 
 
 
