@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
     NB_DILATION = 3
 
-    output_DB_path = cfg.DATA_PATH
+    output_DB_path = cfg.RECONS_FOLDER
 
     subjects = os.listdir(output_DB_path)
     for subject in subjects:
@@ -107,13 +107,13 @@ if __name__ == "__main__":
                 reconst_dir, "recon_template_space"
             )
             image_3DHR = os.path.join(
-                recon_template_space_dir, "srr_template.nii.gz"
+                recon_template_space_dir, "srr_template_debiased.nii.gz"
             )
             image_3DHR_mask = os.path.join(
                 recon_template_space_dir, "srr_template_mask.nii.gz"
             )
             image_3DHR_masked = os.path.join(
-                recon_template_space_dir, "srr_template_masked_test.nii.gz"
+                recon_template_space_dir, "srr_template_masked_dilated.nii.gz"
             )
             if os.path.exists(image_3DHR):
                 if not os.path.exists(image_3DHR_masked):
