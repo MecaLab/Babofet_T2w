@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 if __name__ == "__main__":
-    input_dir = cfg.DATA_PATH
+    input_dir = cfg.RECONS_FOLDER
 
     output_dir = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI", "input_SRR_niftymic", "haste")  # path for BOUNTI input
     output_dir_seg = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI", "output_BOUNTI_seg", "haste")  # path for BOUNTI output
@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
             print(f"Processing {subject} {session}...")
 
-            srr_vol = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space", "srr_template_masked_test.nii.gz")
+            srr_vol = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space", "srr_template_dilated.nii.gz")
 
             if not os.path.exists(srr_vol):
                 print(f"\tFile {srr_vol} does not exist, skipping...")
