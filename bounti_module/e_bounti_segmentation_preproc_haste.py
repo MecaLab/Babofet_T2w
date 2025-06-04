@@ -12,8 +12,8 @@ import configuration as cfg
 if __name__ == "__main__":
     input_dir = cfg.RECONS_FOLDER
 
-    output_dir = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI", "input_SRR_niftymic", "haste")  # path for BOUNTI input
-    output_dir_seg = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI", "output_BOUNTI_seg", "haste")  # path for BOUNTI output
+    output_dir = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI", "input_SRR_niftymic", "haste")  # path for BOUNTI input
+    output_dir_seg = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI", "output_BOUNTI_seg", "haste")  # path for BOUNTI output
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
