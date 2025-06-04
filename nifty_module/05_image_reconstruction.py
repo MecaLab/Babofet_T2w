@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     list_subjs = [
         # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
-        "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04",
+        "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07",
         # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
     ]
 
