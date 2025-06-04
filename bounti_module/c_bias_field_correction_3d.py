@@ -14,7 +14,7 @@ if __name__ == "__main__":
     """
 
     subject = "Formule"
-    base_path = os.path.join(cfg.DATA_PATH, subject)
+    base_path = os.path.join(cfg.RECONS_FOLDER, subject)
 
     for session in os.listdir(base_path):
         session_path = os.path.join(base_path, session, "recons_rhesus/recon_template_space")
