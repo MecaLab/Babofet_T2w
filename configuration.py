@@ -12,6 +12,8 @@ OUTPUT_PATH = os.path.join(MAIN_PATH, "processing")
 
 # NIOLON PATH
 BASE_NIOLON_PATH = "/envau/work/meca/data/babofet_DB/2024_new_stuff"
+RECONS_FOLDER = os.path.join(BASE_NIOLON_PATH, "recons_folder")
+
 
 # MESOCENTRE PATH
 BASE_PATH = "/scratch/lbaptiste/"
