@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
             print(f"Processing {subject} {session}...")
 
-            srr_vol = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space", "srr_template_dilated.nii.gz")
+            srr_vol = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space", "srr_template_masked_dilated.nii.gz")
 
             if not os.path.exists(srr_vol):
                 print(f"\tFile {srr_vol} does not exist, skipping...")
