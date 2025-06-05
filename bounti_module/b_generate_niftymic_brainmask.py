@@ -13,7 +13,7 @@ def write_slurm_file(base_path, masks, dir_output_recon_template_space):
 
 #SBATCH --account='b219'
 #SBATCH --partition=skylake
-#SBATCH --time=10:00
+#SBATCH --time=20:00
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=48G
 #SBATCH -e %x_%j.err
