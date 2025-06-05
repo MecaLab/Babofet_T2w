@@ -31,10 +31,7 @@ if __name__ == "__main__":
         if not os.path.exists(output_path):
             os.makedirs(output_path)
 
-        # subprocess.run(["cp", "-r", full_subject_input_dir, output_path])
         shutil.copytree(full_subject_input_dir, output_path, dirs_exist_ok=True)
-
-        exit()
 
 
 
