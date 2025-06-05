@@ -6,7 +6,7 @@ import configuration as cfg
 
 if __name__ == "__main__":
 
-    subject = "Formule"
+    subject = sys.argv[1]
 
     input_dir = os.path.join(cfg.MESO_OUTPUT_PATH)
     output_dir = os.path.join(cfg.DATA_PATH, subject)
