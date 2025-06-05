@@ -13,7 +13,7 @@ if __name__ == "__main__":
     N4BiasFieldCorrection -d 3 -i STACK_PATH -x MASK_PATH -o OUTPUT_PATH
     """
 
-    subject = "Formule"
+    subject = sys.argv[1]
     base_path = os.path.join(cfg.RECONS_FOLDER, subject)
 
     for session in os.listdir(base_path):
