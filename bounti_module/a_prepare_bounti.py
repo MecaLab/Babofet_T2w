@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     subject = sys.argv[1]
 
-    input_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
+    input_dir = cfg.MESO_OUTPUT_PATH
     output_dir = os.path.join(cfg.DATA_PATH, subject)
 
     if not os.path.exists(output_dir):
@@ -17,6 +17,7 @@ if __name__ == "__main__":
     for subject_sess in os.listdir(input_dir):
         if subject not in subject_sess:
             continue
+        print(subject_sess)
 
         full_subject_input_dir = os.path.join(input_dir, subject_sess, "haste", "reconstruction_niftymic_full_pipeline_rhesus_macaque")
 
