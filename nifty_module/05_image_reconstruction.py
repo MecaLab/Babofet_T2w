@@ -197,5 +197,4 @@ if __name__ == "__main__":
             )
 
             print(f"\t\tComputing reconstruction for {subject}\n")
-            # subprocess.run(["sbatch", "slurm_files/nifty_reconstruction.slurm"])
-            exit()
+            subprocess.run(["sbatch", "slurm_files/nifty_reconstruction.slurm"])
