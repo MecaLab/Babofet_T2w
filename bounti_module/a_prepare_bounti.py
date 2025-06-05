@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     subject = sys.argv[1]
 
-    input_dir = os.path.join(cfg.MESO_OUTPUT_PATH)
+    input_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
     output_dir = os.path.join(cfg.DATA_PATH, subject)
 
     if not os.path.exists(output_dir):
