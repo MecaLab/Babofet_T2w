@@ -20,7 +20,7 @@ if __name__ == "__main__":
         print(subject_sess)
 
         full_subject_input_dir = os.path.join(input_dir, subject_sess, "haste", "reconstruction_niftymic_full_pipeline_rhesus_macaque")
-
+        print(full_subject_input_dir)
         print(f"Processing {subject_sess}...")
         session = "".join(subject_sess.split("_")[-1].split("-"))  # sub-SUBJECT_ses-XX  => sesXX
 
@@ -33,6 +33,8 @@ if __name__ == "__main__":
             os.makedirs(output_path)
 
         subprocess.run(["cp", "-r", full_subject_input_dir + "/*", output_path])
+
+        exit()
 
 
 
