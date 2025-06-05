@@ -20,6 +20,8 @@ if __name__ == "__main__":
             continue
 
         full_subject_input_dir = os.path.join(input_dir, subject_sess, "haste", "reconstruction_niftymic_full_pipeline_rhesus_macaque")
+        if not os.path.exists(full_subject_input_dir):
+            continue
         print(f"Processing {subject_sess}...")
         session = "".join(subject_sess.split("_")[-1].split("-"))  # sub-SUBJECT_ses-XX  => sesXX
 
