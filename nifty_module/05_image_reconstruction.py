@@ -54,8 +54,8 @@ singularity exec \\
         --dir-output /output/ \\
         --isotropic-resolution 0.5 \\
         --bias-field-correction 0 \\
-        --template /template/Template_G85_T2W.nii.gz \\
-        --template-mask /template/Template_G85_T2W_mask.nii.gz \\
+        --template /template/Template_G110_T2W.nii.gz \\
+        --template-mask /template/Template_G110_T2W_mask.nii.gz \\
         
               
 """
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     subj = "Forme"
     list_subjs = [
         # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
-        f"sub-{subj}_ses-01", f"sub-{subj}_ses-02", f"sub-{subj}_ses-03", f"sub-{subj}_ses-04",
+        f"sub-{subj}_ses-05", f"sub-{subj}_ses-06", f"sub-{subj}_ses-07",
         # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
     ]
 
