@@ -45,7 +45,7 @@ for subject in subjects:
             if "HASTE" in folder:
                 full_path = os.path.join(stacks_path, folder, "resources", "NIFTI", "files")
                 for file in os.listdir(full_path):
-                    if file.endswith(".nii"):
+                    if file.endswith(".nii") or file.endswith(".nii.gz"):
                         file_full_path = os.path.join(full_path, file)
                         subprocess.run(["cp", file_full_path, stack_output_path])
 
