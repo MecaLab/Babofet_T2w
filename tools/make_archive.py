@@ -23,8 +23,6 @@ for subject in subjects:
         os.makedirs(subject_output_path)
 
     for session in sessions:
-        if not os.path.exists(os.path.join(recons_base_path, subject, f"ses{session}")):
-            continue
 
         subject_session_output_path = os.path.join(subject_output_path, f"ses{session}")
 
