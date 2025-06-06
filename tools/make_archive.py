@@ -5,8 +5,8 @@ import configuration as cfg
 import subprocess
 
 
-subjects = ["Borgne", ] # "Formule", "Fabienne"]
-sessions = ["01", "02", "03", "04", "05", "06", "07"] # "05", "08", "09"]
+subjects = ["Filoutte", "Forme"] # "Formule", "Fabienne"]
+sessions = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"]
 
 stacks_base_path = cfg.MESO_DATA_PATH  # cfg.MESO_OUTPUT_PATH  DATA_PATH is for raw data / OUTPUT_PATH is for denoised data
 bm_base_path = cfg.MESO_OUTPUT_PATH
