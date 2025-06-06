@@ -38,6 +38,10 @@ for subject in subjects:
 
         stacks_path = os.path.join(stacks_base_path, f"sub-{subject}_ses-{session}", "scans")
 
+        if not os.path.exists(stacks_path):
+            print(f"Warning: No stacks found for {subject} session {session}. Skipping...")
+            continue
+
         # Accesing raw data
         for folder in os.listdir(stacks_path):
             if "HASTE" in folder:
