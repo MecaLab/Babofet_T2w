@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     new_mask = np.zeros_like(seg_mask)
 
-    csf_labels = [1, 2, 18, 19]
+    csf_labels = [1, 2, 14, 15, 18, 19]
     new_mask[np.isin(seg_mask, csf_labels)] = 1
 
     wm_labels = [5, 6]
