@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
     SUFFIX_EXP = ""  # need to be updated for every exp. If prexif exist, should start with _
 
-    subj = "Borgne"
+    subj = "Fabienne"
     list_subjs = [
         # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
         f"sub-{subj}_ses-08",
