@@ -102,10 +102,10 @@ if __name__ == "__main__":
 
     SUFFIX_EXP = ""  # need to be updated for every exp. If prexif exist, should start with _
 
-    subj = "Filoutte"
+    subj = "Borgne"
     list_subjs = [
         # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
-        f"sub-{subj}_ses-02",
+        f"sub-{subj}_ses-08",
         # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
     ]
 
@@ -197,4 +197,4 @@ if __name__ == "__main__":
             )
 
             print(f"\t\tComputing reconstruction for {subject}\n")
-            subprocess.run(["sbatch", "slurm_files/nifty_reconstruction.slurm"])
+            # subprocess.run(["sbatch", "slurm_files/nifty_reconstruction.slurm"])
