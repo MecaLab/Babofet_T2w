@@ -11,7 +11,7 @@ if __name__ == "__main__":
     subj = "Fabienne"
     base_path = os.path.join(cfg.SEG_OUTPUT_PATH, subj)
     for session in os.listdir(base_path):
-        bounti_srr_seg_path = os.path.join(base_path, f"ses{session}")
+        bounti_srr_seg_path = os.path.join(base_path, session)
 
         seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz"))
         seg_mask = seg_img.get_fdata()
