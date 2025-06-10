@@ -10,12 +10,7 @@ import configuration as cfg
 if __name__ == "__main__":
     subj = "Fabienne"
     session = "01"
-    input_srr_vol_path = os.path.join(cfg.SEG_INPUT_PATH, subj, f"ses{session}", "reo-SVR-output-brain_rhesus.nii.gz")
     bounti_srr_seg_path = os.path.join(cfg.SEG_OUTPUT_PATH, subj, f"ses{session}")
-
-    if not os.path.exists(bounti_srr_seg_path):
-        print(f"Errror: segmentation does not exist for {subj} session {session}")
-        exit()
 
     seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz"))
     seg_mask = seg_img.get_fdata()
