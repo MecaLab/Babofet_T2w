@@ -1,0 +1,45 @@
+import os
+import sys
+import nibabel as nib
+import numpy as np
+
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
+
+
+if __name__ == "__main__":
+    subj = "Fabienne"
+    session = "01"
+    input_srr_vol_path = os.path.join(cfg.SEG_INPUT_PATH, subj, f"ses{session}", "reo-SVR-output-brain_rhesus.nii.gz")
+    bounti_srr_seg_path = os.path.join(cfg.SEG_OUTPUT_PATH, subj, f"ses{session}")
+
+    if not os.path.exists(bounti_srr_seg_path):
+        print(f"Errror: segmentation does not exist for {subj} session {session}")
+        exit()
+
+    seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz"))
+    seg_mask = seg_img.get_fdata()
+
+    new_mask = np.zeros_like(seg_mask)
+
+    csf_labels = [1, 2, 18, 19]
+    new_mask[np.isin(seg_mask, csf_labels)] = 1
+
+    wm_labels = [5, 6]
+    new_mask[np.isin(seg_mask, wm_labels)] = 2
+
+    gm_labels = [3, 4]
+    new_mask[np.isin(seg_mask, gm_labels)] = 3
+
+    ventricle_labels = [7, 8]
+    new_mask[np.isin(seg_mask, ventricle_labels)] = 4
+
+    thalamus_labels = [16, 17]
+    new_mask[np.isin(seg_mask, thalamus_labels)] = 5
+
+    cerebellum_labels = [11, 12, 13]
+    new_mask[np.isin(seg_mask, cerebellum_labels)] = 6
+
+    # Sauvegarder le nouveau masque
+    new_segmentation_img = nib.Nifti1Image(new_mask, seg_img.affine, seg_img.header)
+    nib.save(new_segmentation_img, os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-6.nii.gz"))
