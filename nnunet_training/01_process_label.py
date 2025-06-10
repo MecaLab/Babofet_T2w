@@ -42,3 +42,5 @@ if __name__ == "__main__":
         # Sauvegarder le nouveau masque
         new_segmentation_img = nib.Nifti1Image(new_mask, seg_img.affine, seg_img.header)
         nib.save(new_segmentation_img, os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-7.nii.gz"))
+
+        print(f"OK for {subj} {session}")
