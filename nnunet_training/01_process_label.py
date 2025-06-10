@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     new_mask = np.zeros_like(seg_mask)
 
-    csf_labels = [1, 2, 14, 15, 18, 19]
+    csf_labels = [1, 2, 18, 19]
     new_mask[np.isin(seg_mask, csf_labels)] = 1
 
     wm_labels = [5, 6]
@@ -35,6 +35,9 @@ if __name__ == "__main__":
     cerebellum_labels = [10, 11, 12, 13]
     new_mask[np.isin(seg_mask, cerebellum_labels)] = 6
 
+    basal_ganglia_labels = [14, 15]
+    new_mask[np.isin(seg_mask, basal_ganglia_labels)] = 7
+
     # Sauvegarder le nouveau masque
     new_segmentation_img = nib.Nifti1Image(new_mask, seg_img.affine, seg_img.header)
-    nib.save(new_segmentation_img, os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-6.nii.gz"))
+    nib.save(new_segmentation_img, os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-7.nii.gz"))
