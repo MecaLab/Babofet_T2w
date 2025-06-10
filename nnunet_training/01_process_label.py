@@ -26,13 +26,13 @@ if __name__ == "__main__":
     gm_labels = [3, 4]
     new_mask[np.isin(seg_mask, gm_labels)] = 3
 
-    ventricle_labels = [7, 8]
+    ventricle_labels = [7, 8, 9]
     new_mask[np.isin(seg_mask, ventricle_labels)] = 4
 
     thalamus_labels = [16, 17]
     new_mask[np.isin(seg_mask, thalamus_labels)] = 5
 
-    cerebellum_labels = [11, 12, 13]
+    cerebellum_labels = [10, 11, 12, 13]
     new_mask[np.isin(seg_mask, cerebellum_labels)] = 6
 
     # Sauvegarder le nouveau masque
