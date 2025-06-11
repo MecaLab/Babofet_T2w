@@ -46,9 +46,9 @@ if __name__ == "__main__":
                 os.makedirs(output_path_subj)
 
             output_recon_file = os.path.join(output_path_subj, "reo-SVR-output-brain_rhesus.nii.gz")
-            """if os.path.exists(output_recon_file):
+            if os.path.exists(output_recon_file):
                 print(f"\tFile {output_recon_file} already exists, skipping...")
-                continue"""
+                continue
 
             shutil.copy(srr_vol, output_recon_file)
 
