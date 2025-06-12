@@ -13,21 +13,20 @@ OUTPUT_PATH = os.path.join(MAIN_PATH, "processing")
 # NIOLON PATH
 BASE_NIOLON_PATH = "/envau/work/meca/data/babofet_DB/2024_new_stuff"
 RECONS_FOLDER = os.path.join(BASE_NIOLON_PATH, "recons_folder")
+BOUNTI_NIOLON_PATH = os.path.join(BASE_NIOLON_PATH, "bounti")
+SEG_INPUT_PATH_NIOLON = os.path.join(BOUNTI_NIOLON_PATH, "svrtk_BOUNTI", "input_SRR_niftymic", "haste")
+SEG_OUTPUT_PATH_NIOLON = os.path.join(BOUNTI_NIOLON_PATH, "svrtk_BOUNTI", "output_BOUNTI_seg", "haste")
 
 
 # MESOCENTRE PATH
 BASE_PATH = "/scratch/lbaptiste/"
 MESO_DATA_PATH = os.path.join(BASE_PATH, "data/dataset/babofet/subjects")
 MESO_OUTPUT_PATH = os.path.join(BASE_PATH, "data/dataset/babofet/derivatives")
-
 # DATA PATH
 DATA_PATH = os.path.join(BASE_PATH, "data/recons_folder")
 BOUNTI_PATH = os.path.join(BASE_PATH, "data/bounti")
 ATLAS_GHOLIPOUR_PATH = os.path.join(BASE_PATH, "data/STA_atlas_hemi_split")
-
 NNUNET_RAW_PATH = os.path.join(BASE_PATH, "data/nnUNet_raw")
-
-
 # Segmentation path bounti
 SEG_INPUT_PATH = os.path.join(BOUNTI_PATH, "svrtk_BOUNTI", "input_SRR_niftymic", "haste")
 SEG_OUTPUT_PATH = os.path.join(BOUNTI_PATH, "svrtk_BOUNTI", "output_BOUNTI_seg", "haste")
