@@ -9,7 +9,7 @@ import configuration as cfg
 
 if __name__ == "__main__":
     subj = "Borgne"
-    base_path = os.path.join(cfg.SEG_OUTPUT_PATH, subj)
+    base_path = os.path.join(cfg.SEG_OUTPUT_PATH_NIOLON, subj)
     for session in os.listdir(base_path):
         bounti_srr_seg_path = os.path.join(base_path, session)
 
