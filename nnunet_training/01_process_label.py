@@ -14,8 +14,6 @@ if __name__ == "__main__":
         bounti_srr_seg_path = os.path.join(base_path, session)
 
         output_path = os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-7.nii.gz")
-        if os.path.exists(output_path):
-            continue
 
         seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-7.nii.gz"))
         seg_mask = seg_img.get_fdata()
