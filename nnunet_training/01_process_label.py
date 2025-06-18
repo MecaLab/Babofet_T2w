@@ -8,22 +8,22 @@ import configuration as cfg
 
 
 if __name__ == "__main__":
-    subj = "Formule"
+    subj = "Fabienne"
     base_path = os.path.join(cfg.SEG_OUTPUT_PATH_NIOLON, subj)
     for session in os.listdir(base_path):
         bounti_srr_seg_path = os.path.join(base_path, session)
 
-        output_path = os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
+        output_path = os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz")
 
-        seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz"))
+        seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz"))
         seg_mask = seg_img.get_fdata()
 
         new_mask = np.zeros_like(seg_mask)
 
-        csf_labels = [1, 2, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+        csf_labels = [1, 2]
         new_mask[np.isin(seg_mask, csf_labels)] = 1
 
-        wm_labels = [5, 6]
+        wm_labels = [5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
         new_mask[np.isin(seg_mask, wm_labels)] = 2
 
         gm_labels = [3, 4]
