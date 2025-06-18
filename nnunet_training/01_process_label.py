@@ -13,9 +13,9 @@ if __name__ == "__main__":
     for session in os.listdir(base_path):
         bounti_srr_seg_path = os.path.join(base_path, session)
 
-        output_path = os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz")
+        output_path = os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
 
-        seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz"))
+        seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz"))
         seg_mask = seg_img.get_fdata()
 
         new_mask = np.zeros_like(seg_mask)
