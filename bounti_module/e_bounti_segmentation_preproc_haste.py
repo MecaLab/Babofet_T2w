@@ -10,7 +10,9 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 if __name__ == "__main__":
-    input_dir = cfg.RECONS_FOLDER
+    subject = sys.argv[1]
+
+    base_path = os.path.join(cfg.RECONS_FOLDER, subject)
 
     output_dir = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI", "input_SRR_niftymic", "haste")  # path for BOUNTI input
     output_dir_seg = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI", "output_BOUNTI_seg", "haste")  # path for BOUNTI output
@@ -20,45 +22,42 @@ if __name__ == "__main__":
     if not os.path.exists(output_dir_seg):
         os.makedirs(output_dir_seg)
 
-    for subject in os.listdir(input_dir):
-        subject_path = os.path.join(input_dir, subject)
+    for session in os.listdir(base_path):
+        subject_session_path = os.path.join(base_path, session)
 
-        for session in os.listdir(subject_path):
-            subject_session_path = os.path.join(subject_path, session)
+        if not "recons_rhesus" in os.listdir(subject_session_path):  # change 'tmp_exp' to 'recons_pipeline' if needed
+            continue
 
-            if not "recons_rhesus" in os.listdir(subject_session_path):  # change 'tmp_exp' to 'recons_pipeline' if needed
-                continue
+        print(f"Processing {subject} {session}...")
 
-            print(f"Processing {subject} {session}...")
+        srr_vol = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space", "srr_template_masked_dilated.nii.gz")
 
-            srr_vol = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space", "srr_template_masked_dilated.nii.gz")
+        if not os.path.exists(srr_vol):
+            print(f"\tFile {srr_vol} does not exist, skipping...")
+            continue
 
-            if not os.path.exists(srr_vol):
-                print(f"\tFile {srr_vol} does not exist, skipping...")
-                continue
+        path_subj = os.path.join(output_dir, subject)
+        if not os.path.exists(path_subj):
+            os.makedirs(path_subj)
 
-            path_subj = os.path.join(output_dir, subject)
-            if not os.path.exists(path_subj):
-                os.makedirs(path_subj)
+        output_path_subj = os.path.join(path_subj, session)
+        if not os.path.exists(output_path_subj):
+            os.makedirs(output_path_subj)
 
-            output_path_subj = os.path.join(path_subj, session)
-            if not os.path.exists(output_path_subj):
-                os.makedirs(output_path_subj)
+        output_recon_file = os.path.join(output_path_subj, "reo-SVR-output-brain_rhesus.nii.gz")
+        if os.path.exists(output_recon_file):
+            print(f"\tFile {output_recon_file} already exists, skipping...")
+            continue
 
-            output_recon_file = os.path.join(output_path_subj, "reo-SVR-output-brain_rhesus.nii.gz")
-            if os.path.exists(output_recon_file):
-                print(f"\tFile {output_recon_file} already exists, skipping...")
-                continue
+        shutil.copy(srr_vol, output_recon_file)
 
-            shutil.copy(srr_vol, output_recon_file)
+        path_subj_seg = os.path.join(output_dir_seg, subject)
+        if not os.path.exists(path_subj_seg):
+            os.mkdir(path_subj_seg)
 
-            path_subj_seg = os.path.join(output_dir_seg, subject)
-            if not os.path.exists(path_subj_seg):
-                os.mkdir(path_subj_seg)
-
-            output_path_subj_seg = os.path.join(path_subj_seg, session)
-            if not os.path.exists(output_path_subj_seg):
-                os.mkdir(output_path_subj_seg)
+        output_path_subj_seg = os.path.join(path_subj_seg, session)
+        if not os.path.exists(output_path_subj_seg):
+            os.mkdir(output_path_subj_seg)
 
 
 
