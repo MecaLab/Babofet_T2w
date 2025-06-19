@@ -9,6 +9,42 @@
     "3": "GM",
     "4": "Ventricle"
   },
-  "numTraining": 10,
-  "file_ending": ".nii.gz"
+  "numTraining": 8,
+  "file_ending": ".nii.gz",
+  "dataset_name": "Babofet",
+  "overwrite_image_reader_writer": "nibabel",
+  "training": [
+    {
+      "image": "./imagesTr/Fabienne_ses03_0000.nii.gz",
+      "label": "./labelsTr/Fabienne_ses03.nii.gz"
+    },
+    {
+      "image": "./imagesTr/Fabienne_ses04_0000.nii.gz",
+      "label": "./labelsTr/Fabienne_ses04.nii.gz"
+    },
+    {
+      "image": "./imagesTr/Fabienne_ses05_0000.nii.gz",
+      "label": "./labelsTr/Fabienne_ses05.nii.gz"
+    },
+    {
+      "image": "./imagesTr/Filoutte_ses03_0000.nii.gz",
+      "label": "./labelsTr/Filoutte_ses03.nii.gz"
+    },
+    {
+      "image": "./imagesTr/Filoutte_ses04_0000.nii.gz",
+      "label": "./labelsTr/Filoutte_ses04.nii.gz"
+    },
+    {
+      "image": "./imagesTr/Filoutte_ses05_0000.nii.gz",
+      "label": "./labelsTr/Filoutte_ses05.nii.gz"
+    },
+    {
+      "image": "./imagesTr/Formule_ses02_0000.nii.gz",
+      "label": "./labelsTr/Formule_ses02.nii.gz"
+    },
+    {
+      "image": "./imagesTr/Formule_ses03_0000.nii.gz",
+      "label": "./labelsTr/Formule_ses03.nii.gz"
+    }
+  ]
 }
