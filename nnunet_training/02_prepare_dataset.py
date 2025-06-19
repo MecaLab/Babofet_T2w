@@ -37,7 +37,7 @@ if __name__ == "__main__":
             input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
             input_path_3d_seg = os.path.join(input_path_3d_segs, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
 
-            img = nib.load(input_path_3d_seg)
+            """img = nib.load(input_path_3d_seg)
             data = img.get_fdata()
 
             if not np.issubdtype(data.dtype, np.integer):
@@ -46,7 +46,7 @@ if __name__ == "__main__":
                 fixed_img = nib.Nifti1Image(data_fixed, img.affine, img.header)
                 nib.save(fixed_img, input_path_3d_seg)
 
-            print(np.issubdtype(data.dtype, np.integer), input_path_3d_seg)
+            print(np.issubdtype(data.dtype, np.integer), input_path_3d_seg)"""
 
 
             output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
