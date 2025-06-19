@@ -3,6 +3,8 @@ import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import shutil
+import nibabel as nib
+import numpy as np
 
 
 if __name__ == "__main__":
@@ -34,6 +36,16 @@ if __name__ == "__main__":
         for session in sessions:
             input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
             input_path_3d_seg = os.path.join(input_path_3d_segs, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
+
+            img = nib.load(input_path_3d_seg)
+            data = img.get_fdata()
+
+            if not np.issubdtype(data.dtype, np.integer):
+                print(f"Warning: {input_path_3d_seg} is not an integer type. Converting to int16.")
+                data_fixed = data.astype(np.int16)
+                fixed_img = nib.Nifti1Image(data_fixed, img.affine, img.header)
+                nib.save(fixed_img, input_path_3d_seg)
+
 
             output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
             output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
