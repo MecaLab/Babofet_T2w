@@ -17,7 +17,7 @@ def write_slurm_file():
 source ~/.bashrc
 conda activate nnunet
 
-nnUNet_train 3d_fullres nnUNetTrainerV2 001 4 --npz
+nnUNetv2_train 3d_fullres nnUNetTrainerV2 001 4 --npz
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
