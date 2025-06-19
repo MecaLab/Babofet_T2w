@@ -10,7 +10,6 @@ def write_slurm_file():
 #SBATCH --partition=volta
 #SBATCH --time=6:00:00
 #SBATCH -c 12
-#SBATCH --mem-per-cpu=48G
 #SBATCH -o nnunet_training.out
 #SBATCH -e nnunet_training.err
 
