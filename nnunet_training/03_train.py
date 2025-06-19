@@ -9,20 +9,24 @@ def write_slurm_file():
 #SBATCH --account='b219'
 #SBATCH --partition=volta
 #SBATCH --time=6:00:00
-#SBATCH -c 1
+#SBATCH -c 12
 #SBATCH --mem-per-cpu=48G
 #SBATCH -o nnunet_training.out
 #SBATCH -e nnunet_training.err
-
-source ~/.bashrc
-conda activate nnunet
 
 module purge
 module load userspace/all
 module load gcc/14.1.0
 module load cuda/12.4
 
-nnUNetv2_train 001 3d_fullres 4 --npz
+source ~/.bashrc
+conda activate nnunet
+
+nnUNetv2_train 001 3d_fullres 0 -tr nnUNetTrainer_100epochs --npz --c
+nnUNetv2_train 001 3d_fullres 1 -tr nnUNetTrainer_100epochs --npz --c
+nnUNetv2_train 001 3d_fullres 2 -tr nnUNetTrainer_100epochs --npz --c
+nnUNetv2_train 001 3d_fullres 3 -tr nnUNetTrainer_100epochs --npz --c
+nnUNetv2_train 001 3d_fullres 4 -tr nnUNetTrainer_100epochs --npz --c
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
