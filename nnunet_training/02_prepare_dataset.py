@@ -8,8 +8,8 @@ import shutil
 if __name__ == "__main__":
     subject_sessions = {
         "Filoutte": ["ses03", "ses04", "ses05"],
-        # "Fabienne": ["ses03", "ses04", "ses05"],
-        # "Formule": ["ses02", "ses03"],
+        "Fabienne": ["ses03", "ses04", "ses05"],
+        "Formule": ["ses02", "ses03"],
         # Borgne soon
     }
 
