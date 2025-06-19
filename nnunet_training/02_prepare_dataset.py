@@ -46,6 +46,8 @@ if __name__ == "__main__":
                 fixed_img = nib.Nifti1Image(data_fixed, img.affine, img.header)
                 nib.save(fixed_img, input_path_3d_seg)
 
+            print(np.issubdtype(data.dtype, np.integer), input_path_3d_seg)
+
 
             output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
             output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
