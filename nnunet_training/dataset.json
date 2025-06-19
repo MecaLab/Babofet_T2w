@@ -3,11 +3,11 @@
     "0": "T2w"
   },
   "labels": {
-    "0": "background",
-    "1": "CSF",
-    "2": "WM",
-    "3": "GM",
-    "4": "Ventricle"
+    "background": 0,
+    "CSF": 1,
+    "WM": 2,
+    "GM": 3,
+    "Ventricle": 4
   },
   "numTraining": 8,
   "file_ending": ".nii.gz",
