@@ -17,10 +17,12 @@ def write_slurm_file():
 source ~/.bashrc
 conda activate nnunet
 
+module purge
 module load userspace/all
-module load cuda/11.6
+module load gcc/14.1.0
+module load cuda/12.4
 
-nnUNetv2_train 001 3d_fullres 4 --npz -device 'cuda'
+nnUNetv2_train 001 3d_fullres 4 --npz
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
