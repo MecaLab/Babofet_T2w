@@ -18,11 +18,11 @@ if __name__ == "__main__":
         input_path_3d_stacks = os.path.join(cfg.SEG_INPUT_PATH_NIOLON, subject)
         input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH_NIOLON, subject)
 
-        output_path = cfg.NNUNET_RAW_PATH_NIOLON
+        output_path = os.path.join(cfg.NNUNET_RAW_PATH, "Dataset001_Babofet")
 
-        images_tr_path = os.path.join(output_path, "ImagesTr")
-        images_ts_path = os.path.join(output_path, "ImagesTs")
-        labels_tr_path = os.path.join(output_path, "LabelsTr")
+        images_tr_path = os.path.join(output_path, "imagesTr")
+        images_ts_path = os.path.join(output_path, "imagesTs")
+        labels_tr_path = os.path.join(output_path, "labelsTr")
 
         if not os.path.exists(images_tr_path):
             os.makedirs(images_tr_path)
