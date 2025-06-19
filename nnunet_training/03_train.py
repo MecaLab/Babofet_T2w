@@ -20,7 +20,7 @@ conda activate nnunet
 module load userspace/all
 module load cuda/11.6
 
-nnUNetv2_train 001 3d_fullres 4 --npz
+nnUNetv2_train 001 3d_fullres 4 --npz -device 'cuda'
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
