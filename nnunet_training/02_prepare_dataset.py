@@ -15,8 +15,8 @@ if __name__ == "__main__":
 
     for subject, sessions in subject_sessions.items():
 
-        input_path_3d_stacks = os.path.join(cfg.BOUNTI_PATH, "input_SRR_niftymic/haste", subject)
-        input_path_3d_segs = os.path.join(cfg.BOUNTI_PATH, "output_BOUNTI_seg/haste", subject)
+        input_path_3d_stacks = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
+        input_path_3d_segs = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/output_BOUNTI_seg/haste", subject)
 
         output_path = os.path.join(cfg.NNUNET_RAW_PATH, "Dataset001_Babofet")
 
