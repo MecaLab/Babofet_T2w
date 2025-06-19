@@ -14,6 +14,9 @@ def write_slurm_file():
 #SBATCH -o nnunet_training.out
 #SBATCH -e nnunet_training.err
 
+source ~/.bashrc
+conda activate nnunet
+
 nnUNet_train 3d_fullres nnUNetTrainerV2 001 4 --npz
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
