@@ -9,7 +9,7 @@ def write_slurm_file(input_folder, output_folder):
 #SBATCH --account='b219'
 #SBATCH --partition=volta
 #SBATCH --gres=gpu:1
-#SBATCH --time=6:00:00
+#SBATCH --time=10:00
 #SBATCH -c 12
 #SBATCH -o nnunet_predict.out
 #SBATCH -e nnunet_predict.err
