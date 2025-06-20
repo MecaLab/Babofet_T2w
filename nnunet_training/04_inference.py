@@ -22,7 +22,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-nnUNetv2_predict -i {input_folder} -o {output_folder} -d 1 -c 3d_fullres -tr nnUNetTrainer_10epochs -f 1 
+nnUNetv2_predict -i {input_folder} -o {output_folder} -d 1 -c 3d_fullres -tr nnUNetTrainer_100epochs -f all
 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
