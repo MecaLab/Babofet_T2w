@@ -22,7 +22,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-nnUNetv2_train 001 3d_fullres -f all -tr nnUNetTrainer_100epochs --npz
+nnUNetv2_train 001 3d_fullres all -tr nnUNetTrainer_100epochs --npz
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
