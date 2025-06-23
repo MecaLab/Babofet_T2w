@@ -36,23 +36,28 @@ if __name__ == "__main__":
     pred_label_img = nib.load(pred_label_path)
     pred_label_data = pred_label_img.get_fdata()
 
-    fig, axs = plt.subplots(4, 2, figsize=(12, 16))
+    fig, axes = plt.subplots(4, 2, figsize=(12, 20))
+    labels = [1, 2, 3, 4]
 
-    for label in range(4):
-        # Superposer et afficher le masque 1
-        image_superposee1 = overlay_masks(anat_data, true_label_data, label+1)
-        axs[label, 0].imshow(anat_data[:, :, anat_data.shape[2] // 2], cmap='gray')
-        axs[label, 0].imshow(image_superposee1[:, :, anat_data.shape[2] // 2], cmap='autumn', alpha=0.5)
-        axs[label, 0].set_title(f'Label {label} - True mask')
+    middle_slice_index = anat_data.shape[2] // 2
+    anatomy_slice = anat_data[:, :, middle_slice_index]
+    gt_slice = true_label_data[:, :, middle_slice_index]
+    predicted_slice = pred_label_data[:, :, middle_slice_index]
 
-        # Superposer et afficher le masque 2
-        image_superposee2 = overlay_masks(anat_data, pred_label_data, label+1)
-        axs[label, 1].imshow(anat_data[:, :, anat_data.shape[2] // 2], cmap='gray', alpha=0.3)
-        axs[label, 0].imshow(image_superposee2[:, :, anat_data.shape[2] // 2], cmap='autumn', alpha=0.5)
-        axs[label, 1].set_title(f'Label {label} - Pred mask')
+    for i, label in enumerate(labels):
+        # Superposer avec le masque GT
+        gt_overlay = np.ma.masked_where(gt_slice != label, gt_slice)
+        axes[i, 0].imshow(anatomy_slice, cmap='gray')
+        axes[i, 0].imshow(gt_overlay, cmap='viridis', alpha=0.5)
+        axes[i, 0].set_title(f'Label {label} - GT Mask')
+        axes[i, 0].axis('off')
 
-    # Ajuster l'espacement entre les sous-graphiques
+        # Superposer avec le masque prédit
+        pred_overlay = np.ma.masked_where(predicted_slice != label, predicted_slice)
+        axes[i, 1].imshow(anatomy_slice, cmap='gray')
+        axes[i, 1].imshow(pred_overlay, cmap='viridis', alpha=0.5)
+        axes[i, 1].set_title(f'Label {label} - Predicted Mask')
+        axes[i, 1].axis('off')
+
     plt.tight_layout()
-
-    # Afficher la figure
     plt.show()
