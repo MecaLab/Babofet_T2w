@@ -32,7 +32,7 @@ nnUNetv2_predict -i {input_folder} -o {output_folder} -d 1 -c 3d_fullres -tr nnU
 
 
 if __name__ == "__main__":
-    input_folder = "/scratch/lbaptiste/data/nnUNet_raw/Dataset001_Babofet/imagesTr/"
+    input_folder = "/scratch/lbaptiste/Babofet_T2w/pred_nnunet/"
     output_folder = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/"
 
     print("Starting inference")
