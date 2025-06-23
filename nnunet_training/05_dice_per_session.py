@@ -38,29 +38,37 @@ if __name__ == "__main__":
     dice_scores_list = []
 
     for file in os.listdir(input_folder):
-        subject = file.split("_")[0]
-        print(f"Processing {subject} {session}")
+        if file.endswith(".nii.gz") and session in file:
+            subject = file.split("_")[0]
+            print(f"Processing {subject} {session}")
 
-        gt_path = os.path.join(cfg.SEG_OUTPUT_PATH, subject, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
-        gt_img = nib.load(gt_path).get_fdata()
+            gt_path = os.path.join(cfg.SEG_OUTPUT_PATH, subject, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
+            gt_img = nib.load(gt_path).get_fdata()
 
-        pred_path = os.path.join(input_folder, file)
-        pred_img = nib.load(pred_path).get_fdata()
+            pred_path = os.path.join(input_folder, file)
+            pred_img = nib.load(pred_path).get_fdata()
 
-        labels = [1, 2, 3, 4]
-        labels_map = {
-            1: "CSF",
-            2: "WM",
-            3: "GM",
-            4: "Ventricle"
-        }
+            labels = [1, 2, 3, 4]
+            labels_map = {
+                1: "CSF",
+                2: "WM",
+                3: "GM",
+                4: "Ventricle"
+            }
 
-        dice_scores = calculer_dice_score(pred_img, gt_img, labels)
-        dice_scores_list.append(dice_scores)
+            labels_avg_list = {
+                1: [],
+                2: [],
+                3: [],
+                4: []
+            }
 
-        for elem in zip(labels, dice_scores):
-            label, score = elem
-            print(f"\t{labels_map[label]}: {score:.4f}")
+            dice_scores = calculer_dice_score(pred_img, gt_img, labels)
+            dice_scores_list.append(dice_scores)
+
+            for elem in zip(labels, dice_scores):
+                label, score = elem
+                print(f"\t{labels_map[label]}: {score:.4f}")
 
     moyennes_dice_scores = moyenne_dice_scores(dice_scores_list)
     print("DICE score moyens pour chaque label:", moyennes_dice_scores)
