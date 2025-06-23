@@ -52,5 +52,5 @@ if __name__ == "__main__":
             dice_scores = calculer_dice_score(pred_img, gt_img, labels)
             for elem in zip(labels, dice_scores):
                 label, score = elem
-                print(f"{labels_map[label]}: {score:.4f}")
+                print(f"\t{labels_map[label]}: {score:.4f}")
 
