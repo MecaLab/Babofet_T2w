@@ -36,7 +36,7 @@ if __name__ == "__main__":
     pred_label_img = nib.load(pred_label_path)
     pred_label_data = pred_label_img.get_fdata()
 
-    fig, axes = plt.subplots(4, 2, figsize=(15, 16))
+    fig, axes = plt.subplots(4, 2, figsize=(12, 16))
     labels = [1, 2, 3, 4]
 
     middle_slice_index = anat_data.shape[2] // 2
@@ -60,4 +60,4 @@ if __name__ == "__main__":
         axes[i, 1].axis('off')
 
     plt.tight_layout()
-    plt.show()
+    plt.savefig("tmp.png")
