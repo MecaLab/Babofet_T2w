@@ -42,9 +42,15 @@ if __name__ == "__main__":
             pred_img = nib.load(pred_path).get_fdata()
 
             labels = [1, 2, 3, 4]
+            labels_map = {
+                1: "CSF",
+                2: "WM",
+                3: "GM",
+                4: "Ventricle"
+            }
 
             dice_scores = calculer_dice_score(pred_img, gt_img, labels)
-            print(dice_scores)
-
-            break
+            for elem in zip(labels, dice_scores):
+                label, score = elem
+                print(f"{labels_map[label]}: {score:.4f}")
 
