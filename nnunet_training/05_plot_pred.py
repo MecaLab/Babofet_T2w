@@ -41,12 +41,14 @@ if __name__ == "__main__":
     for label in range(4):
         # Superposer et afficher le masque 1
         image_superposee1 = overlay_masks(anat_data, true_label_data, label+1)
-        axs[label, 0].imshow(image_superposee1[:, :, anat_data.shape[2] // 2], cmap='gray', alpha=0.3)
+        axs[label, 0].imshow(anat_data[:, :, anat_data.shape[2] // 2], cmap='gray')
+        axs[label, 0].imshow(image_superposee1[:, :, anat_data.shape[2] // 2], cmap='autumn', alpha=0.5)
         axs[label, 0].set_title(f'Label {label} - True mask')
 
         # Superposer et afficher le masque 2
         image_superposee2 = overlay_masks(anat_data, pred_label_data, label+1)
-        axs[label, 1].imshow(image_superposee2[:, :, anat_data.shape[2] // 2], cmap='gray', alpha=0.3)
+        axs[label, 1].imshow(anat_data[:, :, anat_data.shape[2] // 2], cmap='gray', alpha=0.3)
+        axs[label, 0].imshow(image_superposee2[:, :, anat_data.shape[2] // 2], cmap='autumn', alpha=0.5)
         axs[label, 1].set_title(f'Label {label} - Pred mask')
 
     # Ajuster l'espacement entre les sous-graphiques
