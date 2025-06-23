@@ -36,17 +36,17 @@ if __name__ == "__main__":
     pred_label_img = nib.load(pred_label_path)
     pred_label_data = pred_label_img.get_fdata()
 
-    fig, axs = plt.subplots(4, 2, figsize=(12, 24))
+    fig, axs = plt.subplots(4, 2, figsize=(12, 16))
 
     for label in range(4):
         # Superposer et afficher le masque 1
         image_superposee1 = overlay_masks(anat_data, true_label_data, label+1)
-        axs[label, 0].imshow(image_superposee1[:, :, anat_data.shape[2] // 2], cmap='gray')
+        axs[label, 0].imshow(image_superposee1[:, :, anat_data.shape[2] // 2], cmap='gray', alpha=0.3)
         axs[label, 0].set_title(f'Label {label} - True mask')
 
         # Superposer et afficher le masque 2
         image_superposee2 = overlay_masks(anat_data, pred_label_data, label+1)
-        axs[label, 1].imshow(image_superposee2[:, :, anat_data.shape[2] // 2], cmap='gray')
+        axs[label, 1].imshow(image_superposee2[:, :, anat_data.shape[2] // 2], cmap='gray', alpha=0.3)
         axs[label, 1].set_title(f'Label {label} - Pred mask')
 
     # Ajuster l'espacement entre les sous-graphiques
