@@ -69,6 +69,7 @@ if __name__ == "__main__":
             for elem in zip(labels, dice_scores):
                 label, score = elem
                 print(f"\t{labels_map[label]}: {score:.4f}")
-
+                
     moyennes_dice_scores = moyenne_dice_scores(dice_scores_list)
-    print("DICE score moyens pour chaque label:", moyennes_dice_scores)
+    for label, score in zip(labels, moyennes_dice_scores):
+        print(f"Score moyen pour {labels_map[label]}: {score:.4f}")
