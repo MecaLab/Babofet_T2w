@@ -38,9 +38,13 @@ if __name__ == "__main__":
             gt_path = os.path.join(cfg.SEG_OUTPUT_PATH, subject, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
             gt_img = nib.load(gt_path).get_fdata()
 
-
             pred_path = os.path.join(input_folder, file)
             pred_img = nib.load(pred_path).get_fdata()
 
             labels = [1, 2, 3, 4]
+
+            dice_scores = calculer_dice_score(pred_img, gt_img, labels)
+            print(dice_scores)
+
+            break
 
