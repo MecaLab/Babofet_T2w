@@ -35,7 +35,7 @@ if __name__ == "__main__":
             subject = file.split("_")[0]
             print(f"Processing {subject} {session}")
 
-            gt_path = os.path.join(cfg.SEG_OUTPUT_PATH_NIOLON, subject, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
+            gt_path = os.path.join(cfg.SEG_OUTPUT_PATH, subject, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
             gt_img = nib.load(gt_path).get_fdata()
 
 
@@ -43,4 +43,4 @@ if __name__ == "__main__":
             pred_img = nib.load(pred_path).get_fdata()
 
             labels = [1, 2, 3, 4]
-                
+
