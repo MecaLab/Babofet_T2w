@@ -7,7 +7,7 @@ def write_slurm_file():
 
 
 #SBATCH --account='b219'
-#SBATCH --partition=pascal
+#SBATCH --partition=volta
 #SBATCH --gres=gpu:1
 #SBATCH --time=6:00:00
 #SBATCH -c 12
@@ -17,7 +17,7 @@ def write_slurm_file():
 module purge
 module load userspace/all
 module load gcc/14.1.0
-module load cuda/10.2
+module load cuda/12.4
 
 source ~/.bashrc
 conda activate nnunet
