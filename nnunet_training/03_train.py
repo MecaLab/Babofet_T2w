@@ -7,7 +7,7 @@ def write_slurm_file():
 
 
 #SBATCH --account='b219'
-#SBATCH --partition=pascal
+#SBATCH --partition=volta
 #SBATCH --gres=gpu:1
 #SBATCH --time=6:00:00
 #SBATCH -c 12
