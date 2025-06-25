@@ -9,9 +9,8 @@ import numpy as np
 
 if __name__ == "__main__":
     subject_sessions = {
-        "Filoutte": ["ses03", "ses04", "ses05"],
-        "Fabienne": ["ses03", "ses04", "ses05"],
-        "Formule": ["ses02", "ses03"],
+        "Borgne": ["ses08"],
+        "Fabienne": ["ses08"],
         # Borgne soon
     }
 
@@ -20,7 +19,7 @@ if __name__ == "__main__":
         input_path_3d_stacks = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
         input_path_3d_segs = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/output_BOUNTI_seg/haste", subject)
 
-        output_path = os.path.join(cfg.NNUNET_RAW_PATH, "Dataset001_Babofet")
+        output_path = os.path.join(cfg.NNUNET_RAW_PATH, "Dataset001_BabofetFineTuning")
 
         images_tr_path = os.path.join(output_path, "imagesTr")
         images_ts_path = os.path.join(output_path, "imagesTs")
