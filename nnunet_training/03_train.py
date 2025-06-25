@@ -17,7 +17,7 @@ def write_slurm_file():
 module purge
 module load userspace/all
 module load gcc/14.1.0
-module load cuda/12.4
+module load cuda/11.8
 
 source ~/.bashrc
 conda activate nnunet
