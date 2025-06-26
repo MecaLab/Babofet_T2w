@@ -41,6 +41,7 @@ if __name__ == "__main__":
             input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
 
             for session in sessions:
+                print(f"\tProcessing session: {session}")
                 if not crop_data:
                     input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
                 else:
@@ -53,6 +54,3 @@ if __name__ == "__main__":
 
                 shutil.copy2(input_path_3d_stack, output_path_3d_stack)
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg)
-
-    print(f"Starting verify_dataset_integrity for dataset {id_dataset}")
-    subprocess.run(["nnUNetv2_plan_and_preprocess", "-d ", str(id_dataset), "--verify_dataset_integrity"])
