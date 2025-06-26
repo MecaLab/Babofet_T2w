@@ -28,4 +28,4 @@ updated_mask_data = update_mask_cond(mask1_data, mask2_data, label_in_mask1, lab
 updated_mask_img = nib.Nifti1Image(updated_mask_data, mask1.affine, mask1.header)
 
 # Sauvegarder le masque mis à jour dans un nouveau fichier
-nib.save(os.path.join(cfg.SEG_OUTPUT_PATH_NIOLON, "Fabienne/ses04", "merged_reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz"))
+nib.save(updated_mask_img, os.path.join(cfg.SEG_OUTPUT_PATH_NIOLON, "Fabienne/ses04", "merged_reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz"))
