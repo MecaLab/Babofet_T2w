@@ -53,4 +53,4 @@ if __name__ == "__main__":
                 shutil.copy2(input_path_3d_stack, output_path_3d_stack)
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg)
 
-    subprocess.run(["nnUNetv2_plan_and_preprocess", "-d ", id_dataset, "--verify_dataset_integrity"])
+    subprocess.run(["nnUNetv2_plan_and_preprocess", "-d ", str(id_dataset), "--verify_dataset_integrity"])
