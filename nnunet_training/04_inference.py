@@ -1,7 +1,9 @@
 import os
 import subprocess
+import sys
 
-def write_slurm_file(input_folder, output_folder):
+
+def write_slurm_file(input_folder, output_folder, dataset_id):
     filename = "slurm_files/nnunet_prediction.slurm"
     slurm_content = f"""#!/bin/bash
 
@@ -22,7 +24,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-nnUNetv2_predict -i {input_folder} -o {output_folder} -d 1 -c 3d_fullres -tr nnUNetTrainer_100epochs -f all
+nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr nnUNetTrainer_100epochs -f all
 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -36,5 +38,6 @@ if __name__ == "__main__":
     output_folder = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/"
 
     print("Starting inference")
-    write_slurm_file(input_folder, output_folder)
+    dataset_id = sys.argv[1]
+    write_slurm_file(input_folder, output_folder, dataset_id)
     subprocess.run(["sbatch", "slurm_files/nnunet_prediction.slurm"])
