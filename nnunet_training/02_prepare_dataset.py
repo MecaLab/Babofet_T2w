@@ -1,5 +1,6 @@
 import os
 import sys
+import subprocess
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import shutil
@@ -14,7 +15,8 @@ if __name__ == "__main__":
     }
 
     crop_data = True
-    dataset_name = "Dataset003_BabofetUncropped"
+    id_dataset = 3
+    dataset_name = f"Dataset00{id_dataset}_BabofetUncropped"
 
     output_path = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name)
 
@@ -32,13 +34,13 @@ if __name__ == "__main__":
     for subject, sessions in subject_sessions.items():
         input_path_3d_segs = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/output_BOUNTI_seg/haste", subject)
 
-        if crop_data:
+        if not crop_data:
             input_path_3d_stacks = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
         else:
             input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
 
             for session in sessions:
-                if crop_data:
+                if not crop_data:
                     input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
                 else:
                     input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
@@ -50,3 +52,5 @@ if __name__ == "__main__":
 
                 shutil.copy2(input_path_3d_stack, output_path_3d_stack)
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg)
+
+    subprocess.run(["nnUNetv2_plan_and_preprocess", "-d ", id_dataset, "--verify_dataset_integrity"])
