@@ -54,3 +54,5 @@ if __name__ == "__main__":
 
                 shutil.copy2(input_path_3d_stack, output_path_3d_stack)
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg)
+
+    print("Dataset preparation completed. \nNow run nnUNetv2_plan_and_preprocess -d DATASET_ID --verify_dataset_integrity")
