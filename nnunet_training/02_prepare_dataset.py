@@ -32,6 +32,7 @@ if __name__ == "__main__":
         os.makedirs(labels_tr_path)
 
     for subject, sessions in subject_sessions.items():
+        print(f"Processing subject: {subject}")
         input_path_3d_segs = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/output_BOUNTI_seg/haste", subject)
 
         if not crop_data:
@@ -53,4 +54,5 @@ if __name__ == "__main__":
                 shutil.copy2(input_path_3d_stack, output_path_3d_stack)
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg)
 
+    print(f"Starting verify_dataset_integrity for dataset {id_dataset}")
     subprocess.run(["nnUNetv2_plan_and_preprocess", "-d ", str(id_dataset), "--verify_dataset_integrity"])
