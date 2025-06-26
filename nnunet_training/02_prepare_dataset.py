@@ -10,8 +10,8 @@ if __name__ == "__main__":
     subject_sessions = {
         "Borgne": ["ses08"],
         "Fabienne": ["ses03", "ses04", "ses05", "ses08"],
-        "Filoutte": ["ses02", "ses03"],
-        "Formule": ["ses03", "ses04", "ses05"],
+        "Filoutte": ["ses03", "ses04", "ses05"],
+        "Formule": ["ses02", "ses03"],
     }
 
     crop_data = True
