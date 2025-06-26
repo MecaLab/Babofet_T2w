@@ -19,7 +19,7 @@ mask2 = nib.load(os.path.join(cfg.SEG_OUTPUT_PATH_NIOLON, "Fabienne/ses04", "tmp
 mask1_data = mask1.get_fdata()
 mask2_data = mask2.get_fdata()
 
-label_in_mask1 = 2
+label_in_mask1 = 1
 label_in_mask2 = 4
 new_label = 4  # le label à appliquer dans mask1
 
