@@ -17,9 +17,5 @@ if __name__ == "__main__":
 
     command = f"scp -P 8822 -r {base_vol_path}/* {user_id}@login.mesocentre.univ-amu.fr:{output_vol_path}"
 
-    print(command)
-
-    exit()
-
     subprocess.run(command, shell=True)
     print("Volume data copied successfully.")
