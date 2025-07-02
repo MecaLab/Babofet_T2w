@@ -5,7 +5,7 @@ import configuration as cfg
 import subprocess
 
 
-def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file, mode_bm="manual", suffix="", denoising_folder="denoising"):
+def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file, ga, denoising_folder="denoising"):
     filename = "slurm_files/nifty_reconstruction.slurm"
     slurm_content = f"""#!/bin/sh
     
@@ -54,31 +54,14 @@ singularity exec \\
         --dir-output /output/ \\
         --isotropic-resolution 0.5 \\
         --bias-field-correction 0 \\
-        --template /template/Template_G110_T2W.nii.gz \\
-        --template-mask /template/Template_G110_T2W_mask.nii.gz \\
+        --template /template/Template_G{ga}_T2W.nii.gz \\
+        --template-mask /template/Template_G{ga}_T2W_mask.nii.gz \\
         
-              
 """
-    # ./mv_recoans.sh {subj} {mode_bm} {suffix}
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
     os.chmod(filename, 0o700)
-
-
-"""
-Parametres:
--- bias-field-correction Turn on/off bias field correction step during data preprocessing (default: 0)
--- two-step-cycle: Changer le nombre de cycle (défault 3)
--- threshold(-first): est utilisé pour rejeter les slices (NCC). -first pour le premier cycle, rien pour le cycle au milieu (moyenne des 2)
-"""
-
-
-def get_all_subjects(path):
-    list_subjs = []
-    for subj in os.listdir(path):
-        list_subjs.append(subj)
-    return list_subjs
 
 
 if __name__ == "__main__":
@@ -100,32 +83,27 @@ if __name__ == "__main__":
 
     denoising_folder = "denoising"
 
-    SUFFIX_EXP = ""  # need to be updated for every exp. If prexif exist, should start with _
+    ga = "135"  # gestational age in days, used for the template. Should be 85, 110 or 135
 
     list_subjs = [
         # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
         # "sub-Borgne_ses-08", "sub-Borgne_ses-10", "sub-Borgne_ses-09"
-        "sub-Formule_ses-06"
+        "sub-Formule_ses-04", "sub-Formule_ses-06", "sub-Formule_ses-07", "sub-Formule_ses-08", "sub-Formule_ses-09",
         # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
     ]
 
-    # list_subjs = get_all_subjects(cfg.MESO_OUTPUT_PATH)
-
-    for subject in subject_IDs:
-        if subject not in list_subjs:
-            # print(f"Skip {subject}\n")
-            continue
+    for subject in list_subjs:
 
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
+
+        if not os.path.exists(subj_output_dir): 
+            os.makedirs(subj_output_dir)
 
         output_dir = os.path.join(subj_output_dir, "haste", "reconstruction_niftymic_full_pipeline_rhesus_macaque")
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        if not os.path.exists(subj_output_dir):
-            os.makedirs(subj_output_dir)
-
-        print("Starting {}".format(subject))
+        print(f"Starting {subject}")
 
         dir_list = os.listdir(os.path.join(subj_output_dir, denoising_folder))
         haste_files = list()
@@ -182,7 +160,7 @@ if __name__ == "__main__":
             if not os.path.exists(motion_subfolder):
                 os.mkdir(motion_subfolder)
 
-            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm{SUFFIX_EXP}_pipeline.nii.gz"
+            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_pipeline.nii.gz"
 
             write_slurm_file_nifty(
                 subj=subject,
@@ -191,8 +169,6 @@ if __name__ == "__main__":
                 bm_folder=bm_folder,
                 bm_files=bm_img,
                 output_file=recons_haste_subj_output,
-                mode_bm=mask_model,
-                suffix=SUFFIX_EXP,
                 denoising_folder=denoising_folder
             )
 
