@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
         subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
 
-        if not os.path.exists(subj_output_dir): 
+        if not os.path.exists(subj_output_dir):
             os.makedirs(subj_output_dir)
 
         output_dir = os.path.join(subj_output_dir, "haste", "reconstruction_niftymic_full_pipeline_rhesus_macaque")
@@ -169,6 +169,7 @@ if __name__ == "__main__":
                 bm_folder=bm_folder,
                 bm_files=bm_img,
                 output_file=recons_haste_subj_output,
+                ga=ga,
                 denoising_folder=denoising_folder
             )
 
