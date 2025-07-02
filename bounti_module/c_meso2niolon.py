@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     base_path = os.path.join(cfg.DATA_PATH, subject)
 
-    command = f"scp -P 8822 {user_id}@login.mesocentre.univ-amu.fr:{base_path} {cfg.RECONS_FOLDER}"
+    command = f"scp -P 8822 -r {user_id}@login.mesocentre.univ-amu.fr:{base_path} {cfg.RECONS_FOLDER}"
 
     print(command)
 
