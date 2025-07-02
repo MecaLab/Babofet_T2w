@@ -15,7 +15,9 @@ if __name__ == "__main__":
     output_vol_path = os.path.join(cfg.SEG_INPUT_PATH, subject)
     output_seg_path = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
 
-    command = f"scp -P 8822 {base_vol_path} {user_id}@login.mesocentre.univ-amu.fr:{output_vol_path}"
+    command = f"scp -P 8822 -r {base_vol_path} {user_id}@login.mesocentre.univ-amu.fr:{output_vol_path}"
+
+    print(command)
 
     subprocess.run(command, shell=True)
     print("Volume data copied successfully.")
