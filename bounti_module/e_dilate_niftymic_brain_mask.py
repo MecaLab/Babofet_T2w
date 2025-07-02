@@ -88,8 +88,6 @@ if __name__ == "__main__":
 
     NB_DILATION = 3
 
-    output_DB_path = cfg.RECONS_FOLDER
-
     subject = sys.argv[1]
 
     base_path = os.path.join(cfg.RECONS_FOLDER, subject)
@@ -97,11 +95,10 @@ if __name__ == "__main__":
     for session in os.listdir(base_path):
         subject_session_path = os.path.join(base_path, session)
 
-        if not "recons_rhesus" in os.listdir(subject_session_path): # change 'recons_rhesus' to 'recons_pipeline' if needed
+        if not "recons_rhesus" in os.listdir(subject_session_path):
             continue
 
         print(f"Processing {subject} {session}...")
-        # reconst_dir = os.path.join(subject_session_path, "recons_pipeline")
         reconst_dir = os.path.join(subject_session_path, "recons_rhesus")
 
         recon_template_space_dir = os.path.join(
@@ -126,9 +123,8 @@ if __name__ == "__main__":
                         NB_DILATION,
                     )
                 else:
-                    print(f"{image_3DHR_mask} does not exist for {subject} {session}")
-
+                    print(f"\t{image_3DHR_mask} does not exist")
             else:
-                print(f"{image_3DHR_masked} already exist for {subject} {session}")
+                print(f"\t{image_3DHR_masked} already exist")
         else:
-            print(f"{image_3DHR} does not exist for {subject} {session}")
+            print(f"\t{image_3DHR} does not exist")

@@ -17,6 +17,7 @@ if __name__ == "__main__":
     base_path = os.path.join(cfg.RECONS_FOLDER, subject)
 
     for session in os.listdir(base_path):
+        print(f"Processing {subject} {session}...")
         session_path = os.path.join(base_path, session, "recons_rhesus/recon_template_space")
 
         stack_path = os.path.join(session_path, "srr_template.nii.gz")
@@ -27,30 +28,12 @@ if __name__ == "__main__":
             continue
 
         output_filename = os.path.join(session_path, "srr_template_debiased.nii.gz")
-
-        subprocess.run([bias_field_correction_path, "-d", "3", "-i", stack_path, "-x", mask_path, "-o", output_filename])
-        print(f"\t OK for {subject} {session}")
-
-    """
-
-    
-    stack_base_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
-    mask_base_path = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI/output_BOUNTI_seg/haste", subject)
-
-    for session in os.listdir(stack_base_path):
-
-        stack_path = os.path.join(stack_base_path, session, "reo-SVR-output-brain_rhesus.nii.gz")
-        mask_path = os.path.join(mask_base_path, session, "reo-SVR-output-brain_rhesus-mask-bet-1.nii.gz")
-
-        if not os.path.exists(stack_path):
-            print(f"\tStack file {stack_path} does not exist, skipping...")
+        if os.path.exists(output_filename):
+            print(f"\tOutput file {output_filename} already exists, skipping...")
             continue
 
-        output_filename = f"{subject}_{session}_reo-SVR-output-brain_rhesus_withbc.nii.gz"
-
-        subprocess.run(["N4BiasFieldCorrection", "-d", "3", "-i", stack_path, "-x", mask_path, "-o", output_filename])
-        print(f"\t OK for {subject} {session}")
-    """
+        subprocess.run([bias_field_correction_path, "-d", "3", "-i", stack_path, "-x", mask_path, "-o", output_filename])
+        print(f"\tN4BiasFieldCorrection done !")
 
 
 

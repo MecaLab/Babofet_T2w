@@ -25,7 +25,7 @@ if __name__ == "__main__":
     for session in os.listdir(base_path):
         subject_session_path = os.path.join(base_path, session)
 
-        if not "recons_rhesus" in os.listdir(subject_session_path):  # change 'tmp_exp' to 'recons_pipeline' if needed
+        if not "recons_rhesus" in os.listdir(subject_session_path):
             continue
 
         print(f"Processing {subject} {session}...")
@@ -33,7 +33,7 @@ if __name__ == "__main__":
         srr_vol = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space", "srr_template_masked_dilated.nii.gz")
 
         if not os.path.exists(srr_vol):
-            print(f"\tFile {srr_vol} does not exist, skipping...")
+            print(f"\tFile {srr_vol} does not exist. Make sure to run previous scripts to generate it.")
             continue
 
         path_subj = os.path.join(output_dir, subject)
@@ -51,13 +51,8 @@ if __name__ == "__main__":
 
         shutil.copy(srr_vol, output_recon_file)
 
-        path_subj_seg = os.path.join(output_dir_seg, subject)
+        path_subj_seg = os.path.join(output_dir_seg, subject, session)
         if not os.path.exists(path_subj_seg):
-            os.mkdir(path_subj_seg)
-
-        output_path_subj_seg = os.path.join(path_subj_seg, session)
-        if not os.path.exists(output_path_subj_seg):
-            os.mkdir(output_path_subj_seg)
-
+            os.makedirs(path_subj_seg)
 
 
