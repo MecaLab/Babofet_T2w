@@ -71,7 +71,7 @@ if __name__ == "__main__":
         for session in os.listdir(subject_path):
             subject_session_path = os.path.join(subject_path, session)
 
-            if not "recons_rhesus" in os.listdir(subject_session_path):  # change 'recons_rhesus' to 'recons_pipeline' if needed
+            if not "recons_rhesus" in os.listdir(subject_session_path):
                 continue
 
             recon_template_space_dir = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space")
