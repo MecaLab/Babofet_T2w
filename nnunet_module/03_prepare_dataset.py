@@ -1,9 +1,30 @@
 import os
 import sys
+import json
 import subprocess
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import shutil
+
+
+def write_json_file(path, num_training, dataset_name):
+    dico_data = {
+        "channel_names": {
+            "0": "T2W",
+        },
+        "labels": {
+            "background": 0,
+            "CSF": 1,
+            "WM": 2,
+            "GM": 3,
+            "Ventricle": 4,
+        },
+        "numTraining": num_training,
+        "file_ending": ".nii.gz",
+        "dataset_name": dataset_name
+    }
+    with open(path, 'w') as f:
+        json.dump(dico_data, f, indent=4)
 
 
 if __name__ == "__main__":
@@ -15,9 +36,14 @@ if __name__ == "__main__":
     }
 
     crop_data = True
-    id_dataset = 3
-    name = "BabofetUncropped"
-    dataset_name = f"Dataset00{id_dataset}_{name}"
+    id_dataset = int(sys.argv[1])  # should be integer, eg, 1, 2, 3, etc.
+    name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
+    if id_dataset < 10:
+        dataset_name = f"Dataset00{id_dataset}_{name}"
+    elif id_dataset < 100:
+        dataset_name = f"Dataset0{id_dataset}_{name}"
+    else:
+        dataset_name = f"Dataset{id_dataset}_{name}"
 
     output_path = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name)
 
