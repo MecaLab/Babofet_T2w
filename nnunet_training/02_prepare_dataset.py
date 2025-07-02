@@ -16,7 +16,8 @@ if __name__ == "__main__":
 
     crop_data = True
     id_dataset = 3
-    dataset_name = f"Dataset00{id_dataset}_BabofetUncropped"
+    name = "BabofetUncropped"
+    dataset_name = f"Dataset00{id_dataset}_{name}"
 
     output_path = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name)
 
