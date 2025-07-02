@@ -1,6 +1,9 @@
 import os
 import subprocess
 import sys
+import shutil
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 
 
 def write_slurm_file(input_folder, output_folder, dataset_id):
@@ -36,6 +39,28 @@ nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_full
 if __name__ == "__main__":
     input_folder = "/scratch/lbaptiste/Babofet_T2w/pred_nnunet/"
     output_folder = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/"
+
+    subject_sessions = {
+        "Formule": ["ses06", "ses07", "ses08"],
+    }
+    crop_data = False  # Set to True if you want to select cropped data
+
+    for subject, sessions in subject_sessions.items():
+        print(f"Processing subject: {subject}")
+        if crop_data:
+            input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
+        else:
+            input_path_3d_stacks = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
+
+        for session in sessions:
+            print(f"\tProcessing session: {session}")
+            if crop_data:
+                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+            else:
+                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
+
+            output_path_3d_stack = os.path.join(input_folder, f"{subject}_{session}_0000.nii.gz")
+            shutil.copy2(input_path_3d_stack, output_path_3d_stack)
 
     print("Starting inference")
     dataset_id = sys.argv[1]
