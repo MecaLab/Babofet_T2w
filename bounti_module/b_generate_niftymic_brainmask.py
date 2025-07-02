@@ -64,34 +64,40 @@ if __name__ == "__main__":
 
     base_path = cfg.MESO_OUTPUT_PATH
 
-    input_dir = cfg.DATA_PATH
+    subject = sys.argv[1]
 
-    for subject in os.listdir(input_dir):
-        subject_path = os.path.join(input_dir, subject)
-        for session in os.listdir(subject_path):
-            subject_session_path = os.path.join(subject_path, session)
+    input_dir = os.path.join(cfg.DATA_PATH, subject)
 
-            if not "recons_rhesus" in os.listdir(subject_session_path):
-                continue
+    for session in os.listdir(input_dir):
+        subject_session_path = os.path.join(input_dir, session)
 
-            recon_template_space_dir = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space")
+        if not "recons_rhesus" in os.listdir(subject_session_path):
+            print(f"Skipping {subject} {session}, no recons_rhesus directory found.")
+            continue
 
-            if os.path.exists(os.path.join(recon_template_space_dir, "srr_template_mask.nii.gz")):
-                continue
+        recon_template_space_dir = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space")
 
-            print(f"Processing {subject} {session}...")
-            subj_session_path = f"sub-{subject}_ses-{session[3:]}"
-            subj_derivatives_path = os.path.join(base_path, subj_session_path, "fetalbet_masks_v2")
-            masks = get_all_masks(subj_derivatives_path)
+        if not os.path.exists(recon_template_space_dir):
+            print(f"Skipping {subject} {session}, no recon_template_space directory found.")
+            continue
 
-            dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
-            files_dir_motion_correction = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
+        if os.path.exists(os.path.join(recon_template_space_dir, "srr_template_mask.nii.gz")):
+            print(f"Skipping {subject} {session}, srr_template_mask.nii.gz already exists.")
+            continue
 
-            for dn_f in files_dir_motion_correction:
-                if "_denoised" in dn_f:
-                    bm_file = dn_f.replace("_denoised", "")
-                    os.system("cp " + dn_f + " " + bm_file)
+        print(f"Processing {subject} {session}...")
+        subj_session_path = f"sub-{subject}_ses-{session[3:]}"
+        subj_derivatives_path = os.path.join(base_path, subj_session_path, "fetalbet_masks_v2")
+        masks = get_all_masks(subj_derivatives_path)
 
-            write_slurm_file(subj_derivatives_path, masks, recon_template_space_dir)
+        dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
+        files_dir_motion_correction = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
 
-            subprocess.run(["sbatch", "slurm_files/niftymic_reconstruct_3D_mask.slurm"])
+        for dn_f in files_dir_motion_correction:
+            if "_denoised" in dn_f:
+                bm_file = dn_f.replace("_denoised", "")
+                os.system("cp " + dn_f + " " + bm_file)
+
+        write_slurm_file(subj_derivatives_path, masks, recon_template_space_dir)
+
+        subprocess.run(["sbatch", "slurm_files/niftymic_reconstruct_3D_mask.slurm"])
