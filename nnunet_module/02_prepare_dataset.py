@@ -35,7 +35,7 @@ if __name__ == "__main__":
         "Formule": ["ses02", "ses03"],
     }
 
-    crop_data = True
+    crop_data = False
     id_dataset = int(sys.argv[1])  # should be integer, eg, 1, 2, 3, etc.
     name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
     if id_dataset < 10:
@@ -82,4 +82,9 @@ if __name__ == "__main__":
                 shutil.copy2(input_path_3d_stack, output_path_3d_stack)
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg)
 
-    print("Dataset preparation completed. \nNow run nnUNetv2_plan_and_preprocess -d DATASET_ID --verify_dataset_integrity")
+    dataset_json = os.path.join(output_path, "dataset.json")
+    num_training = len(os.listdir(images_tr_path))
+    write_json_file(dataset_json, num_training, dataset_name)
+
+    print("Dataset preparation completed")
+    print("Now run: nnUNetv2_plan_and_preprocess -d DATASET_ID --verify_dataset_integrity")
