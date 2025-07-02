@@ -21,7 +21,12 @@ if __name__ == "__main__":
             print(f"\tFile already exists for session {session}, skipping...")
             continue
 
-        seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz"))
+        try:
+            seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz"))
+        except FileNotFoundError:
+            print(f"\tSegmentation file not found for session {session}, skipping...")
+            continue
+
         seg_mask = seg_img.get_fdata()
 
         new_mask = np.zeros_like(seg_mask)
