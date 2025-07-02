@@ -4,7 +4,7 @@ import subprocess
 
 
 def write_slurm_file(dataset_id):
-    filename = "slurm_files/nnunet_training.slurm"
+    filename = "slurm_files/nnunet_module.slurm"
     slurm_content = f"""#!/bin/bash
 
 #SBATCH --account='b219'
@@ -12,8 +12,8 @@ def write_slurm_file(dataset_id):
 #SBATCH --gres=gpu:1
 #SBATCH --time=6:00:00
 #SBATCH -c 12
-#SBATCH -o nnunet_training.out
-#SBATCH -e nnunet_training.err
+#SBATCH -o nnunet_module.out
+#SBATCH -e nnunet_module.err
 
 module purge
 module load userspace/all
@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     dataset_id = sys.argv[1]
     write_slurm_file(dataset_id)
-    subprocess.run(["sbatch", "slurm_files/nnunet_training.slurm"])
+    subprocess.run(["sbatch", "slurm_files/nnunet_module.slurm"])
 
 
 

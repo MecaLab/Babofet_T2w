@@ -1,9 +1,16 @@
 import os
 import nibabel as nib
-import numpy as np
 import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
+
+"""
+This script updates a mask based on conditions from two input masks.
+It replaces the label in mask1 with a new label where both masks meet specific conditions.
+
+Might be useful for merging segmentation masks or updating labels based on certain criteria after manual correction.
+"""
+
 
 
 def update_mask_cond(mask1, mask2, label_in_mask1, label_in_mask2, new_label):
