@@ -32,8 +32,9 @@ if __name__ == "__main__":
         output_path = os.path.join(session_output_dir, "recons_rhesus")
         if not os.path.exists(output_path):
             os.makedirs(output_path)
-
-        shutil.copytree(full_subject_input_dir, output_path, dirs_exist_ok=True)
+            shutil.copytree(full_subject_input_dir, output_path, dirs_exist_ok=True)
+        else:
+            print(f"\tOutput directory {output_path} already exists. Skipping copy.")
 
 
 
