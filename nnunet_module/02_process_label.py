@@ -9,12 +9,17 @@ import configuration as cfg
 
 if __name__ == "__main__":
     subj = sys.argv[1]
-    
+
     base_path = os.path.join(cfg.SEG_OUTPUT_PATH_NIOLON, subj)
     for session in os.listdir(base_path):
+        print(f"Processing session: {session}")
         bounti_srr_seg_path = os.path.join(base_path, session)
 
         output_path = os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
+
+        if os.path.exists(output_path):
+            print(f"\tFile already exists for session {session}, skipping...")
+            continue
 
         seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz"))
         seg_mask = seg_img.get_fdata()
@@ -35,4 +40,4 @@ if __name__ == "__main__":
 
         new_segmentation_img = nib.Nifti1Image(new_mask, seg_img.affine, seg_img.header)
         nib.save(new_segmentation_img, output_path)
-        print(f"OK for {subj} {session}")
+        print("\tDone")
