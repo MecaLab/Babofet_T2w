@@ -15,6 +15,8 @@ if __name__ == "__main__":
 
     print(command)
 
+    subprocess.run(command, shell=True)
+
     """
     scp -P 8822 lbaptiste@login.mesocentre.univ-amu.fr:base_path/ recons_folder
     """
