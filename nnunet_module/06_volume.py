@@ -40,14 +40,13 @@ if __name__ == "__main__":
                 label_volumes[label].append(vols[label])
             sessions.append(session)
 
-    fig, axes = plt.subplots(1, 4, figsize=(16, 8))
+    fig, axes = plt.subplots(1, 4, figsize=(20, 6))
     for i, label in enumerate(labels):
         axes[i].plot(sessions, label_volumes[label], marker='o')
         axes[i].set_title(f'Label {labels_names[i]}')
-        axes[i].set_xlabel('Semaine')
+        axes[i].set_xlabel('Session')
         axes[i].set_ylabel('Volume (mm³)')
         axes[i].grid(True)
 
     plt.tight_layout()
-    plt.suptitle(f'Volumes des labels pour le sujet {subject}', fontsize=16)
     plt.savefig(f"evolution_volumes_{subject}.png")
