@@ -35,7 +35,8 @@ if __name__ == "__main__":
         "Formule": ["ses02", "ses03"],
     }
 
-    crop_data = False
+    mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2"
+
     id_dataset = int(sys.argv[1])  # should be integer, eg, 1, 2, 3, etc.
     name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
     if id_dataset < 10:
@@ -60,26 +61,45 @@ if __name__ == "__main__":
 
     for subject, sessions in subject_sessions.items():
         print(f"Processing subject: {subject}")
-        input_path_3d_segs = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/output_BOUNTI_seg/haste", subject)
+        input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
 
-        if crop_data:
+        if mode_dataset == "unmasked":
             input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
+        elif mode_dataset == "masked":
+            input_path_3d_stacks = os.path.join(cfg.SEG_INPUT_PATH, subject)
+        elif mode_dataset == "debiased-2":
+            input_path_3d_stacks = os.path.join()
         else:
-            input_path_3d_stacks = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
+            raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
 
         for session in sessions:
             print(f"\tProcessing session: {session}")
-            if crop_data:
+            if mode_dataset == "unmasked":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
-            else:
+            elif mode_dataset == "masked":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
+            elif mode_dataset == "debiased-2":
+                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
+                input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+
+            else:
+                raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
 
             input_path_3d_seg = os.path.join(input_path_3d_segs, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
-
-            output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
             output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
 
-            shutil.copy2(input_path_3d_stack, output_path_3d_stack)
+            if mode_dataset != "debiased-2":
+                output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
+
+                shutil.copy2(input_path_3d_stack, output_path_3d_stack)
+                shutil.copy2(input_path_3d_seg, output_path_3d_seg)
+            else:
+                output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_bias_0000.nii.gz")
+                output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{session}_debias_0000.nii.gz")
+
+                shutil.copy2(input_path_3d_stack, output_path_3d_stack)
+                shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
+
             shutil.copy2(input_path_3d_seg, output_path_3d_seg)
 
     dataset_json = os.path.join(output_path, "dataset.json")
