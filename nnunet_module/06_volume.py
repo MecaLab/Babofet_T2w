@@ -49,5 +49,5 @@ if __name__ == "__main__":
         axes[i].grid(True)
 
     plt.tight_layout()
-    plt.suptitle("Évolution du volume des structures segmentées", y=1.05)
+    plt.suptitle(f'Volumes des labels pour le sujet {subject}', fontsize=16)
     plt.savefig(f"evolution_volumes_{subject}.png")
