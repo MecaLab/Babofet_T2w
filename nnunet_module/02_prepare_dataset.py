@@ -68,7 +68,7 @@ if __name__ == "__main__":
         elif mode_dataset == "masked":
             input_path_3d_stacks = os.path.join(cfg.SEG_INPUT_PATH, subject)
         elif mode_dataset == "debiased-2":
-            input_path_3d_stacks = os.path.join()
+            input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
         else:
             raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
 
