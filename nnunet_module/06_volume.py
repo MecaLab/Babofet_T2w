@@ -27,7 +27,7 @@ if __name__ == "__main__":
     label_volumes = {label: [] for label in labels}
 
     sessions = []
-    for file in os.listdir(input_folder):
+    for file in sorted(os.listdir(input_folder)):
         if file.endswith(".nii.gz") and subject in file:
             print(f"Traitement de {file} pour le sujet {subject}...")
             session = file.split(".")[0].split("_")[-1]  # subject_sesXX.nii.gz => sesXX
@@ -37,6 +37,8 @@ if __name__ == "__main__":
             vols = compute_vol(pred_img, voxel_size, labels)
             for label in labels:
                 label_volumes[label].append(vols[label])
+            sessions.append(session)
+            
 
     fig, axes = plt.subplots(1, 4, figsize=(20, 4))
     for i, label in enumerate(labels):
