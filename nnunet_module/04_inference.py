@@ -41,7 +41,9 @@ if __name__ == "__main__":
     output_folder = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/"
 
     subject_sessions = {
-        "Bibi": ["ses04", "ses05", "ses06", "ses07", "ses09"],
+        # "Bibi": ["ses04", "ses05", "ses06", "ses07", "ses09"],
+        "Aziza": ["ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
+        "Forme": ["ses02", "ses03", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
     }
     crop_data = False  # Set to True if you want to select cropped data
 
