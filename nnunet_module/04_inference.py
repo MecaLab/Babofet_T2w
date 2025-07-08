@@ -37,9 +37,12 @@ nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_full
 
 
 if __name__ == "__main__":
+    dataset_id = sys.argv[1]
     input_folder = "/scratch/lbaptiste/Babofet_T2w/pred_nnunet/"
-    output_folder = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/"
 
+    output_folder = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id}"
+
+    
     subject_sessions = {
         "Bibi": ["ses04", "ses05", "ses06", "ses07", "ses09"],
         "Borgne": ["ses04", "ses05", "ses06", "ses07", "ses09", "ses10"],
@@ -71,6 +74,6 @@ if __name__ == "__main__":
             shutil.copy2(input_path_3d_stack, output_path_3d_stack)
 
     print("Starting inference")
-    dataset_id = sys.argv[1]
+
     write_slurm_file(input_folder, output_folder, dataset_id)
     subprocess.run(["sbatch", "slurm_files/nnunet_prediction.slurm"])
