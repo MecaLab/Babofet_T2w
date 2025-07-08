@@ -27,7 +27,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr nnUNetTrainer_100epochs -f all
+nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr nnUNetTrainer_100epochs -f all --save_probabilities
 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
