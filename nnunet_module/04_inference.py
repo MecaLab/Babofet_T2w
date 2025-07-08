@@ -42,7 +42,10 @@ if __name__ == "__main__":
 
     output_folder = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id}"
 
-    
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+
     subject_sessions = {
         "Bibi": ["ses04", "ses05", "ses06", "ses07", "ses09"],
         "Borgne": ["ses04", "ses05", "ses06", "ses07", "ses09", "ses10"],
