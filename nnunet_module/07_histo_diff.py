@@ -19,6 +19,8 @@ if __name__ == "__main__":
     for file_1, file_2 in zip(os.listdir(path_1), os.listdir(path_2)):
         if file_1.endswith(".nii.gz") and file_2.endswith(".nii.gz"):
 
+            subject_name = file_1.split(".")[0]
+
             mask1 = nib.load(os.path.join(path_1, file_1)).get_fdata()
             mask2 = nib.load(os.path.join(path_2, file_2)).get_fdata()
 
@@ -29,12 +31,12 @@ if __name__ == "__main__":
 
             plt.figure(figsize=(12, 6))
             plt.hist(diff, bins=np.arange(diff.min(), diff.max() + 2) - 0.5, color='lightcoral', edgecolor='black')
-            plt.title("Histogramme des différences (mask1 - mask2)")
+            plt.title(f"Histogramme des différences pour {subject_name}")
             plt.xlabel("Différences de labels (mask1 - mask2)")
             plt.ylabel("Nombre de voxels")
             plt.grid(True)
             plt.xticks(np.arange(diff.min(), diff.max() + 1))
-            output_fig = os.path.join(cfg.BASE_PATH, f"Babofet_T2w/snapshots/nnunet_res/histo_diff_{file_1}.png")
+            output_fig = os.path.join(cfg.BASE_PATH, f"Babofet_T2w/snapshots/nnunet_res/histo_diff_{subject_name}.png")
             plt.tight_layout()
             plt.savefig(output_fig)
 
@@ -45,8 +47,8 @@ if __name__ == "__main__":
             sns.heatmap(cm, annot=True, fmt='d', cmap="Blues", xticklabels=label_names.values(), yticklabels=label_names.values())
             plt.xlabel("Prédiction modèle 2")
             plt.ylabel("Prédiction modèle 1")
-            plt.title("Matrice de confusion entre masques (sans background)")
-            output_fig = os.path.join(cfg.BASE_PATH, f"Babofet_T2w/snapshots/nnunet_res/heatmap_diff_{file_1}.png")
+            plt.title(f"Matrice de confusion entre masques pour {subject_name}")
+            output_fig = os.path.join(cfg.BASE_PATH, f"Babofet_T2w/snapshots/nnunet_res/heatmap_diff_{subject_name}.png")
             plt.tight_layout()
             plt.savefig(output_fig)
             plt.close()
