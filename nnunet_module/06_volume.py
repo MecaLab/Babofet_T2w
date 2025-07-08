@@ -19,10 +19,10 @@ def compute_vol(mask, voxel_size, labels=[1, 2, 3, 4]):
 
 if __name__ == "__main__":
     subject = sys.argv[1]  # Nom du sujet, e.g., Fabienne / Formule / etc..
+    model_id = sys.argv[2]  # ID du modèle, e.g., 1, 2, 3, 4 ...
     input_folder = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/"
 
     voxel_size = 0.5
-    model_id = 3
     labels = [1, 2, 3, 4]  # Labels pour CSF, WM, GM, Ventricle
     labels_names = ["CSF", "WM", "GM", "Ventricle"]
 
