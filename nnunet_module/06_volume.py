@@ -22,6 +22,7 @@ if __name__ == "__main__":
     input_folder = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/"
 
     voxel_size = 0.5
+    model_id = 3
     labels = [1, 2, 3, 4]  # Labels pour CSF, WM, GM, Ventricle
     labels_names = ["CSF", "WM", "GM", "Ventricle"]
 
@@ -49,4 +50,4 @@ if __name__ == "__main__":
         axes[i].grid(True)
 
     plt.tight_layout()
-    plt.savefig(f"evolution_volumes_{subject}.png")
+    plt.savefig(f"evolution_volumes_{subject}_{model_id}.png")
