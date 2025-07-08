@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
             diff = mask1_fg - mask2_fg
 
-            plt.figure(figsize=(8, 4))
+            plt.figure(figsize=(12, 6))
             plt.hist(diff, bins=np.arange(diff.min(), diff.max() + 2) - 0.5, color='lightcoral', edgecolor='black')
             plt.title("Histogramme des différences (mask1 - mask2)")
             plt.xlabel("Différences de labels (mask1 - mask2)")
@@ -41,7 +41,7 @@ if __name__ == "__main__":
             # 2. Matrice de confusion entre les deux masques (hors background)
             cm = confusion_matrix(mask1_fg, mask2_fg, labels=[1, 2, 3, 4])
 
-            plt.figure(figsize=(6, 5))
+            plt.figure(figsize=(12, 10))
             sns.heatmap(cm, annot=True, fmt='d', cmap="Blues", xticklabels=label_names.values(), yticklabels=label_names.values())
             plt.xlabel("Prédiction modèle 2")
             plt.ylabel("Prédiction modèle 1")
