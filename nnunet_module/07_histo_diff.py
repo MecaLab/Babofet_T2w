@@ -22,7 +22,7 @@ if __name__ == "__main__":
             seg_1 = nib.load(os.path.join(path_1, file_1)).get_fdata()
             seg_2 = nib.load(os.path.join(path_2, file_2)).get_fdata()
 
-            diff = np.abs(seg_1 - seg_2)
+            diff = seg_1 - seg_2
 
             plt.figure(figsize=(10, 5))
             plt.hist(diff.flatten(), bins=np.arange(diff.min(), diff.max() + 2) - 0.5, color='skyblue',
