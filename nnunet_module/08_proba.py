@@ -33,7 +33,7 @@ if __name__ == "__main__":
             diff_mask = ~same_mask
 
             coords = np.indices(label1.shape)
-            w, h, d = coords[0], coords[1], coords[2]
+            d, h, w = coords[0], coords[1], coords[2]
 
             # Probabilité du label prédit par modèle 1
             prob1_max = prob1[label1, d, h, w]
@@ -48,6 +48,8 @@ if __name__ == "__main__":
             final_labels[mask_model2] = label2[mask_model2]
 
             mask1 = nib.load(os.path.join(path_1, file_1))
+
+            final_labels_t = np.transpose(final_labels, (2, 1, 0))  # (X, Y, Z)
 
             fusion_nifti = nib.Nifti1Image(final_labels.astype(np.uint8), affine=mask1.affine, header=mask1.header)
 
