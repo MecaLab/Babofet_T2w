@@ -14,38 +14,45 @@ if __name__ == "__main__":
     path_1 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_3"
     path_2 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_4"
 
-    labels = [1, 2, 3, 4]  # CSF, WM, GM, Ventricle
+    label_names = {1: "CSF", 2: "WM", 3: "GM", 4: "Ventricule"}
 
     for file_1, file_2 in zip(os.listdir(path_1), os.listdir(path_2)):
         if file_1.endswith(".nii.gz") and file_2.endswith(".nii.gz"):
-
+            # Charger les masques
             mask1 = nib.load(os.path.join(path_1, file_1)).get_fdata()
             mask2 = nib.load(os.path.join(path_2, file_2)).get_fdata()
 
+            # Filtrer le background
             mask1_fg = mask1[mask1 > 0]
             mask2_fg = mask2[mask1 > 0]
 
+            # Calculer les différences
             diff = mask1_fg - mask2_fg
 
+            # Histogramme normalisé des différences
             plt.figure(figsize=(8, 4))
-            plt.hist(diff, bins=np.arange(diff.min(), diff.max() + 2) - 0.5, color='lightcoral', edgecolor='black')
-            plt.title("Histogramme des différences (mask1 - mask2)")
+            plt.hist(diff, bins=np.arange(diff.min(), diff.max() + 2) - 0.5, color='lightcoral', edgecolor='black',
+                     weights=np.ones(len(diff)) / len(diff))
+            plt.title("Histogramme normalisé des différences (mask1 - mask2)")
             plt.xlabel("Différences de labels (mask1 - mask2)")
-            plt.ylabel("Nombre de voxels")
+            plt.ylabel("Proportion de voxels")
             plt.grid(True)
             plt.xticks(np.arange(diff.min(), diff.max() + 1))
-            output_fig = os.path.join(cfg.BASE_PATH, f"Babofet_T2w/snapshots/nnunet_res/histo_diff_{file_1}.png")
             plt.tight_layout()
+            output_fig = os.path.join(cfg.BASE_PATH, f"Babofet_T2w/snapshots/nnunet_res/heatmap_diff_{file_1}.png")
             plt.savefig(output_fig)
+            plt.close()
 
-            # 2. Matrice de confusion entre les deux masques (hors background)
+            # Matrice de confusion normalisée
             cm = confusion_matrix(mask1_fg, mask2_fg, labels=[1, 2, 3, 4])
+            cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
             plt.figure(figsize=(6, 5))
-            sns.heatmap(cm, annot=True, fmt='d', cmap="Blues", xticklabels=[1, 2, 3, 4], yticklabels=[1, 2, 3, 4])
+            sns.heatmap(cm_normalized, annot=True, fmt='.2f', cmap="Blues", xticklabels=label_names.values(),
+                        yticklabels=label_names.values())
             plt.xlabel("Prédiction modèle 2")
             plt.ylabel("Prédiction modèle 1")
-            plt.title("Matrice de confusion entre masques (sans background)")
+            plt.title("Matrice de confusion normalisée entre masques (sans background)")
             output_fig = os.path.join(cfg.BASE_PATH, f"Babofet_T2w/snapshots/nnunet_res/heatmap_diff_{file_1}.png")
             plt.tight_layout()
             plt.savefig(output_fig)
