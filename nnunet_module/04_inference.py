@@ -45,21 +45,26 @@ if __name__ == "__main__":
         # "Aziza": ["ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
         # "Forme": ["ses02", "ses03", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
     }
-    crop_data = False  # Set to True if you want to select cropped data
+
+    mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2"
 
     for subject, sessions in subject_sessions.items():
         print(f"Processing subject: {subject}")
-        if crop_data:
+        if mode_dataset == "unmasked" or mode_dataset == "debiased-2":
             input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
-        else:
+        elif mode_dataset == "masked":
             input_path_3d_stacks = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
+        else:
+            raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
 
         for session in sessions:
             print(f"\tProcessing session: {session}")
-            if crop_data:
+            if mode_dataset == "unmasked" or mode_dataset == "debiased-2":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
-            else:
+            elif mode_dataset == "masked":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
+            else:
+                raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
 
             output_path_3d_stack = os.path.join(input_folder, f"{subject}_{session}_0000.nii.gz")
             shutil.copy2(input_path_3d_stack, output_path_3d_stack)
