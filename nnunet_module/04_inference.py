@@ -42,11 +42,12 @@ if __name__ == "__main__":
 
     subject_sessions = {
         "Bibi": ["ses04", "ses05", "ses06", "ses07", "ses09"],
+        "Borgne": ["ses04", "ses05", "ses06", "ses07", "ses09", "ses10"],
         # "Aziza": ["ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
         # "Forme": ["ses02", "ses03", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
     }
 
-    mode_dataset = "unmasked"  # "masked" or "unmasked" or "debiased-2"
+    mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2"
 
     for subject, sessions in subject_sessions.items():
         print(f"Processing subject: {subject}")
