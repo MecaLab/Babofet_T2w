@@ -33,7 +33,7 @@ if __name__ == "__main__":
             diff_mask = ~same_mask
 
             coords = np.indices(label1.shape)
-            d, h, w = coords[0], coords[1], coords[2]
+            w, h, d = coords[0], coords[1], coords[2]
 
             # Probabilité du label prédit par modèle 1
             prob1_max = prob1[label1, d, h, w]
