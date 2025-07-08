@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
             npz_data = np.load(npz_path)
 
-            print(npz_data)
+            print(npz_data.keys())
 
             break
 
