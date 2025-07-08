@@ -36,3 +36,5 @@ if __name__ == "__main__":
 
             output_fig = os.path.join(cfg.BASE_PATH, f"Babofet_T2w/snapshots/nnunet_res/histo_diff_{file_1}.png")
             plt.savefig(output_fig)
+            plt.close()
+            break
