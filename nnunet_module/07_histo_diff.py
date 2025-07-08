@@ -50,4 +50,3 @@ if __name__ == "__main__":
             plt.tight_layout()
             plt.savefig(output_fig)
             plt.close()
-            break
