@@ -14,6 +14,15 @@ if __name__ == "__main__":
     path_1 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_3"
     path_2 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_4"
 
+    output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/histo"
+
+    fusion = ""  # empty or "_fusion_labels"
+
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+
+    # path_1 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/fusion_labels"
+
     label_names = {1: "CSF", 2: "WM", 3: "GM", 4: "Ventricule"}
 
     for file_1, file_2 in zip(os.listdir(path_1), os.listdir(path_2)):
@@ -36,7 +45,7 @@ if __name__ == "__main__":
             plt.ylabel("Nombre de voxels")
             plt.grid(True)
             plt.xticks(np.arange(diff.min(), diff.max() + 1))
-            output_fig = os.path.join(cfg.BASE_PATH, f"Babofet_T2w/snapshots/nnunet_res/histo_diff_{subject_name}.png")
+            output_fig = os.path.join(cfg.BASE_PATH, os.path.join(output_path, f"histo_diff_{subject_name}{fusion}.png"))
             plt.tight_layout()
             plt.savefig(output_fig)
 
@@ -48,7 +57,7 @@ if __name__ == "__main__":
             plt.xlabel("Prédiction modèle 2")
             plt.ylabel("Prédiction modèle 1")
             plt.title(f"Matrice de confusion entre masques pour {subject_name}")
-            output_fig = os.path.join(cfg.BASE_PATH, f"Babofet_T2w/snapshots/nnunet_res/heatmap_diff_{subject_name}.png")
+            output_fig = os.path.join(cfg.BASE_PATH, os.path.join(output_path, f"heatmap_diff_{subject_name}{fusion}.png"))
             plt.tight_layout()
             plt.savefig(output_fig)
             plt.close()
