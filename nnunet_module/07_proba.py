@@ -6,6 +6,14 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
+def compute_entropy(probabilities):
+    eps = 1e-10  # Small constant to avoid log(0)
+    probs = probabilities + eps
+    log_probs = np.log(probs)
+    entropy = -np.sum(probs * log_probs, axis=0)
+    return entropy
+
+
 def fusion_labels(path_1, path_2, output_path, method):
     output_path = os.path.join(output_path, method)
     if not os.path.exists(output_path):
@@ -45,7 +53,19 @@ def fusion_labels(path_1, path_2, output_path, method):
             elif method == "mean_prob":
                 mean_prob = (prob1 + prob2) / 2
                 final_labels = np.argmax(mean_prob, axis=0)
+            elif method == "entropy":
+                entropy_1 = compute_entropy(prob1)
+                entropy_2 = compute_entropy(prob2)
 
+                weights_1 = 1 / (entropy_1 + 1e-10)  # Avoid division by zero
+                weights_2 = 1 / (entropy_2 + 1e-10)
+
+                weights_sum = weights_1 + weights_2 + 1e-10  # Avoid division by zero
+                weights_1 /= weights_sum
+                weights_2 /= weights_sum
+
+                combined_probs = weights_1[np.newaxis, ...] * prob1 + weights_2[np.newaxis, ...] * prob2
+                final_labels = np.argmax(combined_probs, axis=0)
             else:
                 raise ValueError("Method not recognized. Use 'max_prob' or 'mean_prob'.")
 
