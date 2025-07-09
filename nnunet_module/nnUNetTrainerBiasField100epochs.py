@@ -55,7 +55,7 @@ class ArtifactTransform(BasicTransform):
         return image, segmentation
 
 
-class nnUNetTrainer_BiasField_100epochs(nnUNetTrainer):
+class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
     """
     Custom trainer for nnUNet that applies a bias field artifact during training.
     """
