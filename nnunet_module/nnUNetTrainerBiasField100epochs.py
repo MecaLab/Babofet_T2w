@@ -59,30 +59,13 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
     """
     Custom trainer for nnUNet that applies a bias field artifact during training.
     """
-
     def __init__(self,
                  plans: dict,
                  configuration: str,
                  fold: int,
                  dataset_json: dict,
-                 unpack_dataset: bool = True,
-                 find_lr: bool = False,
-                 val_best: bool = False,
-                 use_gradient_checkpointing: bool = False,
-                 device: torch.device = torch.device('cuda'),
-                 **kwargs):
-        super().__init__(
-            plans=plans,
-            configuration=configuration,
-            fold=fold,
-            dataset_json=dataset_json,
-            unpack_dataset=unpack_dataset,
-            find_lr=find_lr,
-            val_best=val_best,
-            use_gradient_checkpointing=use_gradient_checkpointing,
-            device=device,
-            **kwargs
-        )
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 100
 
     @staticmethod
