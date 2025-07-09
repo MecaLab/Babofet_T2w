@@ -54,7 +54,6 @@ if __name__ == "__main__":
             fusion_nifti = nib.Nifti1Image(final_labels_t.astype(np.uint8), affine=mask1.affine, header=mask1.header)
 
             nib.save(fusion_nifti, os.path.join(output_path, f"fusion_labels_{subject_name}.nii.gz"))
-            break
 
 
 
