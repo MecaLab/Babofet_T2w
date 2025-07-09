@@ -1,4 +1,3 @@
-import torch
 from typing import Tuple, Union, List
 import numpy as np
 from nnunetv2.training.nnUNetTrainer.nnUNetTrainer import nnUNetTrainer
@@ -60,9 +59,8 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
     Custom trainer for nnUNet that applies a bias field artifact during training.
     """
 
-    def __init__(self, plans: dict, configuration: str, fold: int, dataset_json: dict,
-                 device: torch.device = torch.device('cuda')):
-        super().__init__(plans, configuration, fold, dataset_json, device)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.num_epochs = 100
 
     @staticmethod
@@ -89,3 +87,5 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
                 bias_field=True
             ), apply_probability=0.3
         ))
+
+        return transforms
