@@ -11,12 +11,13 @@ import configuration as cfg
 
 if __name__ == "__main__":
 
-    path_1 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_3"
+    # path_1 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_3"
+    path_1 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/fusion_labels"
     path_2 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_4"
 
     output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/histo"
 
-    fusion = ""  # empty or "_fusion_labels"
+    fusion = "_fusion_labels"  # empty or "_fusion_labels"
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
