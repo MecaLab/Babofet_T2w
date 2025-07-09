@@ -26,7 +26,7 @@ if __name__ == "__main__":
     base_vol_path = os.path.join(cfg.RECONS_FOLDER, subject)
 
     output_vol_path = os.path.join(cfg.DATA_PATH, subject)
-    command = f"rsync -avz -e 'ssh -p 8822' {base_vol_path} {user_id}@login.mesocentre.univ-amu.fr:{output_vol_path}"
+    command = f"rsync -avz -e 'ssh -p 8822' {base_vol_path}/* {user_id}@login.mesocentre.univ-amu.fr:{output_vol_path}"
     subprocess.run(command, shell=True)
 
     print("Data copied successfully to the mesocentre.")
