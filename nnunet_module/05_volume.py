@@ -62,4 +62,4 @@ if __name__ == "__main__":
         axes[i].grid(True)
 
     plt.tight_layout()
-    plt.savefig(f"evolution_volumes_{subject}_{model_id}.png")
+    plt.savefig(os.path.join(output_path, f"evolution_volumes_{subject}_{model_id}.png"))   
