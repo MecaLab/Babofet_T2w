@@ -13,6 +13,8 @@ def fusion_labels(path_1, path_2, output_path, method):
 
     for file_1, file_2 in zip(os.listdir(path_1), os.listdir(path_2)):
         if file_1.endswith(".nii.gz") and file_2.endswith(".nii.gz"):
+            print(f"Processing files: {file_1} and {file_2}")
+
             subject_name = file_1.split(".")[0]
 
             prob1 = np.load(os.path.join(path_1, file_1.replace(".nii.gz", ".npz")))["probabilities"]
