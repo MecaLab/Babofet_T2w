@@ -2,9 +2,12 @@ import torch
 from typing import Tuple, Union, List
 import numpy as np
 from nnunetv2.training.nnUNetTrainer.nnUNetTrainer import nnUNetTrainer
+
+from batchgeneratorsv2.transforms.compose import ComposeTransforms
 from batchgeneratorsv2.helpers.scalar_type import RandomScalar
 from batchgeneratorsv2.transforms.utils.random import RandomTransform
 from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
+
 import torchio as tio
 import gc
 
@@ -68,7 +71,6 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 100
 
-
     def get_training_transforms(
             self,
             patch_size: Union[np.ndarray, Tuple[int]],
@@ -82,16 +84,22 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
             regions: List[Union[List[int], Tuple[int, ...], int]] = None,
             ignore_label: int = None,
     ) -> BasicTransform:
-        transforms = super().get_training_transforms(
+        base_transforms = super().get_training_transforms(
             patch_size, rotation_for_DA, deep_supervision_scales, mirror_axes,
             do_dummy_2d_data_aug, use_mask_for_norm, is_cascaded,
             foreground_labels, regions, ignore_label
         )
 
-        transforms.append(RandomTransform(
-            ArtifactTransform(
-                bias_field=True
-            ), apply_probability=0.3
-        ))
+        # Récupérer la liste des transforms déjà présentes
+        transform_list = base_transforms.transforms if hasattr(base_transforms, "transforms") else []
 
-        return transforms
+        # Ajouter ta transformation custom à la liste
+        transform_list.append(
+            RandomTransform(
+                ArtifactTransform(bias_field=True),
+                apply_probability=0.3
+            )
+        )
+
+        # Recréer une nouvelle composition
+        return ComposeTransforms(transform_list)
