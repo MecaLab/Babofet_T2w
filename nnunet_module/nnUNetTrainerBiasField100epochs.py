@@ -116,7 +116,7 @@ class ArtifactTransform(BasicTransform):
             return image, segmentation
 
 
-class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
+class nnUNetTrainerBiasField200epochs(nnUNetTrainer):
     """
     Custom trainer for nnUNet that applies a bias field artifact during training.
     """
@@ -128,20 +128,7 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
                  dataset_json: dict,
                  device: torch.device = torch.device('cuda')):
         super().__init__(plans, configuration, fold, dataset_json, device)
-        self.num_epochs = 100
-
-    def setup_data_loader_train(self):
-        # Forcer num_workers à 0 pour éviter les problèmes de multiprocessing
-        self.dataloader_train_kwargs['num_workers'] = 0
-        # Ajouter persistent_workers=False pour éviter les problèmes
-        self.dataloader_train_kwargs['persistent_workers'] = False
-        super().setup_data_loader_train()
-
-    def setup_data_loader_val(self):
-        # Même chose pour validation
-        self.dataloader_val_kwargs['num_workers'] = 0
-        self.dataloader_val_kwargs['persistent_workers'] = False
-        super().setup_data_loader_val()
+        self.num_epochs = 200
 
     def get_training_transforms(
             self,
@@ -173,7 +160,7 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
             transform_list.append(
                 RandomTransform(
                     ArtifactTransform(bias_field=True),
-                    apply_probability=0.15  # Réduire la probabilité pour tester
+                    apply_probability=0.3
                 )
             )
 
