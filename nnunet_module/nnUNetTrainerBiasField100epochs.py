@@ -13,16 +13,16 @@ import gc
 
 
 def aug_bias_field(img, seg):
-    # Si img ou seg sont des listes => convertit-les en tensors
+    # Sécurité : convertit les listes en tensors
     if isinstance(img, list):
         img = torch.tensor(img)
     if isinstance(seg, list):
         seg = torch.tensor(seg)
 
-    # Ensure shape is (C, D, H, W)
-    if img.ndim == 4 and img.shape[0] != 1:
+    # TorchIO attend (C, D, H, W)
+    if img.ndim == 4 and img.shape[0] not in [1, 3]:
         img = img.permute(3, 0, 1, 2)
-    if seg.ndim == 4 and seg.shape[0] != 1:
+    if seg.ndim == 4 and seg.shape[0] not in [1]:
         seg = seg.permute(3, 0, 1, 2)
 
     img = img.float()
@@ -32,7 +32,11 @@ def aug_bias_field(img, seg):
         image=tio.ScalarImage(tensor=img),
         seg=tio.LabelMap(tensor=seg)
     ))
-    return subject.image.data, subject.seg.data
+
+    img_out, seg_out = subject.image.data, subject.seg.data
+    del subject
+    gc.collect()
+    return img_out, seg_out
 
 
 class ArtifactTransform(BasicTransform):
@@ -81,6 +85,14 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
                  device: torch.device = torch.device('cuda')):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 100
+
+    def setup_data_loader_train(self):
+        self.dataloader_train_kwargs['num_workers'] = 0
+        super().setup_data_loader_train()
+
+    def setup_data_loader_val(self):
+        self.dataloader_val_kwargs['num_workers'] = 0
+        super().setup_data_loader_val()
 
     def get_training_transforms(
             self,
