@@ -55,8 +55,8 @@ if __name__ == "__main__":
 
             plt.figure(figsize=(12, 10))
             sns.heatmap(cm, annot=True, fmt='d', cmap="Blues", xticklabels=label_names.values(), yticklabels=label_names.values())
-            plt.xlabel("Prédiction modèle 2")
-            plt.ylabel("Prédiction modèle 1")
+            plt.xlabel(f"Prédiction modèle {dataset_id_2}")
+            plt.ylabel(f"Prédiction modèle {dataset_id_1}")
             plt.title(f"Matrice de confusion entre masques pour {subject_name}")
             output_fig = os.path.join(cfg.BASE_PATH, os.path.join(output_path, f"{comparaison_name}_heatmap_diff_{subject_name}.png"))
             plt.tight_layout()
