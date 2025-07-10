@@ -13,6 +13,15 @@ import gc
 
 
 def aug_bias_field(img, seg):
+    # Ensure shape is (C, D, H, W) for TorchIO
+    if img.ndim == 4 and img.shape[0] != 1:
+        img = img.permute(3, 0, 1, 2)
+    if seg.ndim == 4 and seg.shape[0] != 1:
+        seg = seg.permute(3, 0, 1, 2)
+
+    img = img.float()
+    seg = seg.long()
+
     subject = tio.RandomBiasField()(tio.Subject(
         image=tio.ScalarImage(tensor=img),
         seg=tio.LabelMap(tensor=seg)
@@ -52,8 +61,7 @@ class ArtifactTransform(BasicTransform):
     def _apply_to_image(self, image, segmentation, **params):
         if params["bias_field"]:
             # Apply bias field artifact
-            image = self._apply_bias_field(image)
-            segmentation = self._apply_bias_field(segmentation)
+            image, segmentation = aug_bias_field(image, segmentation)
 
         return image, segmentation
 
@@ -70,6 +78,9 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
                  device: torch.device = torch.device('cuda')):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 100
+
+        self.dataloader_train_kwargs['num_workers'] = 0
+        self.dataloader_val_kwargs['num_workers'] = 0
 
     def get_training_transforms(
             self,
