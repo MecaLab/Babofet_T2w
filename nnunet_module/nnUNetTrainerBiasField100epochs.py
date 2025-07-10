@@ -13,15 +13,6 @@ import gc
 
 
 def aug_bias_field(img, seg):
-    # Ensure shape is (C, D, H, W) for TorchIO
-    if img.ndim == 4 and img.shape[0] != 1:
-        img = img.permute(3, 0, 1, 2)
-    if seg.ndim == 4 and seg.shape[0] != 1:
-        seg = seg.permute(3, 0, 1, 2)
-
-    img = img.float()
-    seg = seg.long()
-
     subject = tio.RandomBiasField()(tio.Subject(
         image=tio.ScalarImage(tensor=img),
         seg=tio.LabelMap(tensor=seg)
