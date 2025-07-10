@@ -79,9 +79,6 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 100
 
-        self.dataloader_train_kwargs['num_workers'] = 0
-        self.dataloader_val_kwargs['num_workers'] = 0
-
     def get_training_transforms(
             self,
             patch_size: Union[np.ndarray, Tuple[int]],
