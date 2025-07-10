@@ -3,7 +3,7 @@ from typing import Tuple, Union, List
 import numpy as np
 from nnunetv2.training.nnUNetTrainer.nnUNetTrainer import nnUNetTrainer
 
-from batchgeneratorsv2.transforms.compose import ComposeTransforms
+from batchgeneratorsv2.transforms.utils.compose import ComposeTransforms
 from batchgeneratorsv2.helpers.scalar_type import RandomScalar
 from batchgeneratorsv2.transforms.utils.random import RandomTransform
 from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
