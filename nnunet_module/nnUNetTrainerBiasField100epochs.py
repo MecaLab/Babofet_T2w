@@ -13,14 +13,26 @@ import gc
 
 
 def aug_bias_field(img, seg):
+    # Si img ou seg sont des listes => convertit-les en tensors
+    if isinstance(img, list):
+        img = torch.tensor(img)
+    if isinstance(seg, list):
+        seg = torch.tensor(seg)
+
+    # Ensure shape is (C, D, H, W)
+    if img.ndim == 4 and img.shape[0] != 1:
+        img = img.permute(3, 0, 1, 2)
+    if seg.ndim == 4 and seg.shape[0] != 1:
+        seg = seg.permute(3, 0, 1, 2)
+
+    img = img.float()
+    seg = seg.long()
+
     subject = tio.RandomBiasField()(tio.Subject(
         image=tio.ScalarImage(tensor=img),
         seg=tio.LabelMap(tensor=seg)
     ))
-    img_out, seg_out = subject.image.data, subject.seg.data
-    del subject
-    gc.collect()  # Force garbage collection
-    return img_out, seg_out
+    return subject.image.data, subject.seg.data
 
 
 class ArtifactTransform(BasicTransform):
