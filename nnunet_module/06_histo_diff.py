@@ -11,8 +11,13 @@ import configuration as cfg
 
 if __name__ == "__main__":
 
-    path_1 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_3"
-    path_2 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_4"
+    dataset_id_1 = sys.argv[1]
+    dataset_id_2 = sys.argv[2]
+
+    comparaison_name = f"dataset_{dataset_id_1}_vs_{dataset_id_2}"
+
+    path_1 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_1}"
+    path_2 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_2}"
 
     output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/histo"
 
@@ -41,7 +46,7 @@ if __name__ == "__main__":
             plt.ylabel("Nombre de voxels")
             plt.grid(True)
             plt.xticks(np.arange(diff.min(), diff.max() + 1))
-            output_fig = os.path.join(cfg.BASE_PATH, os.path.join(output_path, f"histo_diff_{subject_name}.png"))
+            output_fig = os.path.join(cfg.BASE_PATH, os.path.join(output_path, f"{comparaison_name}_histo_diff_{subject_name}.png"))
             plt.tight_layout()
             plt.savefig(output_fig)
 
@@ -53,7 +58,7 @@ if __name__ == "__main__":
             plt.xlabel("Prédiction modèle 2")
             plt.ylabel("Prédiction modèle 1")
             plt.title(f"Matrice de confusion entre masques pour {subject_name}")
-            output_fig = os.path.join(cfg.BASE_PATH, os.path.join(output_path, f"heatmap_diff_{subject_name}.png"))
+            output_fig = os.path.join(cfg.BASE_PATH, os.path.join(output_path, f"{comparaison_name}_heatmap_diff_{subject_name}.png"))
             plt.tight_layout()
             plt.savefig(output_fig)
             plt.close()
