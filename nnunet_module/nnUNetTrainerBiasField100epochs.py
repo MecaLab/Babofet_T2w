@@ -124,12 +124,12 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
         transform_list = base_transforms.transforms if hasattr(base_transforms, "transforms") else []
 
         # Ajouter ta transformation custom à la liste
-        """transform_list.append(
+        transform_list.append(
             RandomTransform(
                 ArtifactTransform(bias_field=True),
                 apply_probability=0.3
             )
         )
-        """
+
         # Recréer une nouvelle composition
         return ComposeTransforms(transform_list)
