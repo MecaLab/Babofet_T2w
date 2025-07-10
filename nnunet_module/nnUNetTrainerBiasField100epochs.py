@@ -59,10 +59,17 @@ class ArtifactTransform(BasicTransform):
         return {"bias_field": self.bias_field}
 
     def apply(self, data_dict, **params):
+        print("💡 Entrée de ArtifactTransform.apply")
+        print("Type image:", type(data_dict.get('image')))
+        print("Type seg:", type(data_dict.get('segmentation')))
+        print("Shape image:", getattr(data_dict.get('image'), 'shape', 'N/A'))
+        print("Shape seg:", getattr(data_dict.get('segmentation'), 'shape', 'N/A'))
+        print("----------", flush=True)
+
         if data_dict.get('image') is not None and data_dict.get('segmentation') is not None:
-            data_dict['image'], data_dict['segmentation'] = self._apply_to_image(data_dict['image'],
-                                                                                 data_dict['segmentation'],
-                                                                                 **params)
+            data_dict['image'], data_dict['segmentation'] = self._apply_to_image(
+                data_dict['image'], data_dict['segmentation'], **params
+            )
         return data_dict
 
     def _apply_to_image(self, image, segmentation, **params):
@@ -117,12 +124,12 @@ class nnUNetTrainerBiasField100epochs(nnUNetTrainer):
         transform_list = base_transforms.transforms if hasattr(base_transforms, "transforms") else []
 
         # Ajouter ta transformation custom à la liste
-        transform_list.append(
+        """transform_list.append(
             RandomTransform(
                 ArtifactTransform(bias_field=True),
                 apply_probability=0.3
             )
         )
-
+        """
         # Recréer une nouvelle composition
         return ComposeTransforms(transform_list)
