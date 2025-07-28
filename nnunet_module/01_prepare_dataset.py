@@ -81,6 +81,10 @@ if __name__ == "__main__":
             elif mode_dataset == "debiased-2":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
                 input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+            elif mode_dataset == "full":  # train with full data: masked, bias and debias data
+                input_path_3d_stack = os.path.join(cfg.SEG_INPUT_PATH, subject, session, "reo-SVR-output-brain_rhesus.nii.gz")
+                input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
+                input_path_3d_stack_third = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
 
             else:
                 raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
@@ -93,6 +97,23 @@ if __name__ == "__main__":
 
                 shutil.copy2(input_path_3d_stack, output_path_3d_stack)
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg)
+
+            elif mode_dataset == "full":
+                output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_masked_0000.nii.gz")
+                output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{session}_bias_0000.nii.gz")
+                output_path_3d_stack_third = os.path.join(images_tr_path, f"{subject}_{session}_debias_0000.nii.gz")
+
+                output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
+                output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
+                output_path_3d_seg_third = os.path.join(labels_tr_path, f"{subject}_{session}_debias.nii.gz")
+
+                shutil.copy2(input_path_3d_stack, output_path_3d_stack)
+                shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
+                shutil.copy2(input_path_3d_stack_third, output_path_3d_stack_third)
+
+                shutil.copy2(input_path_3d_seg, output_path_3d_seg)
+                shutil.copy2(input_path_3d_seg, output_path_3d_seg_bis)
+                shutil.copy2(input_path_3d_seg, output_path_3d_seg_third)
 
             else:
                 output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_bias_0000.nii.gz")
