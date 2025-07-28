@@ -80,8 +80,8 @@ def fusion_labels(path_1, path_2, output_path, method):
 
 if __name__ == "__main__":
 
-    path_1 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_3"
-    path_2 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_4"
+    path_1 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_4"
+    path_2 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_5"
 
     output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/fusion_labels"
 
