@@ -88,19 +88,9 @@ if __name__ == "__main__":
                 input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
                 input_path_3d_stack_third = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
 
-            else:
-                raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
-
             input_path_3d_seg = os.path.join(input_path_3d_segs, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
 
-            if mode_dataset != "debiased-2":
-                output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
-                output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
-
-                shutil.copy2(input_path_3d_stack, output_path_3d_stack)
-                shutil.copy2(input_path_3d_seg, output_path_3d_seg)
-
-            elif mode_dataset == "full":
+            if mode_dataset == "full":
                 output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_masked_0000.nii.gz")
                 output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{session}_bias_0000.nii.gz")
                 output_path_3d_stack_third = os.path.join(images_tr_path, f"{subject}_{session}_debias_0000.nii.gz")
@@ -117,7 +107,7 @@ if __name__ == "__main__":
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg_bis)
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg_third)
 
-            else:
+            elif mode_dataset == "debiased-2":
                 output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_bias_0000.nii.gz")
                 output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{session}_debias_0000.nii.gz")
 
@@ -129,6 +119,13 @@ if __name__ == "__main__":
 
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg)
                 shutil.copy2(input_path_3d_seg, output_path_3d_seg_bis)
+
+            else:
+                output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
+                output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
+
+                shutil.copy2(input_path_3d_stack, output_path_3d_stack)
+                shutil.copy2(input_path_3d_seg, output_path_3d_seg)
 
     dataset_json = os.path.join(output_path, "dataset.json")
     num_training = len(os.listdir(images_tr_path))
