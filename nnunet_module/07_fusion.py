@@ -110,6 +110,7 @@ def apply_staple(path_1, path_2, path_3, output_path, labels):
             combined_array = np.maximum.reduce(staple_outputs)
             combined_image = sitk.GetImageFromArray(combined_array)
             combined_image.CopyInformation(segmentations[0])
+            combined_image = sitk.Cast(combined_image, sitk.sitkUInt8)
 
             sitk.WriteImage(combined_image, os.path.join(output_path, f"{subject_name}_staple.nii.gz"))
 
