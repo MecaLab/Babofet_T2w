@@ -35,7 +35,7 @@ if __name__ == "__main__":
         "Formule": ["ses02", "ses03"],
     }
 
-    mode_dataset = "full"  # "masked" or "unmasked" or "debiased-2" or "full"
+    mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2" or "full"
 
     id_dataset = int(sys.argv[1])  # should be integer, eg, 1, 2, 3, etc.
     name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
@@ -68,8 +68,6 @@ if __name__ == "__main__":
         elif mode_dataset == "masked":
             input_path_3d_stacks = os.path.join(cfg.SEG_INPUT_PATH, subject)
         elif mode_dataset == "debiased-2":
-            input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
-        elif mode_dataset == "full":
             input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
         else:
             raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
