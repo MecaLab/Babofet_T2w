@@ -27,7 +27,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr nnUNetTrainerBiasField200epochs -f all --save_probabilities
+nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr nnUNetTrainerBiasField100epochs -f all --save_probabilities
 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -46,14 +46,14 @@ if __name__ == "__main__":
         os.makedirs(output_folder)
 
     subject_sessions = {
-        "Bibi": ["ses04", "ses05", "ses06", "ses07", "ses09"],
-        "Borgne": ["ses04", "ses05", "ses06", "ses07", "ses09", "ses10"],
+        "Bibi": ["ses04", "ses05", "ses06", "ses09"],
+        "Borgne": ["ses04", "ses05", "ses06", "ses09", "ses10"],
         "Filoutte": ["ses06", "ses07", "ses08", "ses09", "ses10"]
         # "Aziza": ["ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
         # "Forme": ["ses02", "ses03", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
     }
 
-    mode_dataset = "full"  # "masked" or "unmasked" or "debiased-2"
+    mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2"
 
     for subject, sessions in subject_sessions.items():
         print(f"Processing subject: {subject}")
