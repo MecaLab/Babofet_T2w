@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     for subject, sessions in subject_sessions.items():
         print(f"Processing subject: {subject}")
-        if mode_dataset == "unmasked" or mode_dataset == "debiased-2" or mode_dataset == "full":
+        if mode_dataset == "unmasked" or mode_dataset == "debiased-2":
             input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
         elif mode_dataset == "masked":
             input_path_3d_stacks = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
         for session in sessions:
             print(f"\tProcessing session: {session}")
-            if mode_dataset == "unmasked" or mode_dataset == "debiased-2" or mode_dataset == "full":
+            if mode_dataset == "unmasked" or mode_dataset == "debiased-2":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
             elif mode_dataset == "masked":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")

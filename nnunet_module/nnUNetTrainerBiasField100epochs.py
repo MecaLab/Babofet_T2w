@@ -116,7 +116,7 @@ class ArtifactTransform(BasicTransform):
             return image, segmentation
 
 
-class nnUNetTrainerBiasField200epochs(nnUNetTrainer):
+class nnUNetTrainerBiasField1000epochs(nnUNetTrainer):
     """
     Custom trainer for nnUNet that applies a bias field artifact during training.
     """
@@ -128,7 +128,7 @@ class nnUNetTrainerBiasField200epochs(nnUNetTrainer):
                  dataset_json: dict,
                  device: torch.device = torch.device('cuda')):
         super().__init__(plans, configuration, fold, dataset_json, device)
-        self.num_epochs = 200
+        self.num_epochs = 1000
 
     def get_training_transforms(
             self,
