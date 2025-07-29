@@ -2,6 +2,7 @@ import os
 import numpy as np
 import nibabel as nib
 import sys
+import SimpleITK as sitk
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -78,16 +79,43 @@ def fusion_labels(path_1, path_2, output_path, method):
             nib.save(fusion_nifti, os.path.join(output_path, f"fusion_labels_{subject_name}_{method}.nii.gz"))
 
 
-if __name__ == "__main__":
+def apply_staple(path_1, path_2, path_3, output_path):
+    for file_1, file_2, file_3 in zip(os.listdir(path_1), os.listdir(path_2), os.listdir(path_3)):
+        if file_1.endswith(".nii.gz") and file_2.endswith(".nii.gz") and file_3.endswith(".nii.gz"):
+            print(f"Processing files: {file_1} | {file_2} | {file_3}")
 
-    path_1 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_5"
-    path_2 = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_6"
+            subject_name = file_1.split(".")[0]
+
+            seg_path = [
+                os.path.join(path_1, file_1),
+                os.path.join(path_2, file_2),
+                os.path.join(path_3, file_3),
+            ]
+
+            segmentations = [sitk.ReadImage(path) for path in seg_path]
+
+            staple_image = sitk.STAPLE(segmentations)
+
+            sitk.WriteImage(staple_image, os.path.join(output_path, subject_name))
+
+
+if __name__ == "__main__":
 
     output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/fusion_labels"
 
     method = sys.argv[1]
+    dataset_id_1 = sys.argv[2]
+    dataset_id_2 = sys.argv[3]
 
-    fusion_labels(path_1, path_2, output_path, method)
+    path_1 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_1}"
+    path_2 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_2}"
+
+    if method != "staple":
+        fusion_labels(path_1, path_2, output_path, method)
+    else:
+        dataset_id_3 = sys.argv[3]
+        path_3 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_3}"
+        output_path = os.path.join(output_path, "staple")
 
 
 
