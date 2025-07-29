@@ -160,7 +160,7 @@ class nnUNetTrainerBiasField200epochs(nnUNetTrainer):
             transform_list.append(
                 RandomTransform(
                     ArtifactTransform(bias_field=True),
-                    apply_probability=0.3
+                    apply_probability=0.5
                 )
             )
 
