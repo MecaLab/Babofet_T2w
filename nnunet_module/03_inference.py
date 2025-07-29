@@ -53,7 +53,7 @@ if __name__ == "__main__":
         # "Forme": ["ses02", "ses03", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
     }
 
-    mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2"
+    mode_dataset = "full"  # "masked" or "unmasked" or "debiased-2"
 
     for subject, sessions in subject_sessions.items():
         print(f"Processing subject: {subject}")
@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
         for session in sessions:
             print(f"\tProcessing session: {session}")
-            if mode_dataset == "unmasked" or mode_dataset == "debiased-2":
+            if mode_dataset == "unmasked" or mode_dataset == "debiased-2" or mode_dataset == "full":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
             elif mode_dataset == "masked":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
