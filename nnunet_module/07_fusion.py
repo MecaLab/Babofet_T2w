@@ -117,6 +117,8 @@ if __name__ == "__main__":
         path_3 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_3}"
         output_path = os.path.join(output_path, "staple")
 
+        apply_staple(path_1, path_2, path_3, output_path)
+
 
 
 
