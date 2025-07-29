@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
     for subject, sessions in subject_sessions.items():
         print(f"Processing subject: {subject}")
-        if mode_dataset == "unmasked" or mode_dataset == "debiased-2":
+        if mode_dataset == "unmasked" or mode_dataset == "debiased-2" or mode_dataset == "full":
             input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
         elif mode_dataset == "masked":
             input_path_3d_stacks = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
