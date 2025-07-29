@@ -79,7 +79,7 @@ def fusion_labels(path_1, path_2, output_path, method):
             nib.save(fusion_nifti, os.path.join(output_path, f"fusion_labels_{subject_name}_{method}.nii.gz"))
 
 
-def apply_staple(path_1, path_2, path_3, output_path):
+def apply_staple(path_1, path_2, path_3, output_path, labels):
     for file_1, file_2, file_3 in zip(os.listdir(path_1), os.listdir(path_2), os.listdir(path_3)):
         if file_1.endswith(".nii.gz") and file_2.endswith(".nii.gz") and file_3.endswith(".nii.gz"):
             print(f"Processing files: {file_1} | {file_2} | {file_3}")
@@ -94,11 +94,24 @@ def apply_staple(path_1, path_2, path_3, output_path):
 
             segmentations = [sitk.ReadImage(path) for path in seg_path]
 
-            staple_image = sitk.STAPLE(segmentations)
+            staple_outputs = []
 
-            print(staple_image)
+            for label in labels:
+                # Créer des masques binaires 0/1 pour chaque segmentation pour la classe "label"
+                binary_segmentations = [(seg == label) for seg in segmentations]
 
-            sitk.WriteImage(staple_image, os.path.join(output_path, f"{subject_name}.nii.gz"))
+                prob_map = sitk.STAPLE(binary_segmentations)
+                binary_mask = sitk.BinaryThreshold(prob_map, lowerThreshold=0.7, upperThreshold=1.0, insideValue=label,
+                                                   outsideValue=0)
+
+                staple_outputs.append(sitk.GetArrayFromImage(binary_mask))
+
+            # Combiner les masques pour chaque classe (on prend le label max par voxel)
+            combined_array = np.maximum.reduce(staple_outputs)
+            combined_image = sitk.GetImageFromArray(combined_array)
+            combined_image.CopyInformation(segmentations[0])
+
+            sitk.WriteImage(combined_image, os.path.join(output_path, f"{subject_name}_staple.nii.gz"))
 
 
 if __name__ == "__main__":
@@ -119,7 +132,7 @@ if __name__ == "__main__":
         path_3 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_3}"
         output_path = os.path.join(output_path, "staple")
 
-        apply_staple(path_1, path_2, path_3, output_path)
+        apply_staple(path_1, path_2, path_3, output_path, labels=[1, 2, 3, 4])
 
 
 
