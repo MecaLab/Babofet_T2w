@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
             output_path_3d_stack = os.path.join(input_folder, f"{subject}_{session}_0000.nii.gz")
             if os.path.exists(output_path_3d_stack):
-                print(f"Output file {output_path_3d_stack} already exists, skipping copy.")
+                print(f"\t\tOutput file {output_path_3d_stack} already exists, skipping copy.")
                 continue
             shutil.copy2(input_path_3d_stack, output_path_3d_stack)
 
