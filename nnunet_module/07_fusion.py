@@ -96,6 +96,8 @@ def apply_staple(path_1, path_2, path_3, output_path):
 
             staple_image = sitk.STAPLE(segmentations)
 
+            print(staple_image)
+
             sitk.WriteImage(staple_image, os.path.join(output_path, f"{subject_name}.nii.gz"))
 
 
