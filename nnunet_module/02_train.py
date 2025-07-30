@@ -10,7 +10,7 @@ def write_slurm_file(dataset_id):
 #SBATCH --account='b219'
 #SBATCH --partition=volta
 #SBATCH --gres=gpu:1
-#SBATCH --time=6:00:00
+#SBATCH --time=20:00:00
 #SBATCH -c 12
 #SBATCH -o nnunet_training.out
 #SBATCH -e nnunet_training.err
