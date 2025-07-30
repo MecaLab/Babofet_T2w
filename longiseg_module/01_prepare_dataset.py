@@ -26,8 +26,9 @@ def write_dataset_json(path, num_training, dataset_name):
         json.dump(dico_data, f, indent=4)
 
 
-def write_patients_json():
-    pass
+def write_patients_json(imagesTr_path):
+    print(os.listdir(imagesTr_path))
+
 
 
 def get_previous_session_number(curr_sess):
@@ -37,6 +38,13 @@ def get_previous_session_number(curr_sess):
 
 
 if __name__ == "__main__":
+
+    input_path = "scratch/lbaptiste/data/LongiSeg_raw/Dataset001_Test/imagesTr/"
+
+
+    write_patients_json(input_path)
+
+    exit()
     subject_sessions = {
         "Borgne": ["ses08"],
         "Fabienne": ["ses03", "ses04", "ses05", "ses08"],
