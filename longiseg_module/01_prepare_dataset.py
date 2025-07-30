@@ -115,7 +115,7 @@ if __name__ == "__main__":
             os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
 
             input_path_3d_seg = os.path.join(previous_path_3d_seg, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
-            output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
+            output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{previous_sess}_bias.nii.gz")
             os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
