@@ -59,7 +59,7 @@ if __name__ == "__main__":
     else:
         dataset_name = f"Dataset{id_dataset}_{name}"
 
-    output_path = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name)
+    output_path = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name)
 
     images_tr_path = os.path.join(output_path, "imagesTr")
     images_ts_path = os.path.join(output_path, "imagesTs")
@@ -75,8 +75,8 @@ if __name__ == "__main__":
     for subject, sessions in subject_sessions.items():
         print(f"Processing subject: {subject}")
 
-        input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
         input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
+        input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
 
         for session in sessions:
             print(f"\tProcessing session: {session}")
@@ -114,12 +114,6 @@ if __name__ == "__main__":
             output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{previous_sess}_bias_t{previous_sess[3:]}_0000.nii.gz")
             output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{previous_sess}_debias_t{previous_sess[3:]}_0000.nii.gz")
 
-            output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{previous_sess}_bias.nii.gz")
-            output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{previous_sess}_debias.nii.gz")
-
             shutil.copy2(input_path_3d_stack, output_path_3d_stack)
             shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
-
-            shutil.copy2(input_path_3d_seg, output_path_3d_seg)
-            shutil.copy2(input_path_3d_seg, output_path_3d_seg_bis)
 
