@@ -2,6 +2,7 @@ import os
 import sys
 import json
 sys.path.insert(0, os.path.abspath(os.curdir))
+from collections import defaultdict
 import configuration as cfg
 import shutil
 
@@ -27,7 +28,15 @@ def write_dataset_json(path, num_training, dataset_name):
 
 
 def write_patients_json(imagesTr_path):
-    print(os.listdir(imagesTr_path))
+    files = os.listdir(imagesTr_path)
+
+    patients = defaultdict(list)
+    for f in files:
+        patient_name = f.split('_')[0]  # Tout avant le premier underscore comme nom patient
+        patients[patient_name].append(f)
+
+    with open("test.json", "w") as out_file:
+        json.dump(patients, out_file, indent=4)
 
 
 
