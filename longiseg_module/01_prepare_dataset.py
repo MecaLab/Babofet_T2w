@@ -36,10 +36,6 @@ def get_previous_session_number(curr_sess):
     return f"ses0{previous_sess}"
 
 
-def get_data_from_previous_session(previous_sess, main_path):
-    pass
-
-
 if __name__ == "__main__":
     subject_sessions = {
         "Borgne": ["ses08"],
@@ -122,3 +118,8 @@ if __name__ == "__main__":
             shutil.copy2(input_path_3d_stack, output_path_3d_stack)
             shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
 
+    dataset_json = os.path.join(output_path, "dataset.json")
+    num_training = len(os.listdir(labels_tr_path))
+    write_dataset_json(dataset_json, num_training, dataset_name)
+
+    print("Dataset preparation completed")
