@@ -92,25 +92,25 @@ if __name__ == "__main__":
 
             # Current session
             input_path_3d_stack = os.path.join(current_path_3d_stack, "recons_rhesus/recon_template_space/srr_template.nii.gz")
-            input_path_3d_stack_bis = os.path.join(current_path_3d_stack, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+            # input_path_3d_stack_bis = os.path.join(current_path_3d_stack, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
 
             input_path_3d_seg = os.path.join(current_path_3d_seg, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
 
             output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_bias_t{session[3:]}_0000.nii.gz")
-            output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{session}_debias_t{session[3:]}_0000.nii.gz")
+            # output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{session}_debias_t{session[3:]}_0000.nii.gz")
 
-            if os.path.exists(output_path_3d_stack) or os.path.exists(output_path_3d_stack_bis):
+            if os.path.exists(output_path_3d_stack):
                 print(f"\t\tOutput file {output_path_3d_stack} already exists, skipping copy.")
                 continue
 
             output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
-            output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{session}_debias.nii.gz")
+            # output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{session}_debias.nii.gz")
 
             shutil.copy2(input_path_3d_stack, output_path_3d_stack)
-            shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
+            # shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
 
             shutil.copy2(input_path_3d_seg, output_path_3d_seg)
-            shutil.copy2(input_path_3d_seg, output_path_3d_seg_bis)
+            # shutil.copy2(input_path_3d_seg, output_path_3d_seg_bis)
 
             # Previous sess
             previous_sess = get_previous_session_number(curr_sess=session)
@@ -120,13 +120,13 @@ if __name__ == "__main__":
             previous_path_3d_seg = os.path.join(input_path_3d_segs, previous_sess)
 
             input_path_3d_stack = os.path.join(previous_path_3d_stack, "recons_rhesus/recon_template_space/srr_template.nii.gz")
-            input_path_3d_stack_bis = os.path.join(previous_path_3d_stack, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+            # input_path_3d_stack_bis = os.path.join(previous_path_3d_stack, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
 
             output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{previous_sess}_bias_t{previous_sess[3:]}_0000.nii.gz")
-            output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{previous_sess}_debias_t{previous_sess[3:]}_0000.nii.gz")
+            # output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{previous_sess}_debias_t{previous_sess[3:]}_0000.nii.gz")
 
             shutil.copy2(input_path_3d_stack, output_path_3d_stack)
-            shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
+            # shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
 
     dataset_json = os.path.join(output_path, "dataset.json")
     num_training = len(os.listdir(labels_tr_path))
