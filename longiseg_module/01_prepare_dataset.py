@@ -106,10 +106,10 @@ if __name__ == "__main__":
             output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
             # output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{session}_debias.nii.gz")
 
-            shutil.copy2(input_path_3d_stack, output_path_3d_stack)
+            shutil.copy(input_path_3d_stack, output_path_3d_stack)
             # shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
 
-            shutil.copy2(input_path_3d_seg, output_path_3d_seg)
+            shutil.copy(input_path_3d_seg, output_path_3d_seg)
             # shutil.copy2(input_path_3d_seg, output_path_3d_seg_bis)
 
             # Previous sess
@@ -125,7 +125,7 @@ if __name__ == "__main__":
             output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{previous_sess}_bias_0000.nii.gz")
             # output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{previous_sess}_debias_t{previous_sess[3:]}_0000.nii.gz")
 
-            shutil.copy2(input_path_3d_stack, output_path_3d_stack)
+            shutil.copy(input_path_3d_stack, output_path_3d_stack)
             # shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
 
     dataset_json = os.path.join(output_path, "dataset.json")
