@@ -104,6 +104,7 @@ if __name__ == "__main__":
 
             # Previous sess
             previous_sess = get_previous_session_number(curr_sess=session)
+            print(f"\tProcessing previous session: {session}")
 
             previous_path_3d_stack = os.path.join(input_path_3d_stacks, previous_sess)
             previous_path_3d_seg = os.path.join(input_path_3d_segs, previous_sess)
