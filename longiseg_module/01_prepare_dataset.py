@@ -27,7 +27,7 @@ def write_dataset_json(path, num_training, dataset_name):
         json.dump(dico_data, f, indent=4)
 
 
-def write_patients_json(imagesTr_path):
+def write_patients_json(imagesTr_path, output_json):
     files = os.listdir(imagesTr_path)
 
     patients = defaultdict(list)
@@ -35,9 +35,8 @@ def write_patients_json(imagesTr_path):
         patient_name = f.split('_')[0]  # Tout avant le premier underscore comme nom patient
         patients[patient_name].append(f)
 
-    with open("test.json", "w") as out_file:
+    with open(output_json, "w") as out_file:
         json.dump(patients, out_file, indent=4)
-
 
 
 def get_previous_session_number(curr_sess):
@@ -48,12 +47,6 @@ def get_previous_session_number(curr_sess):
 
 if __name__ == "__main__":
 
-    input_path = "/scratch/lbaptiste/data/LongiSeg_raw/Dataset001_Test/imagesTr/"
-
-
-    write_patients_json(input_path)
-
-    exit()
     subject_sessions = {
         "Borgne": ["ses08"],
         "Fabienne": ["ses03", "ses04", "ses05", "ses08"],
@@ -138,5 +131,8 @@ if __name__ == "__main__":
     dataset_json = os.path.join(output_path, "dataset.json")
     num_training = len(os.listdir(labels_tr_path))
     write_dataset_json(dataset_json, num_training, dataset_name)
+
+    patients_json = os.path.join(output_path, "patientsTr.json")
+    write_patients_json(images_tr_path, patients_json)
 
     print("Dataset preparation completed")
