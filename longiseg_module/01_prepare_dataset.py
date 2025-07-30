@@ -103,7 +103,7 @@ if __name__ == "__main__":
                 print(f"\t\tOutput file {output_path_3d_stack} already exists, skipping copy.")
                 continue
 
-            output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
+            output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias_t{session[3:]}.nii.gz")
             # output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{session}_debias.nii.gz")
 
             shutil.copy2(input_path_3d_stack, output_path_3d_stack)
