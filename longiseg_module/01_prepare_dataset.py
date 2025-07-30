@@ -28,7 +28,7 @@ def write_dataset_json(path, num_training, dataset_name):
 
 
 def write_patients_json(imagesTr_path, output_json):
-    files = os.listdir(imagesTr_path)
+    files = sorted(os.listdir(imagesTr_path))
 
     patients = defaultdict(list)
     for f in files:
