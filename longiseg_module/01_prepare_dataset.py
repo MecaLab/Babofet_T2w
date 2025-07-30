@@ -39,7 +39,7 @@ def get_previous_session_number(curr_sess):
 
 if __name__ == "__main__":
 
-    input_path = "scratch/lbaptiste/data/LongiSeg_raw/Dataset001_Test/imagesTr/"
+    input_path = "/scratch/lbaptiste/data/LongiSeg_raw/Dataset001_Test/imagesTr/"
 
 
     write_patients_json(input_path)
