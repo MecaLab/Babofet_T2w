@@ -49,9 +49,9 @@ if __name__ == "__main__":
 
     subject_sessions = {
         "Borgne": ["ses08"],
-        "Fabienne": ["ses03", "ses04", "ses05", "ses08"],
-        "Filoutte": ["ses03", "ses04", "ses05"],
-        "Formule": ["ses02", "ses03"],
+        # "Fabienne": ["ses03", "ses04", "ses05", "ses08"],
+        # "Filoutte": ["ses03", "ses04", "ses05"],
+        # "Formule": ["ses02", "ses03"],
     }
 
     mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2" or "full"
