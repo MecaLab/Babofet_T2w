@@ -106,7 +106,9 @@ if __name__ == "__main__":
             output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
             # output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{session}_debias.nii.gz")
 
-            shutil.copy(input_path_3d_stack, output_path_3d_stack)
+            # shutil.copy(input_path_3d_stack, output_path_3d_stack)
+            os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
+            exit()
             # shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
 
             shutil.copy(input_path_3d_seg, output_path_3d_seg)
