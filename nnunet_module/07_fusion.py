@@ -82,7 +82,7 @@ def fusion_labels(path_1, path_2, output_path, method):
 def apply_staple(path_1, path_2, path_3, output_path, labels):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
-        
+
     for file_1, file_2, file_3 in zip(os.listdir(path_1), os.listdir(path_2), os.listdir(path_3)):
         if file_1.endswith(".nii.gz") and file_2.endswith(".nii.gz") and file_3.endswith(".nii.gz"):
             print(f"Processing files: {file_1} | {file_2} | {file_3}")
