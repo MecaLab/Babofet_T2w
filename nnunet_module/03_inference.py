@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def write_slurm_file(input_folder, output_folder, dataset_id):
+def write_slurm_file(input_folder, output_folder, dataset_id, trainer):
     filename = "slurm_files/nnunet_prediction.slurm"
     slurm_content = f"""#!/bin/bash
 
@@ -27,7 +27,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr nnUNetTrainerBiasField1000epochs -f all --save_probabilities
+nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f all --save_probabilities
 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -38,6 +38,8 @@ nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_full
 
 if __name__ == "__main__":
     dataset_id = sys.argv[1]
+    trainer = sys.argv[2]
+
     input_folder = "/scratch/lbaptiste/Babofet_T2w/pred_nnunet/"
 
     output_folder = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id}"
@@ -82,5 +84,5 @@ if __name__ == "__main__":
 
     print("Starting inference")
 
-    write_slurm_file(input_folder, output_folder, dataset_id)
+    write_slurm_file(input_folder, output_folder, dataset_id, trainer)
     subprocess.run(["sbatch", "slurm_files/nnunet_prediction.slurm"])
