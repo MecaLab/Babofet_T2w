@@ -116,11 +116,7 @@ class ArtifactTransform(BasicTransform):
             return image, segmentation
 
 
-class nnUNetTrainerBiasField1000epochs(nnUNetTrainer):
-    """
-    Custom trainer for nnUNet that applies a bias field artifact during training.
-    """
-
+class nnUNetTrainerBias(nnUNetTrainer):
     def __init__(self,
                  plans: dict,
                  configuration: str,
@@ -128,7 +124,6 @@ class nnUNetTrainerBiasField1000epochs(nnUNetTrainer):
                  dataset_json: dict,
                  device: torch.device = torch.device('cuda')):
         super().__init__(plans, configuration, fold, dataset_json, device)
-        self.num_epochs = 1000
 
     def get_training_transforms(
             self,
@@ -175,3 +170,108 @@ class nnUNetTrainerBiasField1000epochs(nnUNetTrainer):
                 do_dummy_2d_data_aug, use_mask_for_norm, is_cascaded,
                 foreground_labels, regions, ignore_label
             )
+
+
+class nnUNetTrainerBias_100epochs(nnUNetTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 100
+
+
+class nnUNetTrainerBias_200epochs(nnUNetTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 200
+
+
+class nnUNetTrainerBias_500epochs(nnUNetTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 500
+
+
+class nnUNetTrainerBias_1000epochs(nnUNetTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 1000
+
+
+class nnUNetTrainerBias_2000epochs(nnUNetTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 2000
+
+
+class nnUNetTrainerBias_3000epochs(nnUNetTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 3000
+
+
+class nnUNetTrainerBias_4000epochs(nnUNetTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 4000
