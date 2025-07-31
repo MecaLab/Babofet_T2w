@@ -92,18 +92,18 @@ if __name__ == "__main__":
                 output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
                 output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{session}_debias.nii.gz")
 
-                shutil.copy2(input_path_3d_stack, output_path_3d_stack)
-                shutil.copy2(input_path_3d_stack_bis, output_path_3d_stack_bis)
+                os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
+                os.system(f"cp {input_path_3d_stack_bis} {output_path_3d_stack_bis}")
 
-                shutil.copy2(input_path_3d_seg, output_path_3d_seg)
-                shutil.copy2(input_path_3d_seg, output_path_3d_seg_bis)
+                os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
+                os.system(f"cp {input_path_3d_seg} {output_path_3d_seg_bis}")
 
             else:
                 output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
                 output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
 
-                shutil.copy2(input_path_3d_stack, output_path_3d_stack)
-                shutil.copy2(input_path_3d_seg, output_path_3d_seg)
+                os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
+                os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
     num_training = len(os.listdir(images_tr_path))
