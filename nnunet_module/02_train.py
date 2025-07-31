@@ -3,7 +3,7 @@ import os
 import subprocess
 
 
-def write_slurm_file(dataset_id):
+def write_slurm_file(dataset_id, trainer):
     filename = "slurm_files/nnunet_module.slurm"
     slurm_content = f"""#!/bin/bash
 
@@ -23,7 +23,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-nnUNetv2_train {dataset_id} 3d_fullres all -tr nnUNetTrainerBiasField1000epochs --npz
+nnUNetv2_train {dataset_id} 3d_fullres all -tr {trainer} --npz
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
@@ -35,7 +35,8 @@ if __name__ == "__main__":
     print("Starting training")
 
     dataset_id = sys.argv[1]
-    write_slurm_file(dataset_id)
+    trainer = sys.argv[2]  # "nnUNetTrainerBiasField1000epochs"
+    write_slurm_file(dataset_id, trainer)
     subprocess.run(["sbatch", "slurm_files/nnunet_module.slurm"])
 
 
