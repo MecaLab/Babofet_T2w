@@ -16,8 +16,8 @@ def write_slurm_file(input_folder, output_folder, dataset_id, trainer):
 #SBATCH --gres=gpu:1
 #SBATCH --time=10:00
 #SBATCH -c 1
-#SBATCH -o nnunet_predict.out
-#SBATCH -e nnunet_predict.err
+#SBATCH -o predict_nnunet_%j.out
+#SBATCH -e predict_nnunet_%j.err
 
 module purge
 module load userspace/all
