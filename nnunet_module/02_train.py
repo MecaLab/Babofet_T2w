@@ -35,7 +35,7 @@ if __name__ == "__main__":
     print("Starting training")
 
     dataset_id = sys.argv[1]
-    trainer = sys.argv[2]  # "nnUNetTrainerBiasField1000epochs"
+    trainer = sys.argv[2]  # "nnUNetTrainerBias_Xepochs"
     write_slurm_file(dataset_id, trainer)
     subprocess.run(["sbatch", "slurm_files/nnunet_module.slurm"])
 

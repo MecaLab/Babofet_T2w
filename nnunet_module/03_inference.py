@@ -38,7 +38,7 @@ nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_full
 
 if __name__ == "__main__":
     dataset_id = sys.argv[1]
-    trainer = sys.argv[2]
+    trainer = sys.argv[2] # "nnUNetTrainerBias_Xepochs"
 
     input_folder = "/scratch/lbaptiste/Babofet_T2w/pred_nnunet/"
 
