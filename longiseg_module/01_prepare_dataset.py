@@ -33,7 +33,7 @@ def write_patients_json(imagesTr_path, output_json):
     patients = defaultdict(list)
     for f in files:
         patient_name = f.split('_')[0]  # Tout avant le premier underscore comme nom patient
-        patients[patient_name].append(f.split("_0000"))
+        patients[patient_name].append(f.split("_0000")[0])
 
     with open(output_json, "w") as out_file:
         json.dump(patients, out_file, indent=4)
