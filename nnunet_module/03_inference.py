@@ -47,6 +47,9 @@ if __name__ == "__main__":
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
+
+    # Mettre dans ça dans 01_prepare_dataset dans le dossiers imagesTs (voir doc)
+
     subject_sessions = {
         "Bibi": ["ses04", "ses05", "ses06", "ses09"],
         "Borgne": ["ses04", "ses05", "ses06", "ses10"],
