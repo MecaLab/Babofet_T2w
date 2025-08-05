@@ -33,7 +33,7 @@ def write_patients_json(imagesTr_path, output_json):
     patients = defaultdict(list)
     for f in files:
         patient_name = f.split('_')[0]  # Tout avant le premier underscore comme nom patient
-        patients[patient_name].append(f)
+        patients[patient_name].append(f.split("_0000"))
 
     with open(output_json, "w") as out_file:
         json.dump(patients, out_file, indent=4)
@@ -48,10 +48,11 @@ def get_previous_session_number(curr_sess):
 if __name__ == "__main__":
 
     subject_sessions = {
-        "Borgne": ["ses08"],
-        # "Fabienne": ["ses03", "ses04", "ses05", "ses08"],
-        # "Filoutte": ["ses03", "ses04", "ses05"],
-        # "Formule": ["ses02", "ses03"],
+        "Borgne": ["ses08", "ses09"],
+        "Fabienne": ["ses03", "ses04", "ses05", "ses08"],
+        "Filoutte": ["ses03", "ses04", "ses05", "ses08"],
+        "Formule": ["ses02", "ses03"],
+        "Bibi": ["ses07"]
     }
 
     mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2" or "full"
