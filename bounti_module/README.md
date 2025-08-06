@@ -7,23 +7,22 @@ Welcome to the BOUNTI Segmentation Pipeline! 🚀 This repository contains scrip
 - [Setup](#setup)
 - [Files](#files)
 - [Usage](#usage)
-- [Acknowledgments](#acknowledgments)
 
 ## About
 This module is designed for extracting a segmentation map using BOUNTI (https://www.biorxiv.org/content/10.1101/2023.04.18.537347v1). The pipeline consists of multiple scripts that perform various preprocessing, processing, and post-processing steps.
 
 ## Setup
 
-1. Clone the repository to your local machine.
+1. Clone the repository in your mesocentre account and niolon
 2. Ensure all dependencies are installed.
 3. Configure the paths and settings according to your environment (MESOCENTRE or NIOLON). To do that, see ```configuration.py``` in the main directory
 4. You need to have the 3D reconstruction volume for the subject/session you want to segment
 
 ## Files
-Here are the main Python files in the module:
+Here are a short descript of the python files in the module:
 
 ### Scripts to run on MESOCENTRE:
-- a_prepare_bounti.py: Prepares the data or environment for BOUNTI segmentation for the given subject.
+- a_prepare_bounti.py: Prepares the data and environment for BOUNTI segmentation for the given subject.
 - b_generate_niftymic_brainmask.py: Generates a brain mask using NiftyMIC for the given subject.
 - c_meso2niolon.py: Transfers data from the Mesocentre to Niolon for the given subject. You will need to change the *user_id* in the code.
 
