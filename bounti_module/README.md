@@ -32,27 +32,27 @@ We need to transfer the data to niolon because of the Debias-N4 algorithm only a
 - e_dilate_niftymic_brain_mask.py: Dilates the brain mask generated earlier for the given subject.
 - f_bounti_segmentation_preproc_haste.py: Preprocesses data for BOUNTI segmentation, specific to HASTE images for the given subject.
 - g_process_label.py: Processes the labels generated from the segmentation for the given subject. Transforms the 19 segmentation's label into a 4 segmentation map
-- h_niolon2meso.py: Transfers data back from NIOLON to the mesocentre for the given subject. You will need to change the *user_id* in the code.
+- h_niolon2meso.py: Transfers data back from Niolon to the Mesocentre for the given subject. You will need to change the *user_id* in the code.
 
 ## Usage
 To use this pipeline, follow these general steps:
 
-1. Run the preparation script on MESOCENTRE:
+1. Run the preparation script on **MESOCENTRE**:
    ```python a_prepare_bounti.py $SUBJECT```
 
-2. Generate the brain mask on MESOCENTRE:
+2. Generate the brain mask on **MESOCENTRE**:
    ```python b_generate_niftymic_brainmask.py $SUBJECT```
 
-3. Transfer data to NIOLON using:
+3. Transfer data to **NIOLON** using:
    ```python c_meso2niolon.py $SUBJECT```
 
-4. Perform bias field correction on NIOLON:
+4. Perform bias field correction on **NIOLON**:
    ```python d_bias_field_correction_3d.py $SUBJECT```
 
-5. Dilate the brain mask on NIOLON:
+5. Dilate the brain mask on **NIOLON**:
    ```python e_dilate_niftymic_brain_mask.py $SUBJECT```
 
-6. Preprocess the data for BOUNTI segmentation on NIOLON:
+6. Preprocess the data for BOUNTI segmentation on **NIOLON**:
    ```python f_bounti_segmentation_preproc_haste.py $SUBJECT```
 
 7. Run BOUNTI in the correct directory, ie within the bounti directory (root folder should be svrtk_BOUNTI)
@@ -67,10 +67,10 @@ Example with **Fabienne ses01**:
 bash /home/auto-proc-svrtk/scripts/auto-brain-bounti-segmentation-fetal.sh /mnt/input_SRR_nesvor/haste/Fabienne/ses01/ /mnt/output_BOUNTI_seg/haste/Fabienne/ses01/ && mv tmp_proc /mnt/output_BOUNTI_seg/haste/Fabienne/ses01/
 ```
 
-8. Process the labels on NIOLON:
+8. Process the labels on **NIOLON**:
    ```python g_process_label.py $SUBJECT```
 
-9. Transfer data back to MESOCENTRE using:
+9. Transfer data back to MESOCENTRE using on **NIOLON**:
    ```python h_niolon2meso.py $SUBJECT```
 
 ## Acknowledgments
