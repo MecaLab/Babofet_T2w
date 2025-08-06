@@ -25,7 +25,7 @@ module load gcc/14.1.0
 module load cuda/12.4
 
 source ~/.bashrc
-conda activate nnunet
+conda activate longiseg
 
 LongiSeg_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f all --save_probabilities
 

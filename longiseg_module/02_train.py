@@ -21,7 +21,7 @@ module load gcc/14.1.0
 module load cuda/12.4
 
 source ~/.bashrc
-conda activate nnunet
+conda activate longiseg
 
 LongiSeg_train {dataset_id} 3d_fullres all -tr {trainer} --npz
 """
