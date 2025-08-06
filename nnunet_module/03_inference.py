@@ -37,53 +37,23 @@ nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_full
 
 
 if __name__ == "__main__":
-    dataset_id = sys.argv[1]
-    trainer = sys.argv[2] # "nnUNetTrainerBias_Xepochs"
+    dataset_id = int(sys.argv[1])
+    name = sys.argv[2]
+    trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs"
 
-    input_folder = "/scratch/lbaptiste/Babofet_T2w/pred_nnunet/"
+    if dataset_id < 10:
+        dataset_name = f"Dataset00{dataset_id}_{name}"
+    elif dataset_id < 100:
+        dataset_name = f"Dataset0{dataset_id}_{name}"
+    else:
+        dataset_name = f"Dataset{dataset_id}_{name}"
+
+    input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
 
     output_folder = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id}"
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
-
-
-    # Mettre dans ça dans 01_prepare_dataset dans le dossiers imagesTs (voir doc)
-
-    subject_sessions = {
-        "Bibi": ["ses04", "ses05", "ses06", "ses09"],
-        "Borgne": ["ses04", "ses05", "ses06", "ses10"],
-        "Filoutte": ["ses06", "ses07", "ses09", "ses10"],
-        "Fabienne": ["ses07", "ses09"],
-        # "Aziza": ["ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
-        # "Forme": ["ses02", "ses03", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
-    }
-
-    mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2"
-
-    for subject, sessions in subject_sessions.items():
-        print(f"Processing subject: {subject}")
-        if mode_dataset == "unmasked" or mode_dataset == "debiased-2":
-            input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
-        elif mode_dataset == "masked":
-            input_path_3d_stacks = os.path.join(cfg.BOUNTI_PATH, "svrtk_BOUNTI/input_SRR_niftymic/haste", subject)
-        else:
-            raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
-
-        for session in sessions:
-            print(f"\tProcessing session: {session}")
-            if mode_dataset == "unmasked" or mode_dataset == "debiased-2":
-                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
-            elif mode_dataset == "masked":
-                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
-            else:
-                raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
-
-            output_path_3d_stack = os.path.join(input_folder, f"{subject}_{session}_0000.nii.gz")
-            if os.path.exists(output_path_3d_stack):
-                print(f"\t\tOutput file {output_path_3d_stack} already exists, skipping copy.")
-                continue
-            shutil.copy2(input_path_3d_stack, output_path_3d_stack)
 
     print("Starting inference")
 

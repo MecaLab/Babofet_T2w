@@ -27,8 +27,16 @@ DATA_PATH = os.path.join(BASE_PATH, "data/recons_folder")
 BOUNTI_PATH = os.path.join(BASE_PATH, "data/bounti")
 ATLAS_GHOLIPOUR_PATH = os.path.join(BASE_PATH, "data/STA_atlas_hemi_split")
 
+# nnUNet path
 NNUNET_RAW_PATH = os.path.join(BASE_PATH, "data/nnUNet_raw")
+NNUNET_RESULTS_PATH = os.path.join(BASE_PATH, "data/nnUNet_trained_models")
+NNUNET_PREPROCESSED_PATH = os.path.join(BASE_PATH, "data/nnUNet_preprocessed")
+
+# LongiSeg path
 LONGISEG_RAW_PATH = os.path.join(BASE_PATH, "data/LongiSeg_raw")
+LONGISEG_RESULTS_PATH = os.path.join(BASE_PATH, "data/LongiSeg_results")
+LONGISEG_PREPROCESSED_PATH = os.path.join(BASE_PATH, "data/LongiSeg_preprocessed")
+
 # Segmentation path bounti
 SEG_INPUT_PATH = os.path.join(BOUNTI_PATH, "svrtk_BOUNTI", "input_SRR_niftymic", "haste")
 SEG_OUTPUT_PATH = os.path.join(BOUNTI_PATH, "svrtk_BOUNTI", "output_BOUNTI_seg", "haste")
