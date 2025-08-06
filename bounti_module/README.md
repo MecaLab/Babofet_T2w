@@ -13,13 +13,13 @@ This module is designed for extracting a segmentation map using BOUNTI (https://
 
 ## Setup
 
-1. Clone the repository in your mesocentre account and niolon
+1. Clone the repository in your Mesocentre's and Niolon's account
 2. Ensure all dependencies are installed.
 3. Configure the paths and settings according to your environment (MESOCENTRE or NIOLON). To do that, see ```configuration.py``` in the main directory
 4. You need to have the 3D reconstruction volume for the subject/session you want to segment
 
 ## Files
-Here are a short descript of the python files in the module:
+Here is a short descript of the python files in the module:
 
 ### Scripts to run on MESOCENTRE:
 - a_prepare_bounti.py: Prepares the data and environment for BOUNTI segmentation for the given subject.
@@ -91,4 +91,4 @@ To use this pipeline, follow these general steps:
    $ python bounti_module/h_niolon2meso.py SUBJECT
    ```
 
-Automatization should/could be implemented with a bash file. Given a subject, it could run all the script, depending on when you are (Mesocentre ou Niolon)
+Automatization should/could be implemented with a bash file. Given a subject, it could run all the scripts, depending on where you are (Mesocentre or Niolon).
