@@ -14,8 +14,10 @@ This module is designed for extracting a segmentation map using BOUNTI (https://
 
 ## Setup
 
-1. You need to have the 3D reconstruction volume for the subject/session you want to segment
-2. 
+1. Clone the repository to your local machine.
+2. Ensure all dependencies are installed.
+3. Configure the paths and settings according to your environment (MESOCENTRE or NIOLON). To do that, see ```configuration.py``` in the main directory
+4. You need to have the 3D reconstruction volume for the subject/session you want to segment
 
 ## Files
 Here are the main Python files in the module:
