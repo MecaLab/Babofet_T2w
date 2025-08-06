@@ -40,43 +40,56 @@ We need to transfer the data to niolon because of the Debias-N4 algorithm only a
 To use this pipeline, follow these general steps:
 
 1. Run the preparation script on **MESOCENTRE**:
-   ```$ python bounti_module/a_prepare_bounti.py $SUBJECT```
+   ```bash
+   $ python bounti_module/a_prepare_bounti.py SUBJECT
+   ```
 
 2. Generate the brain mask on **MESOCENTRE**:
-   ```$ python bounti_module/b_generate_niftymic_brainmask.py $SUBJECT```
+   ```bash
+   $ python bounti_module/b_generate_niftymic_brainmask.py SUBJECT
+   ```
 
 3. Transfer data to **NIOLON** using:
-   ```$ python bounti_module/c_meso2niolon.py $SUBJECT```
+   ```bash
+   $ python bounti_module/c_meso2niolon.py SUBJECT
+   ```
 
 4. Perform bias field correction on **NIOLON**:
-   ```$ python bounti_module/d_bias_field_correction_3d.py $SUBJECT```
+   ```bash
+   $ python bounti_module/d_bias_field_correction_3d.py SUBJECT
+   ```
 
 5. Dilate the brain mask on **NIOLON**:
-   ```$ python bounti_module/e_dilate_niftymic_brain_mask.py $SUBJECT```
+   ```bash
+   $ python bounti_module/e_dilate_niftymic_brain_mask.py SUBJECT
+   ```
 
 6. Preprocess the data for BOUNTI segmentation on **NIOLON**:
-   ```$ python bounti_module/f_bounti_segmentation_preproc_haste.py $SUBJECT```
+   ```bash
+   $ python bounti_module/f_bounti_segmentation_preproc_haste.py SUBJECT
+   ```
 
 7. Run BOUNTI in the correct directory, ie within the bounti directory (root folder should be svrtk_BOUNTI)<br>
 
-```
-$ module load singularity
-$ singularity run --home /envau/work/meca/users/auzias/svrtk_BOUNTI:/home --bind ${PATH_TO_svrtk_BOUNTI}:/mnt /hpc/shared/apps/x86_64/softs/singularity_images/svrtk_auto.sif
-### within the image prompt:
-$ bash /home/auto-proc-svrtk/scripts/auto-brain-bounti-segmentation-fetal.sh /mnt/input_SRR_nesvor/haste/${subject}/${session}/ /mnt/output_BOUNTI_seg/haste/${subject}/${session}/ && mv tmp_proc /mnt/output_BOUNTI_seg/haste/${subject}/${session}/
-```
-Example with **Fabienne ses01**:
-```
-bash /home/auto-proc-svrtk/scripts/auto-brain-bounti-segmentation-fetal.sh /mnt/input_SRR_nesvor/haste/Fabienne/ses01/ /mnt/output_BOUNTI_seg/haste/Fabienne/ses01/ && mv tmp_proc /mnt/output_BOUNTI_seg/haste/Fabienne/ses01/
-```
+   ```bash
+   $ module load singularity
+   $ singularity run --home /envau/work/meca/users/auzias/svrtk_BOUNTI:/home --bind ${PATH_TO_svrtk_BOUNTI}:/mnt /hpc/shared/apps/x86_64/softs/singularity_images/svrtk_auto.sif
+   ### within the image prompt:
+   $ bash /home/auto-proc-svrtk/scripts/auto-brain-bounti-segmentation-fetal.sh /mnt/input_SRR_nesvor/haste/${subject}/${session}/ /mnt/output_BOUNTI_seg/haste/${subject}/${session}/ && mv tmp_proc /mnt/output_BOUNTI_seg/haste/${subject}/${session}/
+   ```
+   Example with **Fabienne ses01**:
+   ```bash
+   bash /home/auto-proc-svrtk/scripts/auto-brain-bounti-segmentation-fetal.sh /mnt/input_SRR_nesvor/haste/Fabienne/ses01/ /mnt/output_BOUNTI_seg/haste/Fabienne/ses01/ && mv tmp_proc /mnt/output_BOUNTI_seg/haste/Fabienne/ses01/
+   ```
 
 8. Process the labels on **NIOLON**:
-   ```$ python bounti_module/g_process_label.py $SUBJECT```
+   ```bash
+   $ python bounti_module/g_process_label.py SUBJECT
+   ```
 
 9. Transfer data back to MESOCENTRE using on **NIOLON**:
-   ```$ python bounti_module/h_niolon2meso.py $SUBJECT```
+   ```bash
+   $ python bounti_module/h_niolon2meso.py SUBJECT
+   ```
 
 Automatization should/could be implemented with a bash file. Given a subject, it could run all the script, depending on when you are (Mesocentre ou Niolon)
-
-## Acknowledgments
-This project utilizes BOUNTI for segmentation. For more details on BOUNTI, check out the [paper](https://www.biorxiv.org/content/10.1101/2023.04.18.537347v1).
