@@ -74,7 +74,7 @@ if __name__ == "__main__":
     else:
         dataset_name = f"Dataset{id_dataset}_{name}"
 
-    output_path = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name)
+    output_path = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name)
 
     images_tr_path = os.path.join(output_path, "imagesTr")
     images_ts_path = os.path.join(output_path, "imagesTs")
