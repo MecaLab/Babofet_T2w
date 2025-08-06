@@ -69,10 +69,10 @@ if __name__ == "__main__":
     if not os.path.exists(labels_tr_path):
         os.makedirs(labels_tr_path)
 
-
+    print("Train processing...")
     # train processing
     for subject, sessions in train_subject_sessions.items():
-        print(f"Processing subject: {subject}")
+        print(f"\tProcessing subject: {subject}")
         input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
 
         if mode_dataset == "unmasked":
@@ -85,7 +85,7 @@ if __name__ == "__main__":
             raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
 
         for session in sessions:
-            print(f"\tProcessing session: {session}")
+            print(f"\t\tProcessing session: {session}")
             if mode_dataset == "unmasked":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
             elif mode_dataset == "masked":
@@ -116,9 +116,10 @@ if __name__ == "__main__":
                 os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
                 os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
 
+    print("Test processing...")
     # test processing
     for subject, sessions in test_subject_sessions.items():
-        print(f"Processing subject: {subject}")
+        print(f"\tProcessing subject: {subject}")
         input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
 
         if mode_dataset == "unmasked":
@@ -131,7 +132,7 @@ if __name__ == "__main__":
             raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
 
         for session in sessions:
-            print(f"\tProcessing session: {session}")
+            print(f"\t\tProcessing session: {session}")
             if mode_dataset == "unmasked":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
             elif mode_dataset == "masked":
