@@ -47,10 +47,9 @@ if __name__ == "__main__":
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-
     # Mettre dans ça dans 01_prepare_dataset dans le dossiers imagesTs (voir doc)
 
-    subject_sessions = {
+    test_subject_sessions = {
         "Bibi": ["ses04", "ses05", "ses06", "ses09"],
         "Borgne": ["ses04", "ses05", "ses06", "ses10"],
         "Filoutte": ["ses06", "ses07", "ses09", "ses10"],
@@ -61,7 +60,7 @@ if __name__ == "__main__":
 
     mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2"
 
-    for subject, sessions in subject_sessions.items():
+    for subject, sessions in test_subject_sessions.items():
         print(f"Processing subject: {subject}")
         if mode_dataset == "unmasked" or mode_dataset == "debiased-2":
             input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
