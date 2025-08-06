@@ -38,22 +38,22 @@ We need to transfer the data to niolon because of the Debias-N4 algorithm only a
 To use this pipeline, follow these general steps:
 
 1. Run the preparation script on **MESOCENTRE**:
-   ```python a_prepare_bounti.py $SUBJECT```
+   ```$ python bounti_module/a_prepare_bounti.py $SUBJECT```
 
 2. Generate the brain mask on **MESOCENTRE**:
-   ```python b_generate_niftymic_brainmask.py $SUBJECT```
+   ```$ python bounti_module/b_generate_niftymic_brainmask.py $SUBJECT```
 
 3. Transfer data to **NIOLON** using:
-   ```python c_meso2niolon.py $SUBJECT```
+   ```$ python bounti_module/c_meso2niolon.py $SUBJECT```
 
 4. Perform bias field correction on **NIOLON**:
-   ```python d_bias_field_correction_3d.py $SUBJECT```
+   ```$ python bounti_module/d_bias_field_correction_3d.py $SUBJECT```
 
 5. Dilate the brain mask on **NIOLON**:
-   ```python e_dilate_niftymic_brain_mask.py $SUBJECT```
+   ```$ python bounti_module/e_dilate_niftymic_brain_mask.py $SUBJECT```
 
 6. Preprocess the data for BOUNTI segmentation on **NIOLON**:
-   ```python f_bounti_segmentation_preproc_haste.py $SUBJECT```
+   ```$ python bounti_module/f_bounti_segmentation_preproc_haste.py $SUBJECT```
 
 7. Run BOUNTI in the correct directory, ie within the bounti directory (root folder should be svrtk_BOUNTI)<br>
 
@@ -69,10 +69,10 @@ bash /home/auto-proc-svrtk/scripts/auto-brain-bounti-segmentation-fetal.sh /mnt/
 ```
 
 8. Process the labels on **NIOLON**:
-   ```python g_process_label.py $SUBJECT```
+   ```$ python bounti_module/g_process_label.py $SUBJECT```
 
 9. Transfer data back to MESOCENTRE using on **NIOLON**:
-   ```python h_niolon2meso.py $SUBJECT```
+   ```$ python bounti_module/h_niolon2meso.py $SUBJECT```
 
 ## Acknowledgments
 This project utilizes BOUNTI for segmentation. For more details on BOUNTI, check out the [paper](https://www.biorxiv.org/content/10.1101/2023.04.18.537347v1).
