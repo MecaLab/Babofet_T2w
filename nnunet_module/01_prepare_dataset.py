@@ -159,4 +159,5 @@ if __name__ == "__main__":
     write_json_file(dataset_json, num_training, dataset_name)
 
     print("Dataset preparation completed")
-    print("Now run: nnUNetv2_plan_and_preprocess -d DATASET_ID --verify_dataset_integrity")
+    print("Running dataset check...")
+    os.system(f"nnUNetv2_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")
