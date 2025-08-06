@@ -76,5 +76,7 @@ bash /home/auto-proc-svrtk/scripts/auto-brain-bounti-segmentation-fetal.sh /mnt/
 9. Transfer data back to MESOCENTRE using on **NIOLON**:
    ```$ python bounti_module/h_niolon2meso.py $SUBJECT```
 
+Automatization should/could be implemented with a bash file. Given a subject, it could run all the script, depending on when you are (Mesocentre ou Niolon)
+
 ## Acknowledgments
 This project utilizes BOUNTI for segmentation. For more details on BOUNTI, check out the [paper](https://www.biorxiv.org/content/10.1101/2023.04.18.537347v1).
