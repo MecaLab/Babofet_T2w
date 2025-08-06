@@ -47,7 +47,7 @@ def get_previous_session_number(curr_sess):
 
 if __name__ == "__main__":
 
-    subject_sessions = {
+    train_subject_sessions = {
         "Borgne": ["ses08", "ses09"],
         "Fabienne": ["ses03", "ses04", "ses05", "ses08"],
         "Filoutte": ["ses03", "ses04", "ses05", "ses08"],
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     if not os.path.exists(labels_tr_path):
         os.makedirs(labels_tr_path)
 
-    for subject, sessions in subject_sessions.items():
+    for subject, sessions in train_subject_sessions.items():
         print(f"Processing subject: {subject}")
 
         input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
