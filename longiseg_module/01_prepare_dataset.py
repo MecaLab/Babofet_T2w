@@ -74,7 +74,7 @@ if __name__ == "__main__":
     else:
         dataset_name = f"Dataset{id_dataset}_{name}"
 
-    output_path = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name)
+    output_path = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name)
 
     images_tr_path = os.path.join(output_path, "imagesTr")
     images_ts_path = os.path.join(output_path, "imagesTs")
@@ -173,9 +173,10 @@ if __name__ == "__main__":
                 os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
-    num_training = len(os.listdir(images_tr_path))
-    write_json_file(dataset_json, num_training, dataset_name)
+    num_training = len(os.listdir(labels_tr_path))
+    write_dataset_json(dataset_json, num_training, dataset_name)
+
+    patients_json = os.path.join(output_path, "patientsTr.json")
+    write_patients_json(images_tr_path, patients_json)
 
     print("Dataset preparation completed")
-    print("Running dataset check...")
-    os.system(f"nnUNetv2_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")
