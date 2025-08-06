@@ -33,7 +33,7 @@ if __name__ == "__main__":
             continue
 
         subprocess.run([bias_field_correction_path, "-d", "3", "-i", stack_path, "-x", mask_path, "-o", output_filename])
-        print(f"\tN4BiasFieldCorrection done !")
+        print(f"N4BiasFieldCorrection done !")
 
 
 

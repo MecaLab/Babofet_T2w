@@ -72,17 +72,17 @@ if __name__ == "__main__":
         subject_session_path = os.path.join(input_dir, session)
 
         if not "recons_rhesus" in os.listdir(subject_session_path):
-            print(f"Skipping {subject} {session}, no recons_rhesus directory found.")
+            print(f"\tSkipping {subject} {session}, no recons_rhesus directory found.")
             continue
 
         recon_template_space_dir = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space")
 
         if not os.path.exists(recon_template_space_dir):
-            print(f"Skipping {subject} {session}, no recon_template_space directory found.")
+            print(f"\tSkipping {subject} {session}, no recon_template_space directory found.")
             continue
 
         if os.path.exists(os.path.join(recon_template_space_dir, "srr_template_mask.nii.gz")):
-            print(f"Skipping {subject} {session}, srr_template_mask.nii.gz already exists.")
+            print(f"\tSkipping {subject} {session}, srr_template_mask.nii.gz already exists.")
             continue
 
         print(f"Processing {subject} {session}...")

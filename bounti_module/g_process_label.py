@@ -11,8 +11,9 @@ if __name__ == "__main__":
     subj = sys.argv[1]
 
     base_path = os.path.join(cfg.SEG_OUTPUT_PATH_NIOLON, subj)
+    print(f"Processing {subj}")
     for session in os.listdir(base_path):
-        print(f"Processing session: {session}")
+        print(f"\tProcessing session: {session}")
         bounti_srr_seg_path = os.path.join(base_path, session)
 
         output_path = os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
@@ -45,4 +46,4 @@ if __name__ == "__main__":
 
         new_segmentation_img = nib.Nifti1Image(new_mask, seg_img.affine, seg_img.header)
         nib.save(new_segmentation_img, output_path)
-        print("\tDone")
+    print("Done processing labels")

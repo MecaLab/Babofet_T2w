@@ -13,11 +13,9 @@ Welcome to the BOUNTI Segmentation Pipeline! 🚀 This repository contains scrip
 This module is designed for extracting a segmentation map using BOUNTI (https://www.biorxiv.org/content/10.1101/2023.04.18.537347v1). The pipeline consists of multiple scripts that perform various preprocessing, processing, and post-processing steps.
 
 ## Setup
-To set up the project, follow these steps:
 
-1. Clone the repository to your local machine.
-2. Ensure all dependencies are installed.
-3. Configure the paths and settings according to your environment (MESOCENTRE or NIOLON), see ```configuration.py``` file
+1. You need to have the 3D reconstruction volume for the subject/session you want to segment
+2. 
 
 ## Files
 Here are the main Python files in the module:

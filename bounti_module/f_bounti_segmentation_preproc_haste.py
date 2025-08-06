@@ -14,8 +14,8 @@ if __name__ == "__main__":
 
     base_path = os.path.join(cfg.RECONS_FOLDER, subject)
 
-    output_dir = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI", "input_SRR_niftymic", "haste")  # path for BOUNTI input
-    output_dir_seg = os.path.join(cfg.BASE_NIOLON_PATH, "bounti/svrtk_BOUNTI", "output_BOUNTI_seg", "haste")  # path for BOUNTI output
+    output_dir = cfg.SEG_INPUT_PATH_NIOLON  # path for BOUNTI input
+    output_dir_seg = cfg.SEG_OUTPUT_PATH_NIOLON  # path for BOUNTI output
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         if not os.path.exists(output_path_subj):
             os.makedirs(output_path_subj)
 
-        output_recon_file = os.path.join(output_path_subj, "reo-SVR-output-brain_rhesus.nii.gz")
+        output_recon_file = os.path.join(output_path_subj, "reo-SVR-output-brain_rhesus.nii.gz")  # bounti filename format
         if os.path.exists(output_recon_file):
             print(f"\tFile {output_recon_file} already exists, skipping...")
             continue
