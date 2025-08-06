@@ -1,6 +1,5 @@
 import os
 import sys
-import subprocess
 import shutil
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg

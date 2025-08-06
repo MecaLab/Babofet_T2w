@@ -16,11 +16,11 @@ if __name__ == "__main__":
     output_vol_path = os.path.join(cfg.SEG_INPUT_PATH, subject)
     output_seg_path = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
 
-    """command = f"scp -P 8822 -r {base_vol_path}/* {user_id}@login.mesocentre.univ-amu.fr:{output_vol_path}"
+    command = f"scp -P 8822 -r {base_vol_path}/* {user_id}@login.mesocentre.univ-amu.fr:{output_vol_path}"
     subprocess.run(command, shell=True)
 
     command = f"scp -P 8822 -r {base_seg_path}/* {user_id}@login.mesocentre.univ-amu.fr:{output_seg_path}"
-    subprocess.run(command, shell=True)"""
+    subprocess.run(command, shell=True)
 
     # Path for recons folder
     base_vol_path = os.path.join(cfg.RECONS_FOLDER, subject)
