@@ -180,3 +180,5 @@ if __name__ == "__main__":
     write_patients_json(images_tr_path, patients_json)
 
     print("Dataset preparation completed")
+    print("Running dataset check...")
+    os.system(f"LongiSeg_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")
