@@ -55,12 +55,13 @@ To use this pipeline, follow these general steps:
 6. Preprocess the data for BOUNTI segmentation on **NIOLON**:
    ```python f_bounti_segmentation_preproc_haste.py $SUBJECT```
 
-7. Run BOUNTI in the correct directory, ie within the bounti directory (root folder should be svrtk_BOUNTI)
-First of all, make sur to load singularity image with: ```$ module load singularity```
+7. Run BOUNTI in the correct directory, ie within the bounti directory (root folder should be svrtk_BOUNTI)<br>
+
 ```
-singularity run --home /envau/work/meca/users/auzias/svrtk_BOUNTI:/home --bind ${PATH_TO_svrtk_BOUNTI}:/mnt /hpc/shared/apps/x86_64/softs/singularity_images/svrtk_auto.sif
-# within the image prompt:
-bash /home/auto-proc-svrtk/scripts/auto-brain-bounti-segmentation-fetal.sh /mnt/input_SRR_nesvor/haste/${subject}/${session}/ /mnt/output_BOUNTI_seg/haste/${subject}/${session}/ && mv tmp_proc /mnt/output_BOUNTI_seg/haste/${subject}/${session}/
+$ module load singularity
+$ singularity run --home /envau/work/meca/users/auzias/svrtk_BOUNTI:/home --bind ${PATH_TO_svrtk_BOUNTI}:/mnt /hpc/shared/apps/x86_64/softs/singularity_images/svrtk_auto.sif
+### within the image prompt:
+$ bash /home/auto-proc-svrtk/scripts/auto-brain-bounti-segmentation-fetal.sh /mnt/input_SRR_nesvor/haste/${subject}/${session}/ /mnt/output_BOUNTI_seg/haste/${subject}/${session}/ && mv tmp_proc /mnt/output_BOUNTI_seg/haste/${subject}/${session}/
 ```
 Example with **Fabienne ses01**:
 ```
