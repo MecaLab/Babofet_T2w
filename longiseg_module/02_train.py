@@ -12,8 +12,8 @@ def write_slurm_file(dataset_id, trainer):
 #SBATCH --gres=gpu:1
 #SBATCH --time=96:00:00
 #SBATCH -c 12
-#SBATCH -o training_nnunet_%j.out
-#SBATCH -e training_nnunet_%j.err
+#SBATCH -o training_longiseg_%j.out
+#SBATCH -e training_longiseg_%j.err
 
 module purge
 module load userspace/all
