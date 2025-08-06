@@ -1,10 +1,8 @@
 import os
 import sys
 import json
-import subprocess
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
-import shutil
 
 
 def write_json_file(path, num_training, dataset_name):
@@ -28,22 +26,13 @@ def write_json_file(path, num_training, dataset_name):
 
 
 if __name__ == "__main__":
-    train_subject_sessions = {
-        "Borgne": ["ses08", "ses09"],
-        "Fabienne": ["ses03", "ses04", "ses05", "ses08"],
-        "Filoutte": ["ses03", "ses04", "ses05", "ses08"],
-        "Formule": ["ses02", "ses03"],
-        "Bibi": ["ses07"]
-    }
 
-    test_subject_sessions = {
-        "Bibi": ["ses04", "ses05", "ses06", "ses09"],
-        "Borgne": ["ses04", "ses05", "ses06", "ses10"],
-        "Filoutte": ["ses06", "ses07", "ses09", "ses10"],
-        "Fabienne": ["ses07", "ses09"],
-        # "Aziza": ["ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
-        # "Forme": ["ses02", "ses03", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
-    }
+    config_json = "nnunet_module/config.json"
+    with open(config_json, "r") as file:
+        data = json.load(file)
+
+    train_subject_sessions = data["train_subject_sessions"]
+    test_subject_sessions = data["test_subject_sessions"]
 
     mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2" or "full"
 

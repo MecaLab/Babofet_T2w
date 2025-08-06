@@ -1,15 +1,12 @@
 import os
 import subprocess
 import sys
-import shutil
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def write_slurm_file(input_folder, output_folder, dataset_id, trainer):
-    filename = "slurm_files/nnunet_prediction.slurm"
+def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer):
     slurm_content = f"""#!/bin/bash
-
 
 #SBATCH --account='b219'
 #SBATCH --partition=volta
@@ -57,5 +54,6 @@ if __name__ == "__main__":
 
     print("Starting inference")
 
-    write_slurm_file(input_folder, output_folder, dataset_id, trainer)
-    subprocess.run(["sbatch", "slurm_files/nnunet_prediction.slurm"])
+    filename = "slurm_files/nnunet_prediction.slurm"
+    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer)
+    subprocess.run(["sbatch", filename])
