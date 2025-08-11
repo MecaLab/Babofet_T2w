@@ -92,6 +92,17 @@ Usage :
 python 07_histo_diff.py <dataset_id_1> <dataset_id_2>
 ```
 
+### 📄 nnUNetTrainerBiasField_Xepochs.py
+
+This file is used to create a custom nnUNet trainer using a BiasField Data Augmentation
+There are many inherited classes from the nnUNetTrainer base class with the data augmentation for different number of epochs
+
+You can follow the class format to create your own custom class (by adding a new class, or also a new file), then you need to paste it into the nnunetv2 directory.
+For example, mine was:
+```bash
+~/miniconda3/envs/nnunet/lib/python3.9/site-packages/nnunetv2/training/nnUNetTrainer/
+```
+
 ## 📌 Requirements
 
 - Install nnUNet using https://github.com/MIC-DKFZ/nnUNet
