@@ -103,6 +103,10 @@ For example, mine was:
 ~/miniconda3/envs/nnunet/lib/python3.9/site-packages/nnunetv2/training/nnUNetTrainer/
 ```
 
+### 📄 config.json
+
+This file contains all the data you want to use for the training and the inference.
+
 ## 📌 Requirements
 
 - Install nnUNet using https://github.com/MIC-DKFZ/nnUNet
