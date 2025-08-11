@@ -146,16 +146,11 @@ if __name__ == "__main__":
 
         for session in sessions:
             print(f"\t\tProcessing session: {session}")
-            input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
-            input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+            input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
 
-            input_path_3d_seg = os.path.join(input_path_3d_segs, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
-
-            output_path_3d_stack = os.path.join(images_ts_path, f"{subject}_{session}_bias_0000.nii.gz")
-            output_path_3d_stack_bis = os.path.join(images_ts_path, f"{subject}_{session}_debias_0000.nii.gz")
+            output_path_3d_stack = os.path.join(images_ts_path, f"{subject}_{session}_debias_0000.nii.gz")
 
             os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
-            os.system(f"cp {input_path_3d_stack_bis} {output_path_3d_stack_bis}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
     num_training = len(os.listdir(labels_tr_path))
