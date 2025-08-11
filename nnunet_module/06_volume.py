@@ -1,8 +1,11 @@
 import os
 import sys
-import nibabel as nib
 import matplotlib.pyplot as plt
+import nibabel as nib
 import numpy as np
+
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 
 
 def compute_vol(mask, voxel_size, labels=[1, 2, 3, 4]):
@@ -19,17 +22,14 @@ def compute_vol(mask, voxel_size, labels=[1, 2, 3, 4]):
 
 if __name__ == "__main__":
     subject = sys.argv[1]  # Nom du sujet, e.g., Fabienne / Formule / etc..
+    model_id = sys.argv[2]  # should be: 'fusion' or a model's ID
 
-    fusions_labels = True
-
-    if fusions_labels:
-        model_id = "fusion"
-        input_folder = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/fusion_labels"
+    if model_id == "fusion":
+        input_folder = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/fusion_labels")
     else:
-        model_id = sys.argv[2]  # ID du modèle, e.g., 1, 2, 3, 4 ...
-        input_folder = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{model_id}"
+        input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{model_id}")
 
-    output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/volumes"
+    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/volumes")
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)

@@ -16,10 +16,10 @@ if __name__ == "__main__":
 
     comparaison_name = f"dataset_{dataset_id_1}_vs_{dataset_id_2}"
 
-    path_1 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_1}"
-    path_2 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_2}"
+    path_1 = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id_1}")
+    path_2 = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id_2}")
 
-    output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/histo"
+    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/histo")
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)

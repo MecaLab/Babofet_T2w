@@ -6,15 +6,15 @@ A pipeline for training and performing inference with the nnUNet model. This pro
 
 ### 📄 01_prepare_dataset.py
 
-Script to prepare the dataset for training or inference. It includes functionalities to read and manipulate data files, set up file and folder paths, and possibly generate or verify JSON files.
+Script to prepare the dataset for training and inference. It includes functionalities to read and manipulate data files, set up file and folder paths, and possibly generate or verify JSON files.
 
 - Manages data preparation tasks including reading and manipulating data files.
 - Sets up file and folder paths and handles dataset configuration.
 - Accepts arguments for `dataset_id` and `name` to customize the dataset
 
-Usage example :
+Usage :
 ```bash
-python nnunet_module/01_prepare_dataset.py <dataset_id> <trainer>
+python nnunet_module/01_prepare_dataset.py <dataset_id> <name>
 ```
 
 ### 📄 02_train.py
@@ -24,7 +24,7 @@ Script for training a nnUNet model. This script generates a SLURM file for submi
 - Generates a SLURM file to submit a training job on a cluster.
 - Accepts arguments for `dataset_id` and `trainer` to customize the training process.
 
-Usage example :
+Usage :
 ```bash
 python nnunet_module/02_train.py <dataset_id> <trainer>
 ```
@@ -37,17 +37,65 @@ Script for handling the inference process of a nnUNet model. It generates a SLUR
 - Configures specific paths for input and output files.
 - Executes an nnUNet command to make predictions.
 
-Usage example :
+Usage :
 ```bash
 python nnunet_module/03_inference.py <dataset_id> <name> <trainer>
 ```
 
+### 📄 04_dice_per_session.py
+
+Script to calculate the Dice score for each session, a common metric for evaluating segmentation performance.
+
+- Compares predictions with ground truths and calculates scores for different label classes.
+
+Usage :
+```bash
+python 04_dice_per_session.py <session>
+```
+
+### 📄 05_fusion.py
+
+Script related to the fusion of different results or models, improving prediction accuracy by combining multiple outputs.
+
+- Merges outputs from multiple models to make a final prediction using the probabilities given by the previous script.
+- You can choose which fusion methods you want from [max_prob, mean_prob, entropy, staple]
+- STAPLE is described here: https://pubmed.ncbi.nlm.nih.gov/15250643/
+- You can also implement your own method
+
+Usage :
+```bash
+python 05_fusion.py <method> <dataset_1> <dataset_2> [<dataset_3>]
+# dataset_3 is required when using STAPLE method
+```
+
+### 📄 06_volume.py
+
+Script to analyze volumes of different segmented structures. Used to quantify segmented regions in medical images.
+
+- Computes volumes for segmented regions, aiding in the evaluation of model performance in terms of spatial accuracy.
+- The argument `model_id` should be either `fusion` or one model's ID 
+
+Usage :
+```bash
+python 06_volume.py <subject> <model_id>
+```
+
+### 📄 07_histo_diff.py
+
+Script to generate histograms of differences between two datasets. Useful to visualize how predictions differ between two models or configurations.
+
+- Creates histograms showing the distribution of differences between model predictions on the same dataset.
+- Creates confusion matrix
+
+Usage :
+```bash
+python 07_histo_diff.py <dataset_id_1> <dataset_id_2>
+```
+
 ## 📌 Requirements
 
-- Python 3.x
-- Access to a SLURM cluster for job submission
-- nnUNet installed and configured, see https://github.com/MIC-DKFZ/nnUNet/tree/master
-- Necessary modules and dependencies (e.g., CUDA for GPU support)
+- Install nnUNet using https://github.com/MIC-DKFZ/nnUNet
+- Configure global path (see documentation)
 
 Ensure that your environment is set up with these requirements before running the scripts.
 

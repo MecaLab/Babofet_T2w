@@ -119,20 +119,20 @@ def apply_staple(path_1, path_2, path_3, output_path, labels):
 
 if __name__ == "__main__":
 
-    output_path = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/fusion_labels"
+    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/fusion_labels")
 
     method = sys.argv[1]
     dataset_id_1 = sys.argv[2]
     dataset_id_2 = sys.argv[3]
 
-    path_1 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_1}"
-    path_2 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_2}"
+    path_1 = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id_1}")
+    path_2 = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id_2}")
 
     if method != "staple":
         fusion_labels(path_1, path_2, output_path, method)
     else:
         dataset_id_3 = sys.argv[3]
-        path_3 = f"/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/pred_dataset_{dataset_id_3}"
+        path_3 = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id_3}")
         output_path = os.path.join(output_path, "staple")
 
         apply_staple(path_1, path_2, path_3, output_path, labels=[1, 2, 3, 4])
