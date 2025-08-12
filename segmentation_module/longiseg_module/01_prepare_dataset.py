@@ -52,22 +52,12 @@ def get_previous_session_number(curr_sess):
 
 
 if __name__ == "__main__":
-    train_subject_sessions = {
-        "Borgne": ["ses08", "ses09"],
-        "Fabienne": ["ses03", "ses04", "ses05", "ses08"],
-        "Filoutte": ["ses03", "ses04", "ses05", "ses08"],
-        "Formule": ["ses02", "ses03"],
-        "Bibi": ["ses07"]
-    }
+    config_json = "segmentation_module/longiseg_module/config.json"
+    with open(config_json, "r") as file:
+        data = json.load(file)
 
-    test_subject_sessions = {
-        "Bibi": ["ses04", "ses05", "ses06", "ses09"],
-        "Borgne": ["ses04", "ses05", "ses06", "ses10"],
-        "Filoutte": ["ses06", "ses07", "ses09", "ses10"],
-        "Fabienne": ["ses07", "ses09"],
-        # "Aziza": ["ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
-        # "Forme": ["ses02", "ses03", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
-    }
+    train_subject_sessions = data["train_subject_sessions"]
+    test_subject_sessions = data["test_subject_sessions"]
 
     id_dataset = int(sys.argv[1])  # should be integer, eg, 1, 2, 3, etc.
     name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
