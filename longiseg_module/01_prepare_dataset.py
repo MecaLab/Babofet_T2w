@@ -39,7 +39,8 @@ def write_patients_json(imagesTr_path, imagesTs_path, output_json):
 
     for f in files:
         patient_name = f.split("_")[0]
-        patients[patient_name].append(f.split("_0000")[0])
+        if f.split("_0000")[0] not in patients[patient_name]:
+            patients[patient_name].append(f.split("_0000")[0])
 
     with open(output_json, "w") as out_file:
         json.dump(patients, out_file, indent=4)
