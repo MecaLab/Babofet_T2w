@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer):
+def write_slurm_file(input_folder, output_folder, filename, patients_json_path, dataset_id, trainer):
     slurm_content = f"""#!/bin/bash
 
 #SBATCH --account='b219'
@@ -25,7 +25,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate longiseg
 
-LongiSeg_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f all --save_probabilities
+LongiSeg_predict -i {input_folder} -o {output_folder} -pat {patients_json_path} -d {dataset_id} -c 3d_fullres -tr {trainer} -f all --save_probabilities
 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -46,7 +46,9 @@ if __name__ == "__main__":
     else:
         dataset_name = f"Dataset{dataset_id}_{name}"
 
-    input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
+    base_folder = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name)
+    patients_json = os.path.join(base_folder, "patientsTr.json")
+    input_folder = os.path.join(base_folder, "imagesTs")
 
     output_folder = f"/scratch/lbaptiste/Babofet_T2w/snapshots/longiseg_res/pred_dataset_{dataset_id}"
 
