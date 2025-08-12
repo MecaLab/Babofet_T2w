@@ -1,14 +1,14 @@
-# 🌟 nnUNet Training and Inference Pipeline 🌟
+# 🌟 Utils and tools to analyse segmentation methods 🌟
 
 A pipeline for training and performing inference with the nnUNet model. This project includes scripts for preparing datasets, training models, and making predictions.
 
 ## 📌 Requirements
 
 - Install nnUNet using https://github.com/MIC-DKFZ/nnUNet
+- Install LongiSeg using https://github.com/MIC-DKFZ/LongiSeg
 - Configure global path (see documentation)
 
 Ensure that your environment is set up with these requirements before running the scripts.
-
 
 ## 📁 Files Overview
 
