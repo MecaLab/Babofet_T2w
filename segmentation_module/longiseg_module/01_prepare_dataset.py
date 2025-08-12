@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import nibabel as nib
 from collections import defaultdict
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
@@ -17,6 +18,7 @@ def write_dataset_json(path, num_training, dataset_name):
             "WM": 2,
             "GM": 3,
             "Ventricle": 4,
+            "ignore": 5
         },
         "numTraining": num_training,
         "file_ending": ".nii.gz",
@@ -42,6 +44,22 @@ def get_previous_session_number(curr_sess):
     sess_number = int(curr_sess[3:])
     previous_sess = sess_number - 1
     return f"ses0{previous_sess}"
+
+
+def modify_and_save_segmentation(input_path, output_path):
+    # Charger le volume 3D à partir du fichier
+    img = nib.load(input_path)
+    data = img.get_fdata()
+
+    # Appliquer la transformation des labels
+    for label in range(1, 5):  # Parcourir les labels 1 à 4
+        data[data == label] = 5  # Remplacer par le label 5
+
+    # Créer une nouvelle image NIfTI avec les données modifiées
+    new_img = nib.Nifti1Image(data, img.affine, img.header)
+
+    # Sauvegarder la nouvelle image
+    nib.save(new_img, output_path)
 
 
 if __name__ == "__main__":
@@ -125,6 +143,8 @@ if __name__ == "__main__":
 
             # os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
             os.system(f"cp {input_path_3d_seg} {output_path_3d_seg_bis}")
+
+            modify_and_save_segmentation(input_path_3d_seg, output_path_3d_seg_bis)
 
     print("Test processing...")
     # test processing
