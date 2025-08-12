@@ -163,7 +163,7 @@ if __name__ == "__main__":
     write_dataset_json(dataset_json, num_training, dataset_name)
 
     patients_json = os.path.join(output_path, "patientsTr.json")
-    write_patients_json(images_tr_path, patients_json)
+    write_patients_json(images_tr_path, images_ts_path, patients_json)
 
     print("Dataset preparation completed")
     print("Running dataset check...")
