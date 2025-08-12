@@ -58,5 +58,5 @@ if __name__ == "__main__":
     print("Starting inference")
 
     filename = "slurm_files/longiseg_prediction.slurm"
-    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer)
+    write_slurm_file(input_folder, output_folder, filename, patients_json, dataset_id, trainer)
     subprocess.run(["sbatch", "slurm_files/longiseg_prediction.slurm"])
