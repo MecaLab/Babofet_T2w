@@ -26,20 +26,13 @@ def write_dataset_json(path, num_training, dataset_name):
         json.dump(dico_data, f, indent=4)
 
 
-def write_patients_json(imagesTr_path, imagesTs_path, output_json):
-    files = sorted(os.listdir(imagesTr_path))
+def write_patients_json(image_path, output_json):
+    files = sorted(os.listdir(image_path))
 
     patients = defaultdict(list)
     for f in files:
         patient_name = f.split('_')[0]  # Tout avant le premier underscore comme nom patient
         patients[patient_name].append(f.split("_0000")[0])
-
-    files = sorted(os.listdir(imagesTs_path))
-
-    for f in files:
-        patient_name = f.split("_")[0]
-        if f.split("_0000")[0] not in patients[patient_name]:
-            patients[patient_name].append(f.split("_0000")[0])
 
     with open(output_json, "w") as out_file:
         json.dump(patients, out_file, indent=4)
@@ -153,7 +146,10 @@ if __name__ == "__main__":
     write_dataset_json(dataset_json, num_training, dataset_name)
 
     patients_json = os.path.join(output_path, "patientsTr.json")
-    write_patients_json(images_tr_path, images_ts_path, patients_json)
+    write_patients_json(images_tr_path, patients_json)
+
+    patients_json_test = os.path.join(output_path, "patientsTs.json")
+    write_patients_json(images_ts_path, patients_json_test)
 
     print("Dataset preparation completed")
     print("Running dataset check...")
