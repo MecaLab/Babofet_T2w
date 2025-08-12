@@ -1,3 +1,5 @@
+import os
+import sys
 import torch
 from typing import Tuple, Union, List
 import numpy as np
@@ -10,6 +12,9 @@ from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
 
 import torchio as tio
 import gc
+
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 
 
 def aug_bias_field(img, seg):
@@ -275,3 +280,10 @@ class nnUNetTrainerBias_4000epochs(nnUNetTrainerBias):
                  device: torch.device = torch.device('cuda')):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 4000
+
+
+if __name__ == "__main__":
+    print("Copying file to appropriate directory")
+
+    current_file_path = os.path.join(cfg.CODE_PATH, "segmentation_module/nnUNetTrainerBiasField_Xepochs.py")
+    os.system(f"cp {current_file_path} {cfg.NNUNET_PYTHON_PATH}")
