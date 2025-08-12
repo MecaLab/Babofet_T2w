@@ -3,8 +3,7 @@ import os
 import subprocess
 
 
-def write_slurm_file(dataset_id, trainer):
-    filename = "slurm_files/longiseg_train.slurm"
+def write_slurm_file(filename, dataset_id, trainer):
     slurm_content = f"""#!/bin/bash
 
 #SBATCH --account='b219'
@@ -36,8 +35,10 @@ if __name__ == "__main__":
 
     dataset_id = sys.argv[1]
     trainer = sys.argv[2]  # "nnUNetTrainerBias_Xepochs"
-    write_slurm_file(dataset_id, trainer)
-    subprocess.run(["sbatch", "slurm_files/longiseg_train.slurm"])
+
+    filename = "slurm_files/longiseg_train.slurm"
+    write_slurm_file(filename, dataset_id, trainer)
+    subprocess.run(["sbatch", filename])
 
 
 

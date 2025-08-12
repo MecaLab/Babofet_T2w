@@ -1,7 +1,6 @@
 import os
 import subprocess
 import sys
-import shutil
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -47,10 +46,10 @@ if __name__ == "__main__":
         dataset_name = f"Dataset{dataset_id}_{name}"
 
     base_folder = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name)
-    patients_json = os.path.join(base_folder, "patientsTr.json")
+    patients_json = os.path.join(base_folder, "patientsTs.json")
     input_folder = os.path.join(base_folder, "imagesTs")
 
-    output_folder = f"/scratch/lbaptiste/Babofet_T2w/snapshots/longiseg_res/pred_dataset_{dataset_id}"
+    output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/longiseg_res/pred_dataset_{dataset_id}")
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)

@@ -2,45 +2,15 @@
 
 A pipeline for training and performing inference with the nnUNet model. This project includes scripts for preparing datasets, training models, and making predictions.
 
+## 📌 Requirements
+
+- Install nnUNet using https://github.com/MIC-DKFZ/nnUNet
+- Configure global path (see documentation)
+
+Ensure that your environment is set up with these requirements before running the scripts.
+
+
 ## 📁 Files Overview
-
-### 📄 01_prepare_dataset.py
-
-Script to prepare the dataset for training and inference. It includes functionalities to read and manipulate data files, set up file and folder paths, and possibly generate or verify JSON files.
-
-- Manages data preparation tasks including reading and manipulating data files.
-- Sets up file and folder paths and handles dataset configuration.
-- Accepts arguments for `dataset_id` and `name` to customize the dataset
-
-Usage :
-```bash
-python segmentation_module/01_prepare_dataset.py <dataset_id> <name>
-```
-
-### 📄 02_train.py
-
-Script for training a nnUNet model. This script generates a SLURM file for submitting a training job on a cluster.
-
-- Generates a SLURM file to submit a training job on a cluster.
-- Accepts arguments for `dataset_id` and `trainer` to customize the training process.
-
-Usage :
-```bash
-python segmentation_module/02_train.py <dataset_id> <trainer>
-```
-
-### 📄 03_inference.py
-
-Script for handling the inference process of a nnUNet model. It generates a SLURM file to submit an inference job on a cluster.
-
-- Generates a SLURM file to submit an inference job on a cluster.
-- Configures specific paths for input and output files.
-- Executes an nnUNet command to make predictions.
-
-Usage :
-```bash
-python segmentation_module/03_inference.py <dataset_id> <name> <trainer>
-```
 
 ### 📄 04_dice_per_session.py
 
@@ -50,7 +20,7 @@ Script to calculate the Dice score for each session, a common metric for evaluat
 
 Usage :
 ```bash
-python 04_dice_per_session.py <session>
+python segmentation_module/04_dice_per_session.py <session>
 ```
 
 ### 📄 05_fusion.py
@@ -64,7 +34,7 @@ Script related to the fusion of different results or models, improving predictio
 
 Usage :
 ```bash
-python 05_fusion.py <method> <dataset_1> <dataset_2> [<dataset_3>]
+python segmentation_module/05_fusion.py <method> <dataset_1> <dataset_2> [<dataset_3>]
 # dataset_3 is required when using STAPLE method
 ```
 
@@ -77,7 +47,7 @@ Script to analyze volumes of different segmented structures. Used to quantify se
 
 Usage :
 ```bash
-python 06_volume.py <subject> <model_id>
+python segmentation_module/06_volume.py <subject> <model_id>
 ```
 
 ### 📄 07_histo_diff.py
@@ -89,7 +59,7 @@ Script to generate histograms of differences between two datasets. Useful to vis
 
 Usage :
 ```bash
-python 07_histo_diff.py <dataset_id_1> <dataset_id_2>
+python segmentation_module/07_histo_diff.py <dataset_id_1> <dataset_id_2>
 ```
 
 ### 📄 nnUNetTrainerBiasField_Xepochs.py
@@ -102,17 +72,6 @@ For example, mine was:
 ```bash
 ~/miniconda3/envs/nnunet/lib/python3.9/site-packages/nnunetv2/training/nnUNetTrainer/
 ```
-
-### 📄 config.json
-
-This file contains all the data you want to use for the training and the inference.
-
-## 📌 Requirements
-
-- Install nnUNet using https://github.com/MIC-DKFZ/nnUNet
-- Configure global path (see documentation)
-
-Ensure that your environment is set up with these requirements before running the scripts.
 
 ## ✨ Contributing
 

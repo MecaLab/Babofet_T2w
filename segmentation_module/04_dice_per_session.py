@@ -32,9 +32,10 @@ def moyenne_dice_scores(dice_scores_list):
 
 
 if __name__ == "__main__":
-    session = "ses03"
+    session = sys.argv[1]  # should be smth as sesX
+    model_type = sys.argv[2]  # should be nnunet or longiseg
 
-    input_folder = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/")
+    input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}_res/")
     dice_scores_list = []
 
     for file in os.listdir(input_folder):
