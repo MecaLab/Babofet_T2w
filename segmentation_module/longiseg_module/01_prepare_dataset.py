@@ -104,21 +104,21 @@ if __name__ == "__main__":
             print(f"\t\tProcessing session: {session}")
 
             # Current session
-            # input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
+            input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
             input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
 
             input_path_3d_seg = os.path.join(input_path_3d_segs, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
 
-            # output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_bias_0000.nii.gz")
+            output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_bias_0000.nii.gz")
             output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{session}_debias_0000.nii.gz")
 
-            # output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
+            output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
             output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{session}_debias.nii.gz")
 
-            # os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
+            os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
             os.system(f"cp {input_path_3d_stack_bis} {output_path_3d_stack_bis}")
 
-            # os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
+            os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
             os.system(f"cp {input_path_3d_seg} {output_path_3d_seg_bis}")
 
             # Previous session
@@ -128,22 +128,23 @@ if __name__ == "__main__":
             previous_path_3d_stack = os.path.join(input_path_3d_stacks, previous_sess)
             previous_path_3d_seg = os.path.join(input_path_3d_segs, previous_sess)
 
-            # input_path_3d_stack = os.path.join(previous_path_3d_stack, "recons_rhesus/recon_template_space/srr_template.nii.gz")
+            input_path_3d_stack = os.path.join(previous_path_3d_stack, "recons_rhesus/recon_template_space/srr_template.nii.gz")
             input_path_3d_stack_bis = os.path.join(previous_path_3d_stack, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
 
-            # output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{previous_sess}_bias_0000.nii.gz")
+            output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{previous_sess}_bias_0000.nii.gz")
             output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{previous_sess}_debias_0000.nii.gz")
 
-            # os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
+            os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
             os.system(f"cp {input_path_3d_stack_bis} {output_path_3d_stack_bis}")
 
             input_path_3d_seg = os.path.join(previous_path_3d_seg, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
-            # output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{previous_sess}_bias.nii.gz")
+            output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{previous_sess}_bias.nii.gz")
             output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{previous_sess}_debias.nii.gz")
 
-            # os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
+            os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
             os.system(f"cp {input_path_3d_seg} {output_path_3d_seg_bis}")
 
+            modify_and_save_segmentation(input_path_3d_seg, output_path_3d_seg)
             modify_and_save_segmentation(input_path_3d_seg, output_path_3d_seg_bis)
 
     print("Test processing...")
