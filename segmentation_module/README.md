@@ -14,7 +14,7 @@ Script to prepare the dataset for training and inference. It includes functional
 
 Usage :
 ```bash
-python nnunet_module/01_prepare_dataset.py <dataset_id> <name>
+python segmentation_module/01_prepare_dataset.py <dataset_id> <name>
 ```
 
 ### 📄 02_train.py
@@ -26,7 +26,7 @@ Script for training a nnUNet model. This script generates a SLURM file for submi
 
 Usage :
 ```bash
-python nnunet_module/02_train.py <dataset_id> <trainer>
+python segmentation_module/02_train.py <dataset_id> <trainer>
 ```
 
 ### 📄 03_inference.py
@@ -39,7 +39,7 @@ Script for handling the inference process of a nnUNet model. It generates a SLUR
 
 Usage :
 ```bash
-python nnunet_module/03_inference.py <dataset_id> <name> <trainer>
+python segmentation_module/03_inference.py <dataset_id> <name> <trainer>
 ```
 
 ### 📄 04_dice_per_session.py

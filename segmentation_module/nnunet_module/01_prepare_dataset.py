@@ -27,7 +27,7 @@ def write_json_file(path, num_training, dataset_name):
 
 if __name__ == "__main__":
 
-    config_json = "nnunet_module/config.json"
+    config_json = "segmentation_module/config.json"
     with open(config_json, "r") as file:
         data = json.load(file)
 
