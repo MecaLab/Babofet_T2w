@@ -1,6 +1,7 @@
 # 🌟 Utils and tools to analyse segmentation methods 🌟
 
-A pipeline for training and performing inference with the nnUNet model. This project includes scripts for preparing datasets, training models, and making predictions.
+Tools to analyse segmentations.
+Before running any scripts, make sure to run the script in the appropriate segmentation module
 
 ## 📌 Requirements
 
@@ -17,10 +18,11 @@ Ensure that your environment is set up with these requirements before running th
 Script to calculate the Dice score for each session, a common metric for evaluating segmentation performance.
 
 - Compares predictions with ground truths and calculates scores for different label classes.
+- The argument `model_type` should be either `nnunet` or `longiseg`
 
 Usage :
 ```bash
-python segmentation_module/04_dice_per_session.py <session>
+python segmentation_module/04_dice_per_session.py <session> <model_type>
 ```
 
 ### 📄 05_fusion.py
@@ -30,11 +32,12 @@ Script related to the fusion of different results or models, improving predictio
 - Merges outputs from multiple models to make a final prediction using the probabilities given by the previous script.
 - You can choose which fusion methods you want from [max_prob, mean_prob, entropy, staple]
 - STAPLE is described here: https://pubmed.ncbi.nlm.nih.gov/15250643/
+- The argument `model_type` should be either `nnunet` or `longiseg`
 - You can also implement your own method
 
 Usage :
 ```bash
-python segmentation_module/05_fusion.py <method> <dataset_1> <dataset_2> [<dataset_3>]
+python segmentation_module/05_fusion.py <method> <model_type> <dataset_1> <dataset_2> [<dataset_3>]
 # dataset_3 is required when using STAPLE method
 ```
 
@@ -44,10 +47,11 @@ Script to analyze volumes of different segmented structures. Used to quantify se
 
 - Computes volumes for segmented regions, aiding in the evaluation of model performance in terms of spatial accuracy.
 - The argument `model_id` should be either `fusion` or one model's ID 
+- The argument `model_type` should be either `nnunet` or `longiseg`
 
 Usage :
 ```bash
-python segmentation_module/06_volume.py <subject> <model_id>
+python segmentation_module/06_volume.py <subject> <model_id> <model_type>
 ```
 
 ### 📄 07_histo_diff.py
@@ -56,10 +60,11 @@ Script to generate histograms of differences between two datasets. Useful to vis
 
 - Creates histograms showing the distribution of differences between model predictions on the same dataset.
 - Creates confusion matrix
+- The argument `model_type` should be either `nnunet` or `longiseg`
 
 Usage :
 ```bash
-python segmentation_module/07_histo_diff.py <dataset_id_1> <dataset_id_2>
+python segmentation_module/07_histo_diff.py <dataset_id_1> <dataset_id_2> <model_type>
 ```
 
 ### 📄 nnUNetTrainerBiasField_Xepochs.py

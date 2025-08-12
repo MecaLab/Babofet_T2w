@@ -68,7 +68,7 @@ def fusion_labels(path_1, path_2, output_path, method):
                 combined_probs = weights_1[np.newaxis, ...] * prob1 + weights_2[np.newaxis, ...] * prob2
                 final_labels = np.argmax(combined_probs, axis=0)
             else:
-                raise ValueError("Method not recognized. Use 'max_prob' or 'mean_prob'.")
+                raise ValueError("Fusion method not recognized")
 
             mask1 = nib.load(os.path.join(path_1, file_1))
 
@@ -119,13 +119,12 @@ def apply_staple(path_1, path_2, path_3, output_path, labels):
 
 if __name__ == "__main__":
 
-    model_type = sys.argv[1]
+    method = sys.argv[1]
+    model_type = sys.argv[2]
+    dataset_id_1 = sys.argv[3]
+    dataset_id_2 = sys.argv[4]
 
     output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/fusion_labels")
-
-    method = sys.argv[1]
-    dataset_id_1 = sys.argv[2]
-    dataset_id_2 = sys.argv[3]
 
     path_1 = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/pred_dataset_{dataset_id_1}")
     path_2 = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/pred_dataset_{dataset_id_2}")
@@ -133,7 +132,7 @@ if __name__ == "__main__":
     if method != "staple":
         fusion_labels(path_1, path_2, output_path, method)
     else:
-        dataset_id_3 = sys.argv[3]
+        dataset_id_3 = sys.argv[5]
         path_3 = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/pred_dataset_{dataset_id_3}")
         output_path = os.path.join(output_path, "staple")
 
