@@ -23,13 +23,14 @@ def compute_vol(mask, voxel_size, labels=[1, 2, 3, 4]):
 if __name__ == "__main__":
     subject = sys.argv[1]  # Nom du sujet, e.g., Fabienne / Formule / etc..
     model_id = sys.argv[2]  # should be: 'fusion' or a model's ID
+    model_type = sys.argv[3]  # should be: 'nnunet' or 'longiseg'
 
     if model_id == "fusion":
-        input_folder = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/fusion_labels")
+        input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/fusion_labels")
     else:
-        input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{model_id}")
+        input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/pred_dataset_{model_id}")
 
-    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/volumes")
+    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/volumes")
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)

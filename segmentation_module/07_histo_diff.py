@@ -13,13 +13,14 @@ if __name__ == "__main__":
 
     dataset_id_1 = sys.argv[1]
     dataset_id_2 = sys.argv[2]
+    model_type = sys.argv[3]
 
     comparaison_name = f"dataset_{dataset_id_1}_vs_{dataset_id_2}"
 
-    path_1 = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id_1}")
-    path_2 = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id_2}")
+    path_1 = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/pred_dataset_{dataset_id_1}")
+    path_2 = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/pred_dataset_{dataset_id_2}")
 
-    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/histo")
+    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/histo")
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -58,7 +59,7 @@ if __name__ == "__main__":
             plt.xlabel(f"Prédiction modèle {dataset_id_2}")
             plt.ylabel(f"Prédiction modèle {dataset_id_1}")
             plt.title(f"Matrice de confusion entre masques pour {subject_name}")
-            output_fig = os.path.join(cfg.BASE_PATH, os.path.join(output_path, f"{comparaison_name}_heatmap_diff_{subject_name}.png"))
+            output_fig = os.path.join(output_path, f"{comparaison_name}_heatmap_diff_{subject_name}.png")
             plt.tight_layout()
             plt.savefig(output_fig)
             plt.close()
