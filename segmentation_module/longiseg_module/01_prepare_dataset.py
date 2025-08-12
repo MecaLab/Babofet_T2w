@@ -1,10 +1,9 @@
 import os
 import sys
 import json
-sys.path.insert(0, os.path.abspath(os.curdir))
 from collections import defaultdict
+sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
-import shutil
 
 
 def write_dataset_json(path, num_training, dataset_name):

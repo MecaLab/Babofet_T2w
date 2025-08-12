@@ -34,7 +34,7 @@ def moyenne_dice_scores(dice_scores_list):
 if __name__ == "__main__":
     session = "ses03"
 
-    input_folder = "/scratch/lbaptiste/Babofet_T2w/snapshots/nnunet_res/"
+    input_folder = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/")
     dice_scores_list = []
 
     for file in os.listdir(input_folder):
