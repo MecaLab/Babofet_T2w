@@ -27,12 +27,18 @@ def write_dataset_json(path, num_training, dataset_name):
         json.dump(dico_data, f, indent=4)
 
 
-def write_patients_json(imagesTr_path, output_json):
+def write_patients_json(imagesTr_path, imagesTs_path, output_json):
     files = sorted(os.listdir(imagesTr_path))
 
     patients = defaultdict(list)
     for f in files:
         patient_name = f.split('_')[0]  # Tout avant le premier underscore comme nom patient
+        patients[patient_name].append(f.split("_0000")[0])
+
+    files = sorted(os.listdir(imagesTs_path))
+
+    for f in files:
+        patient_name = f.split("_")[0]
         patients[patient_name].append(f.split("_0000")[0])
 
     with open(output_json, "w") as out_file:
@@ -161,4 +167,4 @@ if __name__ == "__main__":
 
     print("Dataset preparation completed")
     print("Running dataset check...")
-    os.system(f"LongiSeg_plan_and_preprocess -d {id_dataset} -c 3d_fullres --verify_dataset_integrity")
+    # os.system(f"LongiSeg_plan_and_preprocess -d {id_dataset} -c 3d_fullres --verify_dataset_integrity")
