@@ -33,7 +33,12 @@ class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
             raise RuntimeError("'dropout_op_kwargs' not found in arch_init_kwargs. "
                                "Ce trainer suppose une architecture nnU-Net classique avec du dropout configuré.")
 
-        arch_init_kwargs['dropout_op_kwargs']['p'] = 0.3
+        new_dropout_rate = 0.3
+
+        if 'dropout_op_kwargs' not in arch_init_kwargs.keys() or arch_init_kwargs['dropout_op_kwargs'] is None:
+            arch_init_kwargs['dropout_op_kwargs'] = {'p': new_dropout_rate, 'inplace': True}
+        else:
+            arch_init_kwargs['dropout_op_kwargs']['p'] = new_dropout_rate
 
         # Construire le réseau comme d'habitude
         return nnUNetTrainer.build_network_architecture(
