@@ -9,13 +9,12 @@ from batchgeneratorsv2.transforms.utils.compose import ComposeTransforms
 from batchgeneratorsv2.helpers.scalar_type import RandomScalar
 from batchgeneratorsv2.transforms.utils.random import RandomTransform
 from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
-from segmentation_module.ArtifactTransform import ArtifactTransform
-
-import torchio as tio
-import gc
 
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
+
+from segmentation_module.ArtifactTransform import ArtifactTransform
+
 
 
 class nnUNetTrainerBias(nnUNetTrainer):
