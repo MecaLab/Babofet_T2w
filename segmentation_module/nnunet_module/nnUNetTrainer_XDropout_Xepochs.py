@@ -40,8 +40,7 @@ class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
         else:
             arch_init_kwargs['dropout_op_kwargs']['p'] = new_dropout_rate
 
-        # Construire le réseau comme d'habitude
-        return nnUNetTrainer.build_network_architecture(
+        network = nnUNetTrainer.build_network_architecture(
             architecture_class_name,
             arch_init_kwargs,
             arch_init_kwargs_req_import,
@@ -49,6 +48,15 @@ class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
             num_output_channels,
             enable_deep_supervision
         )
+
+        print("\n=== Vérification Dropout ===")
+        for name, module in network.named_modules():
+            if hasattr(module, 'dropout_op_kwargs'):
+                print(f"{name}: dropout p = {module.dropout_op_kwargs['p']}")
+        print("===========================\n")
+
+        # Construire le réseau comme d'habitude
+        return network
 
 
 if __name__ == "__main__":
