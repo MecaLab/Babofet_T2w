@@ -5,8 +5,6 @@ from nnunetv2.training.nnUNetTrainer.nnUNetTrainer import nnUNetTrainer
 
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
-from segmentation_module.ArtifactTransform import ArtifactTransform
-
 
 class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
 
@@ -19,16 +17,16 @@ class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 3000
 
-    def build_network_architecture(self, configuration_manager, **kwargs):
-
-        network = super().build_network_architecture(configuration_manager, **kwargs)
+    def build_network_architecture(self, configuration_manager, plans, dataset_json, configuration_name, fold, **kwargs):
+        # On construit le réseau normalement
+        network = super().build_network_architecture(configuration_manager, plans, dataset_json, configuration_name, fold, **kwargs)
 
         new_dropout_rate = 0.3
         for name, module in network.named_modules():
             if hasattr(module, 'dropout_op_kwargs'):
                 module.dropout_op_kwargs['p'] = new_dropout_rate
-        return network
 
+        return network
 
 if __name__ == "__main__":
     print("Copying file to appropriate directory")
