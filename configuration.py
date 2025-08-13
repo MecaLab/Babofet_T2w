@@ -24,7 +24,7 @@ DATA_PATH = os.path.join(BASE_PATH, "recons_folder")
 ATLAS_GHOLIPOUR_PATH = os.path.join(BASE_PATH, "STA_atlas_hemi_split")
 
 NNUNET_PYTHON_PATH = "~/miniconda3/envs/nnunet/lib/python3.9/site-packages/nnunetv2/training/nnUNetTrainer/"
-LONGISEG_PYTHON_PATH = ""
+LONGISEG_PYTHON_PATH = os.path.join(CODE_PATH, "LongiSeg")
 
 # nnUNet path
 NNUNET_RAW_PATH = os.path.join(BASE_PATH, "nnUNet_raw")
