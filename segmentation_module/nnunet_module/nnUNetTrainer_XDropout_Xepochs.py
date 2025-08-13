@@ -24,8 +24,9 @@ class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
         network = super().build_network_architecture(configuration_manager, **kwargs)
 
         new_dropout_rate = 0.3
-        if hasattr(network, 'dropout_op_kwargs'):
-            network.dropout_op_kwargs['p'] = new_dropout_rate
+        for name, module in network.named_modules():
+            if hasattr(module, 'dropout_op_kwargs'):
+                module.dropout_op_kwargs['p'] = new_dropout_rate
         return network
 
 
