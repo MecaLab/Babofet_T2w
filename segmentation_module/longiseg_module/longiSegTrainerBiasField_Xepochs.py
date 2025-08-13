@@ -3,7 +3,7 @@ import os
 import torch
 from typing import Tuple, Union, List
 import numpy as np
-from longiseg.training.LongiSegTrainer import LongiSegTrainer
+from longiseg.training.LongiSegTrainer.LongiSegTrainer import LongiSegTrainer
 
 from batchgeneratorsv2.transforms.utils.compose import ComposeTransforms
 from batchgeneratorsv2.helpers.scalar_type import RandomScalar
