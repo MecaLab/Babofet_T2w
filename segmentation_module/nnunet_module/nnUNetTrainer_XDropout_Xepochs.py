@@ -26,21 +26,24 @@ class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
                                    arch_init_kwargs_req_import: Union[List[str], Tuple[str, ...]],
                                    num_input_channels: int,
                                    num_output_channels: int,
-                                   enable_deep_supervision: bool = True) -> nn.Module:
-        # On construit le réseau normalement
-        network = super().build_network_architecture(architecture_class_name,
-                                   arch_init_kwargs,
-                                   arch_init_kwargs_req_import,
-                                   num_input_channels,
-                                   num_output_channels,
-                                   enable_deep_supervision)
+                                   enable_deep_supervision: bool = True) -> torch.nn.Module:
 
-        new_dropout_rate = 0.3
-        for name, module in network.named_modules():
-            if hasattr(module, 'dropout_op_kwargs'):
-                module.dropout_op_kwargs['p'] = new_dropout_rate
+        # Vérifier qu'il y a bien un paramètre dropout
+        if 'dropout_op_kwargs' not in arch_init_kwargs.keys():
+            raise RuntimeError("'dropout_op_kwargs' not found in arch_init_kwargs. "
+                               "Ce trainer suppose une architecture nnU-Net classique avec du dropout configuré.")
 
-        return network
+        arch_init_kwargs['dropout_op_kwargs']['p'] = 0.3
+
+        # Construire le réseau comme d'habitude
+        return nnUNetTrainer.build_network_architecture(
+            architecture_class_name,
+            arch_init_kwargs,
+            arch_init_kwargs_req_import,
+            num_input_channels,
+            num_output_channels,
+            enable_deep_supervision
+        )
 
 
 if __name__ == "__main__":
