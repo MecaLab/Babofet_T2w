@@ -10,7 +10,6 @@ from batchgeneratorsv2.helpers.scalar_type import RandomScalar
 from batchgeneratorsv2.transforms.utils.random import RandomTransform
 from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
 
-
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 from segmentation_module.ArtifactTransform import ArtifactTransform
@@ -70,6 +69,7 @@ class LongiSegTrainerBias(LongiSegTrainer):
                 do_dummy_2d_data_aug, use_mask_for_norm, is_cascaded,
                 foreground_labels, regions, ignore_label
             )
+
 
 class LongiSegTrainerBias_100epochs(LongiSegTrainerBias):
     """
@@ -180,8 +180,7 @@ if __name__ == "__main__":
     print("Copying file to appropriate directory")
 
     current_file_path = os.path.join(cfg.CODE_PATH, "segmentation_module/longiseg_module"
-                                                    "/longiSegTrainerBiasField_Xepochs.py")
+                                                    "/LongiSegTrainerBiasField_Xepochs.py")
 
     output_path = os.path.join(cfg.LONGISEG_PYTHON_PATH, "longiseg/training/LongiSegTrainer/")
-    print(output_path)
     os.system(f"cp {current_file_path} {output_path}")
