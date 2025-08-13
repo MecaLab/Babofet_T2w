@@ -12,9 +12,7 @@ from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
 
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
-
 from segmentation_module.ArtifactTransform import ArtifactTransform
-
 
 
 class nnUNetTrainerBias(nnUNetTrainer):
@@ -181,5 +179,6 @@ class nnUNetTrainerBias_4000epochs(nnUNetTrainerBias):
 if __name__ == "__main__":
     print("Copying file to appropriate directory")
 
-    current_file_path = os.path.join(cfg.CODE_PATH, "segmentation_module/nnunet_module/nnUNetTrainerBiasField_Xepochs.py")
+    current_file_path = os.path.join(cfg.CODE_PATH, "segmentation_module/nnunet_module/"
+                                                    "nnUNetTrainerBiasField_Xepochs.py")
     os.system(f"cp {current_file_path} {cfg.NNUNET_PYTHON_PATH}")

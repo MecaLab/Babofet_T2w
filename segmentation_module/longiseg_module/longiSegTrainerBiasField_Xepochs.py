@@ -1,3 +1,5 @@
+import sys
+import os
 import torch
 from typing import Tuple, Union, List
 import numpy as np
@@ -7,10 +9,14 @@ from batchgeneratorsv2.transforms.utils.compose import ComposeTransforms
 from batchgeneratorsv2.helpers.scalar_type import RandomScalar
 from batchgeneratorsv2.transforms.utils.random import RandomTransform
 from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
+
+
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 from segmentation_module.ArtifactTransform import ArtifactTransform
 
 
-class nnUNetTrainerBias(LongiSegTrainer):
+class LongiSegTrainerBias(LongiSegTrainer):
     def __init__(self,
                  plans: dict,
                  configuration: str,
@@ -65,7 +71,116 @@ class nnUNetTrainerBias(LongiSegTrainer):
                 foreground_labels, regions, ignore_label
             )
 
+class LongiSegTrainerBias_100epochs(LongiSegTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 100
+
+
+class LongiSegTrainerBias_200epochs(LongiSegTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 200
+
+
+class LongiSegTrainerBias_500epochs(LongiSegTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 500
+
+
+class LongiSegTrainerBias_1000epochs(LongiSegTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 1000
+
+
+class LongiSegTrainerBias_2000epochs(LongiSegTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 2000
+
+
+class LongiSegTrainerBias_3000epochs(LongiSegTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 3000
+
+
+class LongiSegTrainerBias_4000epochs(LongiSegTrainerBias):
+    """
+    Custom trainer for nnUNet that applies a bias field artifact during training.
+    """
+
+    def __init__(self,
+                 plans: dict,
+                 configuration: str,
+                 fold: int,
+                 dataset_json: dict,
+                 device: torch.device = torch.device('cuda')):
+        super().__init__(plans, configuration, fold, dataset_json, device)
+        self.num_epochs = 4000
+
 
 if __name__ == "__main__":
-    # Exemple d'utilisation
-    print("OK")
+    print("Copying file to appropriate directory")
+
+    current_file_path = os.path.join(cfg.CODE_PATH, "segmentation_module/longiseg_module"
+                                                    "/longiSegTrainerBiasField_Xepochs.py")
+
+    output_path = os.path.join(cfg.LONGISEG_PYTHON_PATH, "/longiseg/training/LongiSegTrainer/")
+    os.system(f"cp {current_file_path} {output_path}")
