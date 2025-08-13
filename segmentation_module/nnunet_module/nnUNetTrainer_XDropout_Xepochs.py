@@ -1,10 +1,13 @@
 import os
 import sys
+from typing import Union, List, Tuple
+import torch.nn as nn
 import torch
 from nnunetv2.training.nnUNetTrainer.nnUNetTrainer import nnUNetTrainer
 
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
+
 
 class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
 
@@ -17,9 +20,20 @@ class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
         super().__init__(plans, configuration, fold, dataset_json, device)
         self.num_epochs = 3000
 
-    def build_network_architecture(self, configuration_manager, plans, dataset_json, configuration_name, fold, **kwargs):
+    @staticmethod
+    def build_network_architecture(architecture_class_name: str,
+                                   arch_init_kwargs: dict,
+                                   arch_init_kwargs_req_import: Union[List[str], Tuple[str, ...]],
+                                   num_input_channels: int,
+                                   num_output_channels: int,
+                                   enable_deep_supervision: bool = True) -> nn.Module:
         # On construit le réseau normalement
-        network = super().build_network_architecture(configuration_manager, plans, dataset_json, configuration_name, fold, **kwargs)
+        network = super().build_network_architecture(architecture_class_name,
+                                   arch_init_kwargs,
+                                   arch_init_kwargs_req_import,
+                                   num_input_channels,
+                                   num_output_channels,
+                                   enable_deep_supervision)
 
         new_dropout_rate = 0.3
         for name, module in network.named_modules():
@@ -27,6 +41,7 @@ class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
                 module.dropout_op_kwargs['p'] = new_dropout_rate
 
         return network
+
 
 if __name__ == "__main__":
     print("Copying file to appropriate directory")
