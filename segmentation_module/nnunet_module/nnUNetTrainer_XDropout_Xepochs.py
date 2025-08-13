@@ -1,7 +1,6 @@
 import os
 import sys
 from typing import Union, List, Tuple
-import torch.nn as nn
 import torch
 from nnunetv2.training.nnUNetTrainer.nnUNetTrainer import nnUNetTrainer
 
@@ -28,7 +27,6 @@ class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
                                    num_output_channels: int,
                                    enable_deep_supervision: bool = True) -> torch.nn.Module:
 
-        # Vérifier qu'il y a bien un paramètre dropout
         if 'dropout_op_kwargs' not in arch_init_kwargs.keys():
             raise RuntimeError("'dropout_op_kwargs' not found in arch_init_kwargs. "
                                "Ce trainer suppose une architecture nnU-Net classique avec du dropout configuré.")
@@ -48,12 +46,6 @@ class nnUNetTrainer_03Dropout_3000epochs(nnUNetTrainer):
             num_output_channels,
             enable_deep_supervision
         )
-
-        print("\n=== Vérification Dropout ===")
-        for name, module in network.named_modules():
-            if hasattr(module, 'dropout_op_kwargs'):
-                print(f"{name}: dropout p = {module.dropout_op_kwargs['p']}")
-        print("===========================\n")
 
         # Construire le réseau comme d'habitude
         return network
