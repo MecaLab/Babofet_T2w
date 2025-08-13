@@ -183,4 +183,5 @@ if __name__ == "__main__":
                                                     "/longiSegTrainerBiasField_Xepochs.py")
 
     output_path = os.path.join(cfg.LONGISEG_PYTHON_PATH, "/longiseg/training/LongiSegTrainer/")
+    print(output_path)
     os.system(f"cp {current_file_path} {output_path}")
