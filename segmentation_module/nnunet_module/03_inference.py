@@ -45,12 +45,8 @@ if __name__ == "__main__":
     else:
         dataset_name = f"Dataset{dataset_id}_{name}"
 
-    # input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
-
-    input_folder = "pred_borgne_olivier_input"
-
-    # output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
-    output_folder = "pred_borgne_olivier_res_output"
+    input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
+    output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
