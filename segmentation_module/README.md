@@ -13,16 +13,16 @@ Ensure that your environment is set up with these requirements before running th
 
 ## 📁 Files Overview
 
-### 📄 04_dice_per_session.py
+### 📄 04_dice.py
 
-Script to calculate the Dice score for each session, a common metric for evaluating segmentation performance.
+Script to calculate the Dice score, a common metric for evaluating segmentation performance.
 
 - Compares predictions with ground truths and calculates scores for different label classes.
 - The argument `model_type` should be either `nnunet` or `longiseg`
 
 Usage :
 ```bash
-python segmentation_module/04_dice_per_session.py <session> <model_type>
+python segmentation_module/05_dice.py <session> <model_type>
 ```
 
 ### 📄 05_fusion.py
@@ -37,7 +37,7 @@ Script related to the fusion of different results or models, improving predictio
 
 Usage :
 ```bash
-python segmentation_module/05_fusion.py <method> <model_type> <dataset_1> <dataset_2> [<dataset_3>]
+python segmentation_module/06_fusion.py <method> <model_type> <dataset_1> <dataset_2> [<dataset_3>]
 # dataset_3 is required when using STAPLE method
 ```
 
@@ -51,7 +51,7 @@ Script to analyze volumes of different segmented structures. Used to quantify se
 
 Usage :
 ```bash
-python segmentation_module/06_volume.py <subject> <model_id> <model_type>
+python segmentation_module/08_volume.py <subject> <model_id> <model_type>
 ```
 
 ### 📄 07_histo_diff.py
