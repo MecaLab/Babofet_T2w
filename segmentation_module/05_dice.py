@@ -32,16 +32,31 @@ def moyenne_dice_scores(dice_scores_list):
 
 
 if __name__ == "__main__":
-    session = sys.argv[1]  # should be smth as sesX
-    model_type = sys.argv[2]  # should be nnunet or longiseg
+    model_type = sys.argv[1]  # should be nnunet or longiseg
+    dataset_id = int(sys.argv[2])
+    name = sys.argv[3]
+    trainer = sys.argv[4]  # "nnUNetTrainerBias_Xepochs"
 
-    input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}_res/")
+    if dataset_id < 10:
+        dataset_name = f"Dataset00{dataset_id}_{name}"
+    elif dataset_id < 100:
+        dataset_name = f"Dataset0{dataset_id}_{name}"
+    else:
+        dataset_name = f"Dataset{dataset_id}_{name}"
+
+    if model_type == "nnunet":
+        input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTr")
+    elif model_type == "longiseg":
+        input_folder = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name, "imagesTr")
+
     dice_scores_list = []
 
     for file in os.listdir(input_folder):
-        if file.endswith(".nii.gz") and session in file:
-            subject = file.split("_")[0]
-            print(f"Processing {subject} {session}")
+        if file.endswith(".nii.gz"):
+            file_splitted = file.split("_")
+            subject = file_splitted[0]
+            session = file_splitted[1]
+            print(f"Processing {file}")
 
             gt_path = os.path.join(cfg.SEG_OUTPUT_PATH, subject, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
             gt_img = nib.load(gt_path).get_fdata()

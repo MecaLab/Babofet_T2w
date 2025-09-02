@@ -20,6 +20,8 @@ def compute_vol(mask, voxel_size, labels=[1, 2, 3, 4]):
     return volumes
 
 
+# TODO: refont code
+
 if __name__ == "__main__":
     subject = sys.argv[1]  # Nom du sujet, e.g., Fabienne / Formule / etc..
     model_id = sys.argv[2]  # should be: 'fusion' or a model's ID

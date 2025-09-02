@@ -117,6 +117,9 @@ def apply_staple(path_1, path_2, path_3, output_path, labels):
             sitk.WriteImage(combined_image, os.path.join(output_path, f"{subject_name}_staple.nii.gz"))
 
 
+# TODO: refont code
+
+
 if __name__ == "__main__":
 
     method = sys.argv[1]
