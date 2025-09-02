@@ -158,7 +158,7 @@ class nnUNetTrainerBias_3000epochs(nnUNetTrainerBias):
                  dataset_json: dict,
                  device: torch.device = torch.device('cuda')):
         super().__init__(plans, configuration, fold, dataset_json, device)
-        self.num_epochs = 4000
+        self.num_epochs = 3500
 
 
 class nnUNetTrainerBias_4000epochs(nnUNetTrainerBias):
