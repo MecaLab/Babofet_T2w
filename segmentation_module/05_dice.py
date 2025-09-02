@@ -35,7 +35,7 @@ if __name__ == "__main__":
     model_type = sys.argv[1]  # should be nnunet or longiseg
     inference_folder = sys.argv[2]
 
-    input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}_res/")
+    input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}_res/{inference_folder}")
 
     dice_scores_list = []
 
