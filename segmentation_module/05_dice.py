@@ -33,21 +33,9 @@ def moyenne_dice_scores(dice_scores_list):
 
 if __name__ == "__main__":
     model_type = sys.argv[1]  # should be nnunet or longiseg
-    dataset_id = int(sys.argv[2])
-    name = sys.argv[3]
-    trainer = sys.argv[4]  # "nnUNetTrainerBias_Xepochs"
+    inference_folder = sys.argv[2]
 
-    if dataset_id < 10:
-        dataset_name = f"Dataset00{dataset_id}_{name}"
-    elif dataset_id < 100:
-        dataset_name = f"Dataset0{dataset_id}_{name}"
-    else:
-        dataset_name = f"Dataset{dataset_id}_{name}"
-
-    if model_type == "nnunet":
-        input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTr")
-    elif model_type == "longiseg":
-        input_folder = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name, "imagesTr")
+    input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}_res/")
 
     dice_scores_list = []
 
