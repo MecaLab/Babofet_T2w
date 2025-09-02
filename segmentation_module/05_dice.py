@@ -35,9 +35,17 @@ if __name__ == "__main__":
     model_type = sys.argv[1]  # should be nnunet or longiseg
     inference_folder = sys.argv[2]
 
-    input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}_res/{inference_folder}")
-
+    # input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}_res/{inference_folder}")
+    input_folder = os.path.join(cfg.CODE_PATH, "pred_borgne_olivier_res_output")
     dice_scores_list = []
+
+    labels = [1, 2, 3, 4]
+    labels_map = {
+        1: "CSF",
+        2: "WM",
+        3: "GM",
+        4: "Ventricle"
+    }
 
     for file in os.listdir(input_folder):
         if file.endswith(".nii.gz"):
@@ -51,21 +59,6 @@ if __name__ == "__main__":
 
             pred_path = os.path.join(input_folder, file)
             pred_img = nib.load(pred_path).get_fdata()
-
-            labels = [1, 2, 3, 4]
-            labels_map = {
-                1: "CSF",
-                2: "WM",
-                3: "GM",
-                4: "Ventricle"
-            }
-
-            labels_avg_list = {
-                1: [],
-                2: [],
-                3: [],
-                4: []
-            }
 
             dice_scores = calculer_dice_score(pred_img, gt_img, labels)
             dice_scores_list.append(dice_scores)
