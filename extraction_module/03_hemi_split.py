@@ -7,8 +7,8 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def ants_register(fixed, atlas_week):
-    moving_atlas_file = os.path.join(cfg.FETAL_RESUS_ATLAS, "STA" + atlas_week + "_flipped.nii.gz")
+def ants_register(fixed, altas_days):
+    moving_atlas_file = os.path.join(cfg.FETAL_RESUS_ATLAS, f"Template_G{altas_days}_T2W.nii.gz")
     # load atlas volume
     moving_atlas = ants.image_read(moving_atlas_file)
     # fixed.plot(overlay=moving_atlas, title='Before Registration', overlay_alpha = 0.5)
@@ -51,12 +51,12 @@ if __name__ == "__main__":
             fixed = ants.image_read(volume_in)
             fixed_seg = ants.image_read(file_seg_in)
 
-            wraped_mi_12 = ants_register(fixed, "12")
-            print(["12", wraped_mi_12])
-            wraped_mi_15 = ants_register(fixed, "15")
-            print(["15", wraped_mi_15])
-            wraped_mi_19 = ants_register(fixed, "19")
-            print(["19", wraped_mi_19])
+            wraped_mi_85 = ants_register(fixed, "85")
+            print(["85", wraped_mi_85])
+            wraped_mi_110 = ants_register(fixed, "110")
+            print(["110", wraped_mi_110])
+            wraped_mi_135 = ants_register(fixed, "135")
+            print(["135", wraped_mi_135])
 
         except Exception as e:
             print(e)

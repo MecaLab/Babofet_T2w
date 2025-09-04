@@ -12,6 +12,7 @@ RECONS_FOLDER = os.path.join(BASE_NIOLON_PATH, "recons_folder")
 BOUNTI_NIOLON_PATH = os.path.join(BASE_NIOLON_PATH, "bounti", "svrtk_BOUNTI")
 SEG_INPUT_PATH_NIOLON = os.path.join(BOUNTI_NIOLON_PATH, "input_SRR_niftymic", "haste")
 SEG_OUTPUT_PATH_NIOLON = os.path.join(BOUNTI_NIOLON_PATH, "output_BOUNTI_seg", "haste")
+FETAL_RESUS_ATLAS = os.path.join(BASE_NIOLON_PATH, "atlas_fetal_rhesus")
 
 
 # MESOCENTRE PATH
