@@ -64,6 +64,13 @@ if __name__ == "__main__":
             print("110 - 85 = " + str(diff_wraped_mi_1))
             print("135 - 110 = " + str(diff_wraped_mi_2))
 
+            best_timepoint = min(
+                [("85", wraped_mi_85), ("110", wraped_mi_110), ("135", wraped_mi_135)],
+                key=lambda x: x[1]
+            )[0]
+            print(f"Le timepoint le plus proche est : {best_timepoint}")
+
+
         except Exception as e:
             print(e)
 
