@@ -39,16 +39,16 @@ if __name__ == "__main__":
 
         print("Computing", filename_in)
 
-        # Dilater le label 1 (hémisphère gauche)
-        command = f"fslmaths {filename_path_in} -thr 1 -uthr 1 -dilM -dilM -bin left_hemi"
+        # Dilater le label 1 (hémisphère droit)
+        command = f"fslmaths {filename_path_in} -thr 1 -uthr 1 -dilM -dilM -bin right_hemi"
         subprocess.run(command, shell=True, check=True)
 
-        # Dilater le label 2 (hémisphère droit)
-        command = f"fslmaths {filename_path_in} -thr 2 -uthr 2 -dilM -dilM -bin right_hemi"
+        # Dilater le label 2 (hémisphère gauche)
+        command = f"fslmaths {filename_path_in} -thr 2 -uthr 2 -dilM -dilM -bin left_hemi"
         subprocess.run(command, shell=True, check=True)
 
         # Combiner les deux hémisphères dilatés
-        command = f"fslmaths left_hemi -add right_hemi {filename_path_out}"
+        command = f"fslmaths right_hemi -add left_hemi {filename_path_out}"
         subprocess.run(command, shell=True, check=True)
 
         os.remove("left_hemi.nii.gz")
