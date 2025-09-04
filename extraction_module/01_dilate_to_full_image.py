@@ -8,6 +8,9 @@ import configuration as cfg
 path_in = "/envau/work/meca/data/babofet_DB/2024_new_stuff/nnunet_pred_dataset_7_3000/"
 path_out = os.path.join(path_in, "tmp")
 
+if not os.path.exists(path_out):
+    os.makedirs(path_out)
+
 for file in path_in:
     if file.endswith(".nii.gz"):
         print(f"Processing {file}")
