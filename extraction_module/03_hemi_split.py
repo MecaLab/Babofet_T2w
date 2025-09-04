@@ -58,6 +58,12 @@ if __name__ == "__main__":
             wraped_mi_135 = ants_register(fixed, "135")
             print(["135", wraped_mi_135])
 
+            diff_wraped_mi_1 = wraped_mi_110 - wraped_mi_85
+            diff_wraped_mi_2 = wraped_mi_135 - wraped_mi_110
+
+            print("110 - 85 = " + str(diff_wraped_mi_1))
+            print("135 - 110 = " + str(diff_wraped_mi_2))
+
         except Exception as e:
             print(e)
 
