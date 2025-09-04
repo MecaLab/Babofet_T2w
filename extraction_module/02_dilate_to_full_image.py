@@ -29,6 +29,3 @@ for file in os.listdir(path_in):
 
         command = f"fslmaths {full_path_out} -ero {full_path_out}"
         subprocess.run(command, shell=True)
-
-        print("Fin")
-        exit()
