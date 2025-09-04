@@ -28,7 +28,7 @@ done
 """
 
 if __name__ == "__main__":
-    atlas_path = cfg.ATLAS_GHOLIPOUR_PATH
+    atlas_path = cfg.ATLAS_GHOLIPOUR_PATH_NIOLON
 
     for file in os.listdir(atlas_path):
         if "all_reg_LR_dilM" in file:
