@@ -50,6 +50,14 @@ if __name__ == "__main__":
         try:
             fixed = ants.image_read(volume_in)
             fixed_seg = ants.image_read(file_seg_in)
+
+            wraped_mi_12 = ants_register(fixed, "12")
+            print(["12", wraped_mi_12])
+            wraped_mi_15 = ants_register(fixed, "15")
+            print(["15", wraped_mi_15])
+            wraped_mi_19 = ants_register(fixed, "19")
+            print(["19", wraped_mi_19])
+
         except Exception as e:
             print(e)
 
