@@ -12,6 +12,7 @@ if not os.path.exists(path_out):
     os.makedirs(path_out)
 
 for file in path_in:
+    print(file)
     if file.endswith(".nii.gz"):
         print(f"Processing {file}")
 
