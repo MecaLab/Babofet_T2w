@@ -4,9 +4,9 @@ import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
-
-path_in = "/envau/work/meca/data/babofet_DB/2024_new_stuff/nnunet_pred_dataset_7_3000/"
-path_out = os.path.join(path_in, "tmp")
+base_path = "/envau/work/meca/data/babofet_DB/2024_new_stuff/nnunet_pred_dataset_7_3000/"
+path_in = os.path.join(base_path, "brainmask")
+path_out = os.path.join(base_path, "dilatation")
 
 if not os.path.exists(path_out):
     os.makedirs(path_out)
