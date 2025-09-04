@@ -31,15 +31,15 @@ if __name__ == "__main__":
     atlas_path = cfg.ATLAS_GHOLIPOUR_PATH_NIOLON
 
     for ts in range(21, 38):
-        filename_in = f"STA{ts}_all_reg_LR.nii.gz"
+        filename_in = f"STA{ts}_all_reg_LR_dilM.nii.gz"
         filename_path_in = os.path.join(atlas_path, filename_in)
 
         filename_out = f"STA{ts}_all_reg_LR_dilall.nii.gz"
         filename_path_out = os.path.join(atlas_path, filename_out)
 
-        print("Computing ", filename_in)
+        print("Computing", filename_in)
 
-        command = f"fslmaths {filename_path_in} -dilM -dilM -dilM -dilM -dilall {filename_path_out}"
+        command = f"fslmaths {filename_path_in} -dilM -dilM -dilM -dilM {filename_path_out}"
         subprocess.run(command, shell=True)
 
         command = f"fslmaths {filename_path_out} -uthr 1 {filename_path_out}"
