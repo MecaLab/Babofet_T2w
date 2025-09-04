@@ -36,11 +36,9 @@ if __name__ == "__main__":
 
             full_path_in = os.path.join(atlas_path, file)
             filename_output = file.replace("all_reg_LR_dilM", "all_reg_LR_dilall")
-            print(filename_output)
-            exit()
             full_path_out = os.path.join(atlas_path, filename_output)
 
-            command = f"fslmaths {full_path_in} -dilM -dilM -dilM -dilM {full_path_out}"
+            command = f"fslmaths {full_path_in} -dilM -dilM -dilM -dilM -dilall {full_path_out}"
             subprocess.run(command, shell=True)
 
             command = f"fslmaths {full_path_out} -uthr 1 {full_path_out}"
