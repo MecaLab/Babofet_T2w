@@ -42,8 +42,8 @@ if __name__ == "__main__":
         command = f"fslmaths {filename_path_in} -dilM -dilM -dilM -dilM {filename_path_out}"
         subprocess.run(command, shell=True)
 
-        command = f"fslmaths {filename_path_out} -uthr 1 {filename_path_out}"
-        subprocess.run(command, shell=True)
+        """command = f"fslmaths {filename_path_out} -uthr 1 {filename_path_out}"
+        subprocess.run(command, shell=True)"""
 
         command = f"fslmaths {filename_path_out} -dilM {filename_path_out}"
         subprocess.run(command, shell=True)
