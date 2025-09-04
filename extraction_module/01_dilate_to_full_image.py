@@ -30,24 +30,23 @@ done
 if __name__ == "__main__":
     atlas_path = cfg.ATLAS_GHOLIPOUR_PATH_NIOLON
 
-    for file in os.listdir(atlas_path):
-        if "all_reg_LR_dilM" in file:
-            print(f"Processing {file}")
+    for ts in range(21, 38):
+        filename_in = f"STA{ts}_all_reg_LR.nii.gz"
+        filename_path_in = os.path.join(atlas_path, filename_in)
 
-            full_path_in = os.path.join(atlas_path, file)
-            filename_output = file.replace("all_reg_LR_dilM", "all_reg_LR_dilall")
-            full_path_out = os.path.join(atlas_path, filename_output)
+        filename_out = f"STA{ts}_all_reg_LR_dilall.nii.gz"
+        filename_path_out = os.path.join(atlas_path, filename_out)
 
-            command = f"fslmaths {full_path_in} -dilM -dilM -dilM -dilM -dilall {full_path_out}"
-            subprocess.run(command, shell=True)
+        command = f"fslmaths {filename_path_in} -dilM -dilM -dilM -dilM {filename_path_out}"
+        subprocess.run(command, shell=True)
 
-            command = f"fslmaths {full_path_out} -uthr 1 {full_path_out}"
-            subprocess.run(command, shell=True)
+        command = f"fslmaths {filename_path_out} -uthr 1 {filename_path_out}"
+        subprocess.run(command, shell=True)
 
-            command = f"fslmaths {full_path_out} -dilM {full_path_out}"
-            subprocess.run(command, shell=True)
+        command = f"fslmaths {filename_path_out} -dilM {filename_path_out}"
+        subprocess.run(command, shell=True)
 
-            command = f"fslmaths {full_path_out} -ero {full_path_out}"
-            subprocess.run(command, shell=True)
+        command = f"fslmaths {filename_path_out} -ero {filename_path_out}"
+        subprocess.run(command, shell=True)
 
-            exit()
+        exit()
