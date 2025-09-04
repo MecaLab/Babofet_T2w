@@ -26,7 +26,7 @@ for file in os.listdir(path_in):
         brainmask_img = nib.Nifti1Image(brainmask, img.affine, img.header)
         nib.save(brainmask_img, full_path_out)
 
-        print(np.unique(brainmask_img))
+        print(np.unique(brainmask))
 
         print("Fin")
         exit()
