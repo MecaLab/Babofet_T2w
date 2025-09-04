@@ -18,7 +18,7 @@ for file in os.listdir(path_in):
         full_path_in = os.path.join(path_in, file)
         full_path_out = os.path.join(path_out, f"dil_{file}")
 
-        command = f"fslmaths {full_path_in} -dilM -dilM -dilM -dilM -dilall {full_path_out}"
+        command = f"fslmaths {full_path_in} -dilM -dilM -dilM -dilM {full_path_out}"
         subprocess.run(command, shell=True)
 
         command = f"fslmaths {full_path_out} -uthr 1 {full_path_out}"
