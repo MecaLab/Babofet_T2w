@@ -51,24 +51,33 @@ if __name__ == "__main__":
             fixed = ants.image_read(volume_in)
             fixed_seg = ants.image_read(file_seg_in)
 
+            # Find the closest atlas
             wraped_mi_85 = ants_register(fixed, "85")
-            print(["85", wraped_mi_85])
+            print(f"\tMI for 85: {wraped_mi_85}")
             wraped_mi_110 = ants_register(fixed, "110")
-            print(["110", wraped_mi_110])
+            print(f"\tMI for 85: {wraped_mi_85}")
             wraped_mi_135 = ants_register(fixed, "135")
-            print(["135", wraped_mi_135])
+            print(f"\tMI for 85: {wraped_mi_85}")
 
             diff_wraped_mi_1 = wraped_mi_110 - wraped_mi_85
             diff_wraped_mi_2 = wraped_mi_135 - wraped_mi_110
 
-            print("110 - 85 = " + str(diff_wraped_mi_1))
-            print("135 - 110 = " + str(diff_wraped_mi_2))
+            print(f"\tDiff 110 - 85: {diff_wraped_mi_1}")
+            print(f"\tDiff 135 - 110: {diff_wraped_mi_2}")
 
-            best_timepoint = max(
+            best_atlas = max(
                 [("85", wraped_mi_85), ("110", wraped_mi_110), ("135", wraped_mi_135)],
                 key=lambda x: x[1]
-            )[0]  # get the timepoint where the mi value is closer to 0
-            print(f"Le timepoint le plus proche est : {best_timepoint}")
+            )[0]  # get the timepoint where the mi value is the closest to 0
+            print(f"\tClosest timepoint is : {best_atlas}")
+
+            print("\tCompute non-linear registration")
+            best_atlas_file = os.path.join(cfg.FETAL_RESUS_ATLAS, f"Template_G{best_atlas}_T2W.nii.gz")
+
+            moving_best_atlas = ants.image_read(best_atlas_file)
+            moving_seg_file = os.path.join(seg_dir_in, "dilatation/"
+            moving_best_seg = ants.image_read(moving_seg_file)
+
 
 
         except Exception as e:
