@@ -27,10 +27,12 @@ def ants_register(fixed, altas_days):
 if __name__ == "__main__":
 
     recons_folder = cfg.RECONS_FOLDER
+    atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
+
 
     for subject in os.listdir(recons_folder):
         if subject == "Aziza":
-            continue 
+            continue
         print(f"Starting {subject}")
 
         subject_path = os.path.join(recons_folder, subject)
@@ -42,6 +44,14 @@ if __name__ == "__main__":
             recons_rhesus_folder = os.path.join(session_subject_path, "recons_rhesus/recon_template_space")
 
             t2_subj = os.path.join(recons_rhesus_folder, "srr_template.nii.gz")
+
+            # Test
+            best_atlas_days = 110
+            best_atlas_file = os.path.join(atlas_path, "Segmentations", "ONPRC_G110_NFseg.nii.nii.gz")
+            moving_best_atlas = ants.image_read(best_atlas_file)
+
+            moving_seg_file = os.path.join(atlas_path, "Segmentations", "ONPRC_G110_NFseg_3_dilall.nii.gz")
+            moving_best_seg = ants.image_read(moving_seg_file)
 
             exit()
 
