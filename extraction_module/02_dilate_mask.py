@@ -33,9 +33,44 @@ if __name__ == "__main__":
     seg_folder = os.path.join(atlas_path, "Segmentations")
 
     filename_in = os.path.join(seg_folder, "ONPRC_G110_NFseg_3.nii.gz")
-    filename_out = os.path.join(seg_folder, f"ONPRC_G110_NFseg_3_dilall_dilM.nii.gz")
+    filename_out = os.path.join(seg_folder, f"ONPRC_G110_NFseg_3_dilall.nii.gz")
 
     print(f"Computing: {filename_in}")
+
+    commands = [
+        f"fslmaths {filename_in} -thr 1 -uthr 1 {seg_folder}/mask_left.nii.gz",
+        f"fslmaths {filename_in} -thr 2 -uthr 2 {seg_folder}/mask_right.nii.gz",
+        f"fslmaths {filename_in} -thr 3 -uthr 3 {seg_folder}/mask_cerebellum.nii.gz",
+    ]
+
+    # 2. Dilater chaque masque
+    commands += [
+        f"fslmaths {seg_folder}/mask_left.nii.gz -dilM {seg_folder}/mask_left_dil.nii.gz",
+        f"fslmaths {seg_folder}/mask_right.nii.gz -dilM {seg_folder}/mask_right_dil.nii.gz",
+        f"fslmaths {seg_folder}/mask_cerebellum.nii.gz -dilM {seg_folder}/mask_cerebellum_dil.nii.gz",
+    ]
+
+    # 3. Nettoyer chevauchements
+    commands += [
+        f"fslmaths {seg_folder}/mask_left_dil.nii.gz -sub {seg_folder}/mask_right_dil.nii.gz -sub {seg_folder}/mask_cerebellum_dil.nii.gz -thr 0 {seg_folder}/mask_left_clean.nii.gz",
+        f"fslmaths {seg_folder}/mask_right_dil.nii.gz -sub {seg_folder}/mask_left_dil.nii.gz -sub {seg_folder}/mask_cerebellum_dil.nii.gz -thr 0 {seg_folder}/mask_right_clean.nii.gz",
+        f"fslmaths {seg_folder}/mask_cerebellum_dil.nii.gz -sub {seg_folder}/mask_left_dil.nii.gz -sub {seg_folder}/mask_right_dil.nii.gz -thr 0 {seg_folder}/mask_cerebellum_clean.nii.gz",
+    ]
+
+    # 4. Recombiner en labels
+    commands += [
+        f"fslmaths {seg_folder}/mask_left_clean.nii.gz -mul 1 {seg_folder}/mask_left_label.nii.gz",
+        f"fslmaths {seg_folder}/mask_right_clean.nii.gz -mul 2 {seg_folder}/mask_right_label.nii.gz",
+        f"fslmaths {seg_folder}/mask_cerebellum_clean.nii.gz -mul 3 {seg_folder}/mask_cerebellum_label.nii.gz",
+        f"fslmaths {seg_folder}/mask_left_label.nii.gz -add {seg_folder}/mask_right_label.nii.gz -add {seg_folder}/mask_cerebellum_label.nii.gz {filename_out}",
+    ]
+
+    # Exécution séquentielle
+    for cmd in commands:
+        print(f"Running: {cmd}")
+        subprocess.run(cmd, shell=True, check=True)
+
+    print(f"Finished! Output saved at: {filename_out}")
 
     """command = f"fslmaths {filename_in} -dilM -dilM -dilM -dilM -dilall {filename_out}"
     subprocess.run(command, shell=True)
@@ -48,41 +83,3 @@ if __name__ == "__main__":
 
     command = f"fslmaths {filename_out} -ero {filename_out}"
     subprocess.run(command, shell=True)"""
-
-    n_dilations = 4
-
-    tmp_dir = os.path.join(seg_folder, "tmp_dilation")
-
-    if not os.path.exists(tmp_dir):
-        os.makedirs(tmp_dir)
-
-    subprocess.run(f"mkdir -p {tmp_dir}", shell=True)
-
-    # Extraire chaque label
-    subprocess.run(f"fslmaths {filename_in} -uth 0.5 -ut 1.5 -bin {tmp_dir}/label_1.nii.gz", shell=True,
-                   check=True)  # Hémisphère gauche
-    subprocess.run(f"fslmaths {filename_in} -uth 1.5 -ut 2.5 -bin {tmp_dir}/label_2.nii.gz", shell=True,
-                   check=True)  # Hémisphère droit
-    subprocess.run(f"fslmaths {filename_in} -uth 2.5 -ut 3.5 -bin {tmp_dir}/label_3.nii.gz", shell=True,
-                   check=True)  # Cervelet
-
-    # Créer un masque des zones vides (valeur 0)
-    subprocess.run(f"fslmaths {filename_in} -binv {tmp_dir}/empty.nii.gz", shell=True, check=True)
-
-    # Dilater chaque label dans les zones vides
-    for label in [1, 2, 3]:
-        cmd = f"fslmaths {tmp_dir}/label_{label}.nii.gz "
-        cmd += "-dilM " * n_dilations  # Appliquer n dilatations
-        cmd += f"-mas {tmp_dir}/empty.nii.gz {tmp_dir}/label_{label}_dilated.nii.gz"
-        subprocess.run(cmd, shell=True, check=True)
-
-    # Fusionner les dilatations avec le masque original
-    cmd = f"fslmaths {filename_in} "
-    cmd += f"-add {tmp_dir}/label_1_dilated.nii.gz "
-    cmd += f"-add {tmp_dir}/label_2_dilated.nii.gz "
-    cmd += f"-add {tmp_dir}/label_3_dilated.nii.gz "
-    cmd += f"{filename_out}"
-    subprocess.run(cmd, shell=True, check=True)
-
-    # Nettoyer les fichiers temporaires
-    subprocess.run(f"rm -rf {tmp_dir}", shell=True)
