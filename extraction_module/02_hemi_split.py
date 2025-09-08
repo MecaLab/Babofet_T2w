@@ -44,14 +44,53 @@ if __name__ == "__main__":
             recons_rhesus_folder = os.path.join(session_subject_path, "recons_rhesus/recon_template_space")
 
             t2_subj = os.path.join(recons_rhesus_folder, "srr_template.nii.gz")
+            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "nnunet_pred_dataset_7_3000", f"{subject}_{session}.nii.gz")
+
+            fixed = ants.image_read(t2_subj)
+            fixed_seg = ants.image_read(t2_subj_seg)
+
+            file_seg_out = os.path.join(cfg.BASE_NIOLON_PATH, "tmp_seg_out.nii.gz")
 
             # Test
             best_atlas_days = 110
-            best_atlas_file = os.path.join(atlas_path, "Segmentations", "ONPRC_G110_NFseg.nii.nii.gz")
+            best_atlas_file = os.path.join(atlas_path, "Segmentations", "ONPRC_G110_NFseg.nii.gz")
             moving_best_atlas = ants.image_read(best_atlas_file)
 
             moving_seg_file = os.path.join(atlas_path, "Segmentations", "ONPRC_G110_NFseg_3_dilall.nii.gz")
             moving_best_seg = ants.image_read(moving_seg_file)
+
+            mytx_best = ants.registration(fixed=fixed, moving=moving_best_atlas, type_of_transform='SyN')
+            # fwdtransforms: Transforms to move from moving to fixed image.
+            # invtransforms: Transforms to move from fixed to moving image.
+            fwdtransform_best = mytx_best['fwdtransforms']
+            warped_best_atlas = mytx_best['warpedmovout']
+            # fixed.plot(overlay=warped_atlas,
+            #           title='After Registration', overlay_alpha = 0.5)
+            wraped_mi = ants.image_mutual_information(fixed, warped_best_atlas)
+
+            warped_best_seg = ants.apply_transforms(fixed=fixed, moving=moving_best_seg,
+                                                    transformlist=mytx_best['fwdtransforms'],
+                                                    interpolator="nearestNeighbor")
+            # ants.image_write(warped_best_atlas, aligned_image_file)
+            # warpedimage.plot()
+            # fixed.plot(overlay=warped_seg, title='seg on fixed', overlay_alpha=0.5)
+
+            ## use the aligned atlas hemi to split the segmentation
+            seg_arr = fixed_seg.numpy()
+            bm = seg_arr > 0
+            seg_atlas = warped_best_seg.numpy()
+            out_arr = seg_arr + 100 * seg_atlas
+            out_arr = out_arr * bm
+            # recombine brainstem
+            brainstem = seg_arr == 8
+            out_arr[brainstem] = 8
+            # recombine background
+            brainstem = seg_arr == 4
+            out_arr[brainstem] = 4
+            seg_out = fixed_seg.new_image_like(out_arr)
+            ants.image_write(seg_out, file_seg_out)
+            print("splitted segmentation saved as:")
+            print(file_seg_out)
 
             exit()
 
