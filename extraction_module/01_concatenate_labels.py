@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     sample_seg = os.path.join(seg_folder, "ONPRC_G110_NFseg.nii.gz")
 
-    atlas_nii = nib.load("atlas.nii.gz")
+    atlas_nii = nib.load(sample_seg)
     atlas = atlas_nii.get_fdata()
     affine = atlas_nii.affine
 
