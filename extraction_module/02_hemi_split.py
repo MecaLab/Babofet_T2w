@@ -29,6 +29,8 @@ if __name__ == "__main__":
     recons_folder = cfg.RECONS_FOLDER
 
     for subject in os.listdir(recons_folder):
+        if subject == "Aziza":
+            continue 
         print(f"Starting {subject}")
 
         subject_path = os.path.join(recons_folder, subject)
