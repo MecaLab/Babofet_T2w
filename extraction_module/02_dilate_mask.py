@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     print(f"Computing: {filename_in}")
 
-    command = f"fslmaths {filename_in} -dilM -dilM -dilM -dilM -dilall {filename_out}"
+    """command = f"fslmaths {filename_in} -dilM -dilM -dilM -dilM -dilall {filename_out}"
     subprocess.run(command, shell=True)
 
     command = f"fslmaths {filename_out} -uthr 1 {filename_out}"
@@ -47,4 +47,42 @@ if __name__ == "__main__":
     subprocess.run(command, shell=True, check=True)
 
     command = f"fslmaths {filename_out} -ero {filename_out}"
-    subprocess.run(command, shell=True)
+    subprocess.run(command, shell=True)"""
+
+    n_dilations = 4
+
+    tmp_dir = os.path.join(seg_folder, "tmp_dilation")
+
+    if not os.path.exists(tmp_dir):
+        os.makedirs(tmp_dir)
+
+    subprocess.run(f"mkdir -p {tmp_dir}", shell=True)
+
+    # Extraire chaque label
+    subprocess.run(f"fslmaths {filename_in} -uth 0.5 -ut 1.5 -bin {tmp_dir}/label_1.nii.gz", shell=True,
+                   check=True)  # Hémisphère gauche
+    subprocess.run(f"fslmaths {filename_in} -uth 1.5 -ut 2.5 -bin {tmp_dir}/label_2.nii.gz", shell=True,
+                   check=True)  # Hémisphère droit
+    subprocess.run(f"fslmaths {filename_in} -uth 2.5 -ut 3.5 -bin {tmp_dir}/label_3.nii.gz", shell=True,
+                   check=True)  # Cervelet
+
+    # Créer un masque des zones vides (valeur 0)
+    subprocess.run(f"fslmaths {filename_in} -binv {tmp_dir}/empty.nii.gz", shell=True, check=True)
+
+    # Dilater chaque label dans les zones vides
+    for label in [1, 2, 3]:
+        cmd = f"fslmaths {tmp_dir}/label_{label}.nii.gz "
+        cmd += "-dilM " * n_dilations  # Appliquer n dilatations
+        cmd += f"-mas {tmp_dir}/empty.nii.gz {tmp_dir}/label_{label}_dilated.nii.gz"
+        subprocess.run(cmd, shell=True, check=True)
+
+    # Fusionner les dilatations avec le masque original
+    cmd = f"fslmaths {filename_in} "
+    cmd += f"-add {tmp_dir}/label_1_dilated.nii.gz "
+    cmd += f"-add {tmp_dir}/label_2_dilated.nii.gz "
+    cmd += f"-add {tmp_dir}/label_3_dilated.nii.gz "
+    cmd += f"{filename_out}"
+    subprocess.run(cmd, shell=True, check=True)
+
+    # Nettoyer les fichiers temporaires
+    subprocess.run(f"rm -rf {tmp_dir}", shell=True)
