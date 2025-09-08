@@ -33,7 +33,7 @@ if __name__ == "__main__":
     seg_folder = os.path.join(atlas_path, "Segmentations")
 
     filename_in = os.path.join(seg_folder, "ONPRC_G110_NFseg_3.nii.gz")
-    filename_out = os.path.join(seg_folder, f"ONPRC_G110_NFseg_3_dilall.nii.gz")
+    filename_out = os.path.join(seg_folder, f"ONPRC_G110_NFseg_3_dilall_dilM.nii.gz")
 
     print(f"Computing: {filename_in}")
 
@@ -41,6 +41,9 @@ if __name__ == "__main__":
     subprocess.run(command, shell=True)
 
     command = f"fslmaths {filename_out} -uthr 1 {filename_out}"
+    subprocess.run(command, shell=True, check=True)
+
+    command = f"fslmaths {filename_out} -dilM {filename_out}"
     subprocess.run(command, shell=True, check=True)
 
     command = f"fslmaths {filename_out} -ero {filename_out}"
