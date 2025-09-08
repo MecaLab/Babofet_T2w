@@ -35,6 +35,6 @@ if __name__ == "__main__":
     mask_new[(atlas > 0) & (mask_new == 0) & (coords >= midline)] = 2
 
     out_nii = nib.Nifti1Image(mask_new, affine)
-    nib.save(seg_folder, "tmp.nii.gz")
+    nib.save(out_nii, os.path.join(seg_folder, "tmp.nii.gz"))
 
 
