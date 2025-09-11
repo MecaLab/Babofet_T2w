@@ -42,10 +42,10 @@ if __name__ == "__main__":
 
     print(f"Computing: {filename_in}")
 
-    command = f"fslmaths {filename_in} -dilM -dilM -dilM -dilM {filename_out}"
+    command = f"fslmaths {filename_in} -dilM -dilM -dilM -dilM -dilall {filename_out}"
     subprocess.run(command, shell=True)
 
-    command = f"fslmaths {filename_out} -uthr 3.5 {filename_out}"
+    command = f"fslmaths {filename_out} -uthr 1 {filename_out}"
     subprocess.run(command, shell=True, check=True)
 
     command = f"fslmaths {filename_out} -dilM {filename_out}"
