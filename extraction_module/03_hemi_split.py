@@ -38,10 +38,9 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
             print(f"\t{atlas} - {atlas_list[i-1]} = {diff_mi}")
 
             if diff_mi > 0:
-                continue 
+                continue
 
         if best_atlas is None or current_mi < best_atlas[1]:
-            print("\tCurrent best atlas is", atlas)
             best_atlas = [atlas, current_mi]
 
         previous_mi = current_mi
@@ -79,14 +78,11 @@ if __name__ == "__main__":
 
             atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
             best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
-            print(best_atlas)
-            exit()
             # Test
-            best_atlas_days = 110
-            best_atlas_file = os.path.join(atlas_path, "Volumes", "ONPRC_G110_Norm.nii.gz")
+            best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
             moving_best_atlas = ants.image_read(best_atlas_file)
 
-            moving_seg_file = os.path.join(atlas_path, "Segmentations", "ONPRC_G110_NFseg_3_dilall.nii.gz")
+            moving_seg_file = os.path.join(atlas_path, "Segmentations", f"ONPRC_G{best_atlas}_NFseg_3_dilall.nii.gz")
             moving_best_seg = ants.image_read(moving_seg_file)
 
             mytx_best = ants.registration(fixed=fixed, moving=moving_best_atlas, type_of_transform='SyN')
@@ -109,7 +105,7 @@ if __name__ == "__main__":
             seg_arr = fixed_seg.numpy()
             bm = seg_arr > 0
             seg_atlas = warped_best_seg.numpy()
-            out_arr = seg_arr + 100 * seg_atlas
+            out_arr = seg_arr + 2 * seg_atlas
             out_arr = out_arr * bm
             # recombine brainstem
             brainstem = seg_arr == 8
