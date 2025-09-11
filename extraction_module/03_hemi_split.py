@@ -7,8 +7,7 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def ants_register(fixed, altas_days):
-    moving_atlas_file = os.path.join(cfg.FETAL_RESUS_ATLAS, f"Template_G{altas_days}_T2W.nii.gz")
+def ants_register(fixed, moving_atlas_file):
     # load atlas volume
     moving_atlas = ants.image_read(moving_atlas_file)
     # fixed.plot(overlay=moving_atlas, title='Before Registration', overlay_alpha = 0.5)
@@ -24,11 +23,33 @@ def ants_register(fixed, altas_days):
     return wraped_mi
 
 
+def find_best_atlas(fixed, atlas_path, atlas_list):
+    best_atlas = None
+    previous_mi = None
+
+    for i, atlas in enumerate(atlas_list):
+        atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
+
+        current_mi = ants_register(fixed, atlas_file)
+        print([atlas, current_mi])
+
+        if i > 0:
+            diff_mi = current_mi - previous_mi
+            print(f"{atlas} - {atlas_list[i-1]} = {diff_mi}")
+            if diff_mi >= 0:
+                break
+        if best_atlas is None or current_mi < best_atlas[i]:
+            best_atlas = [atlas, current_mi]
+
+        previous_mi = current_mi
+
+    return best_atlas
+
+
 if __name__ == "__main__":
 
     recons_folder = cfg.RECONS_FOLDER
     atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
-
 
     for subject in os.listdir(recons_folder):
         if subject == "Aziza":
@@ -51,6 +72,12 @@ if __name__ == "__main__":
 
             file_seg_out = os.path.join(cfg.BASE_NIOLON_PATH, "tmp_seg_out.nii.gz")
 
+            # find best_atlas
+
+            atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
+            best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
+            print(best_atlas)
+            exit()
             # Test
             best_atlas_days = 110
             best_atlas_file = os.path.join(atlas_path, "Volumes", "ONPRC_G110_Norm.nii.gz")
