@@ -31,6 +31,7 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
         atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
 
         current_mi = ants_register(fixed, atlas_file)
+        print(f"{atlas}: {current_mi}")
 
         if i > 0:
             diff_mi = current_mi - previous_mi
@@ -49,14 +50,29 @@ if __name__ == "__main__":
     recons_folder = cfg.RECONS_FOLDER
     atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
+    output_split_seg = os.path.join(atlas_path, "Seg_Hemi")
+
+    if not os.path.exists(output_split_seg):
+        os.makedirs(output_split_seg)
+
     for subject in os.listdir(recons_folder):
         if subject == "Aziza":
             continue
         print(f"Starting {subject}")
 
+        subject_output_split_seg = os.path.join(output_split_seg, subject)
+
+        if not os.path.exists(subject_output_split_seg):
+            os.makedirs(subject_output_split_seg)
+
         subject_path = os.path.join(recons_folder, subject)
         for session in os.listdir(subject_path):
             print(f"\tSession: {session}")
+
+            subject_sess_output_split_seg = os.path.join(subject_output_split_seg, session)
+
+            if not os.path.exists(subject_sess_output_split_seg):
+                os.makedirs(subject_sess_output_split_seg)
 
             session_subject_path = os.path.join(subject_path, session)
 
@@ -68,7 +84,7 @@ if __name__ == "__main__":
             fixed = ants.image_read(t2_subj)
             fixed_seg = ants.image_read(t2_subj_seg)
 
-            file_seg_out = os.path.join(cfg.BASE_NIOLON_PATH, "tmp_seg_out.nii.gz")
+            file_seg_out = os.path.join(subject_sess_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
             atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
@@ -116,10 +132,9 @@ if __name__ == "__main__":
             out_arr[brainstem] = 4
             seg_out = fixed_seg.new_image_like(out_arr)
             ants.image_write(seg_out, file_seg_out)
-            print("splitted segmentation saved as:")
-            print(file_seg_out)
+            print("\tSplitted segmentation saved as:", file_seg_out)
 
-            exit()
+        exit()
 
 
 
