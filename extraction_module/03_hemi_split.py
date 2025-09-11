@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
             # Test
             best_atlas_days = 110
-            best_atlas_file = os.path.join(atlas_path, "Segmentations", "ONPRC_G110_NFseg.nii.gz")
+            best_atlas_file = os.path.join(atlas_path, "Volumes", "ONPRC_G110_Norm.nii.gz")
             moving_best_atlas = ants.image_read(best_atlas_file)
 
             moving_seg_file = os.path.join(atlas_path, "Segmentations", "ONPRC_G110_NFseg_3_dilall.nii.gz")
