@@ -76,7 +76,7 @@ if __name__ == "__main__":
             # find best_atlas
             atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
             best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
-            print(f"Best altas: {best_atlas}")
+            print(f"\tBest altas: {best_atlas}")
 
             best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
             moving_best_atlas = ants.image_read(best_atlas_file)
@@ -104,7 +104,7 @@ if __name__ == "__main__":
             seg_arr = fixed_seg.numpy()
             bm = seg_arr > 0
             seg_atlas = warped_best_seg.numpy()
-            out_arr = seg_arr + 2 * seg_atlas
+            out_arr = seg_arr + 10 * seg_atlas
             out_arr = out_arr * bm
             # recombine brainstem
             brainstem = seg_arr == 8
