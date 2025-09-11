@@ -31,7 +31,6 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
         atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
 
         current_mi = ants_register(fixed, atlas_file)
-        print([atlas, current_mi])
 
         if i > 0:
             diff_mi = current_mi - previous_mi
@@ -75,10 +74,10 @@ if __name__ == "__main__":
             file_seg_out = os.path.join(cfg.BASE_NIOLON_PATH, "tmp_seg_out.nii.gz")
 
             # find best_atlas
-
             atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
             best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
-            # Test
+            print(f"Best altas: {best_atlas}")
+
             best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
             moving_best_atlas = ants.image_read(best_atlas_file)
 

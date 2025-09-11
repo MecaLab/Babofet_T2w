@@ -12,29 +12,34 @@ if __name__ == "__main__":
 
     seg_folder = os.path.join(atlas_folder, "Segmentations")
 
-    sample_seg = os.path.join(seg_folder, "ONPRC_G110_NFseg.nii.gz")
+    atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
 
-    atlas_nii = nib.load(sample_seg)
-    atlas = atlas_nii.get_fdata()
-    affine = atlas_nii.affine
+    for ts in atlas_timepoints:
 
-    labels_cerebellum = [7]
+        sample_seg_input = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg.nii.gz")
+        sample_seg_output = os.path.join(seg_folder, f"ONPRC_G{ts}_NF_seg_3.nii.gz")
 
-    midline = atlas.shape[0] // 2
-    coords = np.arange(atlas.shape[0])[:, None, None]
+        atlas_nii = nib.load(sample_seg_input)
+        atlas = atlas_nii.get_fdata()
+        affine = atlas_nii.affine
 
-    mask_new = np.zeros_like(atlas, dtype=np.uint8)
+        labels_cerebellum = [7]
 
-    # Cervelet
-    mask_new[np.isin(atlas, labels_cerebellum)] = 3
+        midline = atlas.shape[0] // 2
+        coords = np.arange(atlas.shape[0])[:, None, None]
 
-    # Hémisphère gauche (hors cervelet)
-    mask_new[(atlas > 0) & (mask_new == 0) & (coords < midline)] = 1
+        mask_new = np.zeros_like(atlas, dtype=np.uint8)
 
-    # Hémisphère droit (hors cervelet)
-    mask_new[(atlas > 0) & (mask_new == 0) & (coords >= midline)] = 2
+        # Cervelet
+        mask_new[np.isin(atlas, labels_cerebellum)] = 3
 
-    out_nii = nib.Nifti1Image(mask_new, affine)
-    nib.save(out_nii, os.path.join(seg_folder, "ONPRC_G110_NFseg_3.nii.gz"))
+        # Hémisphère gauche (hors cervelet)
+        mask_new[(atlas > 0) & (mask_new == 0) & (coords < midline)] = 1
+
+        # Hémisphère droit (hors cervelet)
+        mask_new[(atlas > 0) & (mask_new == 0) & (coords >= midline)] = 2
+
+        out_nii = nib.Nifti1Image(mask_new, affine)
+        nib.save(out_nii, sample_seg_output)
 
 

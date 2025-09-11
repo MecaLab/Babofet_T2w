@@ -78,7 +78,7 @@ if __name__ == "__main__":
                 print(["30", wraped_mi_30])
                 diff_wraped_mi = wraped_mi_30 - wraped_mi_29
                 print("30 - 29 = "+str(diff_wraped_mi))
-                if diff_wraped_mi<0: # atlas 30 closer than atlas 29 so test older atlases
+                if diff_wraped_mi < 0:  # atlas 30 closer than atlas 29 so test older atlases
                     atlas_mi.append(["29", wraped_mi_29])
                     atlas_mi.append(["30", wraped_mi_30])
                     best_atlas = ["30", wraped_mi_30]
@@ -120,7 +120,7 @@ if __name__ == "__main__":
                 moving_seg_file = os.path.join(ATLAS_GHOLIPOUR_PATH, "STA" + best_atlas_week + "_all_reg_LR_dilall_flipped.nii.gz")
                 moving_best_seg = ants.image_read(moving_seg_file)
                 # non-linear registration of the best atlas
-                mytx_best = ants.registration(fixed=fixed , moving=moving_best_atlas, type_of_transform='SyN' )
+                mytx_best = ants.registration(fixed=fixed, moving=moving_best_atlas, type_of_transform='SyN' )
                 # fwdtransforms: Transforms to move from moving to fixed image.
                 # invtransforms: Transforms to move from fixed to moving image.
                 fwdtransform_best = mytx_best['fwdtransforms']
