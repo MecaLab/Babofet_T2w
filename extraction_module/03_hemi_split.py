@@ -31,11 +31,11 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
         atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
 
         current_mi = ants_register(fixed, atlas_file)
-        print(f"{atlas}: {current_mi}")
+        print(f"\t{atlas}: {current_mi}")
 
         if i > 0:
             diff_mi = current_mi - previous_mi
-            print(f"\t{atlas} - {atlas_list[i-1]} = {diff_mi}")
+            print(f"\t\t{atlas} - {atlas_list[i-1]} = {diff_mi}")
 
         if best_atlas is None or current_mi > best_atlas[1]:
             best_atlas = [atlas, current_mi]
@@ -69,22 +69,17 @@ if __name__ == "__main__":
         for session in os.listdir(subject_path):
             print(f"\tSession: {session}")
 
-            subject_sess_output_split_seg = os.path.join(subject_output_split_seg, session)
-
-            if not os.path.exists(subject_sess_output_split_seg):
-                os.makedirs(subject_sess_output_split_seg)
-
             session_subject_path = os.path.join(subject_path, session)
 
             recons_rhesus_folder = os.path.join(session_subject_path, "recons_rhesus/recon_template_space")
 
-            t2_subj = os.path.join(recons_rhesus_folder, "srr_template.nii.gz")
+            t2_subj = os.path.join(recons_rhesus_folder, "srr_template_debiased.nii.gz")
             t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "nnunet_pred_dataset_7_3000", f"{subject}_{session}.nii.gz")
 
             fixed = ants.image_read(t2_subj)
             fixed_seg = ants.image_read(t2_subj_seg)
 
-            file_seg_out = os.path.join(subject_sess_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
+            file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
             atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
