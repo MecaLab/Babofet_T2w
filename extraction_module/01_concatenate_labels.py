@@ -17,7 +17,7 @@ if __name__ == "__main__":
     for ts in atlas_timepoints:
 
         sample_seg_input = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg.nii.gz")
-        sample_seg_output = os.path.join(seg_folder, f"ONPRC_G{ts}_NF_seg_3.nii.gz")
+        sample_seg_output = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg_3.nii.gz")
 
         atlas_nii = nib.load(sample_seg_input)
         atlas = atlas_nii.get_fdata()

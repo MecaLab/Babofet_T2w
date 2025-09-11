@@ -33,16 +33,11 @@ if __name__ == "__main__":
     seg_folder = os.path.join(atlas_path, "Segmentations")
 
     atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
-    
+
     for ts in atlas_timepoints:
 
         filename_in = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg_3.nii.gz")
         filename_out = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg_3_dilall.nii.gz")
-
-        tmp_folder = os.path.join(seg_folder, "tmp_dilation")
-
-        if not os.path.exists(tmp_folder):
-            os.makedirs(tmp_folder)
 
         print(f"Computing: {filename_in}")
 
