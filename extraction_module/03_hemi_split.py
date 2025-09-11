@@ -36,14 +36,13 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
         if i > 0:
             diff_mi = current_mi - previous_mi
             print(f"{atlas} - {atlas_list[i-1]} = {diff_mi}")
-            if diff_mi >= 0:
-                break
+            
         if best_atlas is None or current_mi < best_atlas[i]:
             best_atlas = [atlas, current_mi]
 
         previous_mi = current_mi
 
-    return best_atlas
+    return best_atlas[0]
 
 
 if __name__ == "__main__":
