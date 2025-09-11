@@ -79,6 +79,11 @@ if __name__ == "__main__":
             moving_best_atlas = ants.image_read(best_atlas_file)
 
             moving_seg_file = os.path.join(atlas_path, "Segmentations", f"ONPRC_G{best_atlas}_NFseg_3_dilall.nii.gz")
+
+            if not os.path.exists(moving_seg_file):
+                print(f"Error ! File {moving_seg_file} does not exists. Run the previous script")
+                continue
+
             moving_best_seg = ants.image_read(moving_seg_file)
 
             mytx_best = ants.registration(fixed=fixed, moving=moving_best_atlas, type_of_transform='SyN')

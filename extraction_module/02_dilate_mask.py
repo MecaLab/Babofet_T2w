@@ -37,6 +37,9 @@ if __name__ == "__main__":
     for ts in atlas_timepoints:
 
         filename_in = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg_3.nii.gz")
+        if not os.path.exists(filename_in):
+            print(f"Error ! File {filename_in} does not exists. Run the previous script")
+            continue
         filename_out = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg_3_dilall.nii.gz")
 
         print(f"Computing: {filename_in}")
