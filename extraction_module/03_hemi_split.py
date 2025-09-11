@@ -76,6 +76,10 @@ if __name__ == "__main__":
             t2_subj = os.path.join(recons_rhesus_folder, "srr_template_debiased.nii.gz")
             t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "nnunet_pred_dataset_7_3000", f"{subject}_{session}.nii.gz")
 
+            if not os.path.exists(t2_subj_seg):
+                print(f"\tOriginal segmentation for {subject} {session} does not exists. Run the inference on it. Skipping...")
+                continue
+
             fixed = ants.image_read(t2_subj)
             fixed_seg = ants.image_read(t2_subj_seg)
 
