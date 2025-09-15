@@ -5,9 +5,40 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def run_cmd(cmd):
-    print(" ".join(cmd))
-    subprocess.run(cmd, check=True)
+def dilate_bm(filename_in, filename_out):
+    print(f"\tComputing: {filename_in}")
+
+    command = f"fslmaths {filename_in} -dilM -dilM -dilM -dilM {filename_out}"
+    subprocess.run(command, shell=True)
+
+    command = f"fslmaths {filename_out} -uthr 3.5 {filename_out}"
+    subprocess.run(command, shell=True, check=True)
+
+    command = f"fslmaths {filename_out} -dilM {filename_out}"
+    subprocess.run(command, shell=True, check=True)
+
+    command = f"fslmaths {filename_out} -ero {filename_out}"
+    subprocess.run(command, shell=True)
+
+    print(f"\tOutput: {filename_out}")
+
+
+def dilate_bm_bis(input_file, output_file):
+    print(f"\tComputing: {input_file}")
+
+    command = f"fslmaths {input_file} -dilM -dilM -dilM -dilM -dillall {output_file}"
+    subprocess.run(command, shell=True, check=True)
+
+    command = f"fslmaths {output_file} -uthr 3.5 {output_file}"
+    subprocess.run(command, shell=True, check=True)
+
+    command = f"fslmaths {output_file} -dilM {output_file}"
+    subprocess.run(command, shell=True, check=True)
+
+    command = f"fslmaths {output_file} -ero {output_file}"
+    subprocess.run(command, shell=True, check=True)
+
+    print(f"\tOutput: {output_file}")
 
 
 if __name__ == "__main__":
@@ -23,22 +54,10 @@ if __name__ == "__main__":
         if not os.path.exists(filename_in):
             print(f"Error ! File {filename_in} does not exists. Run the previous script")
             continue
-        filename_out = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg_3_dilall.nii.gz")
+        filename_out = os.path.join(seg_folder, "tmp", f"ONPRC_G{ts}_NFseg_3_dilall.nii.gz")
 
-        print(f"Computing: {filename_in}")
-
-        command = f"fslmaths {filename_in} -dilM -dilM -dilM -dilM {filename_out}"
-        subprocess.run(command, shell=True)
-
-        command = f"fslmaths {filename_out} -uthr 3.5 {filename_out}"
-        subprocess.run(command, shell=True, check=True)
-    
-        command = f"fslmaths {filename_out} -dilM {filename_out}"
-        subprocess.run(command, shell=True, check=True)
-
-        command = f"fslmaths {filename_out} -ero {filename_out}"
-        subprocess.run(command, shell=True)
-
+        # dilate_bm(filename_in, filename_out)
+        dilate_bm_bis(filename_in, filename_out)
         break
 
 
