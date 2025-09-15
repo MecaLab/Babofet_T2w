@@ -51,6 +51,19 @@ if __name__ == "__main__":
         run_cmd(cmd)
         clean_files.append(out_clean)
 
+    final_parts = []
+    for lab, clean in zip(labels, clean_files):
+        lab_mask = os.path.join(tmp_dir, f"label{lab}_final.nii.gz")
+        run_cmd(["fslmaths", clean, "-mul", str(lab), lab_mask])
+        final_parts.append(lab_mask)
+
+    # Combinaison finale
+    cmd = ["fslmaths", final_parts[0]]
+    for part in final_parts[1:]:
+        cmd += ["-add", part]
+    cmd += [output_mask]
+    run_cmd(cmd)
+
     """
     for ts in atlas_timepoints:
 
