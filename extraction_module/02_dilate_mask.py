@@ -5,6 +5,11 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
+def run_cmd(cmd):
+    print(" ".join(cmd))
+    subprocess.run(cmd, check=True)
+
+
 if __name__ == "__main__":
     atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
@@ -25,8 +30,7 @@ if __name__ == "__main__":
 
     for label in labels:
         out_bin = os.path.join(tmp_dir, f"label_{label}.nii.gz")
-        command = f"fslmaths {input_mask} -thr {label} -uthr {label} {out_bin}"
-        subprocess.run([command], check=True)
+        run_cmd(["fslmaths", input_mask, "-thr", str(label), "-uthr", str(label), out_bin])
         tmp_files.append(out_bin)
 
     """
