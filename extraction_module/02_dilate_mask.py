@@ -40,6 +40,17 @@ if __name__ == "__main__":
         run_cmd(["fslmaths", in_bin, "-dilM", "-dilM", "-dilM", "-dilM", out_dil])
         dilated_files.append(out_dil)
 
+    clean_files = []
+    for i, lab in enumerate(labels):
+        out_clean = os.path.join(tmp_dir, f"label{lab}_clean.nii.gz")
+        cmd = ["fslmaths", dilated_files[i]]
+        for j, other_lab in enumerate(labels):
+            if i != j:
+                cmd += ["-sub", dilated_files[j]]
+        cmd += ["-thr", "0", "-bin", out_clean]
+        run_cmd(cmd)
+        clean_files.append(out_clean)
+
     """
     for ts in atlas_timepoints:
 
