@@ -26,7 +26,7 @@ def dilate_bm(filename_in, filename_out):
 def dilate_bm_bis(input_file, output_file):
     print(f"\tComputing: {input_file}")
 
-    command = f"fslmaths {input_file} -dilM -dilM -dilM -dilM -dilall {output_file}"
+    command = f"fslmaths {input_file} -dilM -dilM -dilM -dilM {output_file}"
     subprocess.run(command, shell=True)
 
     command = f"fslmaths {output_file} -uthr 1 {output_file}"
@@ -54,7 +54,7 @@ if __name__ == "__main__":
         if not os.path.exists(filename_in):
             print(f"Error ! File {filename_in} does not exists. Run the previous script")
             continue
-        filename_out = os.path.join(seg_folder, "tmp", f"ONPRC_G{ts}_NFseg_3_dilall_uthr1.nii.gz")
+        filename_out = os.path.join(seg_folder, "tmp", f"ONPRC_G{ts}_NFseg_3_uthr1.nii.gz")
 
         # dilate_bm(filename_in, filename_out)
         dilate_bm_bis(filename_in, filename_out)
