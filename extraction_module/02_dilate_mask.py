@@ -33,6 +33,13 @@ if __name__ == "__main__":
         run_cmd(["fslmaths", input_mask, "-thr", str(label), "-uthr", str(label), out_bin])
         tmp_files.append(out_bin)
 
+    dilated_files = []
+    for label in labels:
+        in_bin = os.path.join(tmp_dir, f"label_{label}.nii.gz")
+        out_dil = os.path.join(tmp_dir, f"label_{label}_dil.nii.gz")
+        run_cmd(["fslmaths", in_bin, "-dilM", "-dilM", "-dilM", "-dilM", out_dil])
+        dilated_files.append(out_dil)
+
     """
     for ts in atlas_timepoints:
 
