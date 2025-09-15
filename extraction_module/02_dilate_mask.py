@@ -24,7 +24,7 @@ if __name__ == "__main__":
     output_mask = os.path.join(seg_folder, "ONPRC_G85_NFseg_3_dilall_new.nii.gz")
 
     for label in labels:
-        out_bin = f"{tmp_dir}/label_{label}.nii.gz"
+        out_bin = os.path.join(tmp_dir, f"label_{label}.nii.gz")
         command = f"fslmaths {input_mask} -thr {label} -uthr {label} {out_bin}"
         subprocess.run([command], check=True)
         tmp_files.append(out_bin)
