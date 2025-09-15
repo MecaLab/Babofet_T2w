@@ -20,8 +20,8 @@ if __name__ == "__main__":
 
     labels = [1, 2, 3]
 
-    input_mask = os.path.join(seg_folder, f"ONPRC_G85_NFseg_3.nii.gz")
-    output_mask = os.path.join(seg_folder, f"ONPRC_G85_NFseg_3_dilall_new.nii.gz")
+    input_mask = os.path.join(seg_folder, "ONPRC_G85_NFseg_3.nii.gz")
+    output_mask = os.path.join(seg_folder, "ONPRC_G85_NFseg_3_dilall_new.nii.gz")
 
     for label in labels:
         out_bin = f"{tmp_dir}/label_{label}.nii.gz"
