@@ -26,7 +26,7 @@ def dilate_bm(filename_in, filename_out):
 def dilate_bm_bis(input_file, output_file):
     print(f"\tComputing: {input_file}")
 
-    command = f"fslmaths {input_file} -dilM -dilM -dilM -dilM -dillall {output_file}"
+    command = f"fslmaths {input_file} -dilM -dilM -dilM -dilM -dilall {output_file}"
     subprocess.run(command, shell=True)
 
     command = f"fslmaths {output_file} -uthr 3.5 {output_file}"
