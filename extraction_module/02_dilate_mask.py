@@ -12,6 +12,24 @@ if __name__ == "__main__":
 
     atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
 
+    tmp_dir = os.path.join(seg_folder, "tmp")
+    tmp_files = []
+
+    if not os.path.exists(tmp_dir):
+        os.makedirs(tmp_dir)
+
+    labels = [1, 2, 3]
+
+    input_mask = os.path.join(seg_folder, f"ONPRC_G85_NFseg_3.nii.gz")
+    output_mask = os.path.join(seg_folder, f"ONPRC_G85_NFseg_3_dilall_new.nii.gz")
+
+    for label in labels:
+        out_bin = f"{tmp_dir}/label_{label}.nii.gz"
+        command = f"fslmaths {input_mask} -thr {label} -uthr {label} {out_bin}"
+        subprocess.run([command], check=True)
+        tmp_files.append(out_bin)
+
+    """
     for ts in atlas_timepoints:
 
         filename_in = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg_3.nii.gz")
@@ -32,4 +50,6 @@ if __name__ == "__main__":
         subprocess.run(command, shell=True, check=True)
 
         command = f"fslmaths {filename_out} -ero {filename_out}"
-        subprocess.run(command, shell=True)
+        subprocess.run(command, shell=True)"""
+
+
