@@ -56,8 +56,8 @@ if __name__ == "__main__":
             continue
         filename_out = os.path.join(seg_folder, "tmp", f"ONPRC_G{ts}_NFseg_3_dilall.nii.gz")
 
-        # dilate_bm(filename_in, filename_out)
-        dilate_bm_bis(filename_in, filename_out)
+        dilate_bm(filename_in, filename_out)
+        # dilate_bm_bis(filename_in, filename_out)
         break
 
 
