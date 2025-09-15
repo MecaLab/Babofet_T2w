@@ -17,54 +17,6 @@ if __name__ == "__main__":
 
     atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
 
-    tmp_dir = os.path.join(seg_folder, "tmp")
-    tmp_files = []
-
-    if not os.path.exists(tmp_dir):
-        os.makedirs(tmp_dir)
-
-    labels = [1, 2, 3]
-
-    input_mask = os.path.join(seg_folder, "ONPRC_G85_NFseg_3.nii.gz")
-    output_mask = os.path.join(seg_folder, "ONPRC_G85_NFseg_3_dilall_new.nii.gz")
-
-    for label in labels:
-        out_bin = os.path.join(tmp_dir, f"label_{label}.nii.gz")
-        run_cmd(["fslmaths", input_mask, "-thr", str(label), "-uthr", str(label), out_bin])
-        tmp_files.append(out_bin)
-
-    dilated_files = []
-    for label in labels:
-        in_bin = os.path.join(tmp_dir, f"label_{label}.nii.gz")
-        out_dil = os.path.join(tmp_dir, f"label_{label}_dil.nii.gz")
-        run_cmd(["fslmaths", in_bin, "-dilM", "-dilM", "-dilM", "-dilM", out_dil])
-        dilated_files.append(out_dil)
-
-    clean_files = []
-    for i, lab in enumerate(labels):
-        out_clean = os.path.join(tmp_dir, f"label{lab}_clean.nii.gz")
-        cmd = ["fslmaths", dilated_files[i]]
-        for j, other_lab in enumerate(labels):
-            if i != j:
-                cmd += ["-sub", dilated_files[j]]
-        cmd += ["-thr", "0", "-bin", out_clean]
-        run_cmd(cmd)
-        clean_files.append(out_clean)
-
-    final_parts = []
-    for lab, clean in zip(labels, clean_files):
-        lab_mask = os.path.join(tmp_dir, f"label{lab}_final.nii.gz")
-        run_cmd(["fslmaths", clean, "-mul", str(lab), lab_mask])
-        final_parts.append(lab_mask)
-
-    # Combinaison finale
-    cmd = ["fslmaths", final_parts[0]]
-    for part in final_parts[1:]:
-        cmd += ["-add", part]
-    cmd += [output_mask]
-    run_cmd(cmd)
-
-    """
     for ts in atlas_timepoints:
 
         filename_in = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg_3.nii.gz")
@@ -75,7 +27,7 @@ if __name__ == "__main__":
 
         print(f"Computing: {filename_in}")
 
-        command = f"fslmaths {filename_in} -dilM -dilM -dilM -dilM {filename_out}"
+        command = f"fslmaths {filename_in} -dilM -dilM -dilM -dilM -dilall {filename_out}"
         subprocess.run(command, shell=True)
 
         command = f"fslmaths {filename_out} -uthr 3.5 {filename_out}"
@@ -85,6 +37,8 @@ if __name__ == "__main__":
         subprocess.run(command, shell=True, check=True)
 
         command = f"fslmaths {filename_out} -ero {filename_out}"
-        subprocess.run(command, shell=True)"""
+        subprocess.run(command, shell=True)
+
+        break 
 
 
