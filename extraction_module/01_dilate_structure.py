@@ -56,7 +56,11 @@ if __name__ == "__main__":
         sample_seg_cervelet_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
         sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
 
-        should_del_files = [sample_seg_cervelet, sample_seg_tronc, sample_seg_cervelet_dilated, sample_seg_tronc_dilated]
+        should_del_files = [
+            sample_seg_hemi,
+            sample_seg_cervelet, sample_seg_tronc,
+            sample_seg_cervelet_dilated, sample_seg_tronc_dilated
+        ]
 
         # Charger l'image
         img = nib.load(sample_seg_input)
@@ -115,12 +119,10 @@ if __name__ == "__main__":
 
         should_del_files.append(tmp_step)
 
+        print("\tCleaning up temporary files...")
         for f in should_del_files:
             if os.path.exists(f):
                 os.remove(f)
-
-        print("End of processing for this timepoint.")
-        break
 
 
 
