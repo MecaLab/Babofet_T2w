@@ -56,10 +56,7 @@ if __name__ == "__main__":
         sample_seg_cervelet_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
         sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
 
-        img = nib.load(sample_seg_input)
-        data = img.get_fdata()
-        affine = img.affine
-        header = img.header
+        should_del_files = [sample_seg_cervelet, sample_seg_tronc, sample_seg_cervelet_dilated, sample_seg_tronc_dilated]
 
         # Charger l'image
         img = nib.load(sample_seg_input)
@@ -67,26 +64,26 @@ if __name__ == "__main__":
         affine = img.affine
         header = img.header
 
-        # Coords voxel -> monde
-        coords = np.array(np.nonzero(data > 0)).T  # voxels non nuls
-        xyz = nib.affines.apply_affine(affine, coords)
+        print("\tCreating hemisphere mask...")
+        if not os.path.exists(sample_seg_hemi):
+            # Convert world coordinates to voxel indices
+            coords = np.array(np.nonzero(data > 0)).T
+            xyz = nib.affines.apply_affine(affine, coords)
 
-        # Axe gauche-droite = première coordonnée (x)
-        x_coords = xyz[:, 0]
-        mid_x = 0.5 * (x_coords.min() + x_coords.max())
+            # Determine mid-sagittal plane
+            x_coords = xyz[:, 0]
+            mid_x = 0.5 * (x_coords.min() + x_coords.max())
 
-        print(f"Plan sagittal défini à x={mid_x:.2f} mm")
+            # Create hemisphere mask
+            mask_new = np.zeros_like(data, dtype=np.uint8)
 
-        # Créer masque
-        mask_new = np.zeros_like(data, dtype=np.uint8)
+            for (i, j, k), x in zip(coords, x_coords):
+                if x < mid_x:
+                    mask_new[i, j, k] = 2  # gauche
+                else:
+                    mask_new[i, j, k] = 1  # droite
 
-        for (i, j, k), x in zip(coords, x_coords):
-            if x < mid_x:
-                mask_new[i, j, k] = 2  # gauche
-            else:
-                mask_new[i, j, k] = 1  # droite
-
-        nib.save(nib.Nifti1Image(mask_new, affine, header), sample_seg_hemi)
+            nib.save(nib.Nifti1Image(mask_new, affine, header), sample_seg_hemi)
 
         # Create binary masks for cerebellum and brainstem
 
@@ -116,7 +113,11 @@ if __name__ == "__main__":
         final_output = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_structures_dilated.nii.gz")
         overlay_structure(tmp_step, sample_seg_cervelet_dilated, final_output, structure_label=4)
 
-        # subprocess.run(["rm", tmp_step], check=True)
+        should_del_files.append(tmp_step)
+
+        for f in should_del_files:
+            if os.path.exists(f):
+                os.remove(f)
 
         print("End of processing for this timepoint.")
         break
