@@ -87,18 +87,18 @@ if __name__ == "__main__":
             new_data = np.zeros_like(tissue_data, dtype=np.uint8)
 
             # Règles de mapping
-            new_data[(hemi_data == 1) & (tissue_data == 1)] = 5  # CSF droit
-            new_data[(hemi_data == 1) & (tissue_data == 2)] = 6  # WM droit
-            new_data[(hemi_data == 1) & (tissue_data == 3)] = 7  # GM droit
-            new_data[(hemi_data == 1) & (tissue_data == 4)] = 8  # Ventricule droit
+            new_data[(hemi_data == 1) & (tissue_data == 1)] = 1  # CSF droit
+            new_data[(hemi_data == 1) & (tissue_data == 2)] = 2  # WM droit
+            new_data[(hemi_data == 1) & (tissue_data == 3)] = 3  # GM droit
+            new_data[(hemi_data == 1) & (tissue_data == 4)] = 4  # Ventricule droit
 
-            new_data[(hemi_data == 2) & (tissue_data == 1)] = 1  # CSF gauche
-            new_data[(hemi_data == 2) & (tissue_data == 2)] = 2  # WM gauche
-            new_data[(hemi_data == 2) & (tissue_data == 3)] = 3  # GM gauche
-            new_data[(hemi_data == 2) & (tissue_data == 4)] = 4  # Ventricule gauche
+            new_data[(hemi_data == 2) & (tissue_data == 1)] = 5  # CSF gauche
+            new_data[(hemi_data == 2) & (tissue_data == 2)] = 6  # WM gauche
+            new_data[(hemi_data == 2) & (tissue_data == 3)] = 7  # GM gauche
+            new_data[(hemi_data == 2) & (tissue_data == 4)] = 8  # Ventricule gauche
 
-            new_data[(hemi_data == 3)] = 10  # Tronc
-            new_data[(hemi_data == 4)] = 9  # Cervelet
+            new_data[(hemi_data == 3)] = 9  # Tronc
+            new_data[(hemi_data == 4)] = 10  # Cervelet
 
             # Sauvegarder avec l'affine et le header de t2_subj_img
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
