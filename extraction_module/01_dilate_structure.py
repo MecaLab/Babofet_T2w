@@ -23,7 +23,6 @@ def load_and_combine(base_mask_path, to_add_path, output_path):
     to_add = nib.load(to_add_path)
     # On s'assure que les valeurs du tronc/cervelet ne remplacent pas les hémisphères
     new_data = base.get_fdata() + to_add.get_fdata()
-    new_data[new_data > 1] = 1  # Binarise (au cas où)
     nib.save(nib.Nifti1Image(new_data, base.affine), output_path)
 
 
@@ -62,29 +61,34 @@ if __name__ == "__main__":
         mask_new = np.zeros_like(data, dtype=np.uint8)
 
         print("\tComputing hemisphere mask...")
-        mask_new[(data > 0) & (mask_new == 0) & (coords < midline)] = 1  # Left hemisphere
-        mask_new[(data > 0) & (mask_new == 0) & (coords >= midline)] = 2  # Right hemisphere
 
-        nib.save(nib.Nifti1Image(mask_new, affine), sample_seg_hemi)
+        if not os.path.exists(sample_seg_hemi):
+            mask_new[(data > 0) & (mask_new == 0) & (coords < midline)] = 1  # Left hemisphere
+            mask_new[(data > 0) & (mask_new == 0) & (coords >= midline)] = 2  # Right hemisphere
+
+            nib.save(nib.Nifti1Image(mask_new, affine), sample_seg_hemi)
 
         # Create binary masks for cerebellum and brainstem
 
         print("\tCreating binary masks for cerebellum and brainstem...")
-        mask_cerebellum = (data == label_cerebellum).astype(np.int16)
-        mask_tronc = (data == label_tronc).astype(np.int16)
 
-        # Save temporary binary masks
-        nib.save(nib.Nifti1Image(mask_cerebellum, affine, header), sample_seg_cervelet)
-        nib.save(nib.Nifti1Image(mask_tronc, affine, header), sample_seg_tronc)
+        if not os.path.exists(sample_seg_cervelet):
+            mask_cerebellum = (data == label_cerebellum).astype(np.int16)
+            mask_tronc = (data == label_tronc).astype(np.int16)
+
+            # Save temporary binary masks
+            nib.save(nib.Nifti1Image(mask_cerebellum, affine, header), sample_seg_cervelet)
+            nib.save(nib.Nifti1Image(mask_tronc, affine, header), sample_seg_tronc)
 
         # Dilate the masks using FSL
         print("\tDilating masks using FSL...")
-        sample_seg_cervelet_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
-        sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
 
-        dilate_with_fsl(sample_seg_cervelet, sample_seg_cervelet_dilated)
-        dilate_with_fsl(sample_seg_tronc, sample_seg_tronc_dilated)
+        if not os.path.exists(sample_seg_cervelet):
+            sample_seg_cervelet_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
+            sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
 
+            dilate_with_fsl(sample_seg_cervelet, sample_seg_cervelet_dilated)
+            dilate_with_fsl(sample_seg_tronc, sample_seg_tronc_dilated)
 
         # Combine dilated masks into a single structure file
         print("\tCombining dilated masks into a single structure file...")
@@ -95,7 +99,7 @@ if __name__ == "__main__":
         load_and_combine(tmp_step, sample_seg_cervelet_dilated, final_output)
 
         subprocess.run(["rm", tmp_step], check=True)
-        
+
         print("End of processing for this timepoint.")
         break
 
