@@ -61,18 +61,24 @@ if __name__ == "__main__":
         affine = img.affine
         header = img.header
 
-        midline = data.shape[0] // 2
-        coords = np.arange(data.shape[0])[:, None, None]
+        axcodes = nib.aff2axcodes(affine)
+        lr_axis = axcodes.index('L') if 'L' in axcodes else axcodes.index('R')
 
+        # Trouver la coordonnée médiane
+        midline = data.shape[lr_axis] // 2
+        coords = np.arange(data.shape[lr_axis])
+
+        # Construire le masque
         mask_new = np.zeros_like(data, dtype=np.uint8)
 
-        print("\tComputing hemisphere mask...")
+        if 'L' in axcodes[lr_axis]:
+            mask_new[(data > 0) & (coords[:, None, None] < midline)] = 1  # Left
+            mask_new[(data > 0) & (coords[:, None, None] >= midline)] = 2  # Right
+        else:
+            mask_new[(data > 0) & (coords[:, None, None] < midline)] = 2  # Right
+            mask_new[(data > 0) & (coords[:, None, None] >= midline)] = 1  # Left
 
-        if not os.path.exists(sample_seg_hemi):
-            mask_new[(data > 0) & (mask_new == 0) & (coords < midline)] = 1  # Left hemisphere
-            mask_new[(data > 0) & (mask_new == 0) & (coords >= midline)] = 2  # Right hemisphere
-
-            nib.save(nib.Nifti1Image(mask_new, affine), sample_seg_hemi)
+        nib.save(nib.Nifti1Image(mask_new, affine), sample_seg_hemi)
 
         # Create binary masks for cerebellum and brainstem
 
