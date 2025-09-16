@@ -103,7 +103,7 @@ if __name__ == "__main__":
         final_output = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_structures_dilated.nii.gz")
         load_and_combine(tmp_step, sample_seg_cervelet_dilated, final_output, new_label=4)
 
-        subprocess.run(["rm", tmp_step], check=True)
+        # subprocess.run(["rm", tmp_step], check=True)
 
         print("End of processing for this timepoint.")
         break
