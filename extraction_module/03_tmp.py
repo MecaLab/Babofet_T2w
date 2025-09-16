@@ -24,7 +24,7 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
         if i > 0:
             diff_mi = current_mi - previous_mi
             print(f"\t\t{atlas} - {atlas_list[i-1]} = {diff_mi}")
-        if best_atlas is None or current_mi > best_atlas[1]:
+        if best_atlas is None or current_mi < best_atlas[1]:
             best_atlas = [atlas, current_mi]
         previous_mi = current_mi
     return best_atlas[0]
@@ -87,15 +87,15 @@ if __name__ == "__main__":
             new_data = np.zeros_like(tissue_data, dtype=np.uint8)
 
             # Règles de mapping
-            new_data[(hemi_data == 1) & (tissue_data == 1)] = 1  # CSF droit
-            new_data[(hemi_data == 1) & (tissue_data == 2)] = 2  # WM droit
-            new_data[(hemi_data == 1) & (tissue_data == 3)] = 3  # GM droit
-            new_data[(hemi_data == 1) & (tissue_data == 4)] = 4  # Ventricule droit
+            new_data[(hemi_data == 1) & (tissue_data == 1)] = 1  # CSF gauche
+            new_data[(hemi_data == 1) & (tissue_data == 2)] = 2  # WM gauche
+            new_data[(hemi_data == 1) & (tissue_data == 3)] = 3  # GM gauche
+            new_data[(hemi_data == 1) & (tissue_data == 4)] = 4  # Ventricule gauche
 
-            new_data[(hemi_data == 2) & (tissue_data == 1)] = 5  # CSF gauche
-            new_data[(hemi_data == 2) & (tissue_data == 2)] = 6  # WM gauche
-            new_data[(hemi_data == 2) & (tissue_data == 3)] = 7  # GM gauche
-            new_data[(hemi_data == 2) & (tissue_data == 4)] = 8  # Ventricule gauche
+            new_data[(hemi_data == 2) & (tissue_data == 1)] = 5  # CSF droit
+            new_data[(hemi_data == 2) & (tissue_data == 2)] = 6  # WM droit
+            new_data[(hemi_data == 2) & (tissue_data == 3)] = 7  # GM droit
+            new_data[(hemi_data == 2) & (tissue_data == 4)] = 8  # Ventricule droit
 
             new_data[(hemi_data == 3)] = 9  # Tronc
             new_data[(hemi_data == 4)] = 10  # Cervelet
