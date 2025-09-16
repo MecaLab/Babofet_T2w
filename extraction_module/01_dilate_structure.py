@@ -82,9 +82,9 @@ if __name__ == "__main__":
 
         for (i, j, k), x in zip(coords, x_coords):
             if x < mid_x:
-                mask_new[i, j, k] = 1  # gauche
+                mask_new[i, j, k] = 2  # gauche
             else:
-                mask_new[i, j, k] = 2  # droite
+                mask_new[i, j, k] = 1  # droite
 
         nib.save(nib.Nifti1Image(mask_new, affine, header), sample_seg_hemi)
 
