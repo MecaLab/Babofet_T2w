@@ -61,53 +61,46 @@ if __name__ == "__main__":
         affine = img.affine
         header = img.header
 
-        import os
-        import nibabel as nib
-        import numpy as np
+        # Charger l'image
+        img = nib.load(sample_seg_input)
+        data = img.get_fdata()
+        affine = img.affine
+        header = img.header
 
+        # Trouver l'axe gauche-droite (LR) avec aff2axcodes
+        axcodes = nib.aff2axcodes(affine)
+        print(f"Orientation de l'image: {axcodes}")
 
-        def split_hemispheres(sample_seg_input, sample_seg_hemi):
-            # Charger l'image
-            img = nib.load(sample_seg_input)
-            data = img.get_fdata()
-            affine = img.affine
-            header = img.header
+        try:
+            lr_axis = axcodes.index('L') if 'L' in axcodes else axcodes.index('R')
+        except ValueError:
+            raise RuntimeError("Impossible d'identifier l'axe gauche-droite dans l'image.")
 
-            # Trouver l'axe gauche-droite (LR) avec aff2axcodes
-            axcodes = nib.aff2axcodes(affine)
-            print(f"Orientation de l'image: {axcodes}")
+        # Trouver le plan médian
+        midline = data.shape[lr_axis] // 2
+        coords = np.arange(data.shape[lr_axis])
 
-            try:
-                lr_axis = axcodes.index('L') if 'L' in axcodes else axcodes.index('R')
-            except ValueError:
-                raise RuntimeError("Impossible d'identifier l'axe gauche-droite dans l'image.")
+        # Créer masque
+        mask_new = np.zeros_like(data, dtype=np.uint8)
+        print("\tComputing hemisphere mask...")
 
-            # Trouver le plan médian
-            midline = data.shape[lr_axis] // 2
-            coords = np.arange(data.shape[lr_axis])
+        if not os.path.exists(sample_seg_hemi):
+            if 'L' in axcodes[lr_axis]:
+                # Axe orienté vers la gauche
+                slicer = [None, None, None]
+                slicer[lr_axis] = coords < midline
+                mask_new[(data > 0) & np.broadcast_to(slicer[lr_axis][:, None, None], data.shape)] = 1  # Left
+                slicer[lr_axis] = coords >= midline
+                mask_new[(data > 0) & np.broadcast_to(slicer[lr_axis][:, None, None], data.shape)] = 2  # Right
+            else:
+                # Axe orienté vers la droite
+                slicer = [None, None, None]
+                slicer[lr_axis] = coords < midline
+                mask_new[(data > 0) & np.broadcast_to(slicer[lr_axis][:, None, None], data.shape)] = 2  # Right
+                slicer[lr_axis] = coords >= midline
+                mask_new[(data > 0) & np.broadcast_to(slicer[lr_axis][:, None, None], data.shape)] = 1  # Left
 
-            # Créer masque
-            mask_new = np.zeros_like(data, dtype=np.uint8)
-            print("\tComputing hemisphere mask...")
-
-            if not os.path.exists(sample_seg_hemi):
-                if 'L' in axcodes[lr_axis]:
-                    # Axe orienté vers la gauche
-                    slicer = [None, None, None]
-                    slicer[lr_axis] = coords < midline
-                    mask_new[(data > 0) & np.broadcast_to(slicer[lr_axis][:, None, None], data.shape)] = 1  # Left
-                    slicer[lr_axis] = coords >= midline
-                    mask_new[(data > 0) & np.broadcast_to(slicer[lr_axis][:, None, None], data.shape)] = 2  # Right
-                else:
-                    # Axe orienté vers la droite
-                    slicer = [None, None, None]
-                    slicer[lr_axis] = coords < midline
-                    mask_new[(data > 0) & np.broadcast_to(slicer[lr_axis][:, None, None], data.shape)] = 2  # Right
-                    slicer[lr_axis] = coords >= midline
-                    mask_new[(data > 0) & np.broadcast_to(slicer[lr_axis][:, None, None], data.shape)] = 1  # Left
-
-                # Sauvegarde
-                nib.save(nib.Nifti1Image(mask_new, affine, header), sample_seg_hemi)
+        nib.save(nib.Nifti1Image(mask_new, affine, header), sample_seg_hemi)
 
         # Create binary masks for cerebellum and brainstem
 
