@@ -87,7 +87,7 @@ if __name__ == "__main__":
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
-            best_atlas = 122 # find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
+            best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
             print(f"\tBest altas: {best_atlas}")
 
             best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
