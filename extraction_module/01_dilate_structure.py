@@ -86,7 +86,7 @@ if __name__ == "__main__":
         # Dilate the masks using FSL
         print("\tDilating masks using FSL...")
 
-        if not os.path.exists(sample_seg_cervelet):
+        if not os.path.exists(sample_seg_cervelet_dilated):
 
             dilate_with_fsl(sample_seg_cervelet, sample_seg_cervelet_dilated)
             dilate_with_fsl(sample_seg_tronc, sample_seg_tronc_dilated)
