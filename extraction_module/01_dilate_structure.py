@@ -98,7 +98,7 @@ if __name__ == "__main__":
         print("\tCombining dilated masks into a single structure file...")
         tmp_step = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_structures_tmp.nii.gz")
 
-        overlay_structure(mask_new, sample_seg_tronc_dilated, tmp_step, structure_label=3)
+        overlay_structure(sample_seg_hemi, sample_seg_tronc_dilated, tmp_step, structure_label=3)
         final_output = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_structures_dilated.nii.gz")
         overlay_structure(tmp_step, sample_seg_cervelet_dilated, final_output, structure_label=4)
 
