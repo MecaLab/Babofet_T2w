@@ -34,6 +34,7 @@ if __name__ == "__main__":
     for ts in atlas_timepoints:
 
         sample_seg_input = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg.nii.gz")
+        sample_seg_hemi = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_hemi.nii.gz")
 
         sample_seg_cervelet = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet.nii.gz")
         sample_seg_tronc = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc.nii.gz")
@@ -42,6 +43,18 @@ if __name__ == "__main__":
         data = img.get_fdata()
         affine = img.affine
         header = img.header
+
+        midline = data.shape[0] // 2
+        coords = np.arange(data.shape[0])[:, None, None]
+
+        mask_new = np.zeros_like(data, dtype=np.uint8)
+
+        mask_new[(data > 0) & (mask_new == 0) & (coords < midline)] = 1
+
+        # Hémisphère droit (hors cervelet)
+        mask_new[(data > 0) & (mask_new == 0) & (coords >= midline)] = 2
+
+        nib.save(nib.Nifti1Image(mask_new, affine), sample_seg_hemi)
 
         # Create binary masks for cerebellum and brainstem
         mask_cerebellum = (data == label_cerebellum).astype(np.int16)
