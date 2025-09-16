@@ -25,7 +25,6 @@ def ants_register(fixed, moving_atlas_file):
 
 def find_best_atlas(fixed, atlas_path, atlas_list):
     best_atlas = None
-    previous_mi = None
 
     for i, atlas in enumerate(atlas_list):
         atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
@@ -37,7 +36,7 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
             diff_mi = current_mi - previous_mi
             print(f"\t\t{atlas} - {atlas_list[i-1]} = {diff_mi}")
 
-        if best_atlas is None or current_mi > best_atlas[1]:
+        if best_atlas is None or current_mi > best_atlas[1]:  # < or > ?
             best_atlas = [atlas, current_mi]
 
         previous_mi = current_mi
@@ -51,6 +50,8 @@ if __name__ == "__main__":
     atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
     output_split_seg = os.path.join(atlas_path, "Seg_Hemi")
+
+    atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
 
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
@@ -86,7 +87,6 @@ if __name__ == "__main__":
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
-            atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
             best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
             print(f"\tBest altas: {best_atlas}")
 
