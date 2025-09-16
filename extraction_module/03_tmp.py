@@ -3,6 +3,7 @@ import os
 import sys
 import nibabel as nib
 import ants
+from scipy.ndimage import zoom
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -42,6 +43,14 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
         previous_mi = current_mi
 
     return best_atlas[0]
+
+
+def resample_to_target(moving_img, target_img):
+    moving_data = moving_img.get_fdata()
+    target_shape = target_img.shape
+    zoom_factors = [t / m for t, m in zip(target_shape, moving_data.shape)]
+    resampled_data = zoom(moving_data, zoom_factors, order=0)
+    return nib.Nifti1Image(resampled_data, target_img.affine)
 
 
 if __name__ == "__main__":
@@ -96,8 +105,10 @@ if __name__ == "__main__":
             hemi_splitted_seg = nib.load(moving_seg_file)
             nnunet_seg = nib.load(t2_subj_seg)
 
+            tissue_resampled = resample_to_target(nnunet_seg, hemi_splitted_seg)
+
+            tissue_data = tissue_resampled.get_fdata()
             hemi_data = hemi_splitted_seg.get_fdata()
-            tissue_data = nnunet_seg.get_fdata()
 
             new_data = np.zeros_like(tissue_data, dtype=np.uint8)
 
