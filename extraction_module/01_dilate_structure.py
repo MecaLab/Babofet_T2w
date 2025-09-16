@@ -50,6 +50,9 @@ if __name__ == "__main__":
         sample_seg_cervelet = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet.nii.gz")
         sample_seg_tronc = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc.nii.gz")
 
+        sample_seg_cervelet_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
+        sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
+
         img = nib.load(sample_seg_input)
         data = img.get_fdata()
         affine = img.affine
@@ -84,8 +87,6 @@ if __name__ == "__main__":
         print("\tDilating masks using FSL...")
 
         if not os.path.exists(sample_seg_cervelet):
-            sample_seg_cervelet_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
-            sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
 
             dilate_with_fsl(sample_seg_cervelet, sample_seg_cervelet_dilated)
             dilate_with_fsl(sample_seg_tronc, sample_seg_tronc_dilated)
