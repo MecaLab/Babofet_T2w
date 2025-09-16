@@ -57,7 +57,7 @@ if __name__ == "__main__":
         os.makedirs(output_split_seg)
 
     for subject in os.listdir(recons_folder):
-        if subject == "Aziza":
+        if subject != "Borgne":
             continue
         print(f"Starting {subject}")
 
@@ -93,7 +93,7 @@ if __name__ == "__main__":
             best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
             moving_best_atlas = ants.image_read(best_atlas_file)
 
-            moving_seg_file = os.path.join(atlas_path, "Segmentations", f"ONPRC_G{best_atlas}_NFseg_3_dilall.nii.gz")
+            moving_seg_file = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_G{best_atlas}_NFseg_structures_dilated.nii.gz")
 
             if not os.path.exists(moving_seg_file):
                 print(f"Error ! File {moving_seg_file} does not exists. Run the previous script")
