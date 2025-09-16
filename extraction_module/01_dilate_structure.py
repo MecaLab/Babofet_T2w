@@ -11,8 +11,8 @@ def dilate_with_fsl(input_file, output_file):
     """Dilate le masque de 2 voxels avec FSL."""
     subprocess.run([
         "fslmaths", input_file,
-        "-kernel", "sphere", "2",
-        "-dilD",
+        "-dilM",
+        "-dilM",
         output_file
     ], check=True)
 
