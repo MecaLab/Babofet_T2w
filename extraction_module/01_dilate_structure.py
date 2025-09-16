@@ -16,16 +16,15 @@ def dilate_with_fsl(input_file, output_file):
     ], check=True)
 
 
-def load_and_combine(base_mask_path, to_add_path, output_path, new_label):
-    """Charge deux masques et combine en priorisant le premier."""
-    """Ajoute une structure avec un nouveau label, sans écraser les existants."""
-    base_img = nib.load(base_mask_path)
-    to_add_img = nib.load(to_add_path)
+def overlay_structure(base_path, structure_path, output_path, structure_label):
+    """Superpose une structure avec un label donné, en écrasant si nécessaire."""
+    base_img = nib.load(base_path)
+    structure_img = nib.load(structure_path)
     base_data = base_img.get_fdata()
-    to_add_data = to_add_img.get_fdata()
+    structure_data = structure_img.get_fdata()
 
-    # On affecte le nouveau label uniquement où la structure à ajouter est présente ET où le masque de base est 0
-    new_data = np.where((to_add_data == 1) & (base_data == 0), new_label, base_data)
+    # On affecte le label de la structure partout où elle est présente
+    new_data = np.where(structure_data == 1, structure_label, base_data)
 
     nib.save(nib.Nifti1Image(new_data, base_img.affine), output_path)
 
@@ -99,9 +98,9 @@ if __name__ == "__main__":
         print("\tCombining dilated masks into a single structure file...")
         tmp_step = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_structures_tmp.nii.gz")
 
-        load_and_combine(sample_seg_hemi, sample_seg_tronc_dilated, tmp_step, new_label=3)
+        overlay_structure(mask_new, sample_seg_tronc_dilated, tmp_step, structure_label=3)
         final_output = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_structures_dilated.nii.gz")
-        load_and_combine(tmp_step, sample_seg_cervelet_dilated, final_output, new_label=4)
+        overlay_structure(tmp_step, sample_seg_cervelet_dilated, final_output, structure_label=4)
 
         # subprocess.run(["rm", tmp_step], check=True)
 
