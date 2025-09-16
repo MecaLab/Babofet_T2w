@@ -12,7 +12,6 @@ def dilate_with_fsl(input_file, output_file):
     subprocess.run([
         "fslmaths", input_file,
         "-dilM",
-        "-dilM",
         output_file
     ], check=True)
 
