@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
                 subprocess.run([
                     "singularity", "run", "-B", f"{base_path}:/home", "surf_proc_v0.0.2a.sif",
-                    "generate_mesh", "-s", f"/home/Seg_Hemi/{session_file}", "-l", str(label_val), "-m", f"/home/Surf_Hemi/{output_file}"
+                    "generate_mesh", "-s", f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{session_file}", "-l", str(label_val), "-m", f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{output_file}"
                 ], check=True)
 
                 exit()
