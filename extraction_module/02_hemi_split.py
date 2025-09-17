@@ -121,18 +121,40 @@ if __name__ == "__main__":
             # fixed.plot(overlay=warped_seg, title='seg on fixed', overlay_alpha=0.5)
 
             ## use the aligned atlas hemi to split the segmentation
+
+            new_data = np.zeros_like(warped_best_seg, dtype=np.uint8)
+
+            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # CSF droit
+            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 2)] = 2  # WM droit
+            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 3)] = 3  # GM droit
+            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 4)] = 4  # Ventricule droit
+
+            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 1)] = 5  # CSF gauche
+            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 2)] = 6  # WM gauche
+            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 3)] = 7  # GM gauche
+            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 4)] = 8  # Ventricule gauche
+
+            new_data[(warped_best_seg.numpy() == 3)] = 9  # Tronc
+            new_data[(warped_best_seg.numpy() == 4)] = 10  # Cervelet
+
+            """
             seg_arr = fixed_seg.numpy()
             bm = seg_arr > 0
             seg_atlas = warped_best_seg.numpy()
             out_arr = seg_arr + 10 * seg_atlas
             out_arr[seg_arr == 4] = 4
             out_arr = out_arr * bm
+
             # recombine brainstem
+            brainstem = seg_arr == 8
+            out_arr[brainstem] = 8
             # recombine background
-            """brainstem = seg_arr == 4
+            brainstem = seg_arr == 4
+            out_arr[brainstem] = 4
+            brainstem = seg_arr == 4
             out_arr[brainstem] = 4"""
 
-            seg_out = fixed_seg.new_image_like(out_arr)
+            seg_out = fixed_seg.new_image_like(new_data)
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
 
