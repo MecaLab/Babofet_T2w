@@ -18,8 +18,8 @@ def ants_register(fixed, moving_atlas_file):
     # fwdtransform = mytx['fwdtransforms']
     warped_atlas = mytx['warpedmovout']
     # compute MI to find the closest atlas
-    wraped_mi = ants.image_mutual_information(fixed, warped_atlas)
-    # wraped_mi = ants.image_similarity(fixed, warped_atlas, metric_type="MeanSquares")  # Mattes, MeanSquares, CC, Demons
+    # wraped_mi = ants.image_mutual_information(fixed, warped_atlas)
+    wraped_mi = ants.image_similarity(fixed, warped_atlas, metric_type="MeanSquares")  # Mattes, MeanSquares, CC, Demons
     return wraped_mi
 
 
