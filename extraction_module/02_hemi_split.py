@@ -82,11 +82,8 @@ if __name__ == "__main__":
                 continue
 
             fixed = ants.image_read(t2_subj)
-            fixed_seg = ants.image_read(t2_subj_seg)
+            fixed_seg = ants.image_read(t2_subj_seg)  # np unique -> 0 1 2 3 4
 
-            print(np.unique(fixed_seg.numpy()))
-
-            exit()
 
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
@@ -117,6 +114,10 @@ if __name__ == "__main__":
             warped_best_seg = ants.apply_transforms(fixed=fixed, moving=moving_best_seg,
                                                     transformlist=mytx_best['fwdtransforms'],
                                                     interpolator="nearestNeighbor")
+
+            print(np.unique(warped_best_seg.numpy()))
+
+            exit()
             # ants.image_write(warped_best_atlas, aligned_image_file)
             # warpedimage.plot()
             # fixed.plot(overlay=warped_seg, title='seg on fixed', overlay_alpha=0.5)
@@ -128,11 +129,12 @@ if __name__ == "__main__":
             out_arr = seg_arr + 10 * seg_atlas
             out_arr = out_arr * bm
             # recombine brainstem
-            """brainstem = seg_arr == 8
+            brainstem = seg_arr == 8
             out_arr[brainstem] = 8
             # recombine background
             brainstem = seg_arr == 4
-            out_arr[brainstem] = 4"""
+            out_arr[brainstem] = 4
+
             seg_out = fixed_seg.new_image_like(out_arr)
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
