@@ -36,7 +36,7 @@ if __name__ == "__main__":
                 output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file}"
 
                 subprocess.run([
-                    "singularity", "run", "-B", f"{base_path}:/home", "surf_proc_v0.0.2a.sif",
+                    "singularity", "run", "-B", f"{base_path}:/home/atlas_fetal_rhesus_v2", "surf_proc_v0.0.2a.sif",
                     "generate_mesh", "-s", input_full_path , "-l", str(label_val), "-m", output_full_path
                 ], check=True)
 
