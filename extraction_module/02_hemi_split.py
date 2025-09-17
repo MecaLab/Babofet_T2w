@@ -125,9 +125,9 @@ if __name__ == "__main__":
             bm = seg_arr > 0
             seg_atlas = warped_best_seg.numpy()
             out_arr = seg_arr + 10 * seg_atlas
+            out_arr[seg_arr == 4] = 4
             out_arr = out_arr * bm
             # recombine brainstem
-            out_arr[seg_arr == 4] = 4
             # recombine background
             """brainstem = seg_arr == 4
             out_arr[brainstem] = 4"""
