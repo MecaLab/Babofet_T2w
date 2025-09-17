@@ -12,7 +12,7 @@ def ants_register(fixed, moving_atlas_file):
     moving_atlas = ants.image_read(moving_atlas_file)
     # fixed.plot(overlay=moving_atlas, title='Before Registration', overlay_alpha = 0.5)
     # comute registration
-    mytx = ants.registration(fixed=fixed, moving=moving_atlas, type_of_transform="Affine")  # 'SyN' )
+    mytx = ants.registration(fixed=fixed, moving=moving_atlas, type_of_transform="SyN")  # 'SyN' or Affine
     # fwdtransforms: Transforms to move from moving to fixed image.
     # invtransforms: Transforms to move from fixed to moving image.
     # fwdtransform = mytx['fwdtransforms']
