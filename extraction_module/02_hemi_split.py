@@ -127,11 +127,10 @@ if __name__ == "__main__":
             out_arr = seg_arr + 10 * seg_atlas
             out_arr = out_arr * bm
             # recombine brainstem
-            brainstem = seg_arr == 8
-            out_arr[brainstem] = 8
+            out_arr[seg_arr == 4] = 4
             # recombine background
-            brainstem = seg_arr == 4
-            out_arr[brainstem] = 4
+            """brainstem = seg_arr == 4
+            out_arr[brainstem] = 4"""
 
             seg_out = fixed_seg.new_image_like(out_arr)
             ants.image_write(seg_out, file_seg_out)
