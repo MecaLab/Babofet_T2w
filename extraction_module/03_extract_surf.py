@@ -30,12 +30,11 @@ if __name__ == "__main__":
             print(f"\tSession file: {session_file}")
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
-                input_file = os.path.join(subject_src_path, session_file)
-                output_file = os.path.join(subject_dst_path, session_file.replace("_hemi.nii.gz", f"_{label_name}.white.gii"))
+                output_file = session_file.replace("_hemi.nii.gz", f".{label_name}.white.gii")
 
                 subprocess.run([
                     "singularity", "run", "-B", f"{base_path}:/home", "surf_proc_v0.0.2a.sif",
-                    "generate_mesh", "-s", f"/home/Seg_Hemi/{input_file}", "-l", str(label_val), "-m", f"/home/Surf_Hemi/{output_file}"
+                    "generate_mesh", "-s", f"/home/Seg_Hemi/{session_file}", "-l", str(label_val), "-m", f"/home/Surf_Hemi/{output_file}"
                 ], check=True)
 
                 exit()
