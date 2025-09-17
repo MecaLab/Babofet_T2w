@@ -32,9 +32,12 @@ if __name__ == "__main__":
                 print(f"\t\tProcessing {label_name}")
                 output_file = session_file.replace("_hemi.nii.gz", f".{label_name}.white.gii")
 
+                input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session_file}"
+                output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file}"
+
                 subprocess.run([
                     "singularity", "run", "-B", f"{base_path}:/home", "surf_proc_v0.0.2a.sif",
-                    "generate_mesh", "-s", f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{session_file}", "-l", str(label_val), "-m", f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{output_file}"
+                    "generate_mesh", "-s", input_full_path , "-l", str(label_val), "-m", output_full_path
                 ], check=True)
 
                 exit()
