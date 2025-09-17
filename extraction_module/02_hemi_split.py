@@ -30,11 +30,11 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
         atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
 
         current_mi = ants_register(fixed, atlas_file)
-        print(f"\t{atlas}: {current_mi}")
+        print(f"\t\t\t{atlas}: {current_mi}")
 
         if i > 0:
             diff_mi = current_mi - previous_mi
-            print(f"\t\t{atlas} - {atlas_list[i-1]} = {diff_mi}")
+            print(f"\t\t\t{atlas} - {atlas_list[i-1]} = {diff_mi}")
 
         if best_atlas is None or current_mi < best_atlas[1]:  # < or > ?
             best_atlas = [atlas, current_mi]
@@ -88,8 +88,8 @@ if __name__ == "__main__":
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
-            best_atlas = 122 # find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
-            print(f"\tBest altas: {best_atlas}")
+            best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
+            print(f"\t\tBest altas: {best_atlas}")
 
             best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
             moving_best_atlas = ants.image_read(best_atlas_file)
@@ -97,7 +97,7 @@ if __name__ == "__main__":
             moving_seg_file = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_G{best_atlas}_NFseg_structures_dilated.nii.gz")
 
             if not os.path.exists(moving_seg_file):
-                print(f"Error ! File {moving_seg_file} does not exists. Run the previous script")
+                print(f"\t\tError ! File {moving_seg_file} does not exists. Run the previous script")
                 continue
 
             moving_best_seg = ants.image_read(moving_seg_file)
@@ -107,21 +107,14 @@ if __name__ == "__main__":
             # invtransforms: Transforms to move from fixed to moving image.
             fwdtransform_best = mytx_best['fwdtransforms']
             warped_best_atlas = mytx_best['warpedmovout']
-            # fixed.plot(overlay=warped_atlas,
-            #           title='After Registration', overlay_alpha = 0.5)
 
             warped_best_seg = ants.apply_transforms(fixed=fixed, moving=moving_best_seg,
                                                     transformlist=mytx_best['fwdtransforms'],
                                                     interpolator="nearestNeighbor")
 
-            ants.image_write(warped_best_seg, os.path.join(cfg.BASE_NIOLON_PATH, "tmp_warped_best_seg.nii.gz"))
-
-            # ants.image_write(warped_best_atlas, aligned_image_file)
-            # warpedimage.plot()
-            # fixed.plot(overlay=warped_seg, title='seg on fixed', overlay_alpha=0.5)
+            # ants.image_write(warped_best_seg, os.path.join(cfg.BASE_NIOLON_PATH, "tmp_warped_best_seg.nii.gz"))
 
             ## use the aligned atlas hemi to split the segmentation
-
             new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
 
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # CSF droit
@@ -137,28 +130,9 @@ if __name__ == "__main__":
             new_data[(warped_best_seg.numpy() == 3)] = 9  # Tronc
             new_data[(warped_best_seg.numpy() == 4)] = 10  # Cervelet
 
-            """
-            seg_arr = fixed_seg.numpy()
-            bm = seg_arr > 0
-            seg_atlas = warped_best_seg.numpy()
-            out_arr = seg_arr + 10 * seg_atlas
-            out_arr[seg_arr == 4] = 4
-            out_arr = out_arr * bm
-
-            # recombine brainstem
-            brainstem = seg_arr == 8
-            out_arr[brainstem] = 8
-            # recombine background
-            brainstem = seg_arr == 4
-            out_arr[brainstem] = 4
-            brainstem = seg_arr == 4
-            out_arr[brainstem] = 4"""
-
             seg_out = fixed_seg.new_image_like(new_data)
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
-
-            exit()
 
 
 
