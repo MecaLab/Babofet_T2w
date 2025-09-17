@@ -109,15 +109,13 @@ if __name__ == "__main__":
             warped_best_atlas = mytx_best['warpedmovout']
             # fixed.plot(overlay=warped_atlas,
             #           title='After Registration', overlay_alpha = 0.5)
-            wraped_mi = ants.image_mutual_information(fixed, warped_best_atlas)
 
             warped_best_seg = ants.apply_transforms(fixed=fixed, moving=moving_best_seg,
                                                     transformlist=mytx_best['fwdtransforms'],
                                                     interpolator="nearestNeighbor")
 
-            print(np.unique(warped_best_seg.numpy()))
+            ants.image_write(warped_best_seg, os.path.join(cfg.BASE_NIOLON_PATH, "tmp_warped_best_seg.nii.gz"))
 
-            exit()
             # ants.image_write(warped_best_atlas, aligned_image_file)
             # warpedimage.plot()
             # fixed.plot(overlay=warped_seg, title='seg on fixed', overlay_alpha=0.5)
