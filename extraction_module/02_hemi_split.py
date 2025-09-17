@@ -84,6 +84,10 @@ if __name__ == "__main__":
             fixed = ants.image_read(t2_subj)
             fixed_seg = ants.image_read(t2_subj_seg)
 
+            print(np.unique(fixed_seg.numpy()))
+
+            exit()
+
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
