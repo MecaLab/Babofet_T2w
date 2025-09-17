@@ -88,7 +88,7 @@ if __name__ == "__main__":
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
-            best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
+            best_atlas = 122 # find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
             print(f"\tBest altas: {best_atlas}")
 
             best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
             ## use the aligned atlas hemi to split the segmentation
 
-            new_data = np.zeros_like(warped_best_seg, dtype=np.uint8)
+            new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
 
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # CSF droit
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 2)] = 2  # WM droit
