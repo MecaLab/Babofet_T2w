@@ -11,7 +11,7 @@ def ants_register(fixed, moving_atlas_file):
     moving_atlas = ants.image_read(moving_atlas_file)
     # fixed.plot(overlay=moving_atlas, title='Before Registration', overlay_alpha = 0.5)
     # comute registration
-    mytx = ants.registration(fixed=fixed, moving=moving_atlas, type_of_transform="SyN")  # 'SyN' or Affine
+    mytx = ants.registration(fixed=fixed, moving=moving_atlas, type_of_transform="Affine")  # 'SyN' or Affine
     # fwdtransforms: Transforms to move from moving to fixed image.
     # invtransforms: Transforms to move from fixed to moving image.
     # fwdtransform = mytx['fwdtransforms']
@@ -85,7 +85,8 @@ if __name__ == "__main__":
             best_atlas = find_best_atlas(fixed, atlas_path, atlas_timepoints)  # os.path.join(atlas_path, "Volumes"), atlas_timepoints)
             print(f"\t\tBest altas: {best_atlas}")
 
-            best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
+            # best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
+            best_atlas_file = os.path.join(atlas_path, f"Template_G{best_atlas}_T2W.nii.gz")
             moving_best_atlas = ants.image_read(best_atlas_file)
 
             moving_seg_file = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_G{best_atlas}_NFseg_structures_dilated.nii.gz")
