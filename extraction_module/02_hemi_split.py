@@ -31,7 +31,7 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
         current_mi = ants_register(fixed, atlas_file)
         print(f"\t\t\t{atlas}: {current_mi}")
 
-        if best_atlas is None or current_mi > best_atlas[1]:  # < or > ?
+        if best_atlas is None or current_mi < best_atlas[1]:  # < or > ?
             best_atlas = [atlas, current_mi]
 
     return best_atlas[0]
@@ -100,7 +100,7 @@ if __name__ == "__main__":
             # invtransforms: Transforms to move from fixed to moving image.
             fwdtransform_best = mytx_best['fwdtransforms']
             warped_best_atlas = mytx_best['warpedmovout']
-
+4
             warped_best_seg = ants.apply_transforms(fixed=fixed, moving=moving_best_seg,
                                                     transformlist=mytx_best['fwdtransforms'],
                                                     interpolator="nearestNeighbor")
@@ -127,6 +127,5 @@ if __name__ == "__main__":
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
 
-
-
-
+            exit()
+            
