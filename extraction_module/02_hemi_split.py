@@ -77,7 +77,6 @@ if __name__ == "__main__":
             fixed = ants.image_read(t2_subj)
             fixed_seg = ants.image_read(t2_subj_seg)  # np unique -> 0 1 2 3 4
 
-
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
@@ -100,7 +99,7 @@ if __name__ == "__main__":
             # invtransforms: Transforms to move from fixed to moving image.
             fwdtransform_best = mytx_best['fwdtransforms']
             warped_best_atlas = mytx_best['warpedmovout']
-4
+
             warped_best_seg = ants.apply_transforms(fixed=fixed, moving=moving_best_seg,
                                                     transformlist=mytx_best['fwdtransforms'],
                                                     interpolator="nearestNeighbor")
@@ -128,4 +127,3 @@ if __name__ == "__main__":
             print("\tSplitted segmentation saved as:", file_seg_out)
 
             exit()
-            
