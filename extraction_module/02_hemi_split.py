@@ -26,7 +26,8 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
     best_atlas = None
 
     for i, atlas in enumerate(atlas_list):
-        atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
+        # atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
+        atlas_file = os.path.join(atlas_path, f"Template_G{atlas}_T2W.nii.gz")
 
         current_mi = ants_register(fixed, atlas_file)
         print(f"\t\t\t{atlas}: {current_mi}")
@@ -40,11 +41,12 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
 if __name__ == "__main__":
 
     recons_folder = cfg.RECONS_FOLDER
-    atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
+    atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus")  # _v2
 
     output_split_seg = os.path.join(atlas_path, "Seg_Hemi")
 
-    atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
+    # atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
+    atlas_timepoints = [85, 110, 135]
 
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
@@ -80,7 +82,7 @@ if __name__ == "__main__":
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
-            best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
+            best_atlas = find_best_atlas(fixed, atlas_path, atlas_timepoints)  # os.path.join(atlas_path, "Volumes"), atlas_timepoints)
             print(f"\t\tBest altas: {best_atlas}")
 
             best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
