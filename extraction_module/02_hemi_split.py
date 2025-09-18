@@ -18,7 +18,7 @@ def ants_register(fixed, moving_atlas_file):
     warped_atlas = mytx['warpedmovout']
     # compute MI to find the closest atlas
     # wraped_mi = ants.image_mutual_information(fixed, warped_atlas)
-    wraped_mi = ants.image_similarity(fixed, warped_atlas, metric_type="MeanSquares")  # Mattes, MeanSquares, CC, Demons
+    wraped_mi = ants.image_similarity(fixed, warped_atlas, metric_type="Mattes")  # Mattes, MeanSquares, CC, Demons
     return wraped_mi
 
 
@@ -31,14 +31,8 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
         current_mi = ants_register(fixed, atlas_file)
         print(f"\t\t\t{atlas}: {current_mi}")
 
-        if i > 0:
-            diff_mi = current_mi - previous_mi
-            print(f"\t\t\t\t{atlas} - {atlas_list[i-1]} = {diff_mi}")
-
-        if best_atlas is None or current_mi < best_atlas[1]:  # < or > ?
+        if best_atlas is None or current_mi > best_atlas[1]:  # < or > ?
             best_atlas = [atlas, current_mi]
-
-        previous_mi = current_mi
 
     return best_atlas[0]
 
