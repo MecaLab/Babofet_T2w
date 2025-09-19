@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
             moving_best_seg = ants.image_read(moving_seg_file)
 
-            mytx_best = ants.registration(fixed=fixed, moving=moving_best_atlas, type_of_transform='SyN')
+            mytx_best = ants.registration(fixed=fixed, moving=moving_best_atlas, type_of_transform='Affine')  # SyN
             # fwdtransforms: Transforms to move from moving to fixed image.
             # invtransforms: Transforms to move from fixed to moving image.
             fwdtransform_best = mytx_best['fwdtransforms']
