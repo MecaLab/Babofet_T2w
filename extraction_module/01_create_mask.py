@@ -56,7 +56,7 @@ if __name__ == "__main__":
         sample_seg_cervelet_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
         sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")"""
 
-        sample_seg_input = os.path.join(seg_folder, f"Template_G{ts}_T2W.nii.gz")
+        sample_seg_input = os.path.join(seg_folder, f"Template_G{ts}_T2W_Labels_2019.nii.gz")
         sample_seg_hemi = os.path.join(structure_dir, f"Template_G{ts}_hemi.nii.gz")
 
         sample_seg_cervelet = os.path.join(structure_dir, f"Template_G{ts}_cervelet.nii.gz")
