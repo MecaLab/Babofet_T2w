@@ -32,9 +32,10 @@ def overlay_structure(base_path, structure_path, output_path, structure_label):
 if __name__ == "__main__":
     atlas_folder = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
-    seg_folder = os.path.join(atlas_folder, "Segmentations")
+    # seg_folder = os.path.join(atlas_folder, "Segmentations")
+    seg_folder = atlas_folder
 
-    atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
+    atlas_timepoints = [85, 110, 135]  # [85, 97, 110, 122, 135, 147, 155]
     label_cerebellum = 7
     label_tronc = 8
 
@@ -47,14 +48,23 @@ if __name__ == "__main__":
 
         print(f"Processing timepoint: {ts}")
 
-        sample_seg_input = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg.nii.gz")
+        """sample_seg_input = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg.nii.gz")
         sample_seg_hemi = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_hemi.nii.gz")
 
         sample_seg_cervelet = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet.nii.gz")
         sample_seg_tronc = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc.nii.gz")
 
         sample_seg_cervelet_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
-        sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
+        sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")"""
+
+        sample_seg_input = os.path.join(seg_folder, "Template_G{ts}_T2W.nii.gz")
+        sample_seg_hemi = os.path.join(structure_dir, f"Template_G{ts}_hemi.nii.gz")
+
+        sample_seg_cervelet = os.path.join(structure_dir, f"Template_G{ts}_cervelet.nii.gz")
+        sample_seg_tronc = os.path.join(structure_dir, f"Template_G{ts}_tronc.nii.gz")
+
+        sample_seg_cervelet_dilated = os.path.join(structure_dir, f"Template_G{ts}_cervelet_dilated.nii.gz")
+        sample_seg_tronc_dilated = os.path.join(structure_dir, f"Template_G{ts}_tronc_dilated.nii.gz")
 
         should_del_files = [
             sample_seg_hemi,
