@@ -90,7 +90,7 @@ if __name__ == "__main__":
             moving_best_atlas = ants.image_read(best_atlas_file)
 
             # moving_seg_file = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_G{best_atlas}_NFseg_structures_dilated.nii.gz")
-            moving_seg_file = os.path.join(atlas_path, "structures_dilated", f"ONPRC_{best_atlas}_NFseg_structures_dilated.nii.gz")
+            moving_seg_file = os.path.join(atlas_path, "structures_dilated", f"ONPRC_G{best_atlas}_NFseg_structures_dilated.nii.gz")
 
             if not os.path.exists(moving_seg_file):
                 print(f"\t\tError ! File {moving_seg_file} does not exists. Run the previous script")
