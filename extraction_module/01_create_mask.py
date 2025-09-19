@@ -104,6 +104,8 @@ if __name__ == "__main__":
 
         if not os.path.exists(sample_seg_cervelet):
             mask_cerebellum = (data == label_cerebellum).astype(np.int16)
+
+            print(mask_cerebellum)
             mask_tronc = (data == label_tronc).astype(np.int16)
 
             # Save temporary binary masks
