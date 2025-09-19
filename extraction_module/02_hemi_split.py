@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import sys
-import ants
+import ants as ants
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
