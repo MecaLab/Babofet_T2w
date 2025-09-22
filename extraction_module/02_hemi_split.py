@@ -8,12 +8,17 @@ import configuration as cfg
 # Function to adapt the atlas to the subject and compute the MI
 
 
-def ants_register(fixed, moving_atlas_file):
+def ants_register(fixed, moving_atlas_file, moving_atlas_mask_file=None):
     # load atlas volume
     moving_atlas = ants.image_read(moving_atlas_file)
     # fixed.plot(overlay=moving_atlas, title='Before Registration', overlay_alpha = 0.5)
     # comute registration
-    mytx = ants.registration(fixed=fixed, moving=moving_atlas, type_of_transform="Affine")  # 'SyN' or Affine
+    if moving_atlas_mask_file is not None:
+        moving_atlas_mask = ants.image_read(moving_atlas_mask_file)
+        mytx = ants.registration(fixed=fixed, moving=moving_atlas, mask=moving_atlas_mask,
+                                 type_of_transform="Affine")  # 'SyN' or Affine
+    else:
+        mytx = ants.registration(fixed=fixed, moving=moving_atlas, type_of_transform="Affine")  # 'SyN' or Affine
 
     gd = os.path.basename(moving_atlas_file).split("_")[1]
     ants.image_write(mytx['warpedmovout'], os.path.join(cfg.BASE_NIOLON_PATH, f"tmp_affine_{gd}.nii.gz"))
@@ -27,13 +32,18 @@ def ants_register(fixed, moving_atlas_file):
     return wraped_mi
 
 
-def find_best_atlas(fixed, atlas_path, atlas_list):
+def find_best_atlas(fixed, atlas_path, atlas_list, use_mask=True):
     best_atlas = None
 
     for i, atlas in enumerate(atlas_list):
         atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
 
-        current_mi = ants_register(fixed, atlas_file)
+        if use_mask:
+            mask_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_NFseg_bm.nii.gz")
+        else:
+            mask_file = None
+
+        current_mi = ants_register(fixed, atlas_file, moving_atlas_mask_file=mask_file)
         print(f"\t\t\t{atlas}: {current_mi}")
 
         if best_atlas is None or current_mi < best_atlas[1]:  # < or > ?
@@ -85,7 +95,7 @@ if __name__ == "__main__":
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
-            best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
+            best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints, use_mask=True)
             print(f"\t\tBest altas: {best_atlas}")
 
             best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
@@ -133,4 +143,4 @@ if __name__ == "__main__":
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
 
-        exit()
+            exit()
