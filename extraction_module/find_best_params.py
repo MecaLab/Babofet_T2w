@@ -49,7 +49,7 @@ def make_filename(gd, params):
     return f"warped_{gd}__" + "__".join(filename_parts) + ".nii.gz"
 
 
-def run_registration_grid_search_with_repeats(fixed_path, moving_dir, out_dir, param_grid, n_repeats=10):
+def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_dir, out_dir, param_grid, n_repeats=10):
     """Exécute un grid search de recalage pour chaque atlas, avec répétitions."""
     fixed_image = ants.image_read(fixed_path)
     os.makedirs(out_dir, exist_ok=True)
@@ -66,6 +66,8 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, out_dir, p
         gd = file.split("_")[1]
         moving_file = os.path.join(moving_dir, file)
         moving_image = ants.image_read(moving_file)
+        moving_bm_file = os.path.join(moving_bm_dir, f"ONPRC_{gd}_NFseg_bm.nii.gz")
+        moving_bm = ants.image_read(moving_bm_file)
         print(f"\nProcessing atlas: {file} (Gestational Day: {gd})")
 
         for params in param_combinations:
@@ -73,7 +75,7 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, out_dir, p
             warped_paths = []
             for i in range(n_repeats):
                 print(f"\tRepeat {i+1}/{n_repeats} for params: {params}")
-                mytx = ants.registration(fixed=fixed_image, moving=moving_image, **params)
+                mytx = ants.registration(fixed=fixed_image, moving=moving_image, mask=moving_bm, **params)
                 warped_image = mytx['warpedmovout']
                 distance = calculate_similarity(fixed_image, warped_image, metric="mattes")
                 distances.append(distance)
@@ -127,7 +129,7 @@ if __name__ == "__main__":
 
     all_results = []
 
-    fixed_image = ants.image_read(os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz"))
+    fixed_image = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
 
     main_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
@@ -138,7 +140,7 @@ if __name__ == "__main__":
     if not os.path.exists(out_test_path):
         os.makedirs(out_test_path)
 
-    df = run_registration_grid_search_with_repeats(fixed_image, moving_path, out_test_path, param_grid, n_repeats=10)
+    df = run_registration_grid_search_with_repeats(fixed_image, moving_path, moving_bm_path, out_test_path, param_grid, n_repeats=10)
 
     print("\n=== Résultats globaux (moyenne ± écart-type) ===")
     for gd in df["gestational_day"].unique():
