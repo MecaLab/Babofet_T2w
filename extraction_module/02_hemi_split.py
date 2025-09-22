@@ -15,7 +15,7 @@ def ants_register(fixed, moving_atlas_file):
     # comute registration
     mytx = ants.registration(fixed=fixed, moving=moving_atlas, type_of_transform="Affine")  # 'SyN' or Affine
 
-    gd = moving_atlas_file.split("_")[1]
+    gd = os.path.basename(moving_atlas_file).split("_")[1]
     ants.image_write(mytx['warpedmovout'], os.path.join(cfg.BASE_NIOLON_PATH, f"tmp_affine_{gd}.nii.gz"))
     # fwdtransforms: Transforms to move from moving to fixed image.
     # invtransforms: Transforms to move from fixed to moving image.
