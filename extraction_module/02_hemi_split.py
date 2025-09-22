@@ -5,6 +5,8 @@ import ants as ants
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
+# Function to adapt the atlas to the subject and compute the MI
+
 
 def ants_register(fixed, moving_atlas_file):
     # load atlas volume
@@ -26,8 +28,7 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
     best_atlas = None
 
     for i, atlas in enumerate(atlas_list):
-        # atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
-        atlas_file = os.path.join(atlas_path, f"Template_G{atlas}_T2W.nii.gz")
+        atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
 
         current_mi = ants_register(fixed, atlas_file)
         print(f"\t\t\t{atlas}: {current_mi}")
@@ -41,12 +42,11 @@ def find_best_atlas(fixed, atlas_path, atlas_list):
 if __name__ == "__main__":
 
     recons_folder = cfg.RECONS_FOLDER
-    atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus")  # _v2
+    atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
     output_split_seg = os.path.join(atlas_path, "Seg_Hemi")
 
-    # atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
-    atlas_timepoints = [85, 110, 135]
+    atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
 
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
@@ -82,15 +82,13 @@ if __name__ == "__main__":
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
-            best_atlas = find_best_atlas(fixed, atlas_path, atlas_timepoints)  # os.path.join(atlas_path, "Volumes"), atlas_timepoints)
+            best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints)
             print(f"\t\tBest altas: {best_atlas}")
 
-            # best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
-            best_atlas_file = os.path.join(atlas_path, f"Template_G{best_atlas}_T2W.nii.gz")
+            best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
             moving_best_atlas = ants.image_read(best_atlas_file)
 
-            # moving_seg_file = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_G{best_atlas}_NFseg_structures_dilated.nii.gz")
-            moving_seg_file = os.path.join(atlas_path, "structures_dilated", f"ONPRC_G{best_atlas}_NFseg_structures_dilated.nii.gz")
+            moving_seg_file = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_G{best_atlas}_NFseg_structures_dilated.nii.gz")
 
             if not os.path.exists(moving_seg_file):
                 print(f"\t\tError ! File {moving_seg_file} does not exists. Run the previous script")
@@ -98,7 +96,7 @@ if __name__ == "__main__":
 
             moving_best_seg = ants.image_read(moving_seg_file)
 
-            mytx_best = ants.registration(fixed=fixed, moving=moving_best_atlas, type_of_transform='Affine')  # SyN
+            mytx_best = ants.registration(fixed=fixed, moving=moving_best_atlas, type_of_transform='Syn')  # SyN or Affine
             # fwdtransforms: Transforms to move from moving to fixed image.
             # invtransforms: Transforms to move from fixed to moving image.
             fwdtransform_best = mytx_best['fwdtransforms']
@@ -130,4 +128,4 @@ if __name__ == "__main__":
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
 
-        exit()
+            exit()
