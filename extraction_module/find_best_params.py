@@ -83,6 +83,7 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_
             print(f"\t\tMean distance: {mean_dist:.5f}, Std: {std_dist:.5f}, Var: {var_dist:.5f}")
 
             break # Pour tester rapidement, enlever pour exécuter sur tous les atlas
+        break # Pour tester rapidement, enlever pour exécuter sur tous les atlas
 
     # Convertir en DataFrame pour analyse
     df = pd.DataFrame(all_results)
