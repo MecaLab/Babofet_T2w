@@ -96,7 +96,7 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_
 
 if __name__ == "__main__":
     param_grid = {
-        "type_of_transform": ["Affine"],
+        "type_of_transform": ["Affine", "SyN"],
         "aff_random_sampling_rate": [0.2, 0.5],
         "aff_shrink_factors": [(6, 4, 2, 1), (8, 6, 4, 2)],
         "aff_smoothing_sigmas": [(3, 2, 1, 0), (4, 3, 2, 1)],
@@ -125,7 +125,7 @@ if __name__ == "__main__":
         df = run_registration_grid_search_with_repeats(fixed_image, moving_path, moving_bm_path, out_test_path, param_grid, n_repeats=10)
     else:
         df = pd.read_csv(out_csv_path)
-        
+
     print("\n=== Résultats globaux (moyenne ± écart-type) ===")
     for gd in df["gestational_day"].unique():
         subset = df[df["gestational_day"] == gd]
