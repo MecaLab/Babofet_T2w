@@ -16,7 +16,7 @@ def ants_register(fixed, moving_atlas_file, moving_atlas_mask_file=None):
     if moving_atlas_mask_file is not None:
         moving_atlas_mask = ants.image_read(moving_atlas_mask_file)
         mytx = ants.registration(fixed=fixed, moving=moving_atlas, mask=moving_atlas_mask,
-                                 type_of_transform="Affine")  # 'SyN' or Affine
+                                 type_of_transform="Affine", aff_random_sampling_rate=0.5)  # 'SyN' or Affine
     else:
         mytx = ants.registration(fixed=fixed, moving=moving_atlas, type_of_transform="Affine")  # 'SyN' or Affine
 
