@@ -8,28 +8,6 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def ants_register(fixed, moving_atlas_file, moving_atlas_mask_file=None):
-    # load atlas volume
-    moving_atlas = ants.image_read(moving_atlas_file)
-    # fixed.plot(overlay=moving_atlas, title='Before Registration', overlay_alpha = 0.5)
-    # comute registration
-    moving_atlas_mask = ants.image_read(moving_atlas_mask_file)
-    mytx = ants.registration(fixed=fixed, moving=moving_atlas, mask=moving_atlas_mask,
-                             type_of_transform="Affine", aff_random_sampling_rate=0.5)  # 'SyN' or Affine
-
-
-    gd = os.path.basename(moving_atlas_file).split("_")[1]
-    ants.image_write(mytx['warpedmovout'], os.path.join(cfg.BASE_NIOLON_PATH, f"tmp_affine_{gd}.nii.gz"))
-    # fwdtransforms: Transforms to move from moving to fixed image.
-    # invtransforms: Transforms to move from fixed to moving image.
-    # fwdtransform = mytx['fwdtransforms']
-    warped_atlas = mytx['warpedmovout']
-    # compute MI to find the closest atlas
-    # wraped_mi = ants.image_mutual_information(fixed, warped_atlas)
-    wraped_mi = ants.image_similarity(fixed, warped_atlas, metric_type="MattesMutualInformation")  # MattesMutualInformation, MeanSquares, CC, Demons
-    return wraped_mi
-
-
 def calculate_similarity(fixed, moving, metric):
     if metric == "mattes":
         return ants.image_similarity(fixed, moving, metric_type="MattesMutualInformation")
@@ -103,8 +81,6 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_
 
             print(f"\tResults for {gd}, {params['type_of_transform']}:")
             print(f"\t\tMean distance: {mean_dist:.4f}, Std: {std_dist:.4f}, Var: {var_dist:.4f}")
-
-        break # Retirer pour traiter tous les fichiers
 
     # Convertir en DataFrame pour analyse
     df = pd.DataFrame(all_results)
