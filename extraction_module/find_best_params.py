@@ -80,7 +80,6 @@ if __name__ == "__main__":
 
             ants.image_write(warped_image, os.path.join(out_test_path, f"warped_{gd}.nii.gz"))
 
-            exit()
 
         for res in sorted(results, key=lambda x: x["similarity"], reverse=True):
             print(res)
