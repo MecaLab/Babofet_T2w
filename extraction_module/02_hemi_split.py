@@ -39,7 +39,7 @@ def find_best_atlas(fixed, atlas_path, atlas_list, use_mask=True):
         atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{atlas}_Norm.nii.gz")
 
         if use_mask:
-            mask_file = os.path.join(atlas_path, "Segmentations", f"ONPRC_G{atlas}_NFseg_bm.nii.gz")
+            mask_file = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_G{atlas}_NFseg_bm.nii.gz")
         else:
             mask_file = None
 
