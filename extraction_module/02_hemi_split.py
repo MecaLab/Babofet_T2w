@@ -15,8 +15,8 @@ def ants_register(fixed, moving_atlas_file):
     # comute registration
     mytx = ants.registration(fixed=fixed, moving=moving_atlas, type_of_transform="Affine")  # 'SyN' or Affine
 
-    ants.image_write(mytx['warpedmovout'], os.path.join(cfg.BASE_NIOLON_PATH, "tmp_affine.nii.gz"))
-    print("\tSplitted segmentation saved as:", file_seg_out)
+    gd = moving_atlas_file.split("_")[1]
+    ants.image_write(mytx['warpedmovout'], os.path.join(cfg.BASE_NIOLON_PATH, f"tmp_affine_{gd}.nii.gz"))
     # fwdtransforms: Transforms to move from moving to fixed image.
     # invtransforms: Transforms to move from fixed to moving image.
     # fwdtransform = mytx['fwdtransforms']
@@ -111,7 +111,7 @@ if __name__ == "__main__":
                                                     transformlist=mytx_best['fwdtransforms'],
                                                     interpolator="nearestNeighbor")
 
-            ants.image_write(warped_best_seg, os.path.join(cfg.BASE_NIOLON_PATH, "tmp_syn.nii.gz"))
+            ants.image_write(warped_best_seg, os.path.join(cfg.BASE_NIOLON_PATH, "tmp_syn_seg.nii.gz"))
 
             ## use the aligned atlas hemi to split the segmentation
             new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
