@@ -39,6 +39,8 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_
     all_results = []
 
     for file in os.listdir(moving_dir):
+        if not file.endswith(".nii.gz"):
+            continue
         if "P4YR" in file:
             continue
         gd = file.split("_")[1]
