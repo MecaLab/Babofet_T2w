@@ -36,10 +36,10 @@ def find_best_atlas(fixed, atlas_path, atlas_list, use_mask=True):
     best_atlas = None
 
     for i, atlas in enumerate(atlas_list):
-        atlas_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_Norm.nii.gz")
+        atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{atlas}_Norm.nii.gz")
 
         if use_mask:
-            mask_file = os.path.join(atlas_path, f"ONPRC_G{atlas}_NFseg_bm.nii.gz")
+            mask_file = os.path.join(atlas_path, "Segmentations", f"ONPRC_G{atlas}_NFseg_bm.nii.gz")
         else:
             mask_file = None
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
             file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
 
             # find best_atlas
-            best_atlas = find_best_atlas(fixed, os.path.join(atlas_path, "Volumes"), atlas_timepoints, use_mask=True)
+            best_atlas = find_best_atlas(fixed, atlas_path, atlas_timepoints, use_mask=True)
             print(f"\t\tBest altas: {best_atlas}")
 
             best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
