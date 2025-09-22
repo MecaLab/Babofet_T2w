@@ -76,7 +76,6 @@ if __name__ == "__main__":
             results.append({
                 **params,
                 "similarity": similarity,
-                "warped_image_path": f"warped_{params['type_of_transform']}_{params['metric']}_{params['number_of_iterations'][0]}.nii.gz"
             })
 
             ants.image_write(warped_image, os.path.join(out_test_path, f"warped_{gd}.nii.gz"))
