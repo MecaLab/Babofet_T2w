@@ -106,8 +106,6 @@ if __name__ == "__main__":
 
         all_results.extend(results)
 
-        break  # Pour un seul fichier pendant les tests
-
     df = pd.DataFrame(all_results)
 
     stats = df.groupby(["gestational_day", "type_of_transform"]).agg(
@@ -125,4 +123,5 @@ if __name__ == "__main__":
         best = df[df["gestational_day"] == gd].loc[df[df["gestational_day"] == gd]["distance"].idxmin()]
         print(
             f"GD {gd}: Transform={best['type_of_transform']}, Sampling={best['aff_random_sampling_rate']}, Distance={best['distance']:.4f}")
-        print(f"\tImage: {best['warped_image_path']}")
+        basename = os.path.basename(best['warped_image_path'])
+        print(f"\tImage: {basename}")
