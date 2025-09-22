@@ -30,11 +30,11 @@ def overlay_structure(base_path, structure_path, output_path, structure_label):
 
 
 if __name__ == "__main__":
-    seg_folder = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus")
+    atlas_folder = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
-    # seg_folder = os.path.join(atlas_folder, "Segmentations")
+    seg_folder = os.path.join(atlas_folder, "Segmentations")
 
-    atlas_timepoints = [85, 110, 135]  # [85, 97, 110, 122, 135, 147, 155]
+    atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
     label_cerebellum = 7
     label_tronc = 8
 
