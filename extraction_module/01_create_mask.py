@@ -47,23 +47,16 @@ if __name__ == "__main__":
 
         print(f"Processing timepoint: {ts}")
 
-        """sample_seg_input = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg.nii.gz")
+        sample_seg_input = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg.nii.gz")
         sample_seg_hemi = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_hemi.nii.gz")
 
         sample_seg_cervelet = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet.nii.gz")
         sample_seg_tronc = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc.nii.gz")
 
         sample_seg_cervelet_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
-        sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")"""
+        sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
 
-        sample_seg_input = os.path.join(seg_folder, f"Template_G{ts}_T2W_Labels_2019.nii.gz")
-        sample_seg_hemi = os.path.join(structure_dir, f"Template_G{ts}_hemi.nii.gz")
-
-        sample_seg_cervelet = os.path.join(structure_dir, f"Template_G{ts}_cervelet.nii.gz")
-        sample_seg_tronc = os.path.join(structure_dir, f"Template_G{ts}_tronc.nii.gz")
-
-        sample_seg_cervelet_dilated = os.path.join(structure_dir, f"Template_G{ts}_cervelet_dilated.nii.gz")
-        sample_seg_tronc_dilated = os.path.join(structure_dir, f"Template_G{ts}_tronc_dilated.nii.gz")
+        sample_seg_bm = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_bm.nii.gz")
 
         should_del_files = [
             sample_seg_hemi,
@@ -76,6 +69,12 @@ if __name__ == "__main__":
         data = img.get_fdata()
         affine = img.affine
         header = img.header
+
+        # Create brainmask
+        if not os.path.exists(sample_seg_bm):
+            brainmask = (data > 0).astype(np.int16)
+            nib.save(nib.Nifti1Image(brainmask, affine, header), sample_seg_bm)
+
 
         print("\tCreating hemisphere mask...")
         if not os.path.exists(sample_seg_hemi):
