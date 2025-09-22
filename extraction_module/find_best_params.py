@@ -75,7 +75,6 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_
                 "mean_distance": mean_dist,
                 "std_distance": std_dist,
                 "var_distance": var_dist,
-                "all_distances": distances,
                 "warped_image_path": warped_paths[0] if warped_paths else None,
             })
 
@@ -86,6 +85,7 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_
 
     # Convertir en DataFrame pour analyse
     df = pd.DataFrame(all_results)
+    print(df.memory_usage(deep=True).sum())
 
     # Sauvegarder les résultats
     out_csv_path = os.path.join(out_dir, "registration_results_repeated.csv")
