@@ -24,7 +24,7 @@ if __name__ == "__main__":
     gds = df["gestational_day"].unique()
     for gd in gds:
         df_gd = df[df["gestational_day"] == gd]
-        print(df_gd)
+        print(df_gd.columns)
         mean_of_means = df_gd["mean_distance"].mean()
         std_of_means = df_gd["mean_distance"].std()
         print(f"Gestational Day {gd}: Mean of Means = {mean_of_means:.5f}, Std of Means = {std_of_means:.5f}")
