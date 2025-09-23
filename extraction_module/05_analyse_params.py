@@ -7,6 +7,19 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
+def find_best_params(df, colums=None):
+    if colums is None:
+        colums = ["mean_distance", "std_distance", "var_distance"]
+    for col in colums:
+        best_data = df.loc[df[col].idxmin()]
+        print(f"Best Parameters for {col}: Gestational Day = {best_data['gestational_day']}, "
+              f"Transform = {best_data['type_of_transform']}, Sampling Rate = {best_data['aff_random_sampling_rate']}, "
+              f"aff_smoothing_sigmas = {best_data['aff_smoothing_sigmas']}, aff_shrink_factors = {best_data['aff_shrink_factors']}, "
+              f"Mean Distance = {best_data['mean_distance']:.5f}, Var Distance = {best_data['var_distance']:.5f}, "
+                f"Std Distance = {best_data['std_distance']:.5f}")
+
+
+
 
 if __name__ == "__main__":
 
@@ -30,22 +43,7 @@ if __name__ == "__main__":
               f"Sampling Rate = {best_row['aff_random_sampling_rate']}, Mean Distance = {best_row['mean_distance']:.5f}, "
               f"Var Distance = {best_row['var_distance']:.5f}, Std Distance = {best_row['std_distance']:.5f}\n")
 
-    best_min_std = df.loc[df["std_distance"].idxmin()]
-    print(f"Overall Best Parameters (Min Std Dev): Gestational Day = {best_min_std['gestational_day']}, "
-          f"Transform = {best_min_std['type_of_transform']}, Sampling Rate = {best_min_std['aff_random_sampling_rate']}, "
-          f"Mean Distance = {best_min_std['mean_distance']:.5f}, Var Distance = {best_min_std['var_distance']:.5f}, "
-          f"Std Distance = {best_min_std['std_distance']:.5f}\n")
+    print("\n=== Overall Best Parameters ===")
+    find_best_params(df)
 
-    best_min_mean = df.loc[df["mean_distance"].idxmin()]
-    print(f"Overall Best Parameters (Min Mean Distance): Gestational Day = {best_min_mean['gestational_day']}, "
-          f"Transform = {best_min_mean['type_of_transform']}, Sampling Rate = {best_min_mean['aff_random_sampling_rate']}, "
-          f"Mean Distance = {best_min_mean['mean_distance']:.5f}, Var Distance = {best_min_mean['var_distance']:.5f}, "
-          f"Std Distance = {best_min_mean['std_distance']:.5f}\n")
 
-    best_min_var = df.loc[df["var_distance"].idxmin()]
-    print(f"Overall Best Parameters (Min Variance): Gestational Day = {best_min_var['gestational_day']}, "
-          f"Transform = {best_min_var['type_of_transform']}, Sampling Rate = {best_min_var['aff_random_sampling_rate']}, "
-          f"Mean Distance = {best_min_var['mean_distance']:.5f}, Var Distance = {best_min_var['var_distance']:.5f}, "
-          f"Std Distance = {best_min_var['std_distance']:.5f}\n")
-
-    
