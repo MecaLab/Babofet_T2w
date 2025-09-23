@@ -55,7 +55,7 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_
             warped_paths = []
             for i in range(n_repeats):
                 print(f"\tRepeat {i+1}/{n_repeats} for params: {params}")
-                mytx = ants.registration(fixed=fixed_image, moving=moving_image, mask=moving_bm, **params)
+                mytx = ants.registration(fixed=fixed_image, moving=moving_image, moving_mask=moving_bm, **params)
                 warped_image = mytx['warpedmovout']
                 distance = calculate_similarity(fixed_image, warped_image, metric="mattes")
                 distances.append(distance)
@@ -85,7 +85,6 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_
 
     # Convertir en DataFrame pour analyse
     df = pd.DataFrame(all_results)
-    print(df.memory_usage(deep=True).sum())
 
     # Sauvegarder les résultats
     out_csv_path = os.path.join(out_dir, "registration_results_repeated.csv")
