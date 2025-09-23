@@ -25,3 +25,7 @@ if __name__ == "__main__":
         std_of_means = df_gd["mean_distance"].std()
         print(f"Gestational Day {gd}: Mean of Means = {mean_of_means:.5f}, Std of Means = {std_of_means:.5f}")
 
+        best_row = df_gd.loc[df_gd["mean_distance"].idxmin()]
+        print(f"Best Parameters: Transform = {best_row['type_of_transform']},"
+              f"Sampling Rate = {best_row['aff_random_sampling_rate']}, Mean Distance = {best_row['mean_distance']:.5f}")
+
