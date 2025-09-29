@@ -54,8 +54,8 @@ def get_best_exp(df):
     # 2. Calcul du score total (somme des rangs)
     df['total_score'] = df['mean_rank'] + df['std_rank'] + df['var_rank']
 
-    # 3. Afficher les meilleures combinaisons (par exemple, les 5 meilleures)
-    best_combinations = df.nsmallest(5, 'total_score')
+    # 3. Afficher les meilleures combinaisons (par exemple, les X meilleures)
+    best_combinations = df.nsmallest(3, 'total_score')
     print(best_combinations[['gestational_day', 'type_of_transform', 'aff_random_sampling_rate',
                              'aff_shrink_factors', 'aff_smoothing_sigmas',
                              'mean_distance', 'std_distance', 'var_distance', 'total_score']])
