@@ -58,6 +58,21 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
         print("Moving image spacing:", moving_image.spacing)
         print("Moving mask spacing:", moving_bm.spacing)
 
+        print("Fixed image shape:", fixed_image.shape)
+        print("Fixed mask shape:", fixed_bm.shape)
+        print("Moving image shape:", moving_image.shape)
+        print("Moving mask shape:", moving_bm.shape)
+
+        print("Fixed image origin:", fixed_image.origin)
+        print("Fixed mask origin:", fixed_bm.origin)
+        print("Moving image origin:", moving_image.origin)
+        print("Moving mask origin:", moving_bm.origin)
+
+        print("Fixed image direction:", fixed_image.direction)
+        print("Fixed mask direction:", fixed_bm.direction)
+        print("Moving image direction:", moving_image.direction)
+        print("Moving mask direction:", moving_bm.direction)
+
 
         print(f"\nProcessing atlas: {file} (Gestational Day: {gd})")
 
