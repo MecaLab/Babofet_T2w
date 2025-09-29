@@ -8,9 +8,9 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def calculate_similarity(fixed, moving, metric):
+def calculate_similarity(fixed, moving, fixed_mask, moving_mask, metric):
     if metric == "mattes":
-        return ants.image_similarity(fixed, moving, metric_type="MattesMutualInformation")
+        return ants.image_similarity(fixed, moving, fixed_mask=fixed_mask, moving_mask=moving_mask, metric_type="MattesMutualInformation")
     else:
         raise ValueError(f"Unknown metric: {metric}")
 
@@ -27,9 +27,11 @@ def make_filename(gd, params):
     return f"warped_{gd}__" + "__".join(filename_parts) + ".nii.gz"
 
 
-def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_dir, out_dir, param_grid, n_repeats=10):
+def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_dir, moving_bm_dir, out_dir, param_grid, n_repeats=10):
     """Exécute un grid search de recalage pour chaque atlas, avec répétitions."""
     fixed_image = ants.image_read(fixed_path)
+    fixed_bm = ants.image_read(fixed_bm_path)
+
     os.makedirs(out_dir, exist_ok=True)
 
     # Générer toutes les combinaisons de paramètres
@@ -55,9 +57,9 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_
             warped_paths = []
             for i in range(n_repeats):
                 print(f"\tRepeat {i+1}/{n_repeats} for params: {params}")
-                mytx = ants.registration(fixed=fixed_image, moving=moving_image, moving_mask=moving_bm, **params)
+                mytx = ants.registration(fixed=fixed_image, mask=fixed_bm, moving=moving_image, moving_mask=moving_bm, **params)
                 warped_image = mytx['warpedmovout']
-                distance = calculate_similarity(fixed_image, warped_image, metric="mattes")
+                distance = calculate_similarity(fixed_image, warped_image, fixed_bm, moving_bm, etric="mattes")
                 distances.append(distance)
 
                 # Sauvegarder l'image recalée pour chaque répétition
@@ -95,7 +97,7 @@ def run_registration_grid_search_with_repeats(fixed_path, moving_dir, moving_bm_
 
 if __name__ == "__main__":
     param_grid = {
-        "type_of_transform": ["Affine", "SyN"],
+        "type_of_transform": ["Affine"],
         "aff_random_sampling_rate": [0.2, 0.5],
         "aff_shrink_factors": [(6, 4, 2, 1), (8, 6, 4, 2)],
         "aff_smoothing_sigmas": [(3, 2, 1, 0), (4, 3, 2, 1)],
@@ -108,12 +110,16 @@ if __name__ == "__main__":
     all_results = []
 
     fixed_image = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
-    fixed_image_bis = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2/Volumes/Test_registration_borgne07/warped_G85__type_of_transform-SyN__aff_random_sampling_rate-0p5__aff_shrink_factors-6_4_2_1__aff_smoothing_sigmas-4_3_2_1_rep1.nii.gz")
+    fixed_mask = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_mask.nii.nii.gz")
 
 
+    """
+    # fixed_image_bis = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2/Volumes/Test_registration_borgne07/warped_G85__type_of_transform-SyN__aff_random_sampling_rate-0p5__aff_shrink_factors-6_4_2_1__aff_smoothing_sigmas-4_3_2_1_rep1.nii.gz")
     distance = ants.image_similarity(ants.image_read(fixed_image), ants.image_read(fixed_image_bis), metric_type="MattesMutualInformation")
+    ants.image_mutual_information(ants.image_read(fixed_image), ants.image_read(fixed_image_bis))
     print(f"Distance test: {distance}")
     exit()
+    """
 
     main_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
