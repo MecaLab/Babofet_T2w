@@ -43,7 +43,6 @@ def make_plots(df):
     axes[2].set_ylabel('Var Distance')
 
     plt.tight_layout()
-    plt.show()
 
     plt.savefig("registration_results_boxplots.png")
 
