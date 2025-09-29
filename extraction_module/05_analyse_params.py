@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
     base_path = cfg.BASE_NIOLON_PATH
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
-    csv_path = os.path.join(atlas_path, "Volumes/Test_registration_borgne07", "registration_results_repeated.csv")
+    csv_path = os.path.join(atlas_path, "Volumes/Test_registration", "registration_results_repeated.csv")
 
     if not os.path.exists(csv_path):
         print(f"CSV file not found at {csv_path}")
