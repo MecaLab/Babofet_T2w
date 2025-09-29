@@ -108,11 +108,11 @@ if __name__ == "__main__":
     all_results = []
 
     fixed_image = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
-    fixed_image_bis = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses03/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
+    fixed_image_bis = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2/Volumes/Test_registration_borgne07/warped_G85__type_of_transform-SyN__aff_random_sampling_rate-0p5__aff_shrink_factors-6_4_2_1__aff_smoothing_sigmas-4_3_2_1_rep1.nii.gz")
 
 
     distance = ants.image_similarity(ants.image_read(fixed_image), ants.image_read(fixed_image_bis), metric_type="MattesMutualInformation")
-    print(f"Distance test (should be high): {distance}")
+    print(f"Distance test: {distance}")
     exit()
 
     main_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
