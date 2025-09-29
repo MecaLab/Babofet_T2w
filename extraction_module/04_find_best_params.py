@@ -59,7 +59,7 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
                 print(f"\tRepeat {i+1}/{n_repeats} for params: {params}")
                 mytx = ants.registration(fixed=fixed_image, mask=fixed_bm, moving=moving_image, moving_mask=moving_bm, **params)
                 warped_image = mytx['warpedmovout']
-                distance = calculate_similarity(fixed_image, warped_image, fixed_bm, moving_bm, etric="mattes")
+                distance = calculate_similarity(fixed_image, warped_image, fixed_bm, moving_bm, metric="mattes")
                 distances.append(distance)
 
                 # Sauvegarder l'image recalée pour chaque répétition
