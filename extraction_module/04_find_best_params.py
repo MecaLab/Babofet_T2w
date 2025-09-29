@@ -73,6 +73,8 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
         print("Moving image direction:", moving_image.direction)
         print("Moving mask direction:", moving_bm.direction)
 
+        print("Fixed mask unique values:", np.unique(ants.get_mask(fixed_bm)))
+        print("Moving mask unique values:", np.unique(ants.get_mask(moving_bm)))
 
         print(f"\nProcessing atlas: {file} (Gestational Day: {gd})")
 
