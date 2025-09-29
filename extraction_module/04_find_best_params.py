@@ -9,8 +9,18 @@ import configuration as cfg
 
 
 def calculate_similarity(fixed, moving, fixed_mask, moving_mask, metric):
+    # Aligner les métadonnées
+    moving_aligned = ants.copy_image_info(fixed, moving)
+    moving_mask_aligned = ants.copy_image_info(fixed, moving_mask)
+    # Binariser les masques
+    fixed_mask = ants.threshold_image(fixed_mask, 0.5, 1, 1, 0)
+    moving_mask_aligned = ants.threshold_image(moving_mask_aligned, 0.5, 1, 1, 0)
     if metric == "mattes":
-        return ants.image_similarity(fixed, moving, fixed_mask=fixed_mask, moving_mask=moving_mask, metric_type="MattesMutualInformation")
+        return ants.image_similarity(
+            fixed, moving_aligned,
+            fixed_mask=fixed_mask, moving_mask=moving_mask_aligned,
+            metric_type="MattesMutualInformation"
+        )
     else:
         raise ValueError(f"Unknown metric: {metric}")
 
@@ -32,8 +42,6 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
     fixed_image = ants.image_read(fixed_path)
     fixed_bm = ants.image_read(fixed_bm_path)
 
-
-
     os.makedirs(out_dir, exist_ok=True)
 
     # Générer toutes les combinaisons de paramètres
@@ -53,7 +61,7 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
         moving_bm_file = os.path.join(moving_bm_dir, f"ONPRC_{gd}_NFseg_bm.nii.gz")
         moving_bm = ants.image_read(moving_bm_file)
 
-        print("Fixed image spacing:", fixed_image.spacing)
+        """print("Fixed image spacing:", fixed_image.spacing)
         print("Fixed mask spacing:", fixed_bm.spacing)
         print("Moving image spacing:", moving_image.spacing)
         print("Moving mask spacing:", moving_bm.spacing)
@@ -73,11 +81,8 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
         print("Moving image direction:", moving_image.direction)
         print("Moving mask direction:", moving_bm.direction)
 
-        print("Fixed image unique values:", np.unique(ants.get_data(fixed_image)))
-        print("Moving image unique values:", np.unique(ants.get_data(moving_image)))
-
         print("Fixed mask unique values:", np.unique(ants.get_mask(fixed_bm)))
-        print("Moving mask unique values:", np.unique(ants.get_mask(moving_bm)))
+        print("Moving mask unique values:", np.unique(ants.get_mask(moving_bm)))"""
 
         print(f"\nProcessing atlas: {file} (Gestational Day: {gd})")
 
