@@ -45,6 +45,8 @@ def make_plots(df):
     plt.tight_layout()
     plt.show()
 
+    plt.savefig("registration_results_boxplots.png")
+
 
 
 if __name__ == "__main__":
