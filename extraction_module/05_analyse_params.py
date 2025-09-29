@@ -124,7 +124,7 @@ if __name__ == "__main__":
     ga = best_row['gestational_day']
     print(f"\n=== Computing Best Registration for Gestational Day {ga} ===")
 
-    fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii") # subject
+    fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz") # subject
     moving_path = os.path.join(atlas_path, "Volumes", f"ONPRC_{ga}_Norm.nii.gz")  # template
     moving_bm_path = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_{ga}_NFseg_bm.nii.gz")
     output_path = os.path.join(atlas_path, "Volumes", f"ONPRC_{ga}_Norm_best_registered.nii.gz")
