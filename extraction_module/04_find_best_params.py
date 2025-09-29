@@ -133,7 +133,7 @@ if __name__ == "__main__":
     out_csv_path = os.path.join(out_test_path, "registration_results_repeated.csv")
 
     if not os.path.exists(out_csv_path):
-        df = run_registration_grid_search_with_repeats(fixed_image, moving_path, moving_bm_path, out_test_path, param_grid, n_repeats=10)
+        df = run_registration_grid_search_with_repeats(fixed_image, fixed_mask, moving_path, moving_bm_path, out_test_path, param_grid, n_repeats=10)
     else:
         df = pd.read_csv(out_csv_path)
 
