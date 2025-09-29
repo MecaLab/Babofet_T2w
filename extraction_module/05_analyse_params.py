@@ -80,7 +80,6 @@ def compute_best_registration(best_row, fixed_path, moving_path, output_path):
         random_sampling_rate=best_row['aff_random_sampling_rate'],
         shrink_factors=aff_shrink_factors,
         smoothing_sigmas=aff_smoothing_sigmas,
-        verbose=True
     )
 
     # Sauvegarder l'image recalée
@@ -94,7 +93,7 @@ if __name__ == "__main__":
 
     base_path = cfg.BASE_NIOLON_PATH
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
-    csv_path = os.path.join(atlas_path, "Volumes/Test_registration", "registration_results_repeated.csv")
+    csv_path = os.path.join(atlas_path, "Volumes/Test_registration_borgne07", "registration_results_repeated.csv")
 
     if not os.path.exists(csv_path):
         print(f"CSV file not found at {csv_path}")
