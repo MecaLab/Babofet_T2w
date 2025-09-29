@@ -109,6 +109,11 @@ if __name__ == "__main__":
 
     fixed_image = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses03/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
 
+
+    distance = ants.image_similarity(ants.image_read(fixed_image), ants.image_read(fixed_image), metric_type="MattesMutualInformation")
+    print(f"Distance test (should be high): {distance}")
+    exit()
+
     main_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
     moving_path = os.path.join(main_path, "Volumes")
