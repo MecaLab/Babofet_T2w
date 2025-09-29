@@ -20,7 +20,6 @@ def find_best_params(df, colums=None):
                 f"Std Distance = {best_data['std_distance']:.5f}")
 
 
-
 def make_plots(df):
     df["aff_smoothing_sigmas_str"] = df["aff_smoothing_sigmas"].apply(lambda x: str(x))
     df["aff_shrink_factors_str"] = df["aff_shrink_factors"].apply(lambda x: str(x))
@@ -45,6 +44,21 @@ def make_plots(df):
     plt.tight_layout()
 
     plt.savefig("registration_results_boxplots.png")
+
+
+def get_best_exp(df):
+    df['mean_rank'] = df['mean_distance'].rank(method='min')
+    df['std_rank'] = df['std_distance'].rank(method='min')
+    df['var_rank'] = df['var_distance'].rank(method='min')
+
+    # 2. Calcul du score total (somme des rangs)
+    df['total_score'] = df['mean_rank'] + df['std_rank'] + df['var_rank']
+
+    # 3. Afficher les meilleures combinaisons (par exemple, les 5 meilleures)
+    best_combinations = df.nsmallest(5, 'total_score')
+    print(best_combinations[['gestational_day', 'type_of_transform', 'aff_random_sampling_rate',
+                             'aff_shrink_factors', 'aff_smoothing_sigmas',
+                             'mean_distance', 'std_distance', 'var_distance', 'total_score']])
 
 
 
@@ -74,5 +88,7 @@ if __name__ == "__main__":
     find_best_params(df)
 
     make_plots(df)
+
+    get_best_exp(df)
 
 
