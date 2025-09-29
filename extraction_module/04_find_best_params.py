@@ -32,6 +32,8 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
     fixed_image = ants.image_read(fixed_path)
     fixed_bm = ants.image_read(fixed_bm_path)
 
+
+
     os.makedirs(out_dir, exist_ok=True)
 
     # Générer toutes les combinaisons de paramètres
@@ -50,6 +52,13 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
         moving_image = ants.image_read(moving_file)
         moving_bm_file = os.path.join(moving_bm_dir, f"ONPRC_{gd}_NFseg_bm.nii.gz")
         moving_bm = ants.image_read(moving_bm_file)
+
+        print("Fixed image spacing:", fixed_image.spacing)
+        print("Fixed mask spacing:", fixed_bm.spacing)
+        print("Moving image spacing:", moving_image.spacing)
+        print("Moving mask spacing:", moving_bm.spacing)
+
+
         print(f"\nProcessing atlas: {file} (Gestational Day: {gd})")
 
         for params in param_combinations:
