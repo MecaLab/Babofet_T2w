@@ -107,7 +107,7 @@ if __name__ == "__main__":
 
     all_results = []
 
-    fixed_image = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
+    fixed_image = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses03/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
 
     main_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
