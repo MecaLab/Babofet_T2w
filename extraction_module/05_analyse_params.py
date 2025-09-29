@@ -60,11 +60,41 @@ def get_best_exp(df):
                              'aff_shrink_factors', 'aff_smoothing_sigmas',
                              'mean_distance', 'std_distance', 'var_distance', 'total_score']])
 
+    return best_combinations.iloc[0]  # Retourne la meilleure ligne
+
+
+def compute_best_registration(best_row, fixed_path, moving_path, output_path):
+    # Charger les images
+    fixed_image = ants.image_read(fixed_path)
+    moving_image = ants.image_read(moving_path)
+
+    # Extraire et convertir les paramètres
+    aff_shrink_factors = eval(best_row['aff_shrink_factors'])
+    aff_smoothing_sigmas = eval(best_row['aff_smoothing_sigmas'])
+
+    # Lancer le recalage
+    registration = ants.registration(
+        fixed=fixed_image,
+        moving=moving_image,
+        type_of_transform=best_row['type_of_transform'],
+        random_sampling_rate=best_row['aff_random_sampling_rate'],
+        shrink_factors=aff_shrink_factors,
+        smoothing_sigmas=aff_smoothing_sigmas,
+        verbose=True
+    )
+
+    # Sauvegarder l'image recalée
+    warped_image = registration['warpedmovout']
+    ants.image_write(warped_image, output_path)
+    print(f"Recalage terminé. Image sauvegardée à {output_path}")
+
 
 
 if __name__ == "__main__":
 
-    csv_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2/Volumes/Test_registration", "registration_results_repeated.csv")
+    base_path = cfg.BASE_NIOLON_PATH
+    atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
+    csv_path = os.path.join(atlas_path, "Volumes/Test_registration", "registration_results_repeated.csv")
 
     if not os.path.exists(csv_path):
         print(f"CSV file not found at {csv_path}")
@@ -89,6 +119,16 @@ if __name__ == "__main__":
 
     make_plots(df)
 
-    get_best_exp(df)
+    best_row = get_best_exp(df)
+
+    print(best_row)
+
+    exit()
+
+    fixed_path = "chemin/vers/image_fixe.nii.gz" # subject
+    moving_path = "chemin/vers/image_mobile.nii.gz"  # template
+    moving_bm_path = ""
+    output_path = "chemin/vers/image_recalée.nii.gz"
+    compute_best_registration(best_row, fixed_path, moving_path, output_path)
 
 
