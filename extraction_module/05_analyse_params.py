@@ -24,7 +24,7 @@ def make_plots(df):
     df["aff_smoothing_sigmas_str"] = df["aff_smoothing_sigmas"].apply(lambda x: str(x))
     df["aff_shrink_factors_str"] = df["aff_shrink_factors"].apply(lambda x: str(x))
 
-    fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+    fig, axes = plt.subplots(1, 3, figsize=(22, 12))
 
     # Plot mean_distance
     sns.boxplot(data=df, x='aff_random_sampling_rate', y='mean_distance', hue='gestational_day', ax=axes[0])
