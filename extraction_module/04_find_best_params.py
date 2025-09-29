@@ -110,7 +110,7 @@ if __name__ == "__main__":
     all_results = []
 
     fixed_image = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
-    fixed_mask = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_mask.nii.nii.gz")
+    fixed_mask = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_mask.nii.gz")
 
 
     """
