@@ -1,8 +1,9 @@
-import numpy as np
 import os
 import sys
 import ants as ants
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -18,6 +19,31 @@ def find_best_params(df, colums=None):
               f"Mean Distance = {best_data['mean_distance']:.5f}, Var Distance = {best_data['var_distance']:.5f}, "
                 f"Std Distance = {best_data['std_distance']:.5f}")
 
+
+
+def make_plots(df):
+    df["aff_smoothing_sigmas_str"] = df["aff_smoothing_sigmas"].apply(lambda x: str(x))
+    df["aff_shrink_factors_str"] = df["aff_shrink_factors"].apply(lambda x: str(x))
+
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+
+    # Plot mean_distance
+    sns.boxplot(data=df, x='aff_random_sampling_rate', y='mean_distance', hue='gestational_day', ax=axes[0])
+    axes[0].set_title('Mean Distance by Sampling Rate and Gestational Day')
+    axes[0].set_ylabel('Mean Distance')
+
+    # Plot std_distance
+    sns.boxplot(data=df, x='aff_random_sampling_rate', y='std_distance', hue='gestational_day', ax=axes[1])
+    axes[1].set_title('Std Distance by Sampling Rate and Gestational Day')
+    axes[1].set_ylabel('Std Distance')
+
+    # Plot var_distance
+    sns.boxplot(data=df, x='aff_random_sampling_rate', y='var_distance', hue='gestational_day', ax=axes[2])
+    axes[2].set_title('Var Distance by Sampling Rate and Gestational Day')
+    axes[2].set_ylabel('Var Distance')
+
+    plt.tight_layout()
+    plt.show()
 
 
 
@@ -45,5 +71,7 @@ if __name__ == "__main__":
 
     print("\n=== Overall Best Parameters ===")
     find_best_params(df)
+
+    make_plots(df)
 
 
