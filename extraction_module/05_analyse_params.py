@@ -121,14 +121,13 @@ if __name__ == "__main__":
 
     best_row = get_best_exp(df)
 
-    print(best_row)
+    ga = best_row['gestational_day']
+    print(f"\n=== Computing Best Registration for Gestational Day {ga} ===")
 
-    exit()
-
-    fixed_path = "chemin/vers/image_fixe.nii.gz" # subject
-    moving_path = "chemin/vers/image_mobile.nii.gz"  # template
-    moving_bm_path = ""
-    output_path = "chemin/vers/image_recalée.nii.gz"
+    fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii") # subject
+    moving_path = os.path.join(atlas_path, "Volumes", f"ONPRC_{ga}_Norm.nii.gz")  # template
+    moving_bm_path = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_{ga}_NFseg_bm.nii.gz")
+    output_path = os.path.join(atlas_path, "Volumes", f"ONPRC_{ga}_Norm_best_registered.nii.gz")
     compute_best_registration(best_row, fixed_path, moving_path, output_path)
 
 
