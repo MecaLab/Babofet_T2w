@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
     base_path = cfg.BASE_NIOLON_PATH
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
-    registration_exp_files = os.path.join(atlas_path, "Volumes/Test_registration_borgne07")
+    registration_exp_files = os.path.join(atlas_path, "Volumes/Test_registration")
     csv_path = os.path.join(registration_exp_files, "registration_results_repeated.csv")
 
     if not os.path.exists(csv_path):
@@ -170,9 +170,11 @@ if __name__ == "__main__":
 
     print(f"Best registration parameters: Transform = {type_of_transform}, Sampling Rate = {random_sampling_rate}, "
           f"aff_shrink_factors = {aff_shrink_factors}, aff_smoothing_sigmas = {aff_smoothing_sigmas}")
-    
+
 
     fixed_image.plot(overlay=best_moving_image, title=f"Best registration. Distance: {distance}", overlay_alpha=0.5)
 
 
+"""
 
+"""
