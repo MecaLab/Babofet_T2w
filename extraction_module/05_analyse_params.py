@@ -158,7 +158,8 @@ if __name__ == "__main__":
 
     # plot_registration(ants.image_read(fixed_path), registration_exp_files)
 
-    distance = ants.image_similarity(ants.image_read(fixed_path), ants.image_read(output_path),
-                                     metric_type="MattesMutualInformation")
+    distance = ants.image_similarity(ants.image_read(fixed_path), ants.image_read(output_path), metric_type="MattesMutualInformation")
+
+    print(f"Similarity between fixed image and best registered image: {distance}")
 
 
