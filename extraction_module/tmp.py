@@ -56,7 +56,13 @@ if __name__ == "__main__":
     moving_img = ants.image_read(moving_path)
 
     similarity = ants.image_similarity(fixed_img, moving_img, metric_type='Correlation')
+    print("122:", similarity)
 
-    print(similarity)
+    moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G122_Norm_best_registered.nii.gz")  # template
+    moving_img = ants.image_read(moving_path)
+
+    similarity = ants.image_similarity(fixed_img, moving_img, metric_type='Correlation')
+    print("97:", similarity)
+
 
     # tmp_func(df)
