@@ -55,7 +55,7 @@ if __name__ == "__main__":
     moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G97_Norm_best_registered.nii.gz")  # template
     moving_img = ants.image_read(moving_path)
 
-    similarity = ants.image_similarity(fixed_img, moving_img, metric_type='Correlation')
+    similarity = ants.image_similarity(fixed_img, fixed_img, metric_type='Correlation')
 
     print(similarity)
 
