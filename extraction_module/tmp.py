@@ -48,12 +48,15 @@ if __name__ == "__main__":
 
     df = pd.read_csv(csv_path)
 
-    """fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space",
+    fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space",
                               "srr_template_debiased.nii.gz")  # subject
     fixed_img = ants.image_read(fixed_path)
 
-    similarity = ants.image_similarity(fixed_img, fixed_img, metric_type='Correlation')
+    moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G122_Norm_best_registered.nii.gz")  # template
+    moving_img = ants.image_read(moving_path)
 
-    print(similarity)"""
+    similarity = ants.image_similarity(fixed_img, moving_img, metric_type='Correlation')
 
-    tmp_func(df)
+    print(similarity)
+
+    # tmp_func(df)
