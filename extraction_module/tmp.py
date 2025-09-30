@@ -7,9 +7,8 @@ import configuration as cfg
 
 # Fonction pour calculer et afficher la similarité
 def calculate_and_plot(fixed_img, warped_path):
-    print(warped_path)
-    warped_img = ants.image_read(warped_path)
-    similarity = ants.similarity(fixed_img, warped_img, metric='mattes')[0]
+    warped_img = ants.image_read(warped_path["warped_image_path"])
+    similarity = ants.similarity(fixed_img, warped_img, metric='MattesMutualInformation')[0]
     print(f"Similarité (Mattes Mutual Information) : {similarity}")
     fixed_img.plot(title="Image Fixed")
     warped_img.plot(title="Image Warped")
