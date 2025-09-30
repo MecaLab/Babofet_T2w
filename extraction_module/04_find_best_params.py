@@ -61,29 +61,6 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
         moving_bm_file = os.path.join(moving_bm_dir, f"ONPRC_{gd}_NFseg_bm.nii.gz")
         moving_bm = ants.image_read(moving_bm_file)
 
-        """print("Fixed image spacing:", fixed_image.spacing)
-        print("Fixed mask spacing:", fixed_bm.spacing)
-        print("Moving image spacing:", moving_image.spacing)
-        print("Moving mask spacing:", moving_bm.spacing)
-
-        print("Fixed image shape:", fixed_image.shape)
-        print("Fixed mask shape:", fixed_bm.shape)
-        print("Moving image shape:", moving_image.shape)
-        print("Moving mask shape:", moving_bm.shape)
-
-        print("Fixed image origin:", fixed_image.origin)
-        print("Fixed mask origin:", fixed_bm.origin)
-        print("Moving image origin:", moving_image.origin)
-        print("Moving mask origin:", moving_bm.origin)
-
-        print("Fixed image direction:", fixed_image.direction)
-        print("Fixed mask direction:", fixed_bm.direction)
-        print("Moving image direction:", moving_image.direction)
-        print("Moving mask direction:", moving_bm.direction)
-
-        print("Fixed mask unique values:", np.unique(ants.get_mask(fixed_bm)))
-        print("Moving mask unique values:", np.unique(ants.get_mask(moving_bm)))"""
-
         print(f"\nProcessing atlas: {file} (Gestational Day: {gd})")
 
         for params in param_combinations:
@@ -91,6 +68,7 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
             warped_paths = []
             for i in range(n_repeats):
                 print(f"\tRepeat {i+1}/{n_repeats} for params: {params}")
+                fixed_image.plot(overlay=moving_image, title='Before Registration', overlay_alpha=0.5)
                 mytx = ants.registration(fixed=fixed_image, mask=fixed_bm, moving=moving_image, moving_mask=moving_bm, **params)
                 warped_image = mytx['warpedmovout']
                 distance = calculate_similarity(fixed_image, warped_image, fixed_bm, moving_bm, metric="mattes")
@@ -145,7 +123,6 @@ if __name__ == "__main__":
 
     fixed_image = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
     fixed_mask = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_mask.nii.gz")
-
 
     """
     # fixed_image_bis = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2/Volumes/Test_registration_borgne07/warped_G85__type_of_transform-SyN__aff_random_sampling_rate-0p5__aff_shrink_factors-6_4_2_1__aff_smoothing_sigmas-4_3_2_1_rep1.nii.gz")
