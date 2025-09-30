@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import sys
+import re
 import ants as ants
 import pandas as pd
 import itertools
@@ -21,8 +22,28 @@ def calculate_similarity(fixed, moving, fixed_mask, moving_mask, metric):
             fixed_mask=fixed_mask, moving_mask=moving_mask_aligned,
             metric_type="MattesMutualInformation"
         )
+    elif metric == "CC":
+        return ants.image_similarity(
+            fixed, moving_aligned,
+            fixed_mask=fixed_mask, moving_mask=moving_mask_aligned,
+            metric_type="ANTSNeighborhoodCorrelation"
+        )
     else:
         raise ValueError(f"Unknown metric: {metric}")
+
+
+def transform_filename(original):
+    # (Ton code de transformation ici)
+    s = original.replace('warped_', '')
+    s = re.sub(r'__type_of_transform-', '_', s)
+    s = re.sub(r'__aff_random_sampling_rate-0p2', '_02', s)
+    s = re.sub(r'__aff_shrink_factors-([\d_]+)', lambda m: '_' + m.group(1).replace('_', '-'), s)
+    s = re.sub(r'__aff_smoothing_sigmas-([\d_]+)', lambda m: '_' + m.group(1).replace('_', '-'), s)
+    s = re.sub(r'_aff_shrink_factors', '', s)
+    s = re.sub(r'_aff_smoothing_sigmas', '', s)
+    s = re.sub(r'_aff_random_sampling_rate', '', s)
+    s = re.sub(r'_rep\d+\.nii(\.gz)?$', '', s)
+    return s
 
 
 def make_filename(gd, params):
@@ -50,6 +71,10 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
 
     all_results = []
 
+    plot_registrations = os.path.join(out_dir, "registration_plots")
+    if not os.path.exists(plot_registrations):
+        os.makedirs(plot_registrations)
+
     for file in os.listdir(moving_dir):
         if not file.endswith(".nii.gz"):
             continue
@@ -71,22 +96,22 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
                 # fixed_image.plot(overlay=moving_image, title='After repeat', overlay_alpha=0.5)
                 mytx = ants.registration(fixed=fixed_image, mask=fixed_bm, moving=moving_image, moving_mask=moving_bm, **params)
                 warped_image = mytx['warpedmovout']
-                distance = calculate_similarity(fixed_image, warped_image, fixed_bm, moving_bm, metric="mattes")
+                distance = calculate_similarity(fixed_image, warped_image, fixed_bm, moving_bm, metric="CC")
                 distances.append(distance)
 
                 # Sauvegarder l'image recalée pour chaque répétition
                 warped_filename = make_filename(gd, params).replace(".nii.gz", f"_rep{i + 1}.nii.gz")
                 warped_path = os.path.join(out_dir, warped_filename)
                 ants.image_write(warped_image, warped_path)
-                warped_paths.append(warped_path)
+                warped_paths.append(os.path.basename(warped_path))
 
             # Calculer les statistiques pour cette combinaison de paramètres
             mean_dist = np.mean(distances)
             std_dist = np.std(distances)
             var_dist = np.var(distances)
 
-            # fixed_image.plot(overlay=warped_image, title='After repeat', overlay_alpha=0.5)
-
+            output_path = os.path.join(plot_registrations, transform_filename(warped_filename) + ".png")
+            fixed_image.plot(overlay=warped_image, title='After repeat', overlay_alpha=0.5, filename=output_path)
 
             all_results.append({
                 "gestational_day": gd,
@@ -115,7 +140,7 @@ if __name__ == "__main__":
         "type_of_transform": ["Affine"],
         "aff_random_sampling_rate": [0.2, 0.5],
         "aff_shrink_factors": [(6, 4, 2, 1), (8, 6, 4, 2), (10, 8, 6, 4)],
-        "aff_smoothing_sigmas": [(3, 2, 1, 0), (4, 3, 2, 1)],
+        "aff_smoothing_sigmas": [(3, 2, 1, 0), (4, 3, 2, 1), (5, 4, 3, 2)],
 
     }
 
@@ -132,7 +157,7 @@ if __name__ == "__main__":
     moving_path = os.path.join(main_path, "Volumes")
     moving_bm_path = os.path.join(main_path, "Segmentations", "structures_dilated")
 
-    out_test_path = os.path.join(moving_path, "Test_registration")
+    out_test_path = os.path.join(moving_path, "Test_registration_CC")
     if not os.path.exists(out_test_path):
         os.makedirs(out_test_path)
 
