@@ -1,5 +1,6 @@
 import os
 import sys
+import re
 import ants as ants
 import pandas as pd
 import seaborn as sns
@@ -63,6 +64,33 @@ def get_best_exp(df):
     return best_combinations.iloc[0]  # Retourne la meilleure ligne
 
 
+def transform_filename(original):
+    # Suppression du préfixe 'warped_'
+    s = original.replace('warped_', '')
+
+    # Remplacement des motifs spécifiques
+    s = re.sub(r'__type_of_transform-', '_', s)
+    s = re.sub(r'__aff_random_sampling_rate-0p2', '_02', s)
+
+    # Remplacement des '_' par des '-' pour les listes de valeurs
+    s = re.sub(r'__aff_shrink_factors-([\d_]+)', lambda m: '_' + m.group(1).replace('_', '-'), s)
+    s = re.sub(r'__aff_smoothing_sigmas-([\d_]+)', lambda m: '_' + m.group(1).replace('_', '-'), s)
+
+    # Suppression du suffixe '_rep1.nii'
+    s = re.sub(r'_rep\d+\.nii$', '', s)
+
+    return s
+
+
+def plot_registration(fixed_image, moving_path):
+    for file in os.listdir(moving_path):
+        if file.endswith(".nii.gz"):
+            if "rep1" in file:
+                name = transform_filename(file)
+                moving_image = ants.image_read(os.path.join(moving_path, file))
+                fixed_image.plot(overlay=moving_image, title=name, overlay_alpha=0.5)
+
+
 def compute_best_registration(best_row, fixed_path, moving_path, output_path):
     # Charger les images
     fixed_image = ants.image_read(fixed_path)
@@ -93,7 +121,8 @@ if __name__ == "__main__":
 
     base_path = cfg.BASE_NIOLON_PATH
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
-    csv_path = os.path.join(atlas_path, "Volumes/Test_registration", "registration_results_repeated.csv")
+    registration_exp_files = os.path.join(base_path, "Volumes/Test_registration_borgne07")
+    csv_path = os.path.join(registration_exp_files, "registration_results_repeated.csv")
 
     if not os.path.exists(csv_path):
         print(f"CSV file not found at {csv_path}")
@@ -127,6 +156,9 @@ if __name__ == "__main__":
     moving_path = os.path.join(atlas_path, "Volumes", f"ONPRC_{ga}_Norm.nii.gz")  # template
     moving_bm_path = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_{ga}_NFseg_bm.nii.gz")
     output_path = os.path.join(atlas_path, "Volumes", f"ONPRC_{ga}_Norm_best_registered.nii.gz")
+
     compute_best_registration(best_row, fixed_path, moving_path, output_path)
+
+    plot_registration(ants.image_read(fixed_path), registration_exp_files)
 
 
