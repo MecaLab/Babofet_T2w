@@ -8,7 +8,7 @@ import configuration as cfg
 # Fonction pour calculer et afficher la similarité
 def calculate_and_plot(fixed_img, warped_path):
     warped_img = ants.image_read(warped_path)
-    similarity = ants.image_similarity(fixed_img, warped_img, metric_type='MattesMutualInformation')
+    similarity = ants.image_similarity(fixed_img, warped_img, metric_type='Correlation')
 
     fixed_img.plot(overlay=warped_img, title=f"Best registration. Distance: {similarity}", overlay_alpha=0.5)
 
@@ -48,11 +48,12 @@ if __name__ == "__main__":
 
     df = pd.read_csv(csv_path)
 
-    fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space",
+    """fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space",
                               "srr_template_debiased.nii.gz")  # subject
     fixed_img = ants.image_read(fixed_path)
 
     similarity = ants.image_similarity(fixed_img, fixed_img, metric_type='Correlation')
 
-    print(similarity)
+    print(similarity)"""
 
+    tmp_func(df)
