@@ -54,13 +54,13 @@ if __name__ == "__main__":
 
     moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G122_Norm_best_registered.nii.gz")  # template
     moving_img = ants.image_read(moving_path)
-    similarity_122 = ants.image_similarity(fixed_img, moving_img, metric_type='Correlation')
-    moving_img.plot(overlay=moving_img, title=f"112 with dist: {similarity_122}", overlay_alpha=0.5)
+    similarity_122 = ants.image_similarity(fixed_img, moving_img, metric_type='ANTSNeighborhoodCorrelation')
+    fixed_img.plot(overlay=moving_img, title=f"112 with dist: {similarity_122}", overlay_alpha=0.5)
 
     moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G97_Norm_best_registered.nii.gz")  # template
     moving_img = ants.image_read(moving_path)
-    similarity_97 = ants.image_similarity(fixed_img, moving_img, metric_type='Correlation')
-    moving_img.plot(overlay=moving_img, title=f"97 with dist: {similarity_97}", overlay_alpha=0.5)
+    similarity_97 = ants.image_similarity(fixed_img, moving_img, metric_type='ANTSNeighborhoodCorrelation')
+    fixed_img.plot(overlay=moving_img, title=f"97 with dist: {similarity_97}", overlay_alpha=0.5)
 
     best_atlas = min([similarity_122, similarity_97])
     print(f"Best atlas overall is {best_atlas}")
