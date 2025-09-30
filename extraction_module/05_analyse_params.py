@@ -85,7 +85,7 @@ def transform_filename(original):
 def plot_registration(fixed_image, moving_path):
     for file in os.listdir(moving_path):
         if file.endswith(".nii.gz"):
-            if "rep1" in file:
+            if "rep10" in file:
                 name = transform_filename(file)
                 moving_image = ants.image_read(os.path.join(moving_path, file))
                 fixed_image.plot(overlay=moving_image, title=name, overlay_alpha=0.5)
