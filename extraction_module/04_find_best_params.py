@@ -68,7 +68,6 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
             warped_paths = []
             for i in range(n_repeats):
                 print(f"\tRepeat {i+1}/{n_repeats} for params: {params}")
-                fixed_image.plot(overlay=moving_image, title='Before Registration', overlay_alpha=0.5)
                 mytx = ants.registration(fixed=fixed_image, mask=fixed_bm, moving=moving_image, moving_mask=moving_bm, **params)
                 warped_image = mytx['warpedmovout']
                 distance = calculate_similarity(fixed_image, warped_image, fixed_bm, moving_bm, metric="mattes")
@@ -85,12 +84,14 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
             std_dist = np.std(distances)
             var_dist = np.var(distances)
 
+            fixed_image.plot(overlay=moving_image, title='After repeat', overlay_alpha=0.5)
+
             all_results.append({
                 "gestational_day": gd,
                 **params,
-                "mean_distance": mean_dist,
-                "std_distance": std_dist,
-                "var_distance": var_dist,
+                "mean_distance": float(mean_dist),
+                "std_distance": float(std_dist),
+                "var_distance": float(var_dist),
                 "warped_image_path": warped_paths[0] if warped_paths else None,
             })
 
@@ -145,11 +146,11 @@ if __name__ == "__main__":
 
     df = run_registration_grid_search_with_repeats(fixed_image, fixed_mask, moving_path, moving_bm_path, out_test_path,
                                                    param_grid, n_repeats=10)
-    
-    if not os.path.exists(out_csv_path):
+
+    """if not os.path.exists(out_csv_path):
         df = run_registration_grid_search_with_repeats(fixed_image, fixed_mask, moving_path, moving_bm_path, out_test_path, param_grid, n_repeats=10)
     else:
-        df = pd.read_csv(out_csv_path)
+        df = pd.read_csv(out_csv_path)"""
 
     print("\n=== Résultats globaux (moyenne ± écart-type) ===")
     for gd in df["gestational_day"].unique():
