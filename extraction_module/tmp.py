@@ -70,4 +70,11 @@ if __name__ == "__main__":
 
     fixed_img.plot(overlay=warped_img, title=f"Best registration", overlay_alpha=0.5, axis=2)
 
+    moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G97_Norm_best_registered.nii.gz")  # template
+
+    warped_img = ants.image_read(moving_path)
+    fixed_img = ants.image_read(fixed_path)
+
+    fixed_img.plot(overlay=warped_img, title=f"Best registration", overlay_alpha=0.5, axis=2)
+
     # tmp_func(atlas_path)
