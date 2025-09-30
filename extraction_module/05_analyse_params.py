@@ -74,7 +74,7 @@ def plot_registration(fixed_image, moving_path):
                 name = transform_filename(file)
                 output_path = os.path.join(output_dir, f"{name}.png")
                 moving_image = ants.image_read(os.path.join(moving_path, file))
-                fixed_image.plot(overlay=moving_image, title=name, overlay_alpha=0.5, filename=output_path)
+                fixed_image.plot(overlay=moving_image, title=name, overlay_alpha=0.5, filename=output_path, axis=2)
 
 def compute_best_registration(best_row, fixed_path, moving_path, output_path):
     # Charger les images
@@ -145,8 +145,6 @@ if __name__ == "__main__":
 
     compute_best_registration(best_row, fixed_path, moving_path, output_path)
 
-    # plot_registration(ants.image_read(fixed_path), registration_exp_files)
-
     fixed_image = ants.image_read(fixed_path)
     best_moving_image = ants.image_read(output_path)
 
@@ -154,11 +152,12 @@ if __name__ == "__main__":
 
     aff_shrink_factors = eval(best_row['aff_shrink_factors'])
     aff_smoothing_sigmas = eval(best_row['aff_smoothing_sigmas'])
-    type_of_transform=best_row['type_of_transform'],
-    random_sampling_rate=best_row['aff_random_sampling_rate']
+    type_of_transform = best_row['type_of_transform'],
+    random_sampling_rate = best_row['aff_random_sampling_rate']
 
     print(f"Best registration parameters: Transform = {type_of_transform}, Sampling Rate = {random_sampling_rate}, "
           f"aff_shrink_factors = {aff_shrink_factors}, aff_smoothing_sigmas = {aff_smoothing_sigmas}")
 
+    fixed_image.plot(overlay=best_moving_image, title=f"Best registration. Distance: {distance}", overlay_alpha=0.5, axis=2)
 
-    fixed_image.plot(overlay=best_moving_image, title=f"Best registration. Distance: {distance}", overlay_alpha=0.5)
+    plot_registration(ants.image_read(fixed_path), registration_exp_files)
