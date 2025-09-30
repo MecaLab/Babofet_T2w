@@ -163,6 +163,15 @@ if __name__ == "__main__":
 
     distance = ants.image_similarity(fixed_image, best_moving_image, metric_type="MattesMutualInformation")
 
+    aff_shrink_factors = eval(best_row['aff_shrink_factors'])
+    aff_smoothing_sigmas = eval(best_row['aff_smoothing_sigmas'])
+    type_of_transform=best_row['type_of_transform'],
+    random_sampling_rate=best_row['aff_random_sampling_rate']
+
+    print(f"Best registration parameters: Transform = {type_of_transform}, Sampling Rate = {random_sampling_rate}, "
+          f"aff_shrink_factors = {aff_shrink_factors}, aff_smoothing_sigmas = {aff_smoothing_sigmas}")
+    
+
     fixed_image.plot(overlay=best_moving_image, title=f"Best registration. Distance: {distance}", overlay_alpha=0.5)
 
 
