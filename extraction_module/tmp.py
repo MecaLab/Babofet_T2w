@@ -32,7 +32,6 @@ if __name__ == "__main__":
     youngest_best = best_per_day.loc[best_per_day['day'].idxmin()]
     oldest_best = best_per_day.loc[best_per_day['day'].idxmax()]
 
-    print(youngest_best)
     print(youngest_best["warped_image_path"])
 
     exit()
