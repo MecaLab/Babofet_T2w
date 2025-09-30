@@ -13,7 +13,7 @@ def find_best_params(df, colums=None):
     if colums is None:
         colums = ["mean_distance", "std_distance", "var_distance"]
     for col in colums:
-        best_data = df.loc[df[col].idxmin()]
+        best_data = df.loc[df[col].idxmax()]
         print(f"Best Parameters for {col}: Gestational Day = {best_data['gestational_day']}, "
               f"Transform = {best_data['type_of_transform']}, Sampling Rate = {best_data['aff_random_sampling_rate']}, "
               f"aff_smoothing_sigmas = {best_data['aff_smoothing_sigmas']}, aff_shrink_factors = {best_data['aff_shrink_factors']}, "
@@ -48,9 +48,9 @@ def make_plots(df):
 
 
 def get_best_exp(df):
-    df['mean_rank'] = df['mean_distance'].rank(method='max')
-    df['std_rank'] = df['std_distance'].rank(method='min')
-    df['var_rank'] = df['var_distance'].rank(method='min')
+    df['mean_rank'] = df['mean_distance'].rank(method='min', ascending=False)
+    df['std_rank'] = df['std_distance'].rank(method='min', ascending=False)
+    df['var_rank'] = df['var_distance'].rank(method='min', ascending=False)
 
     # 2. Calcul du score total (somme des rangs)
     df['total_score'] = df['mean_rank'] + df['std_rank'] + df['var_rank']
