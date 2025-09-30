@@ -46,7 +46,12 @@ def make_plots(df):
     plt.savefig("registration_results_boxplots.png")
 
 def get_best_exp(df):
-    df['mean_rank'] = df['mean_distance'].rank(method='max')
+    index_max = df["mean_distance"].idxmax()
+    ligne_max = df.loc[index_max]
+
+    print(ligne_max)
+    return ligne_max
+    """df['mean_rank'] = df['mean_distance'].rank(method='max')
     df['std_rank'] = df['std_distance'].rank(method='min')
     df['var_rank'] = df['var_distance'].rank(method='min')
 
@@ -59,7 +64,7 @@ def get_best_exp(df):
                              'aff_shrink_factors', 'aff_smoothing_sigmas',
                              'mean_distance', 'std_distance', 'var_distance', 'total_score']])
 
-    return best_combinations.iloc[0]  # Retourne la meilleure ligne
+    return best_combinations.iloc[0]  # Retourne la meilleure ligne"""
 
 def transform_filename(original):
     # (Ton code de transformation ici)
@@ -139,7 +144,7 @@ if __name__ == "__main__":
     print("\n=== Overall Best Parameters ===")
     find_best_params(df)
 
-    make_plots(df)
+    # make_plots(df)
 
     best_row = get_best_exp(df)
 
