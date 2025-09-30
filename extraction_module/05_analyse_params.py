@@ -121,7 +121,7 @@ if __name__ == "__main__":
 
     base_path = cfg.BASE_NIOLON_PATH
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
-    registration_exp_files = os.path.join(base_path, "Volumes/Test_registration_borgne07")
+    registration_exp_files = os.path.join(atlas_path, "Volumes/Test_registration_borgne07")
     csv_path = os.path.join(registration_exp_files, "registration_results_repeated.csv")
 
     if not os.path.exists(csv_path):
