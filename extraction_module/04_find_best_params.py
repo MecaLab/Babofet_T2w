@@ -85,7 +85,7 @@ def run_registration_grid_search_with_repeats(fixed_path, fixed_bm_path, moving_
             std_dist = np.std(distances)
             var_dist = np.var(distances)
 
-            fixed_image.plot(overlay=warped_image, title='After repeat', overlay_alpha=0.5)
+            # fixed_image.plot(overlay=warped_image, title='After repeat', overlay_alpha=0.5)
 
 
             all_results.append({
