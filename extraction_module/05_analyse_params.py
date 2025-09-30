@@ -65,25 +65,16 @@ def get_best_exp(df):
 
 
 def transform_filename(original):
-    # Suppression du préfixe 'warped_'
+    # (Ton code de transformation ici)
     s = original.replace('warped_', '')
-
-    # Remplacement des motifs spécifiques
     s = re.sub(r'__type_of_transform-', '_', s)
     s = re.sub(r'__aff_random_sampling_rate-0p2', '_02', s)
-
-    # Extraction et formatage des listes de valeurs
     s = re.sub(r'__aff_shrink_factors-([\d_]+)', lambda m: '_' + m.group(1).replace('_', '-'), s)
     s = re.sub(r'__aff_smoothing_sigmas-([\d_]+)', lambda m: '_' + m.group(1).replace('_', '-'), s)
-
-    # Suppression des préfixes 'aff_shrink_factors', 'aff_smoothing_sigmas' et 'aff_random_sampling_rate'
     s = re.sub(r'_aff_shrink_factors', '', s)
     s = re.sub(r'_aff_smoothing_sigmas', '', s)
     s = re.sub(r'_aff_random_sampling_rate', '', s)
-
-    # Suppression du suffixe '_rep1.nii'
-    s = re.sub(r'_rep\d+\.nii$', '', s)
-
+    s = re.sub(r'_rep\d+\.nii(\.gz)?$', '', s)
     return s
 
 def plot_registration(fixed_image, moving_path):
@@ -127,7 +118,7 @@ if __name__ == "__main__":
 
     base_path = cfg.BASE_NIOLON_PATH
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
-    registration_exp_files = os.path.join(atlas_path, "Volumes/Test_registration_borgne07")
+    registration_exp_files = os.path.join(atlas_path, "Volumes/Test_registration")
     csv_path = os.path.join(registration_exp_files, "registration_results_repeated.csv")
 
     if not os.path.exists(csv_path):
@@ -163,8 +154,11 @@ if __name__ == "__main__":
     moving_bm_path = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_{ga}_NFseg_bm.nii.gz")
     output_path = os.path.join(atlas_path, "Volumes", f"ONPRC_{ga}_Norm_best_registered.nii.gz")
 
-    # compute_best_registration(best_row, fixed_path, moving_path, output_path)
+    compute_best_registration(best_row, fixed_path, moving_path, output_path)
 
-    plot_registration(ants.image_read(fixed_path), registration_exp_files)
+    # plot_registration(ants.image_read(fixed_path), registration_exp_files)
+
+    distance = ants.image_similarity(ants.image_read(fixed_path), ants.image_read(output_path),
+                                     metric_type="MattesMutualInformation")
 
 
