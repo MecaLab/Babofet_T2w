@@ -157,7 +157,7 @@ if __name__ == "__main__":
     moving_bm_path = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_{ga}_NFseg_bm.nii.gz")
     output_path = os.path.join(atlas_path, "Volumes", f"ONPRC_{ga}_Norm_best_registered.nii.gz")
 
-    compute_best_registration(best_row, fixed_path, moving_path, output_path)
+    # compute_best_registration(best_row, fixed_path, moving_path, output_path)
 
     plot_registration(ants.image_read(fixed_path), registration_exp_files)
 
