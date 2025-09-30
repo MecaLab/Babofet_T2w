@@ -13,7 +13,12 @@ def calculate_and_plot(fixed_img, warped_path):
     fixed_img.plot(overlay=warped_img, title=f"Best registration. Distance: {similarity}", overlay_alpha=0.5)
 
 
-def tmp_func(df):
+def tmp_func(atlas_path):
+    registration_exp_files = os.path.join(atlas_path, "Volumes/Test_registration_borgne07_only_affine")
+    csv_path = os.path.join(registration_exp_files, "registration_results_repeated.csv")
+
+    df = pd.read_csv(csv_path)
+
     df['day'] = df['gestational_day'].str.extract('(\d+)').astype(int)
 
     # 3. Grouper par gestational_day et trouver la ligne avec la meilleure distance (max)
@@ -39,33 +44,30 @@ def tmp_func(df):
     calculate_and_plot(fixed_img, os.path.join(registration_exp_files, filename))
 
 
+def compute_registration(fixed_path, fixed_bm_path, moving_path, moving_bm_path, output_path, params):
+    fixed_img = ants.image_read(fixed_path)
+    fixed_bm = ants.image_read(fixed_bm_path)
+
+    moving_img = ants.image_read(moving_path)
+    moving_bm = ants.image_read(moving_bm_path)
+
+    mytx = ants.registration(fixed=fixed_img, mask=fixed_bm, moving=moving_img, moving_mask=moving_bm, **params)
+
 
 if __name__ == "__main__":
     base_path = cfg.BASE_NIOLON_PATH
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
-    registration_exp_files = os.path.join(atlas_path, "Volumes/Test_registration_borgne07_only_affine")
-    csv_path = os.path.join(registration_exp_files, "registration_results_repeated.csv")
 
-    df = pd.read_csv(csv_path)
 
-    fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space",
-                              "srr_template_debiased.nii.gz")  # subject
-    fixed_img = ants.image_read(fixed_path)
+    fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
+    fixed_bm = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_mask.nii.gz")
 
     moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G122_Norm_best_registered.nii.gz")  # template
-    moving_img = ants.image_read(moving_path)
-    similarity_122 = ants.image_similarity(fixed_img, moving_img, metric_type='ANTSNeighborhoodCorrelation')
-    print(similarity_122)
-    fixed_img.plot(overlay=moving_img, title=f"112 with dist: {similarity_122}", overlay_alpha=0.5)
+    moving_bm = os.path.join(atlas_path, "Segmentations", "structures_dilated")
 
-    moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G97_Norm_best_registered.nii.gz")  # template
-    moving_img = ants.image_read(moving_path)
-    similarity_97 = ants.image_similarity(fixed_img, moving_img, metric_type='ANTSNeighborhoodCorrelation')
-    print(similarity_97)
-    fixed_img.plot(overlay=moving_img, title=f"97 with dist: {similarity_97}", overlay_alpha=0.5)
+    warped_img = ants.image_read(moving_path)
+    fixed_img = ants.image_read(fixed_path)
 
-    best_atlas = min([similarity_122, similarity_97])
-    print(f"Best atlas overall is {best_atlas}")
+    fixed_img.plot(overlay=warped_img, title=f"Best registration", overlay_alpha=0.5, axis=2)
 
-
-    # tmp_func(df)
+    # tmp_func(atlas_path)
