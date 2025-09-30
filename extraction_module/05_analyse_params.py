@@ -65,8 +65,8 @@ def transform_filename(original):
     s = re.sub(r'_rep\d+\.nii(\.gz)?$', '', s)
     return s
 
-def plot_registration(fixed_image, moving_path):
-    output_dir = "registration_plots"
+def plot_registration(fixed_image, moving_path, atlas_volumes_path):
+    output_dir = os.path.join(atlas_volumes_path, "registration_plots")
     os.makedirs(output_dir, exist_ok=True)
     for file in os.listdir(moving_path):
         if file.endswith(".nii.gz"):
@@ -106,7 +106,8 @@ if __name__ == "__main__":
 
     base_path = cfg.BASE_NIOLON_PATH
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
-    registration_exp_files = os.path.join(atlas_path, "Volumes/Test_registration_borgne07_only_affine")
+    atlas_volumes_path = os.path.join(atlas_path, "Volumes")
+    registration_exp_files = os.path.join(atlas_volumes_path, "Test_registration_borgne07_only_affine")
     csv_path = os.path.join(registration_exp_files, "registration_results_repeated.csv")
 
     if not os.path.exists(csv_path):
@@ -160,4 +161,4 @@ if __name__ == "__main__":
 
     fixed_image.plot(overlay=best_moving_image, title=f"Best registration. Distance: {distance}", overlay_alpha=0.5, axis=2)
 
-    plot_registration(ants.image_read(fixed_path), registration_exp_files)
+    plot_registration(ants.image_read(fixed_path), registration_exp_files, registration_exp_files)
