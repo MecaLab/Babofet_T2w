@@ -46,25 +46,11 @@ def make_plots(df):
     plt.savefig("registration_results_boxplots.png")
 
 def get_best_exp(df):
-    index_max = df["mean_distance"].idxmax()
+    index_max = df["mean_distance"].idxmin()
     ligne_max = df.loc[index_max]
 
     print(ligne_max)
     return ligne_max
-    """df['mean_rank'] = df['mean_distance'].rank(method='max')
-    df['std_rank'] = df['std_distance'].rank(method='min')
-    df['var_rank'] = df['var_distance'].rank(method='min')
-
-    # 2. Calcul du score total (somme des rangs)
-    df['total_score'] = df['mean_rank'] + df['std_rank'] + df['var_rank']
-
-    # 3. Afficher les meilleures combinaisons (par exemple, les X meilleures)
-    best_combinations = df.nsmallest(3, 'total_score')
-    print(best_combinations[['gestational_day', 'type_of_transform', 'aff_random_sampling_rate',
-                             'aff_shrink_factors', 'aff_smoothing_sigmas',
-                             'mean_distance', 'std_distance', 'var_distance', 'total_score']])
-
-    return best_combinations.iloc[0]  # Retourne la meilleure ligne"""
 
 def transform_filename(original):
     # (Ton code de transformation ici)
