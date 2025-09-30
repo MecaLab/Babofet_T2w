@@ -34,10 +34,12 @@ if __name__ == "__main__":
 
     print("Atlas le plus jeune avec la meilleure distance :")
     print(youngest_best[['gestational_day', 'mean_distance', 'warped_image_path']])
-    calculate_and_plot(fixed_img, youngest_best['warped_image_path'])
+    filename = os.path.basename(youngest_best["warped_image_path"])
+    calculate_and_plot(fixed_img, os.path.join(registration_exp_files, filename))
 
     # 8. Pour l'atlas le plus vieux
     print("\nAtlas le plus vieux avec la meilleure distance :")
     print(oldest_best[['gestational_day', 'mean_distance', 'warped_image_path']])
-    calculate_and_plot(fixed_img, oldest_best['warped_image_path'])
+    filename = os.path.basename(oldest_best["warped_image_path"])
+    calculate_and_plot(fixed_img, os.path.join(registration_exp_files, filename))
 
