@@ -7,7 +7,7 @@ import configuration as cfg
 
 # Fonction pour calculer et afficher la similarité
 def calculate_and_plot(fixed_img, warped_path):
-    warped_img = ants.image_read(warped_path["warped_image_path"])
+    warped_img = ants.image_read(warped_path)
     similarity = ants.similarity(fixed_img, warped_img, metric='MattesMutualInformation')[0]
     print(f"Similarité (Mattes Mutual Information) : {similarity}")
     fixed_img.plot(title="Image Fixed")
@@ -28,8 +28,9 @@ if __name__ == "__main__":
     youngest_best = best_per_day.loc[best_per_day['gestational_day'].str.extract('(\\d+)').astype(int).idxmin()]
     oldest_best = best_per_day.loc[best_per_day['gestational_day'].str.extract('(\\d+)').astype(int).idxmax()]
 
-    print(youngest_best)
+    print(youngest_best["warped_image_path"])
     exit()
+
 
     # Charger l'image fixed (remplace par ton chemin)
     fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space",
