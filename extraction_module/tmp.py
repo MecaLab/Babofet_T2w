@@ -9,11 +9,8 @@ import configuration as cfg
 def calculate_and_plot(fixed_img, warped_path):
     warped_img = ants.image_read(warped_path)
     similarity = ants.similarity(fixed_img, warped_img, metric='MattesMutualInformation')
-    print(f"Similarité (Mattes Mutual Information) : {similarity}")
 
-    # Affichage
-    fixed_img.plot(title="Image Fixed")
-    warped_img.plot(title="Image Warped")
+    fixed_img.plot(overlay=warped_img, title=f"Best registration. Distance: {similarity}", overlay_alpha=0.5)
 
 if __name__ == "__main__":
     base_path = cfg.BASE_NIOLON_PATH
@@ -31,10 +28,6 @@ if __name__ == "__main__":
     # 4. Trouver l'atlas le plus jeune et le plus vieux avec la meilleure distance
     youngest_best = best_per_day.loc[best_per_day['day'].idxmin()]
     oldest_best = best_per_day.loc[best_per_day['day'].idxmax()]
-
-    print(youngest_best["warped_image_path"])
-
-    exit()
 
     fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz") # subject
     fixed_img = ants.image_read(fixed_path)
