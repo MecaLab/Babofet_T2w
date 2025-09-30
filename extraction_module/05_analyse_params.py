@@ -72,24 +72,30 @@ def transform_filename(original):
     s = re.sub(r'__type_of_transform-', '_', s)
     s = re.sub(r'__aff_random_sampling_rate-0p2', '_02', s)
 
-    # Remplacement des '_' par des '-' pour les listes de valeurs
+    # Extraction et formatage des listes de valeurs
     s = re.sub(r'__aff_shrink_factors-([\d_]+)', lambda m: '_' + m.group(1).replace('_', '-'), s)
     s = re.sub(r'__aff_smoothing_sigmas-([\d_]+)', lambda m: '_' + m.group(1).replace('_', '-'), s)
+
+    # Suppression des préfixes 'aff_shrink_factors', 'aff_smoothing_sigmas' et 'aff_random_sampling_rate'
+    s = re.sub(r'_aff_shrink_factors', '', s)
+    s = re.sub(r'_aff_smoothing_sigmas', '', s)
+    s = re.sub(r'_aff_random_sampling_rate', '', s)
 
     # Suppression du suffixe '_rep1.nii'
     s = re.sub(r'_rep\d+\.nii$', '', s)
 
     return s
 
-
 def plot_registration(fixed_image, moving_path):
+    output_dir = "registration_plots"
+    os.makedirs(output_dir, exist_ok=True)
     for file in os.listdir(moving_path):
         if file.endswith(".nii.gz"):
             if "rep10" in file:
                 name = transform_filename(file)
+                output_path = os.path.join(output_dir, f"{name}.png")
                 moving_image = ants.image_read(os.path.join(moving_path, file))
-                fixed_image.plot(overlay=moving_image, title=name, overlay_alpha=0.5)
-
+                fixed_image.plot(overlay=moving_image, title=name, overlay_alpha=0.5, filename=output_path)
 
 def compute_best_registration(best_row, fixed_path, moving_path, output_path):
     # Charger les images
