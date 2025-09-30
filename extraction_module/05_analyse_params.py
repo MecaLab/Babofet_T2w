@@ -48,7 +48,7 @@ def make_plots(df):
 
 
 def get_best_exp(df):
-    df['mean_rank'] = df['mean_distance'].rank(method='min')
+    df['mean_rank'] = df['mean_distance'].rank(method='max')
     df['std_rank'] = df['std_distance'].rank(method='min')
     df['var_rank'] = df['var_distance'].rank(method='min')
 
@@ -147,6 +147,7 @@ if __name__ == "__main__":
     best_row = get_best_exp(df)
 
     ga = best_row['gestational_day']
+
     print(f"\n=== Computing Best Registration for Gestational Day {ga} ===")
 
     fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz") # subject
@@ -173,8 +174,3 @@ if __name__ == "__main__":
 
 
     fixed_image.plot(overlay=best_moving_image, title=f"Best registration. Distance: {distance}", overlay_alpha=0.5)
-
-
-"""
-
-"""
