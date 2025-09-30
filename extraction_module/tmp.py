@@ -10,6 +10,8 @@ def calculate_and_plot(fixed_img, warped_path):
     warped_img = ants.image_read(warped_path)
     similarity = ants.similarity(fixed_img, warped_img, metric='MattesMutualInformation')
     print(f"Similarité (Mattes Mutual Information) : {similarity}")
+
+    # Affichage
     fixed_img.plot(title="Image Fixed")
     warped_img.plot(title="Image Warped")
 
@@ -21,11 +23,29 @@ if __name__ == "__main__":
 
     df = pd.read_csv(csv_path)
 
-    gds = [85, 155]
-    for gd in gds:
-        df_gd = df[df["gestational_day"] == gd]
-        best_data = df_gd.loc[df_gd["mean_distance"].idxmax()]
+    df['day'] = df['gestational_day'].str.extract('(\d+)').astype(int)
 
-        print(best_data)
+    # 3. Grouper par gestational_day et trouver la ligne avec la meilleure distance (max)
+    best_per_day = df.loc[df.groupby('gestational_day')['mean_distance'].idxmax()]
 
+    # 4. Trouver l'atlas le plus jeune et le plus vieux avec la meilleure distance
+    youngest_best = best_per_day.loc[best_per_day['day'].idxmin()]
+    oldest_best = best_per_day.loc[best_per_day['day'].idxmax()]
+
+    print(youngest_best)
+    print(youngest_best["warped_image_path"])
+
+    exit()
+
+    fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz") # subject
+    fixed_img = ants.image_read(fixed_path)
+
+    print("Atlas le plus jeune avec la meilleure distance :")
+    print(youngest_best[['gestational_day', 'mean_distance', 'warped_image_path']])
+    calculate_and_plot(fixed_img, youngest_best['warped_image_path'])
+
+    # 8. Pour l'atlas le plus vieux
+    print("\nAtlas le plus vieux avec la meilleure distance :")
+    print(oldest_best[['gestational_day', 'mean_distance', 'warped_image_path']])
+    calculate_and_plot(fixed_img, oldest_best['warped_image_path'])
 
