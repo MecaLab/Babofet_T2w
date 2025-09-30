@@ -114,7 +114,7 @@ if __name__ == "__main__":
     param_grid = {
         "type_of_transform": ["Affine"],
         "aff_random_sampling_rate": [0.2, 0.5],
-        "aff_shrink_factors": [(6, 4, 2, 1), (8, 6, 4, 2)],
+        "aff_shrink_factors": [(6, 4, 2, 1), (8, 6, 4, 2), (10, 8, 6, 4)],
         "aff_smoothing_sigmas": [(3, 2, 1, 0), (4, 3, 2, 1)],
 
     }
@@ -126,14 +126,6 @@ if __name__ == "__main__":
 
     fixed_image = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
     fixed_mask = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_mask.nii.gz")
-
-    """
-    # fixed_image_bis = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2/Volumes/Test_registration_borgne07/warped_G85__type_of_transform-SyN__aff_random_sampling_rate-0p5__aff_shrink_factors-6_4_2_1__aff_smoothing_sigmas-4_3_2_1_rep1.nii.gz")
-    distance = ants.image_similarity(ants.image_read(fixed_image), ants.image_read(fixed_image_bis), metric_type="MattesMutualInformation")
-    ants.image_mutual_information(ants.image_read(fixed_image), ants.image_read(fixed_image_bis))
-    print(f"Distance test: {distance}")
-    exit()
-    """
 
     main_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
@@ -149,10 +141,10 @@ if __name__ == "__main__":
     df = run_registration_grid_search_with_repeats(fixed_image, fixed_mask, moving_path, moving_bm_path, out_test_path,
                                                    param_grid, n_repeats=10)
 
-    """if not os.path.exists(out_csv_path):
+    if not os.path.exists(out_csv_path):
         df = run_registration_grid_search_with_repeats(fixed_image, fixed_mask, moving_path, moving_bm_path, out_test_path, param_grid, n_repeats=10)
     else:
-        df = pd.read_csv(out_csv_path)"""
+        df = pd.read_csv(out_csv_path)
 
     print("\n=== Résultats globaux (moyenne ± écart-type) ===")
     for gd in df["gestational_day"].unique():
