@@ -28,7 +28,7 @@ if __name__ == "__main__":
     youngest_best = best_per_day.loc[best_per_day['gestational_day'].str.extract('(\\d+)').astype(int).idxmin()]
     oldest_best = best_per_day.loc[best_per_day['gestational_day'].str.extract('(\\d+)').astype(int).idxmax()]
 
-    print(youngest_best["warped_image_path"])
+    print(str(youngest_best["warped_image_path"]))
     exit()
 
 
