@@ -23,7 +23,7 @@ if __name__ == "__main__":
     df['day'] = df['gestational_day'].str.extract('(\d+)').astype(int)
 
     # 3. Grouper par gestational_day et trouver la ligne avec la meilleure distance (max)
-    best_per_day = df.loc[df.groupby('gestational_day')['mean_distance'].idxmin()]
+    best_per_day = df.loc[df.groupby('gestational_day')['mean_distance'].idxmax()]
 
     # 4. Trouver l'atlas le plus jeune et le plus vieux avec la meilleure distance
     youngest_best = best_per_day.loc[best_per_day['day'].idxmin()]
