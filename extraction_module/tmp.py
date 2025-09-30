@@ -28,6 +28,9 @@ if __name__ == "__main__":
     youngest_best = best_per_day.loc[best_per_day['gestational_day'].str.extract('(\\d+)').astype(int).idxmin()]
     oldest_best = best_per_day.loc[best_per_day['gestational_day'].str.extract('(\\d+)').astype(int).idxmax()]
 
+    print(youngest_best)
+    exit()
+
     # Charger l'image fixed (remplace par ton chemin)
     fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space",
                               "srr_template_debiased.nii.gz")  # subject
