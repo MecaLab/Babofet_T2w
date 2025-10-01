@@ -7,7 +7,7 @@ NEW_REF='/envau/work/meca/data/babofet_DB/2024_new_stuff/recons_folder/Borgne/se
 
 MOVING='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Volumes/ONPRC_G85_Norm.nii.gz'
 MOVING_MASK='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Segmentations/structures_dilated/ONPRC_G85_NFseg_bm.nii.gz'
-SMOOTHED_PARCELLATIONS='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Segmentations/ONPRC_G185_NFseg.nii.gz'
+SMOOTHED_PARCELLATIONS='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Segmentations/ONPRC_G85_NFseg.nii.gz'
 
 
 OUTPUT_DIR='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Volumes/flirt'
