@@ -31,7 +31,7 @@ flirt \
 
 # convert fsl affine to ants format
 ./tools/c3d_affine_tool \
-    -ref ${$NEW_REF} \
+    -ref ${NEW_REF} \
     -src ${MOVING} \
     "$OUTPUT_DIR/affine.mat" \
     -fsl2ras \
