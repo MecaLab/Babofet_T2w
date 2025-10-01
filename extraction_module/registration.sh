@@ -6,6 +6,8 @@ REFERENCE_MASK='/envau/work/meca/data/babofet_DB/2024_new_stuff/recons_folder/Bo
 
 MOVING='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Volumes/ONPRC_G122_Norm.nii.gz'
 MOVING_MASK='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Segmentations/structures_dilated/ONPRC_G122_NFseg_bm.nii.gz'
+SMOOTHED_PARCELLATIONS='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Segmentations/ONPRC_G122_NFseg.nii.gz'
+
 
 OUTPUT_DIR='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Volumes/flirt'
 mkdir -p "$OUTPUT_DIR"
@@ -47,7 +49,7 @@ antsRegistration \
     --initial-moving-transform "$OUTPUT_DIR/affine.txt" \
     --transform SyN[0.1,3,0] \
     --metric Mattes[${REFERENCE},${MOVING},1,32] \
-    --convergence [200x200x200x200x200x200,1e-6,10] \
+    --convergence [200x200x200x100x100x100,1e-6,10] \
     --shrink-factors 4x4x2x2x1x1 \
     --smoothing-sigmas 6x5x4x2x1x0 \
     --masks [${REFERENCE_MASK},${MOVING_MASK}] \
