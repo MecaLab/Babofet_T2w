@@ -25,7 +25,7 @@ flirt \
 	-interp spline
 
 # convert fsl affine to ants format
-./extraction_module/c3d_affine_tool \
+./tools/c3d_affine_tool \
     -ref ${REFERENCE} \
     -src ${MOVING} \
     "$OUTPUT_DIR/affine.mat" \
