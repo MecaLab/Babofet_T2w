@@ -59,31 +59,13 @@ if __name__ == "__main__":
     base_path = cfg.BASE_NIOLON_PATH
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
 
-
-    fixed_path = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
-    fixed_bm = os.path.join(base_path, "recons_folder/Borgne/ses07/recons_rhesus/recon_template_space", "srr_template_mask.nii.gz")
-
-    moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G122_Norm_best_registered.nii.gz")  # template
-    moving_bm = os.path.join(atlas_path, "Segmentations", "structures_dilated")
-
-    """
-    warped_img = ants.image_read(moving_path)
-    fixed_img = ants.image_read(fixed_path)
-
-    fixed_img.plot(overlay=warped_img, title=f"Best registration", overlay_alpha=0.5, axis=2)
-
-    moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G97_Norm_best_registered.nii.gz")  # template
-
-    warped_img = ants.image_read(moving_path)
-    fixed_img = ants.image_read(fixed_path)
-
-    fixed_img.plot(overlay=warped_img, title=f"Best registration", overlay_alpha=0.5, axis=2)
-    """
-
     # Lire les données
     data = pd.read_csv(os.path.join(atlas_path, "Volumes/flirt/metrics_results.csv"))
 
     plot_dir = os.path.join(atlas_path, "Volumes/flirt/plots")
+
+    if not os.path.exists(plot_dir):
+        os.makedirs(plot_dir)
 
     # Extraire les atlas (ex: G85, G122)
     atlases = data["Atlas"]
