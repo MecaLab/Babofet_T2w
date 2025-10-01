@@ -14,12 +14,24 @@ mkdir -p "$OUTPUT_DIR"
 
 fslmaths "$REFERENCE" -mul "$REFERENCE_MASK" "$NEW_REF"
 
-echo "Measure image similarity for registration 122"
+echo "Measure image similarity Mattes for registration 122"
 MeasureImageSimilarity \
   -d 3 \
   -m Mattes["$NEW_REF", "$OUTPUT_DIR/affine_122.nii.gz", 1, 64]
 
-echo "Measure image similarity for registration 85"
+echo "Measure image similarity Mattes for registration 85"
 MeasureImageSimilarity \
   -d 3 \
   -m Mattes["$NEW_REF", "$OUTPUT_DIR/affine_85.nii.gz", 1, 64]
+
+echo "*******************************************"
+
+echo "Measure image similarity MSE for registration 122"
+MeasureImageSimilarity \
+  -d 3 \
+  -m MeanSquares["$NEW_REF", "$OUTPUT_DIR/affine_122.nii.gz", 1, 3]
+
+echo "Measure image similarity MSE for registration 85"
+MeasureImageSimilarity \
+  -d 3 \
+  -m MeanSquares["$NEW_REF", "$OUTPUT_DIR/affine_85.nii.gz", 1, 3]
