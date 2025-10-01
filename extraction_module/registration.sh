@@ -50,7 +50,7 @@ antsRegistration \
     --use-histogram-matching 1 \
     --winsorize-image-intensities [0.001,0.999] \
     --initial-moving-transform "$OUTPUT_DIR/affine.txt" \
-    --transform SyN[0.1,3,0] \
+    --transform Affine[0.2] \
     --metric Mattes[${REFERENCE},${MOVING},1,32] \
     --convergence [200x200x200x100x100x100,1e-6,10] \
     --shrink-factors 4x4x2x2x1x1 \
