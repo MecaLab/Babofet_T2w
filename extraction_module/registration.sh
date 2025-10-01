@@ -10,6 +10,7 @@ REFERENCE_MASK='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhes
 OUTPUT_DIR='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Volumes/flirt'
 mkdir -p "$OUTPUT_DIR"
 
+
 # affine first
 echo "Running FLIRT..."
 flirt \
