@@ -2,6 +2,7 @@ import os
 import sys
 import ants as ants
 import pandas as pd
+import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -65,6 +66,7 @@ if __name__ == "__main__":
     moving_path = os.path.join(atlas_path, "Volumes", "ONPRC_G122_Norm_best_registered.nii.gz")  # template
     moving_bm = os.path.join(atlas_path, "Segmentations", "structures_dilated")
 
+    """
     warped_img = ants.image_read(moving_path)
     fixed_img = ants.image_read(fixed_path)
 
@@ -76,5 +78,48 @@ if __name__ == "__main__":
     fixed_img = ants.image_read(fixed_path)
 
     fixed_img.plot(overlay=warped_img, title=f"Best registration", overlay_alpha=0.5, axis=2)
+    """
+
+    # Lire les données
+    data = pd.read_csv(os.path.join(atlas_path, "Volumes/flirt/metrics_results.csv"))
+
+    # Extraire les atlas (ex: G85, G122)
+    atlases = data["Atlas"]
+    mattes = data["Mattes"]
+    mse = data["MSE"]
+    cc = data["CC"]
+
+    # Créer les courbes
+    os.makedirs("$PLOT_DIR", exist_ok=True)
+
+    # Courbe Mattes
+    plt.figure()
+    plt.plot(atlases, mattes, marker='o', label="Mattes")
+    plt.title("Mattes Mutual Information par Atlas")
+    plt.xlabel("Atlas")
+    plt.ylabel("Valeur de Mattes")
+    plt.grid(True)
+    plt.savefig("$PLOT_DIR/mattes_plot.svg", format="svg")
+    plt.close()
+
+    # Courbe MSE
+    plt.figure()
+    plt.plot(atlases, mse, marker='o', color='orange', label="MSE")
+    plt.title("Mean Squares Error par Atlas")
+    plt.xlabel("Atlas")
+    plt.ylabel("Valeur de MSE")
+    plt.grid(True)
+    plt.savefig("$PLOT_DIR/mse_plot.svg", format="svg")
+    plt.close()
+
+    # Courbe CC
+    plt.figure()
+    plt.plot(atlases, cc, marker='o', color='green', label="CC")
+    plt.title("Correlation Coefficient par Atlas")
+    plt.xlabel("Atlas")
+    plt.ylabel("Valeur de CC")
+    plt.grid(True)
+    plt.savefig("$PLOT_DIR/cc_plot.svg", format="svg")
+    plt.close()
 
     # tmp_func(atlas_path)
