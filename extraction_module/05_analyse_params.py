@@ -13,7 +13,7 @@ def find_best_params(df, colums=None):
     if colums is None:
         colums = ["mean_distance", "std_distance", "var_distance"]
     for col in colums:
-        best_data = df.loc[df[col].idxmin()]
+        best_data = df.loc[df[col].idxmax()]
         print(f"Best Parameters for {col}: Gestational Day = {best_data['gestational_day']}, "
               f"Transform = {best_data['type_of_transform']}, Sampling Rate = {best_data['aff_random_sampling_rate']}, "
               f"aff_smoothing_sigmas = {best_data['aff_smoothing_sigmas']}, aff_shrink_factors = {best_data['aff_shrink_factors']}, "
@@ -46,7 +46,7 @@ def make_plots(df):
     plt.savefig("registration_results_boxplots.png")
 
 def get_best_exp(df):
-    index_max = df["mean_distance"].idxmin()
+    index_max = df["mean_distance"].idxmax()
     ligne_max = df.loc[index_max]
 
     print(ligne_max)
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         std_of_means = df_gd["mean_distance"].std()
         print(f"Gestational Day {gd}: Mean of Means = {mean_of_means:.5f}, Std of Means = {std_of_means:.5f}")
 
-        best_row = df_gd.loc[df_gd["mean_distance"].idxmin()]
+        best_row = df_gd.loc[df_gd["mean_distance"].idxmax()]
         print(f"\tBest Parameters: Transform = {best_row['type_of_transform']}, "
               f"Sampling Rate = {best_row['aff_random_sampling_rate']}, Mean Distance = {best_row['mean_distance']:.5f}, "
               f"Var Distance = {best_row['var_distance']:.5f}, Std Distance = {best_row['std_distance']:.5f}\n")
