@@ -139,8 +139,8 @@ if __name__ == "__main__":
     param_grid = {
         "type_of_transform": ["Affine"],
         "aff_random_sampling_rate": [0.2, 0.5],
-        "aff_shrink_factors": [(6, 4, 2, 1), (8, 6, 4, 2), (10, 8, 6, 4)],
-        "aff_smoothing_sigmas": [(3, 2, 1, 0), (4, 3, 2, 1), (5, 4, 3, 2)],
+        "aff_shrink_factors": [(10, 8, 6, 4)],  # (6, 4, 2, 1), (8, 6, 4, 2),
+        "aff_smoothing_sigmas": [(5, 4, 3, 2)], # (3, 2, 1, 0), (4, 3, 2, 1),
 
     }
 
