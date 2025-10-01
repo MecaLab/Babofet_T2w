@@ -31,7 +31,7 @@ flirt \
 
 # convert fsl affine to ants format
 ./tools/c3d_affine_tool \
-    -ref ${REFERENCE} \
+    -ref ${$NEW_REF} \
     -src ${MOVING} \
     "$OUTPUT_DIR/affine.mat" \
     -fsl2ras \
@@ -51,7 +51,7 @@ antsRegistration \
     --winsorize-image-intensities [0.001,0.999] \
     --initial-moving-transform "$OUTPUT_DIR/affine.txt" \
     --transform Affine[0.2] \
-    --metric Mattes[${REFERENCE},${MOVING},1,32] \
+    --metric Mattes[${NEW_REF},${MOVING},1,32] \
     --convergence [200x200x200x100x100x100,1e-6,10] \
     --shrink-factors 4x4x2x2x1x1 \
     --smoothing-sigmas 6x5x4x2x1x0 \
@@ -62,7 +62,7 @@ antsRegistration \
 antsApplyTransforms \
     --dimensionality 3 \
     --input "$SMOOTHED_PARCELLATIONS" \
-    --reference-image "$REFERENCE" \
+    --reference-image "$NEW_REF" \
     --output "$OUTPUT_DIR/warped_regionals.nii.gz" \
     --transform "$OUTPUT_DIR/ants_1Warp.nii.gz" \
     --transform "$OUTPUT_DIR/affine.txt" \
