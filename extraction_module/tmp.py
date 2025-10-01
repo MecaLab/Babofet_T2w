@@ -83,6 +83,8 @@ if __name__ == "__main__":
     # Lire les données
     data = pd.read_csv(os.path.join(atlas_path, "Volumes/flirt/metrics_results.csv"))
 
+    plot_dir = os.path.join(atlas_path, "Volumes/flirt/plots")
+
     # Extraire les atlas (ex: G85, G122)
     atlases = data["Atlas"]
     mattes = data["Mattes"]
@@ -99,7 +101,7 @@ if __name__ == "__main__":
     plt.xlabel("Atlas")
     plt.ylabel("Valeur de Mattes")
     plt.grid(True)
-    plt.savefig("$PLOT_DIR/mattes_plot.svg", format="svg")
+    plt.savefig(os.path.join(plot_dir, "mattes_plot.png"))
     plt.close()
 
     # Courbe MSE
@@ -109,7 +111,7 @@ if __name__ == "__main__":
     plt.xlabel("Atlas")
     plt.ylabel("Valeur de MSE")
     plt.grid(True)
-    plt.savefig("$PLOT_DIR/mse_plot.svg", format="svg")
+    plt.savefig(os.path.join(plot_dir, "mse_plot.png"))
     plt.close()
 
     # Courbe CC
@@ -119,7 +121,7 @@ if __name__ == "__main__":
     plt.xlabel("Atlas")
     plt.ylabel("Valeur de CC")
     plt.grid(True)
-    plt.savefig("$PLOT_DIR/cc_plot.svg", format="svg")
+    plt.savefig(os.path.join(plot_dir, "cc_plot.png"))
     plt.close()
 
     # tmp_func(atlas_path)
