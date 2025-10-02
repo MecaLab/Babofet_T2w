@@ -15,16 +15,20 @@ def fsl_register(atlas_dir, base_subj_path, output_dir):
         ["fslmaths", reference, "-mul", reference_mask, new_reference],
         check=True,
     )
-    print("\tStarting registration with FLIRT")
+    print("\t\tStarting registration with FLIRT")
     for moving_file in os.listdir(atlas_dir):
         if moving_file.endswith(".nii.gz") and "Norm" in moving_file:
             moving = os.path.join(atlas_dir, moving_file)
 
-            print(f"\t\tProcessing {moving_file}")
+            print(f"\t\t\tProcessing {moving_file}")
             moving_name = moving_file.replace(".nii.gz", "_affine.nii.gz")
             moving_mat = moving_file.replace(".nii.gz", "_affine.mat")
 
             out_nii = os.path.join(output_dir, moving_name)
+
+            if os.path.exists(out_nii):
+                print(f"\t\t{moving_name} already exists, skipping...")
+                continue
             out_mat = os.path.join(output_dir, moving_mat)
 
             subprocess.run(
@@ -44,6 +48,41 @@ def fsl_register(atlas_dir, base_subj_path, output_dir):
                 check=True,
             )
     print("\tFLIRT registration done")
+
+
+def find_best_atlas(input_atlas_registered, base_subj_path):
+    reference = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
+    reference_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
+
+    """
+    fslcc=$(fslcc -m "$REFERENCE_MASK" -p 5 "$NEW_REF" "$AFFINE_FILE" | awk '{print $3}')
+            echo "$atlas_id,$mattes,$mse,$cc,$fslcc" >> "$RESULTS_FILE"
+    """
+    dico_atlas_metric = {}
+    for atlas_file in os.listdir(input_atlas_registered):
+        if atlas_file.endswith(".nii.gz") and "affine" in atlas_file:
+            atlas_path = os.path.join(input_atlas_registered, atlas_file)
+
+            result = subprocess.run(
+                [
+                    "fslcc",
+                    "-m", reference_mask,
+                    "-p", "5",
+                    reference,
+                    atlas_path
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            output = result.stdout.strip()
+            if output:
+                fslcc_value = float(output.split()[2])
+                dico_atlas_metric[atlas_file] = fslcc_value
+                print(f"\t\t{atlas_file}: {fslcc_value}")
+
+    best_atlas = max(dico_atlas_metric, key=dico_atlas_metric.get)
+    return best_atlas
 
 
 if __name__ == "__main__":
@@ -81,4 +120,5 @@ if __name__ == "__main__":
 
             fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
 
+            find_best_atlas(subject_output_split_seg_session, recons_rhesus_folder)
             exit()
