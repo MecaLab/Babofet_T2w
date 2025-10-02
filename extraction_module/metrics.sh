@@ -36,7 +36,7 @@ for SESSION in "$BASE_DIR"/ses*; do
             # Correlation Coefficient
             cc=$(MeasureImageSimilarity -d 3 -m CC["$NEW_REF", "$AFFINE_FILE", 1, 3] -x "$REFERENCE_MASK")
             # FSLCC
-            fslcc=$(fslcc -m "$REFERENCE_MASK" -p 5 "$NEW_REF" "$AFFINE_FILE")
+            fslcc=$(fslcc -m "$REFERENCE_MASK" -p 5 "$NEW_REF" "$AFFINE_FILE" | awk '{print $3}')
             echo "$atlas_id,$mattes,$mse,$cc,$fslcc" >> "$RESULTS_FILE"
         done
 
