@@ -114,7 +114,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
     ref_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
 
-    ants_prefix = "ants_"
+    ants_prefix = os.path.join(input_atlas_registered, "ants_")
     ants_warped_image = "warped_IMAGE.nii.gz"
 
     best_atlas_name = os.path.basename(best_atlas)
@@ -133,7 +133,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
             "--initial-moving-transform", initial_moving_transform,
             "--transform", "SyN[0.1,3,0]",
             "--metric", f"Mattes[{ref},{best_atlas},1, 64]",
-            "--convergence", "[200x200x200x200x200x200,1e-7,10]",
+            "--convergence", "[200x200x200x100x100x100, 1e-6, 10]",
             "--shrink-factors", "4x4x2x2x1x1",
             "--smoothing-sigmas", "6x5x4x2x1x0",
             "--masks", f"[{ref_mask}, {best_atlas_mask}]",
