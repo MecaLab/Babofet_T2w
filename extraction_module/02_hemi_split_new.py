@@ -76,7 +76,7 @@ def find_best_atlas(input_atlas_registered, base_subj_path):
             if output:
                 fslcc_value = float(output.split()[2])
                 dico_atlas_metric[atlas_file] = fslcc_value
-                print(f"\t\t{atlas_file}: {fslcc_value}")
+                print(f"\t\t\t{atlas_file}: {fslcc_value}")
 
     best_atlas = max(dico_atlas_metric, key=dico_atlas_metric.get)
     return best_atlas
