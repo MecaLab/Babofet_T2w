@@ -8,7 +8,7 @@ import configuration as cfg
 
 def fsl_register(atlas_dir, base_subj_path, output_dir):
     reference = os.path.join(base_subj_path, "srr_template_debiased.nii.gz")
-    reference_mask = os.path.join(base_subj_path, "srr_template_mask.nii.nii.gz")
+    reference_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
     new_reference = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
 
     subprocess.run(
