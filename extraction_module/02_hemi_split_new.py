@@ -54,10 +54,6 @@ def find_best_atlas(input_atlas_registered, base_subj_path):
     reference = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
     reference_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
 
-    """
-    fslcc=$(fslcc -m "$REFERENCE_MASK" -p 5 "$NEW_REF" "$AFFINE_FILE" | awk '{print $3}')
-            echo "$atlas_id,$mattes,$mse,$cc,$fslcc" >> "$RESULTS_FILE"
-    """
     dico_atlas_metric = {}
     for atlas_file in os.listdir(input_atlas_registered):
         if atlas_file.endswith(".nii.gz") and "affine" in atlas_file:
@@ -82,8 +78,19 @@ def find_best_atlas(input_atlas_registered, base_subj_path):
                 print(f"\t\t{atlas_file}: {fslcc_value}")
 
     best_atlas = max(dico_atlas_metric, key=dico_atlas_metric.get)
-    print(f"\t\tBest atlas: {best_atlas} with fslcc: {dico_atlas_metric[best_atlas]}")
     return best_atlas
+
+
+def convert_fsl2ants(best_atals, output_dir):
+    """
+    tools/c3d_affine_tool \
+        -ref ${REFERENCE} \
+        -src ${MOVING} \
+        "$OUTPUT_DIR/affine.mat" \
+        -fsl2ras \
+        -oitk "$OUTPUT_DIR/affine.txt"
+    """
+
 
 
 if __name__ == "__main__":
@@ -113,7 +120,7 @@ if __name__ == "__main__":
             print(f"\tSession: {session}")
 
             session_subject_path = os.path.join(subject_path, session)
-            subject_output_split_seg_session = os.path.join(subject_output_split_seg, subject, session)
+            subject_output_split_seg_session = os.path.join(subject_output_split_seg, session)
             if not os.path.exists(subject_output_split_seg_session):
                 os.makedirs(subject_output_split_seg_session)
 
@@ -121,5 +128,9 @@ if __name__ == "__main__":
 
             fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
 
-            find_best_atlas(subject_output_split_seg_session, recons_rhesus_folder)
+            best_atlas = find_best_atlas(subject_output_split_seg_session, recons_rhesus_folder)
+
+            print(f"\tBest atlas: {best_atlas}")
+
+
             exit()
