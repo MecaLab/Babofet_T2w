@@ -39,8 +39,6 @@ for SESSION in "$BASE_DIR"/ses*; do
             fslcc=$(fslcc -m "$REFERENCE_MASK" -p 5 "$NEW_REF" "$AFFINE_FILE" | awk '{print $3}')
             echo "$atlas_id,$mattes,$mse,$cc,$fslcc" >> "$RESULTS_FILE"
         done
-
-        exit 1
     fi
 done
 
