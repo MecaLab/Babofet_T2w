@@ -19,7 +19,7 @@ def fsl_register(atlas_dir, base_subj_path, output_dir):
     for moving_file in os.listdir(atlas_dir):
         if moving_file.endswith(".nii.gz") and "Norm" in moving_file:
             moving = os.path.join(atlas_dir, moving_file)
-        
+
             print(f"\t\tProcessing {moving_file}")
             moving_name = moving_file.replace(".nii.gz", "_affine.nii.gz")
             moving_mat = moving_file.replace(".nii.gz", "_affine.mat")
@@ -73,9 +73,12 @@ if __name__ == "__main__":
             print(f"\tSession: {session}")
 
             session_subject_path = os.path.join(subject_path, session)
+            subject_output_split_seg_session = os.path.join(subject_output_split_seg, subject, session)
+            if not os.path.exists(subject_output_split_seg_session):
+                os.makedirs(subject_output_split_seg_session)
 
             recons_rhesus_folder = os.path.join(session_subject_path, "recons_rhesus/recon_template_space")
 
-            fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg)
+            fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
 
             exit()
