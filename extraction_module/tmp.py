@@ -91,6 +91,7 @@ if __name__ == "__main__":
             print(f"\tMattes min: {min_mattes_atlas} ({min_mattes_value:.3f})")
             print(f"\tMSE min: {min_mse_atlas} ({min_mse_value:.3f})")
             print(f"\tCC min: {min_cc_atlas} ({min_cc_value:.3f})")
+            print(f"\tFSLCC max: {max_fslcc_atlas} ({max_fslcc_value:.3f})")
 
             # Créer une figure avec 3 sous-graphiques
             fig, axes = plt.subplots(1, 4, figsize=(24, 5))
