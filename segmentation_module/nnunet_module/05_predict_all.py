@@ -69,7 +69,7 @@ if __name__ == "__main__":
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    copy_files(cfg.DATA_PATH, output_dir, subjects=["Bibi", "Borgne", "Fabienne", "Filoutte", "Formule", "Forme"])
+    copy_files(cfg.DATA_PATH, output_dir, subjects=["Aziza"])
 
     input_folder = output_dir  # input 3D volumes
     output_folder = os.path.join(output_dir, "segmentations")  # output segmentations
