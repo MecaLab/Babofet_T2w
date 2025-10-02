@@ -45,15 +45,24 @@ def copy_files(main_path, output_path, subjects):
 
             t2w_debiased = os.path.join(session_path, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
             t2w_debiased_dest = os.path.join(output_path, f"{subject}_{session}_0000.nii.gz")
-            subprocess.run(["cp", t2w_debiased, t2w_debiased_dest])
+
+            if not os.path.exists(t2w_debiased_dest):
+                subprocess.run(["cp", t2w_debiased, t2w_debiased_dest])
 
         print(f"End for {subject}")
 
 
 if __name__ == "__main__":
-    """dataset_id = int(sys.argv[1])
+    dataset_id = int(sys.argv[1])
     name = sys.argv[2]
-    trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs"""
+    trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs
+
+    if dataset_id < 10:
+        dataset_name = f"Dataset00{dataset_id}_{name}"
+    elif dataset_id < 100:
+        dataset_name = f"Dataset0{dataset_id}_{name}"
+    else:
+        dataset_name = f"Dataset{dataset_id}_{name}"
 
     output_dir = "inference_all"
 
@@ -62,4 +71,14 @@ if __name__ == "__main__":
 
     copy_files(cfg.DATA_PATH, output_dir, subjects=["Bibi", "Borgne", "Fabienne", "Filoutte", "Formule", "Forme"])
 
+    input_folder = output_dir  # input 3D volumes
+    output_folder = os.path.join(output_dir, "segmentations")  # output segmentations
+
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    print("Starting inference")
+    filename = "slurm_files/nnunet_prediction_all.slurm"
+    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer)
+    subprocess.run(["sbatch", filename])
 
