@@ -4,7 +4,11 @@ module load FSL ANTS
 
 # Chemin de base pour les sessions de Borgne
 BASE_DIR='/envau/work/meca/data/babofet_DB/2024_new_stuff/recons_folder/Borgne'
+ATLAS_DIR='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Volumes'
 OUTPUT_BASE_DIR='/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Volumes/flirt'
+
+# Créer le dossier de sortie s'il n'existe pas
+mkdir -p "$OUTPUT_BASE_DIR"
 
 # Parcourir chaque session dans Borgne
 for SESSION in "$BASE_DIR"/ses*; do
@@ -19,7 +23,7 @@ for SESSION in "$BASE_DIR"/ses*; do
         RESULTS_FILE="$OUTPUT_DIR/metrics_results.csv"
 
         # En-tête pour le fichier CSV
-        echo "Atlas,Mattes,MSE,CC" > "$RESULTS_FILE"
+        echo "Atlas,Mattes,MSE,CC,FSLCC" > "$RESULTS_FILE"
 
         # Boucle sur tous les fichiers _affine.nii.gz dans OUTPUT_DIR
         for AFFINE_FILE in "$OUTPUT_DIR"/*_affine.nii.gz; do
@@ -31,7 +35,9 @@ for SESSION in "$BASE_DIR"/ses*; do
             mse=$(MeasureImageSimilarity -d 3 -m MeanSquares["$NEW_REF", "$AFFINE_FILE", 1, 3] -x "$REFERENCE_MASK")
             # Correlation Coefficient
             cc=$(MeasureImageSimilarity -d 3 -m CC["$NEW_REF", "$AFFINE_FILE", 1, 3] -x "$REFERENCE_MASK")
-            echo "$atlas_id,$mattes,$mse,$cc" >> "$RESULTS_FILE"
+            # FSLCC
+            fslcc=$(fslcc -m "$REFERENCE_MASK" -p 5 "$NEW_REF" "$AFFINE_FILE" | awk '{print $2}')
+            echo "$atlas_id,$mattes,$mse,$cc,$fslcc" >> "$RESULTS_FILE"
         done
     fi
 done
