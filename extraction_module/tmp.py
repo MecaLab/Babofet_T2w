@@ -2,6 +2,8 @@ import os
 import sys
 import ants as ants
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Backend non-interactif
 import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
@@ -74,7 +76,7 @@ if __name__ == "__main__":
             cc = data["CC"]
 
             # Trouver les atlas avec les plus petites valeurs
-            min_mattes_atlas = atlases[mattes.idxmin()] 
+            min_mattes_atlas = atlases[mattes.idxmin()]
             min_mattes_value = mattes.min()
             min_mse_atlas = atlases[mse.idxmin()]
             min_mse_value = mse.min()
