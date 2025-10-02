@@ -91,8 +91,9 @@ def convert_fsl2ants(input_atlas_registered, best_atlas, base_subj_path):
         -oitk "$OUTPUT_DIR/affine.txt"
     """
 
-    affine_file = os.path.join(input_atlas_registered, best_atlas.replace(".nii.gz", "_affine.mat"))
-    oitk = os.path.join(input_atlas_registered, best_atlas.replace(".nii.gz", "_affine.txt"))
+    best_atlas_name = os.path.basename(best_atlas)
+    affine_file = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.mat"))
+    oitk = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
 
     subprocess.run(
         [
