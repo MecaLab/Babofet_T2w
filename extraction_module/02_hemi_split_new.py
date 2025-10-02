@@ -27,7 +27,7 @@ def fsl_register(atlas_dir, base_subj_path, output_dir):
             out_nii = os.path.join(output_dir, moving_name)
 
             if os.path.exists(out_nii):
-                print(f"\t\t\t{moving_name} already exists, skipping...")
+                print(f"\t\t\t\t{moving_name} already exists, skipping...")
                 continue
             out_mat = os.path.join(output_dir, moving_mat)
 
@@ -110,14 +110,15 @@ def convert_fsl2ants(input_atlas_registered, best_atlas, base_subj_path):
     print("\t\tAffine conversion done")
 
 
-def ants_nonlinear_registration(output_dir, base_subj_path, best_atlas, atlas_mask):
+def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atlas, best_atlas_mask):
     ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
     ref_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
 
     ants_prefix = "ants_"
     ants_warped_image = "warped_IMAGE.nii.gz"
 
-    initial_moving_transform = os.path.join(output_dir, "affine.txt")
+    best_atlas_name = os.path.basename(best_atlas)
+    initial_moving_transform = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
 
     subprocess.run(
         [
@@ -135,7 +136,7 @@ def ants_nonlinear_registration(output_dir, base_subj_path, best_atlas, atlas_ma
             "--convergence", "[200x200x200x200x200x200,1e-7,10]",
             "--shrink-factors", "4x4x2x2x1x1",
             "--smoothing-sigmas", "6x5x4x2x1x0",
-            "--masks", f"[{ref_mask}, {atlas_mask}]",
+            "--masks", f"[{ref_mask}, {best_atlas_mask}]",
         ],
         check=True,
         capture_output=True,
@@ -150,6 +151,7 @@ if __name__ == "__main__":
     atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
     volumes_atlas_path = os.path.join(atlas_path, "Volumes")
+    segmentation_atlas_path = os.path.join(atlas_path, "Segmentations", "structures_dilated")
     output_split_seg = os.path.join(atlas_path, "Seg_Hemi")
 
     atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
@@ -187,5 +189,11 @@ if __name__ == "__main__":
             best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
 
             convert_fsl2ants(subject_output_split_seg_session, best_atlas_path, recons_rhesus_folder)
+
+            # ONPRC_G122_Norm_affine.nii.gz
+            # ONPRC_G122_NFseg_bm.nii
+            mask_best_atlas = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "NFseg_bm"))
+
+            ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas)
 
             exit()
