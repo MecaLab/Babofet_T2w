@@ -81,7 +81,7 @@ def find_best_atlas(input_atlas_registered, base_subj_path):
     return best_atlas
 
 
-def convert_fsl2ants(best_atlas, base_subj_path, output_dir):
+def convert_fsl2ants(input_atlas_registered, base_subj_path):
     """
     tools/c3d_affine_tool \
         -ref ${REFERENCE} \
@@ -91,8 +91,8 @@ def convert_fsl2ants(best_atlas, base_subj_path, output_dir):
         -oitk "$OUTPUT_DIR/affine.txt"
     """
 
-    affine_file = os.path.join(output_dir, best_atlas.replace(".nii.gz", "_affine.mat"))
-    oitk = os.path.join(output_dir, best_atlas.replace(".nii.gz", "_affine.txt"))
+    affine_file = os.path.join(input_atlas_registered, best_atlas.replace(".nii.gz", "_affine.mat"))
+    oitk = os.path.join(input_atlas_registered, best_atlas.replace(".nii.gz", "_affine.txt"))
 
     print(affine_file)
     print(oitk)
@@ -187,6 +187,6 @@ if __name__ == "__main__":
 
             best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
 
-            convert_fsl2ants(best_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
+            convert_fsl2ants(subject_output_split_seg_session, recons_rhesus_folder)
 
             exit()
