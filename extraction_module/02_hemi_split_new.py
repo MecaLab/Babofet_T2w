@@ -82,6 +82,7 @@ def find_best_atlas(input_atlas_registered, base_subj_path):
                 print(f"\t\t{atlas_file}: {fslcc_value}")
 
     best_atlas = max(dico_atlas_metric, key=dico_atlas_metric.get)
+    print(f"\t\tBest atlas: {best_atlas} with fslcc: {dico_atlas_metric[best_atlas]}")
     return best_atlas
 
 
