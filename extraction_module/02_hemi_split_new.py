@@ -27,7 +27,7 @@ def fsl_register(atlas_dir, base_subj_path, output_dir):
             out_nii = os.path.join(output_dir, moving_name)
 
             if os.path.exists(out_nii):
-                print(f"\t\t{moving_name} already exists, skipping...")
+                print(f"\t\t\t{moving_name} already exists, skipping...")
                 continue
             out_mat = os.path.join(output_dir, moving_mat)
 
@@ -47,13 +47,14 @@ def fsl_register(atlas_dir, base_subj_path, output_dir):
                 ],
                 check=True,
             )
-    print("\tFLIRT registration done")
+    print("\t\tFLIRT registration done")
 
 
 def find_best_atlas(input_atlas_registered, base_subj_path):
     reference = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
     reference_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
 
+    print("\t\tFinding best atlas with FSLCC")
     dico_atlas_metric = {}
     for atlas_file in os.listdir(input_atlas_registered):
         if atlas_file.endswith(".nii.gz") and "affine" in atlas_file:
@@ -181,7 +182,7 @@ if __name__ == "__main__":
 
             best_atlas = find_best_atlas(subject_output_split_seg_session, recons_rhesus_folder)
 
-            print(f"\tBest atlas: {best_atlas}")
+            print(f"\t\tBest atlas: {best_atlas}")
 
             best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
 
