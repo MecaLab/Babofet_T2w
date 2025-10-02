@@ -179,6 +179,6 @@ if __name__ == "__main__":
 
             best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
 
-            convert_fsl2ants(best_atlas, recons_rhesus_folder, subject_output_split_seg_session)
+            convert_fsl2ants(best_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
 
             exit()
