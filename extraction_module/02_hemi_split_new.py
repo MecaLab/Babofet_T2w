@@ -91,14 +91,22 @@ def convert_fsl2ants(best_atlas, base_subj_path, output_dir):
         -oitk "$OUTPUT_DIR/affine.txt"
     """
 
+    affine_file = os.path.join(output_dir, best_atlas.replace(".nii.gz", "_affine.mat"))
+    oitk = os.path.join(output_dir, best_atlas.replace(".nii.gz", "_affine.txt"))
+
+    print(affine_file)
+    print(oitk)
+
+    exit()
+
     subprocess.run(
         [
             "tools/c3d_affine_tool",
             "-ref", os.path.join(base_subj_path, "masked_template_debiased.nii.gz"),
             "-src", best_atlas,
-            os.path.join(output_dir, best_atlas.replace(".nii.gz", "_affine.mat")),
+            affine_file,
             "-fsl2ras",
-            "-oitk", os.path.join(output_dir, best_atlas.replace(".nii.gz", "_affine.txt"))
+            "-oitk", oitk
         ]
     )
 
@@ -178,9 +186,7 @@ if __name__ == "__main__":
             print(f"\tBest atlas: {best_atlas}")
 
             best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
-            print(best_atlas_path)
 
-            exit()  
             convert_fsl2ants(best_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
 
             exit()
