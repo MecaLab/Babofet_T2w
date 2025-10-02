@@ -78,7 +78,7 @@ if __name__ == "__main__":
             min_mattes_value = mattes.min()
             min_mse_atlas = atlases[mse.idxmin()]
             min_mse_value = mse.min()
-            min_cc_atlas = atlases[cc.idxmax()]
+            min_cc_atlas = atlases[cc.idxmin()]
             min_cc_value = cc.min()
 
             # Afficher les résultats dans la console
@@ -96,7 +96,6 @@ if __name__ == "__main__":
             axes[0].set_xlabel("Atlas")
             axes[0].set_ylabel("Valeur de Mattes")
             axes[0].grid(True)
-            axes[0].set_xticklabels(atlases)
 
             # MSE
             axes[1].plot(atlases, mse, marker='o', color='orange', label="MSE")
@@ -104,7 +103,6 @@ if __name__ == "__main__":
             axes[1].set_xlabel("Atlas")
             axes[1].set_ylabel("Valeur de MSE")
             axes[1].grid(True)
-            axes[1].set_xticklabels(atlases)
 
             # CC
             axes[2].plot(atlases, cc, marker='o', color='green', label="CC")
@@ -112,7 +110,6 @@ if __name__ == "__main__":
             axes[2].set_xlabel("Atlas")
             axes[2].set_ylabel("Valeur de CC")
             axes[2].grid(True)
-            axes[2].set_xticklabels(atlases)
 
             plt.tight_layout()
             plt.savefig(os.path.join(plot_dir, "combined_metrics_plot.png"))
