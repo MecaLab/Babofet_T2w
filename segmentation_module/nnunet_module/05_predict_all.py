@@ -51,9 +51,9 @@ def copy_files(main_path, output_path, subjects):
 
 
 if __name__ == "__main__":
-    dataset_id = int(sys.argv[1])
+    """dataset_id = int(sys.argv[1])
     name = sys.argv[2]
-    trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs"
+    trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs""""
 
     output_dir = "inference_all"
 
@@ -61,5 +61,5 @@ if __name__ == "__main__":
         os.makedirs(output_dir)
 
     copy_files(cfg.DATA_PATH, output_dir, subjects=["Bibi", "Borgne", "Fabienne", "Filoutte", "Formule", "Forme"])
-    
+
 
