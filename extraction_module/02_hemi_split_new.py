@@ -81,7 +81,7 @@ def find_best_atlas(input_atlas_registered, base_subj_path):
     return best_atlas
 
 
-def convert_fsl2ants(best_atals, output_dir):
+def convert_fsl2ants(best_atlas, base_subj_path, output_dir):
     """
     tools/c3d_affine_tool \
         -ref ${REFERENCE} \
@@ -90,6 +90,51 @@ def convert_fsl2ants(best_atals, output_dir):
         -fsl2ras \
         -oitk "$OUTPUT_DIR/affine.txt"
     """
+
+    subprocess.run(
+        [
+            "tools/c3d_affine_tool",
+            "-ref", os.path.join(base_subj_path, "masked_template_debiased.nii.gz"),
+            "-src", best_atlas,
+            os.path.join(output_dir, best_atlas.replace(".nii.gz", "_affine.mat")),
+            "-fsl2ras",
+            "-oitk", os.path.join(output_dir, best_atlas.replace(".nii.gz", "_affine.txt"))
+        ]
+    )
+
+
+def ants_nonlinear_registration(output_dir, base_subj_path, best_atlas, atlas_mask):
+    ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
+    ref_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
+
+    ants_prefix = "ants_"
+    ants_warped_image = "warped_IMAGE.nii.gz"
+
+    initial_moving_transform = os.path.join(output_dir, "affine.txt")
+
+    subprocess.run(
+        [
+            "antsRegistration",
+            "--verbose", "1",
+            "--dimensionality", "3",
+            "--float", "0",
+            "--output", f"[{ants_prefix}, {ants_warped_image}]",
+            "--interpolation", "BSpline",
+            "--use-histogram-matching", "1",
+            "--winsorize-image-intensities", "[0.001,0.999]",
+            "--initial-moving-transform", initial_moving_transform,
+            "--transform", "SyN[0.1,3,0]",
+            "--metric", f"Mattes[{ref},{best_atlas},1, 64]",
+            "--convergence", "[200x200x200x200x200x200,1e-7,10]",
+            "--shrink-factors", "4x4x2x2x1x1",
+            "--smoothing-sigmas", "6x5x4x2x1x0",
+            "--masks", f"[{ref_mask}, {atlas_mask}]",
+        ],
+        check=True,
+        capture_output=True,
+        text=True
+    )
+
 
 
 
@@ -132,5 +177,8 @@ if __name__ == "__main__":
 
             print(f"\tBest atlas: {best_atlas}")
 
+            best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
+
+            convert_fsl2ants(best_atlas, recons_rhesus_folder, subject_output_split_seg_session)
 
             exit()
