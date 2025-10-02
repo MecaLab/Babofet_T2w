@@ -95,8 +95,6 @@ def convert_fsl2ants(input_atlas_registered, best_atlas, base_subj_path):
     affine_file = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.mat"))
     oitk = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
 
-    print(oitk) 
-
     subprocess.run(
         [
             "tools/c3d_affine_tool",
@@ -107,6 +105,8 @@ def convert_fsl2ants(input_atlas_registered, best_atlas, base_subj_path):
             "-oitk", oitk
         ]
     )
+
+    print("\t\tAffine conversion done")
 
 
 def ants_nonlinear_registration(output_dir, base_subj_path, best_atlas, atlas_mask):
