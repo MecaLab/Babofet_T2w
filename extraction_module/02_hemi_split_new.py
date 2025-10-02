@@ -18,8 +18,8 @@ def fsl_register(atlas_dir, base_subj_path, output_dir):
     print("\tStarting registration with FLIRT")
     for moving_file in os.listdir(atlas_dir):
         if moving_file.endswith(".nii.gz") and "Norm" in moving_file:
-            moving = os.path.join(atlas_dir, "Volumes", moving_file)
-
+            moving = os.path.join(atlas_dir, moving_file)
+        
             print(f"\t\tProcessing {moving_file}")
             moving_name = moving_file.replace(".nii.gz", "_affine.nii.gz")
             moving_mat = moving_file.replace(".nii.gz", "_affine.mat")
