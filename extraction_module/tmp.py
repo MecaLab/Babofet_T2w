@@ -74,18 +74,18 @@ if __name__ == "__main__":
             cc = data["CC"]
 
             # Trouver les atlas avec les plus petites valeurs
-            min_mattes_atlas = atlases[mattes.idxmin()]  # Plus négative = plus loin de 0
+            min_mattes_atlas = atlases[mattes.idxmin()] 
             min_mattes_value = mattes.min()
-            min_mse_atlas = atlases[mse.idxmin()]  # Plus petite valeur
+            min_mse_atlas = atlases[mse.idxmin()]
             min_mse_value = mse.min()
-            closest_cc_atlas = atlases[(cc + 1).abs().idxmin()]  # Plus proche de -1
-            closest_cc_value = cc[cc.abs() - 1 == (cc + 1).abs().min()].iloc[0]
+            min_cc_atlas = atlases[cc.idxmin()]
+            min_cc_value = cc.min()
 
             # Afficher les résultats dans la console
             print(f"Session: {session}")
             print(f"\tMattes min: {min_mattes_atlas} ({min_mattes_value:.3f})")
             print(f"\tMSE min: {min_mse_atlas} ({min_mse_value:.3f})")
-            print(f"\tCC min: {closest_cc_atlas} ({closest_cc_value:.3f})")
+            print(f"\tCC min: {min_cc_atlas} ({min_cc_value:.3f})")
 
             # Créer une figure avec 3 sous-graphiques
             fig, axes = plt.subplots(1, 3, figsize=(18, 5))
