@@ -58,54 +58,62 @@ def compute_registration(fixed_path, fixed_bm_path, moving_path, moving_bm_path,
 if __name__ == "__main__":
     base_path = cfg.BASE_NIOLON_PATH
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
-
-    # Lire les données
     base_path_registration = os.path.join(atlas_path, "Volumes/flirt")
 
     for session in os.listdir(base_path_registration):
-
         session_path = os.path.join(base_path_registration, session)
-        data = pd.read_csv(os.path.join(session_path, "metrics_results.csv"))
+        if os.path.isdir(session_path):
+            data = pd.read_csv(os.path.join(session_path, "metrics_results.csv"))
+            plot_dir = os.path.join(session_path, "plots")
+            if not os.path.exists(plot_dir):
+                os.makedirs(plot_dir)
 
-        plot_dir = os.path.join(session_path, "plots")
+            atlases = data["Atlas"]
+            mattes = data["Mattes"]
+            mse = data["MSE"]
+            cc = data["CC"]
 
-        if not os.path.exists(plot_dir):
-            os.makedirs(plot_dir)
+            # Trouver les atlas avec les plus petites valeurs
+            min_mattes_atlas = atlases[mattes.idxmin()]
+            min_mattes_value = mattes.min()
+            min_mse_atlas = atlases[mse.idxmin()]
+            min_mse_value = mse.min()
+            min_cc_atlas = atlases[cc.idxmin()]
+            min_cc_value = cc.min()
 
-        # Extraire les atlas (ex: G85, G122)
-        atlases = data["Atlas"]
-        mattes = data["Mattes"]
-        mse = data["MSE"]
-        cc = data["CC"]
+            # Afficher les résultats dans la console
+            print(f"Session: {session}")
+            print(f"\tMattes min: {min_mattes_atlas} ({min_mattes_value:.3f})")
+            print(f"\tMSE min: {min_mse_atlas} ({min_mse_value:.3f})")
+            print(f"\tCC min: {min_cc_atlas} ({min_cc_value:.3f})")
 
-        # Courbe Mattes
-        plt.figure()
-        plt.plot(atlases, mattes, marker='o', label="Mattes")
-        plt.title("Mattes Mutual Information par Atlas")
-        plt.xlabel("Atlas")
-        plt.ylabel("Valeur de Mattes")
-        plt.grid(True)
-        plt.savefig(os.path.join(plot_dir, "mattes_plot.png"))
-        plt.close()
+            # Créer une figure avec 3 sous-graphiques
+            fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 
-        # Courbe MSE
-        plt.figure()
-        plt.plot(atlases, mse, marker='o', color='orange', label="MSE")
-        plt.title("Mean Squares Error par Atlas")
-        plt.xlabel("Atlas")
-        plt.ylabel("Valeur de MSE")
-        plt.grid(True)
-        plt.savefig(os.path.join(plot_dir, "mse_plot.png"))
-        plt.close()
+            # Mattes
+            axes[0].plot(atlases, mattes, marker='o', label="Mattes")
+            axes[0].set_title("Mattes Mutual Information par Atlas")
+            axes[0].set_xlabel("Atlas")
+            axes[0].set_ylabel("Valeur de Mattes")
+            axes[0].grid(True)
+            axes[0].set_xticklabels(atlases, rotation=45)
 
-        # Courbe CC
-        plt.figure()
-        plt.plot(atlases, cc, marker='o', color='green', label="CC")
-        plt.title("Correlation Coefficient par Atlas")
-        plt.xlabel("Atlas")
-        plt.ylabel("Valeur de CC")
-        plt.grid(True)
-        plt.savefig(os.path.join(plot_dir, "cc_plot.png"))
-        plt.close()
+            # MSE
+            axes[1].plot(atlases, mse, marker='o', color='orange', label="MSE")
+            axes[1].set_title("Mean Squares Error par Atlas")
+            axes[1].set_xlabel("Atlas")
+            axes[1].set_ylabel("Valeur de MSE")
+            axes[1].grid(True)
+            axes[1].set_xticklabels(atlases, rotation=45)
 
-        exit()
+            # CC
+            axes[2].plot(atlases, cc, marker='o', color='green', label="CC")
+            axes[2].set_title("Correlation Coefficient par Atlas")
+            axes[2].set_xlabel("Atlas")
+            axes[2].set_ylabel("Valeur de CC")
+            axes[2].grid(True)
+            axes[2].set_xticklabels(atlases, rotation=45)
+
+            plt.tight_layout()
+            plt.savefig(os.path.join(plot_dir, "combined_metrics_plot.png"))
+            plt.close()
