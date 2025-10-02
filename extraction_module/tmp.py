@@ -60,50 +60,52 @@ if __name__ == "__main__":
     atlas_path = os.path.join(base_path, "atlas_fetal_rhesus_v2")
 
     # Lire les données
-    data = pd.read_csv(os.path.join(atlas_path, "Volumes/flirt/metrics_results.csv"))
+    base_path_registration = os.path.join(atlas_path, "Volumes/flirt")
 
-    plot_dir = os.path.join(atlas_path, "Volumes/flirt/plots")
+    for session in os.listdir(base_path_registration):
 
-    if not os.path.exists(plot_dir):
-        os.makedirs(plot_dir)
+        session_path = os.path.join(base_path_registration, session)
+        data = pd.read_csv(os.path.join(session_path, "metrics_results.csv"))
 
-    # Extraire les atlas (ex: G85, G122)
-    atlases = data["Atlas"]
-    mattes = data["Mattes"]
-    mse = data["MSE"]
-    cc = data["CC"]
+        plot_dir = os.path.join(session_path, "plots")
 
-    # Créer les courbes
-    os.makedirs("$PLOT_DIR", exist_ok=True)
+        if not os.path.exists(plot_dir):
+            os.makedirs(plot_dir)
 
-    # Courbe Mattes
-    plt.figure()
-    plt.plot(atlases, mattes, marker='o', label="Mattes")
-    plt.title("Mattes Mutual Information par Atlas")
-    plt.xlabel("Atlas")
-    plt.ylabel("Valeur de Mattes")
-    plt.grid(True)
-    plt.savefig(os.path.join(plot_dir, "mattes_plot.png"))
-    plt.close()
+        # Extraire les atlas (ex: G85, G122)
+        atlases = data["Atlas"]
+        mattes = data["Mattes"]
+        mse = data["MSE"]
+        cc = data["CC"]
 
-    # Courbe MSE
-    plt.figure()
-    plt.plot(atlases, mse, marker='o', color='orange', label="MSE")
-    plt.title("Mean Squares Error par Atlas")
-    plt.xlabel("Atlas")
-    plt.ylabel("Valeur de MSE")
-    plt.grid(True)
-    plt.savefig(os.path.join(plot_dir, "mse_plot.png"))
-    plt.close()
+        # Courbe Mattes
+        plt.figure()
+        plt.plot(atlases, mattes, marker='o', label="Mattes")
+        plt.title("Mattes Mutual Information par Atlas")
+        plt.xlabel("Atlas")
+        plt.ylabel("Valeur de Mattes")
+        plt.grid(True)
+        plt.savefig(os.path.join(plot_dir, "mattes_plot.png"))
+        plt.close()
 
-    # Courbe CC
-    plt.figure()
-    plt.plot(atlases, cc, marker='o', color='green', label="CC")
-    plt.title("Correlation Coefficient par Atlas")
-    plt.xlabel("Atlas")
-    plt.ylabel("Valeur de CC")
-    plt.grid(True)
-    plt.savefig(os.path.join(plot_dir, "cc_plot.png"))
-    plt.close()
+        # Courbe MSE
+        plt.figure()
+        plt.plot(atlases, mse, marker='o', color='orange', label="MSE")
+        plt.title("Mean Squares Error par Atlas")
+        plt.xlabel("Atlas")
+        plt.ylabel("Valeur de MSE")
+        plt.grid(True)
+        plt.savefig(os.path.join(plot_dir, "mse_plot.png"))
+        plt.close()
 
-    # tmp_func(atlas_path)
+        # Courbe CC
+        plt.figure()
+        plt.plot(atlases, cc, marker='o', color='green', label="CC")
+        plt.title("Correlation Coefficient par Atlas")
+        plt.xlabel("Atlas")
+        plt.ylabel("Valeur de CC")
+        plt.grid(True)
+        plt.savefig(os.path.join(plot_dir, "cc_plot.png"))
+        plt.close()
+
+        exit()
