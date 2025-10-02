@@ -74,6 +74,7 @@ if __name__ == "__main__":
             mattes = data["Mattes"]
             mse = data["MSE"]
             cc = data["CC"]
+            fslcc = data["FSLCC"]
 
             # Trouver les atlas avec les plus petites valeurs
             min_mattes_atlas = atlases[mattes.idxmin()]
@@ -82,6 +83,8 @@ if __name__ == "__main__":
             min_mse_value = mse.min()
             min_cc_atlas = atlases[cc.idxmin()]
             min_cc_value = cc.min()
+            max_fslcc_atlas = atlases[fslcc.idxmax()]  # Plus grande valeur de FSLCC
+            max_fslcc_value = fslcc.max()
 
             # Afficher les résultats dans la console
             print(f"Session: {session}")
@@ -90,7 +93,7 @@ if __name__ == "__main__":
             print(f"\tCC min: {min_cc_atlas} ({min_cc_value:.3f})")
 
             # Créer une figure avec 3 sous-graphiques
-            fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+            fig, axes = plt.subplots(1, 4, figsize=(24, 5))
 
             # Mattes
             axes[0].plot(atlases, mattes, marker='o', label="Mattes")
@@ -112,6 +115,12 @@ if __name__ == "__main__":
             axes[2].set_xlabel("Atlas")
             axes[2].set_ylabel("Valeur de CC")
             axes[2].grid(True)
+
+            axes[3].plot(atlases, fslcc, marker='o', color='red')
+            axes[3].set_title("FSLCC par Atlas")
+            axes[3].set_xlabel("Atlas")
+            axes[3].set_ylabel("Valeur de FSLCC")
+            axes[3].grid(True)
 
             plt.tight_layout()
             plt.savefig(os.path.join(plot_dir, "combined_metrics_plot.png"))
