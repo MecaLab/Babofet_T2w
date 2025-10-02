@@ -126,5 +126,3 @@ if __name__ == "__main__":
             plt.tight_layout()
             plt.savefig(os.path.join(plot_dir, "combined_metrics_plot.png"))
             plt.close()
-
-            exit()
