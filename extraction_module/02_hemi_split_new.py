@@ -170,7 +170,7 @@ if __name__ == "__main__":
         subject_path = os.path.join(recons_folder, subject)
         for session in os.listdir(subject_path):
 
-            if session == "ses07":
+            if session in ["ses07", "ses08"]:
                 continue
             print(f"\tSession: {session}")
 
@@ -197,4 +197,4 @@ if __name__ == "__main__":
 
             ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas)
 
-            exit()
+        exit()
