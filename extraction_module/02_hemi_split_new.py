@@ -123,7 +123,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     subprocess.run(
         [
             "antsRegistration",
-            "--verbose", "1",
+            "--verbose", "0",
             "--dimensionality", "3",
             "--float", "0",
             "--output", f"[{ants_prefix}, {ants_warped_image}]",
@@ -197,4 +197,4 @@ if __name__ == "__main__":
 
             ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas)
 
-        exit()
+            exit()
