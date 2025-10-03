@@ -152,8 +152,6 @@ if __name__ == "__main__":
     segmentation_atlas_path = os.path.join(atlas_path, "Segmentations", "structures_dilated")
     output_split_seg = os.path.join(atlas_path, "Seg_Hemi")
 
-    atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
-
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
 
