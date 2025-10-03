@@ -132,15 +132,13 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
             "--winsorize-image-intensities", "[0.001,0.999]",
             "--initial-moving-transform", initial_moving_transform,
             "--transform", "SyN[0.1,3,0]",
-            "--metric", f"Mattes[{ref},{best_atlas},1, 64]",
+            "--metric", f"Mattes[{ref},{best_atlas}, 1, 64]",
             "--convergence", "[200x200x200x100x100x100, 1e-6, 10]",
             "--shrink-factors", "4x4x2x2x1x1",
             "--smoothing-sigmas", "6x5x4x2x1x0",
             "--masks", f"[{ref_mask}, {best_atlas_mask}]",
         ],
         check=True,
-        capture_output=True,
-        text=True
     )
 
 
