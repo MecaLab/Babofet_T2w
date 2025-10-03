@@ -123,7 +123,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     subprocess.run(
         [
             "antsRegistration",
-            "--verbose", "0",
+            "--verbose", "1",
             "--dimensionality", "3",
             "--float", "0",
             "--output", f"[{ants_prefix}, {ants_warped_image}]",
