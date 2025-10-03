@@ -195,6 +195,6 @@ if __name__ == "__main__":
             # ONPRC_G122_NFseg_bm.nii
             mask_best_atlas = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "NFseg_bm"))
 
-            # ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas)
+            ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas)
 
         exit()
