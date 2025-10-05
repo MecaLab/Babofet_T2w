@@ -114,19 +114,19 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
     ref_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
 
-    ants_prefix = "ants_"
-    ants_warped_image = os.path.join(input_atlas_registered, f"{ants_prefix}warped_IMAGE.nii.gz")
+    ants_prefix = os.path.join(input_atlas_registered, "ants_")
+    ants_warped_image = "warped_IMAGE.nii.gz"
 
     best_atlas_name = os.path.basename(best_atlas)
     initial_moving_transform = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
-
+    full_ouput_name = f"{ants_prefix}{ants_warped_image}"
     subprocess.run(
         [
             "antsRegistration",
             "--verbose", "1",
             "--dimensionality", "3",
             "--float", "0",
-            "--output", f"[{ants_prefix}, {ants_warped_image}]",
+            "--output", f"[{ants_prefix}, {full_ouput_name}]",
             "--interpolation", "BSpline",
             "--use-histogram-matching", "1",
             "--winsorize-image-intensities", "[0.001,0.999]",
