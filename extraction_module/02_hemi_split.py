@@ -208,9 +208,9 @@ if __name__ == "__main__":
             if not os.path.exists(subject_output_split_seg_session):
                 os.makedirs(subject_output_split_seg_session)
 
-            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi.nii.gz")
-
             recons_rhesus_folder = os.path.join(session_subject_path, "recons_rhesus/recon_template_space")
+
+            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi.nii.gz")
 
             fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
 
@@ -231,12 +231,12 @@ if __name__ == "__main__":
             affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace("_affine.nii.gz", "_affine.txt"))
             apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg, affine_file)
 
-            exit()
+            warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
+            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}.nii.gz")   # CHANGE FOLDER NAME LATER !!!
+            fixed_seg = ants.image_read(t2_subj_seg)
 
-            """
-            warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, f"ants_{filename}"))
 
-           new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
+            new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
 
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # CSF droit
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 2)] = 2  # WM droit
@@ -254,4 +254,5 @@ if __name__ == "__main__":
             seg_out = fixed_seg.new_image_like(new_data)
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
-            """
+
+            exit()
