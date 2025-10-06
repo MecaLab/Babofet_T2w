@@ -122,7 +122,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     initial_moving_transform = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
     full_ouput_name = f"{ants_prefix}{ants_warped_image}"
 
-    """
+
     if os.path.exists(full_ouput_name):
         print(f"\t\t{full_ouput_name} already exists, skipping...")
 
@@ -146,14 +146,11 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
             "--masks", f"[{ref_mask}, {best_atlas_mask}]",
         ],
             check=True,
-        )"""
+        )
 
     full_ouput_name_tmp = full_ouput_name.replace(" ", "")
-    print(full_ouput_name)
-    print(full_ouput_name_tmp)
     os.rename(f" {full_ouput_name}", full_ouput_name_tmp)
     shutil.move(full_ouput_name_tmp, os.path.join(input_atlas_registered, full_ouput_name_tmp))
-    exit()
 
 
 if __name__ == "__main__":
