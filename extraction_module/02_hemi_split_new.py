@@ -123,7 +123,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     full_ouput_name = f"{ants_prefix}{ants_warped_image}"
 
 
-    if os.path.exists(f" {full_ouput_name}"):
+    if os.path.exists(f" {full_ouput_name}") or os.path.exists(full_ouput_name):
         print(f"\t\t{full_ouput_name} already exists, skipping...")
 
     else:
@@ -148,9 +148,12 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
             check=True,
         )
 
-    full_ouput_name_tmp = full_ouput_name.replace(" ", "")
-    os.rename(f" {full_ouput_name}", full_ouput_name_tmp)
-    shutil.move(full_ouput_name_tmp, os.path.join(input_atlas_registered, full_ouput_name_tmp))
+    try:
+        full_ouput_name_tmp = full_ouput_name.replace(" ", "")
+        os.rename(f" {full_ouput_name}", full_ouput_name_tmp)
+        shutil.move(full_ouput_name_tmp, os.path.join(input_atlas_registered, full_ouput_name_tmp))
+    except FileNotFoundError:
+        shutil.move(full_ouput_name, os.path.join(input_atlas_registered, full_ouput_name))
 
 
 if __name__ == "__main__":
