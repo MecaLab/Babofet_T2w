@@ -148,6 +148,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
         )"""
 
     full_ouput_name_tmp = f" {full_ouput_name}"
+    print(full_ouput_name_tmp)
     os.system(f"mv {full_ouput_name_tmp} {os.path.join(input_atlas_registered, full_ouput_name)}")
     exit()
 
