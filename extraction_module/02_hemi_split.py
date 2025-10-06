@@ -157,12 +157,11 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
         shutil.move(full_ouput_name, os.path.join(input_atlas_registered, full_ouput_name))
 
 
-def apply_ants_transformations(input_atlas_registered, base_subj_path, moving_seg):
+def apply_ants_transformations(input_atlas_registered, base_subj_path, moving_seg, affine_file):
     ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
 
     output = os.path.join(input_atlas_registered, "warped_regionals.nii.gz")
     transform_file = os.path.join(input_atlas_registered, "ants_1Warp.nii.gz")
-    affine_file = os.path.join(input_atlas_registered, "affine.txt")
 
     subprocess.run(
         [
@@ -223,15 +222,14 @@ if __name__ == "__main__":
 
             convert_fsl2ants(subject_output_split_seg_session, best_atlas_path, recons_rhesus_folder)
 
-            exit()
-
             mask_best_atlas = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "NFseg_bm"))
 
             filename = f"{subject}_{session}_warped_IMAGE.nii.gz"
             # ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas, filename)
 
             subj_seg = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "structures_dilated"))
-            apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg)
+            affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace(".nii.gz", "_affine.txt"))
+            apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg, affine_file)
 
             exit()
 
