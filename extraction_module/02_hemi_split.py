@@ -1,65 +1,191 @@
-import numpy as np
+import subprocess
 import os
 import sys
 import ants as ants
+import numpy as np
+import shutil
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
-# Function to adapt the atlas to the subject and compute the MI
+
+def fsl_register(atlas_dir, base_subj_path, output_dir):
+    reference = os.path.join(base_subj_path, "srr_template_debiased.nii.gz")
+    reference_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
+    new_reference = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
+
+    subprocess.run(
+        ["fslmaths", reference, "-mul", reference_mask, new_reference],
+        check=True,
+    )
+    print("\t\tStarting registration with FLIRT")
+    for moving_file in os.listdir(atlas_dir):
+        if moving_file.endswith(".nii.gz") and "Norm" in moving_file:
+            moving = os.path.join(atlas_dir, moving_file)
+
+            print(f"\t\t\tProcessing {moving_file}")
+            moving_name = moving_file.replace(".nii.gz", "_affine.nii.gz")
+            moving_mat = moving_file.replace(".nii.gz", "_affine.mat")
+
+            out_nii = os.path.join(output_dir, moving_name)
+
+            if os.path.exists(out_nii):
+                print(f"\t\t\t\t{moving_name} already exists, skipping...")
+                continue
+            out_mat = os.path.join(output_dir, moving_mat)
+
+            subprocess.run(
+                [
+                    "flirt",
+                    "-in", moving,
+                    "-ref", new_reference,
+                    "-out", out_nii,
+                    "-omat", out_mat,
+                    "-dof", "12",
+                    "-cost", "mutualinfo",
+                    "-searchrx", "-180", "180",
+                    "-searchry", "-180", "180",
+                    "-searchrz", "-180", "180",
+                    "-interp", "spline"
+                ],
+                check=True,
+            )
+    print("\t\tFLIRT registration done")
 
 
-def ants_register(fixed, moving_atlas_file, moving_atlas_mask_file=None):
-    # load atlas volume
-    moving_atlas = ants.image_read(moving_atlas_file)
-    # fixed.plot(overlay=moving_atlas, title='Before Registration', overlay_alpha = 0.5)
-    # comute registration
-    if moving_atlas_mask_file is not None:
-        moving_atlas_mask = ants.image_read(moving_atlas_mask_file)
-        mytx = ants.registration(fixed=fixed, moving=moving_atlas, mask=moving_atlas_mask,
-                                 type_of_transform="Affine", aff_random_sampling_rate=0.5)  # 'SyN' or Affine
+def find_best_atlas(input_atlas_registered, base_subj_path):
+    reference = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
+    reference_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
+
+    print("\t\tFinding best atlas with FSLCC")
+    dico_atlas_metric = {}
+    for atlas_file in os.listdir(input_atlas_registered):
+        if atlas_file.endswith(".nii.gz") and "affine" in atlas_file:
+            atlas_path = os.path.join(input_atlas_registered, atlas_file)
+
+            result = subprocess.run(
+                [
+                    "fslcc",
+                    "-m", reference_mask,
+                    "-p", "5",
+                    reference,
+                    atlas_path
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            output = result.stdout.strip()
+            if output:
+                fslcc_value = float(output.split()[2])
+                dico_atlas_metric[atlas_file] = fslcc_value
+                print(f"\t\t\t{atlas_file}: {fslcc_value}")
+
+    best_atlas = max(dico_atlas_metric, key=dico_atlas_metric.get)
+    return best_atlas
+
+
+def convert_fsl2ants(input_atlas_registered, best_atlas, base_subj_path):
+    """
+    tools/c3d_affine_tool \
+        -ref ${REFERENCE} \
+        -src ${MOVING} \
+        "$OUTPUT_DIR/affine.mat" \
+        -fsl2ras \
+        -oitk "$OUTPUT_DIR/affine.txt"
+    """
+
+    best_atlas_name = os.path.basename(best_atlas)
+    affine_file = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.mat"))
+    oitk = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
+
+    subprocess.run(
+        [
+            "tools/c3d_affine_tool",
+            "-ref", os.path.join(base_subj_path, "masked_template_debiased.nii.gz"),
+            "-src", best_atlas,
+            affine_file,
+            "-fsl2ras",
+            "-oitk", oitk
+        ]
+    )
+
+    print("\t\tAffine conversion done")
+
+
+def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atlas, best_atlas_mask, filename):
+    ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
+    ref_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
+
+    ants_prefix = "ants_"
+    ants_warped_image = filename
+
+    best_atlas_name = os.path.basename(best_atlas)
+    initial_moving_transform = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
+    full_ouput_name = f"{ants_prefix}{ants_warped_image}"
+
+
+    if os.path.exists(f" {full_ouput_name}") or os.path.exists(full_ouput_name):
+        print(f"\t\t{full_ouput_name} already exists, skipping...")
+
     else:
-        mytx = ants.registration(fixed=fixed, moving=moving_atlas, type_of_transform="Affine")  # 'SyN' or Affine
+        subprocess.run(
+        [
+            "antsRegistration",
+            "--verbose", "1",
+            "--dimensionality", "3",
+            "--float", "0",
+            "--output", f"[{ants_prefix}, {full_ouput_name}]",
+            "--interpolation", "BSpline",
+            "--use-histogram-matching", "1",
+            "--winsorize-image-intensities", "[0.001,0.999]",
+            "--initial-moving-transform", initial_moving_transform,
+            "--transform", "SyN[0.1,3,0]",
+            "--metric", f"Mattes[{ref},{best_atlas}, 1, 64]",
+            "--convergence", "[200x200x200x100x100x100, 1e-6, 10]",
+            "--shrink-factors", "4x4x2x2x1x1",
+            "--smoothing-sigmas", "6x5x4x2x1x0",
+            "--masks", f"[{ref_mask}, {best_atlas_mask}]",
+        ],
+            check=True,
+        )
 
-    gd = os.path.basename(moving_atlas_file).split("_")[1]
-    ants.image_write(mytx['warpedmovout'], os.path.join(cfg.BASE_NIOLON_PATH, f"tmp_affine_{gd}.nii.gz"))
-    # fwdtransforms: Transforms to move from moving to fixed image.
-    # invtransforms: Transforms to move from fixed to moving image.
-    # fwdtransform = mytx['fwdtransforms']
-    warped_atlas = mytx['warpedmovout']
-    # compute MI to find the closest atlas
-    # wraped_mi = ants.image_mutual_information(fixed, warped_atlas)
-    wraped_mi = ants.image_similarity(fixed, warped_atlas, metric_type="MattesMutualInformation")  # MattesMutualInformation, MeanSquares, CC, Demons
-    return wraped_mi
+    try:
+        full_ouput_name_tmp = full_ouput_name.replace(" ", "")
+        os.rename(f" {full_ouput_name}", full_ouput_name_tmp)
+        shutil.move(full_ouput_name_tmp, os.path.join(input_atlas_registered, full_ouput_name_tmp))
+    except FileNotFoundError:
+        shutil.move(full_ouput_name, os.path.join(input_atlas_registered, full_ouput_name))
 
 
-def find_best_atlas(fixed, atlas_path, atlas_list, use_mask=True):
-    best_atlas = None
+def apply_ants_transformations(input_atlas_registered, base_subj_path, moving_seg):
+    ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
 
-    for i, atlas in enumerate(atlas_list):
-        atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{atlas}_Norm.nii.gz")
+    output = os.path.join(input_atlas_registered, "warped_regionals.nii.gz")
+    transform_file = os.path.join(input_atlas_registered, "ants_1Warp.nii.gz")
+    affine_file = os.path.join(input_atlas_registered, "affine.txt")
 
-        if use_mask:
-            mask_file = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_G{atlas}_NFseg_bm.nii.gz")
-        else:
-            mask_file = None
-
-        current_mi = ants_register(fixed, atlas_file, moving_atlas_mask_file=mask_file)
-        print(f"\t\t\t{atlas}: {current_mi}")
-
-        if best_atlas is None or current_mi < best_atlas[1]:  # < or > ?
-            best_atlas = [atlas, current_mi]
-
-    return best_atlas[0]
+    subprocess.run(
+        [
+            "antsApplyTransforms",
+            "--dimensionality", "3",
+            "--input", f"{moving_seg}",
+            "--reference-image", f"{ref}",
+            "--output", output,
+            "--transform", transform_file,
+            "--transform", affine_file,
+            "--interpolation", "GenericLabel",
+        ],
+        check=True,
+    )
 
 
 if __name__ == "__main__":
-
     recons_folder = cfg.RECONS_FOLDER
     atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
+    volumes_atlas_path = os.path.join(atlas_path, "Volumes")
+    segmentation_atlas_path = os.path.join(atlas_path, "Segmentations", "structures_dilated")
     output_split_seg = os.path.join(atlas_path, "Seg_Hemi")
-
-    atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
 
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
@@ -79,52 +205,36 @@ if __name__ == "__main__":
             print(f"\tSession: {session}")
 
             session_subject_path = os.path.join(subject_path, session)
+            subject_output_split_seg_session = os.path.join(subject_output_split_seg, session)
+            if not os.path.exists(subject_output_split_seg_session):
+                os.makedirs(subject_output_split_seg_session)
+
+            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi.nii.gz")
 
             recons_rhesus_folder = os.path.join(session_subject_path, "recons_rhesus/recon_template_space")
 
-            t2_subj = os.path.join(recons_rhesus_folder, "srr_template_debiased.nii.gz")
-            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "nnunet_pred_dataset_7_3000", f"{subject}_{session}.nii.gz")
+            fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
 
-            if not os.path.exists(t2_subj_seg):
-                print(f"\tOriginal segmentation for {subject} {session} does not exists. Run the inference on it. Skipping...")
-                continue
+            best_atlas = find_best_atlas(subject_output_split_seg_session, recons_rhesus_folder)
 
-            fixed = ants.image_read(t2_subj)
-            fixed_seg = ants.image_read(t2_subj_seg)  # np unique -> 0 1 2 3 4
+            print(f"\t\tBest atlas: {best_atlas}")
 
-            file_seg_out = os.path.join(subject_output_split_seg, f"{subject}_{session}_hemi.nii.gz")
+            best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
 
-            # find best_atlas
-            best_atlas = find_best_atlas(fixed, atlas_path, atlas_timepoints, use_mask=True)
-            print(f"\t\tBest altas: {best_atlas}")
+            convert_fsl2ants(subject_output_split_seg_session, best_atlas_path, recons_rhesus_folder)
 
-            best_atlas_file = os.path.join(atlas_path, "Volumes", f"ONPRC_G{best_atlas}_Norm.nii.gz")
-            moving_best_atlas = ants.image_read(best_atlas_file)
+            mask_best_atlas = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "NFseg_bm"))
 
-            moving_seg_file = os.path.join(atlas_path, "Segmentations", "structures_dilated", f"ONPRC_G{best_atlas}_NFseg_structures_dilated.nii.gz")
+            filename = f"{subject}_{session}_warped_IMAGE.nii.gz"
+            # ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas, filename)
 
-            if not os.path.exists(moving_seg_file):
-                print(f"\t\tError ! File {moving_seg_file} does not exists. Run the previous script")
-                continue
+            subj_seg = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm", "structures_dilated"))
+            apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg)
 
-            moving_best_seg = ants.image_read(moving_seg_file)
+            """
+            warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, f"ants_{filename}"))
 
-            mytx_best = ants.registration(fixed=fixed, moving=moving_best_atlas, type_of_transform='SyN')  # SyN or Affine
-            # fwdtransforms: Transforms to move from moving to fixed image.
-            # invtransforms: Transforms to move from fixed to moving image.
-            fwdtransform_best = mytx_best['fwdtransforms']
-            warped_best_atlas = mytx_best['warpedmovout']
-
-            ants.image_write(warped_best_atlas, os.path.join(cfg.BASE_NIOLON_PATH, "tmp_syn.nii.gz"))
-
-            warped_best_seg = ants.apply_transforms(fixed=fixed, moving=moving_best_seg,
-                                                    transformlist=mytx_best['fwdtransforms'],
-                                                    interpolator="nearestNeighbor")
-
-            ants.image_write(warped_best_seg, os.path.join(cfg.BASE_NIOLON_PATH, "tmp_syn_seg.nii.gz"))
-
-            ## use the aligned atlas hemi to split the segmentation
-            new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
+           new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
 
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # CSF droit
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 2)] = 2  # WM droit
@@ -142,5 +252,4 @@ if __name__ == "__main__":
             seg_out = fixed_seg.new_image_like(new_data)
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
-
-        exit()
+            """
