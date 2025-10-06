@@ -123,7 +123,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     full_ouput_name = f"{ants_prefix}{ants_warped_image}"
 
 
-    if os.path.exists(full_ouput_name):
+    if os.path.exists(f" {full_ouput_name}"):
         print(f"\t\t{full_ouput_name} already exists, skipping...")
 
     else:
