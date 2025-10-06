@@ -25,9 +25,12 @@ if __name__ == "__main__":
         if not os.path.exists(subject_dst_path):
             os.makedirs(subject_dst_path)
 
-        print(f"Starting {subject}")
-        for session_file in os.listdir(subject_src_path):
+        print(f"Processing subject: {subject}")
+
+        for session in os.listdir(subject_src_path):
+            session_file = os.path.join(subject_src_path, session, f"{subject}_{session}_hemi.nii.gz")
             print(f"\tSession file: {session_file}")
+
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
                 output_file = session_file.replace("_hemi.nii.gz", f".{label_name}.white.gii")
@@ -37,11 +40,7 @@ if __name__ == "__main__":
 
                 subprocess.run([
                     "singularity", "run", "-B", f"{base_path}:/home/atlas_fetal_rhesus_v2", "surf_proc_v0.0.2a.sif",
-                    "generate_mesh", "-s", input_full_path , "-l", str(label_val), "-m", output_full_path
+                    "generate_mesh", "-s", input_full_path, "-l", str(label_val), "-m", output_full_path
                 ], check=True)
 
                 exit()
-                """
-                singularity run -B /scratch/lbaptiste/surface_processing/:/home surface_processing/surf_proc_v0.0.2a.sif
-                 generate_mesh -s /home/Borgne_ses06_hemi.nii.gz -l 2 -m /home/Borgne_ses06.right.white.gii
-                """
