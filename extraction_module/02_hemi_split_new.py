@@ -149,13 +149,11 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
         )"""
 
     full_ouput_name_tmp = full_ouput_name.replace(" ", "")
-    os.rename(full_ouput_name, full_ouput_name_tmp)
+    print(full_ouput_name)
+    print(full_ouput_name_tmp)
+    os.rename(f" {full_ouput_name}", full_ouput_name_tmp)
     shutil.move(full_ouput_name_tmp, os.path.join(input_atlas_registered, full_ouput_name_tmp))
     exit()
-
-
-
-
 
 
 if __name__ == "__main__":
