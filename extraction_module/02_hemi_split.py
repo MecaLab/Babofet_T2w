@@ -255,4 +255,3 @@ if __name__ == "__main__":
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
 
-            exit()
