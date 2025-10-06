@@ -2,6 +2,7 @@ import subprocess
 import os
 import sys
 import ants as ants
+import shutil
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -147,9 +148,8 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
             check=True,
         )"""
 
-    full_ouput_name_tmp = f" {full_ouput_name}"
-    print(full_ouput_name_tmp)
-    os.system(f"mv {full_ouput_name_tmp} {os.path.join(input_atlas_registered, full_ouput_name)}")
+    full_ouput_name = full_ouput_name.replace(" ", "")
+    shutil.move(full_ouput_name, os.path.join(input_atlas_registered, full_ouput_name))
     exit()
 
 
