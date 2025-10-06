@@ -180,7 +180,7 @@ if __name__ == "__main__":
         subject_path = os.path.join(recons_folder, subject)
         for session in os.listdir(subject_path):
 
-            if session in ["ses07", "ses09"]:
+            if session in ["ses07", "ses08", "ses09"]:
                 continue
             print(f"\tSession: {session}")
 
