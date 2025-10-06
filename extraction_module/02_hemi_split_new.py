@@ -148,6 +148,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
             check=True,
         )"""
 
+    print(full_ouput_name)
     if os.path.exists(full_ouput_name):
         full_ouput_name_tmp = full_ouput_name.replace(" ", "")
         os.rename(full_ouput_name, full_ouput_name_tmp)
