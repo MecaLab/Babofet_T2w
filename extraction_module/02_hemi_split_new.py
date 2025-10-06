@@ -148,6 +148,8 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
 
         os.system("mv " + full_ouput_name + " " + os.path.join(input_atlas_registered, full_ouput_name))
 
+        exit()
+
 
 
 
