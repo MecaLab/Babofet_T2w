@@ -228,7 +228,7 @@ if __name__ == "__main__":
             # ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas, filename)
 
             subj_seg = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "structures_dilated"))
-            affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace(".nii.gz", "_affine.txt"))
+            affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace("affine.nii.gz", "_affine.txt"))
             apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg, affine_file)
 
             exit()
