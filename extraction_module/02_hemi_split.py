@@ -201,6 +201,8 @@ if __name__ == "__main__":
 
         subject_path = os.path.join(recons_folder, subject)
         for session in os.listdir(subject_path):
+            if session not in ["ses01", "ses04", "ses05"]:
+                continue
             print(f"\tSession: {session}")
 
             session_subject_path = os.path.join(subject_path, session)
@@ -210,7 +212,7 @@ if __name__ == "__main__":
 
             recons_rhesus_folder = os.path.join(session_subject_path, "recons_rhesus/recon_template_space")
 
-            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi.nii.gz")
+            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi_new.nii.gz")
 
             fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
 
@@ -232,9 +234,8 @@ if __name__ == "__main__":
             apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg, affine_file)
 
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
-            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}.nii.gz")   # CHANGE FOLDER NAME LATER !!!
+            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}_corrected.nii.gz")   # CHANGE FOLDER NAME LATER !!!
             fixed_seg = ants.image_read(t2_subj_seg)
-
 
             new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
 
@@ -254,4 +255,3 @@ if __name__ == "__main__":
             seg_out = fixed_seg.new_image_like(new_data)
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
-
