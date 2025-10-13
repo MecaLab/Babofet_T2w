@@ -28,12 +28,14 @@ if __name__ == "__main__":
         print(f"Processing subject: {subject}")
 
         for session in os.listdir(subject_src_path):
-            session_file = f"{subject}_{session}_hemi.nii.gz"
+            session_file = f"{subject}_{session}_hemi_new.nii.gz"
+            if not os.path.exists(os.path.join(subject_src_path, session, session_file)):
+                continue
             print(f"\tSession file: {session_file}")
 
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
-                output_file = session_file.replace("_hemi.nii.gz", f".{label_name}.white.gii")
+                output_file = session_file.replace("_hemi.nii.gz", f".{label_name}_new.white.gii")
 
                 input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
                 output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file}"
