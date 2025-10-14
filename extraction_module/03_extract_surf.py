@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
-                output_file = session_file.replace("_hemi_new.nii.gz", f".{label_name}_new.white.gii")
+                output_file = session_file.replace("_hemi_new.nii.gz", f"_new.{label_name}.white.gii")
 
                 input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
                 output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file}"
