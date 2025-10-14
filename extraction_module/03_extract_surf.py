@@ -31,6 +31,8 @@ if __name__ == "__main__":
             session_file = f"{subject}_{session}_hemi_new.nii.gz"
             if not os.path.exists(os.path.join(subject_src_path, session, session_file)):
                 continue
+            if session not in ["ses04"]:
+                continue
             print(f"\tSession file: {session_file}")
 
             for label_name, label_val in labels_map.items():
