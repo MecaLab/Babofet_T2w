@@ -31,7 +31,7 @@ if __name__ == "__main__":
             session_file = f"{subject}_{session}_hemi_new.nii.gz"
             if not os.path.exists(os.path.join(subject_src_path, session, session_file)):
                 continue
-            if session not in ["ses06"]:
+            if session not in ["ses08"]:
                 continue
             print(f"\tSession file: {session_file}")
 

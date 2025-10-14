@@ -201,7 +201,7 @@ if __name__ == "__main__":
 
         subject_path = os.path.join(recons_folder, subject)
         for session in os.listdir(subject_path):
-            if session not in ["ses06"]:
+            if session not in ["ses08"]:
                 continue
             print(f"\tSession: {session}")
 
