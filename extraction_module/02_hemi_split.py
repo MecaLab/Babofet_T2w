@@ -237,9 +237,14 @@ if __name__ == "__main__":
             t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}_corrected.nii.gz")   # CHANGE FOLDER NAME LATER !!!
             fixed_seg = ants.image_read(t2_subj_seg)
 
-            print(np.unique(fixed_seg.numpy()))
-            exit()
+            unique_label_t2 = np.unique(fixed_seg.numpy())
+            if 4 in unique_label_t2:
+                seg_array = fixed_seg.numpy()
+                seg_array[seg_array == 4] = 1
 
+                fixed_seg = ants.from_numpy(seg_array, origin=fixed_seg.origin, spacing=fixed_seg.spacing,
+                                                direction=fixed_seg.direction)
+                
             new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
 
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # CSF droit
