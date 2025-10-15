@@ -244,7 +244,10 @@ if __name__ == "__main__":
 
                 fixed_seg = ants.from_numpy(seg_array, origin=fixed_seg.origin, spacing=fixed_seg.spacing,
                                                 direction=fixed_seg.direction)
-                
+
+                ants.image_write(fixed_seg, os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}_corrected_3.nii.gz"))
+
+            exit()
             new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
 
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # CSF droit
