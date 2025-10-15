@@ -237,7 +237,7 @@ if __name__ == "__main__":
             t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}_corrected.nii.gz")   # CHANGE FOLDER NAME LATER !!!
             fixed_seg = ants.image_read(t2_subj_seg)
 
-            print(np.unique(fixed_seg))
+            print(np.unique(fixed_seg.numpy()))
             exit()
 
             new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
