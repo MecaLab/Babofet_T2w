@@ -242,12 +242,12 @@ if __name__ == "__main__":
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # CSF droit
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 2)] = 2  # WM droit
             new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 3)] = 3  # GM droit
-            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 4)] = 1  # merge ventricule droit into csf
+            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 4)] = 2  # merge ventricule droit into wm
 
             new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 1)] = 5  # CSF gauche
             new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 2)] = 6  # WM gauche
             new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 3)] = 7  # GM gauche
-            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 4)] = 5  # merge Ventricule gauche into csf
+            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 4)] = 6  # merge Ventricule gauche into wm
 
             new_data[(warped_best_seg.numpy() == 3)] = 9  # Tronc
             new_data[(warped_best_seg.numpy() == 4)] = 10  # Cervelet
