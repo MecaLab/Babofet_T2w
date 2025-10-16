@@ -111,7 +111,7 @@ if __name__ == "__main__":
         haste_files = list()
         truefisp_files = list()
 
-        for d in dir_list:  
+        for d in dir_list:
             d_lower = d.lower()
             if "haste" in d_lower:
                 haste_files.append(d)
