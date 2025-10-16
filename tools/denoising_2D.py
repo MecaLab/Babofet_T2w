@@ -16,9 +16,9 @@ def denoising_data(input_path, output_path):
         subj_output_dir = os.path.join(output_path, subject)
         if subject != "sub-Borgne_ses-03":
             continue
-        if os.path.exists(subj_output_dir):
+        """if os.path.exists(subj_output_dir):
             print("Skip {}".format(subject))
-            continue
+            continue"""
         if not os.path.exists(subj_output_dir):
             os.mkdir(subj_output_dir)
 
