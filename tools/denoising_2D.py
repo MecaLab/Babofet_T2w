@@ -61,7 +61,7 @@ def denoising_data(input_path, output_path):
                 cmd = [DENOISING_PATH_EXE, "-i", input_full_path, "-o", bm_full_path]
                 subprocess.run(cmd)
 
-                print("\t\tEnd {}".format(nifti_filename))
+                print("\t\t\tEnd {}".format(nifti_filename))
 
             print("\tEnding HASTE {}".format(subject))
 
