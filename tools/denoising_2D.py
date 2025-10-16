@@ -50,7 +50,10 @@ def denoising_data(input_path, output_path):
                     continue
                 elif "ND" in f:
                     continue
+                print("\t\tProcessing {}".format(f))
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
+                if nifti_filename is None:
+                    continue
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_denoised.nii"
                 bm_full_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
