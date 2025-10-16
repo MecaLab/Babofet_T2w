@@ -16,9 +16,6 @@ def denoising_data(input_path, output_path):
         subj_output_dir = os.path.join(output_path, subject)
         if subject != "sub-Borgne_ses-03":
             continue
-        """if os.path.exists(subj_output_dir):
-            print("Skip {}".format(subject))
-            continue"""
         if not os.path.exists(subj_output_dir):
             os.mkdir(subj_output_dir)
 
@@ -53,6 +50,7 @@ def denoising_data(input_path, output_path):
                 print("\t\tProcessing {}".format(f))
                 nifti_filename, nifti_full_path = tdo.file_name_from_path(base_path, subject, f)
                 if nifti_filename is None:
+                    print("\t\t\tNo nifti found for {}".format(f))
                     continue
                 s_nifti_filename = nifti_filename.split(".")
                 bm_nifti_filename = s_nifti_filename[0] + "_denoised.nii"
