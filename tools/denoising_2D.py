@@ -14,8 +14,8 @@ def denoising_data(input_path, output_path):
 
     for subject in subject_IDs:
         subj_output_dir = os.path.join(output_path, subject)
-        print(subject)
-        exit()
+        if subject != "sub-Borgne_ses-03":
+            continue
         if os.path.exists(subj_output_dir):
             print("Skip {}".format(subject))
             continue
