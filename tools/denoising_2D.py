@@ -47,6 +47,7 @@ def denoising_data(input_path, output_path):
                 os.mkdir(bm_haste_subj_output_dir)
 
             for f in haste_files:
+                break
                 if "missfront" in f:
                     continue
                 elif "ND" in f:
