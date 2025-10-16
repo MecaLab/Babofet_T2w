@@ -23,7 +23,7 @@ def denoising_data(input_path, output_path):
 
     for subject in subject_IDs:
         subj_output_dir = os.path.join(output_path, subject)
-        if subject != "sub-Borgne_ses-03":
+        if subject != "sub-Formule_ses-07" or subject != "sub-Formule_ses-09":
             continue
         if not os.path.exists(subj_output_dir):
             os.mkdir(subj_output_dir)
@@ -47,7 +47,6 @@ def denoising_data(input_path, output_path):
                 os.mkdir(bm_haste_subj_output_dir)
 
             for f in haste_files:
-                break
                 if "missfront" in f:
                     continue
                 elif "ND" in f:
