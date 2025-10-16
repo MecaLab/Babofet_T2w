@@ -6,3 +6,4 @@ def file_name_from_path(input_path, subject, f):
     for file in os.listdir(full_path):
         if file.endswith(".nii") or file.endswith("nii.gz"):
             return file, full_path
+    return None, None
