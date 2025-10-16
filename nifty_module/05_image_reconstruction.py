@@ -83,13 +83,14 @@ if __name__ == "__main__":
 
     denoising_folder = "denoising"
 
-    ga = "135"  # gestational age in days, used for the template. Should be 85, 110 or 135
+    ga = "110"  # gestational age in days, used for the template. Should be 85, 110 or 135
 
     list_subjs = [
         # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
         # "sub-Borgne_ses-08", "sub-Borgne_ses-10", "sub-Borgne_ses-09",
         # "sub-Bibi_ses-06", "sub-Bibi_ses-07", "sub-Bibi_ses-09",
-        "sub-Filoutte_ses-07", "sub-Filoutte_ses-08", "sub-Filoutte_ses-09", "sub-Filoutte_ses-10",
+        # "sub-Filoutte_ses-07", "sub-Filoutte_ses-08", "sub-Filoutte_ses-09", "sub-Filoutte_ses-10",
+        "sub-Borgne_ses03",
         # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
     ]
 
