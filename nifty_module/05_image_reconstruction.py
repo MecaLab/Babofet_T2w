@@ -90,7 +90,7 @@ if __name__ == "__main__":
         # "sub-Borgne_ses-08", "sub-Borgne_ses-10", "sub-Borgne_ses-09",
         # "sub-Bibi_ses-06", "sub-Bibi_ses-07", "sub-Bibi_ses-09",
         # "sub-Filoutte_ses-07", "sub-Filoutte_ses-08", "sub-Filoutte_ses-09", "sub-Filoutte_ses-10",
-        "sub-Borgne_ses03",
+        "sub-Borgne_ses-03",
         # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
     ]
 
