@@ -47,8 +47,8 @@ def plot_one_subject(subject, input_folder, labels, labels_names, voxel_size):
     plt.savefig(os.path.join(output_path, f"evolution_volumes_{subject}_{model_id}.png"))
 
 
-def plot_every_subject(input_folder, labels, labels_names, voxel_size):
-    label_volumes = {label: [] for label in labels}
+def plot_every_subject(input_folder, label_info, voxel_size):
+    label_data = {label: {} for label in label_info}
     for file in sorted(os.listdir(input_folder)):
         if file.endswith(".nii.gz"):
             subject_session = file.split(".")[0]  # SUJET_SESXX
@@ -56,28 +56,29 @@ def plot_every_subject(input_folder, labels, labels_names, voxel_size):
             session = subject_session.split("_")[-1]  # SESXX
             pred_path = os.path.join(input_folder, file)
             pred_img = nib.load(pred_path).get_fdata()
-            vols = compute_vol(pred_img, voxel_size, labels)
 
-            for label in labels:
-                if subject not in label_volumes[label]:
-                    label_volumes[label][subject] = {"sessions": [], "volumes": []}
-                label_volumes[label][subject]["sessions"].append(session)
-                label_volumes[label][subject]["volumes"].append(vols[label])
+            vols = compute_vol(pred_img, voxel_size, label_info.keys())
 
-    for label in labels:
+            for label in label_info:
+                if subject not in label_data[label]:
+                    label_data[label][subject] = {"sessions": [], "volumes": []}
+                label_data[label][subject]["sessions"].append(session)
+                label_data[label][subject]["volumes"].append(vols[label])
+
+    for label in label_info:
         fig, ax = plt.subplots(figsize=(12, 6))
-        for subject in label_volumes[label]:
-            sessions = label_volumes[label][subject]["sessions"]
-            volumes = label_volumes[label][subject]["volumes"]
+        for subject in label_data[label]:
+            sessions = label_data[label][subject]["sessions"]
+            volumes = label_data[label][subject]["volumes"]
             ax.plot(sessions, volumes, marker='o', label=subject)
 
-        ax.set_title(f'Label {labels_names[label]}')
+        ax.set_title(f'Label {label_info[label]["name"]}')
         ax.set_xlabel('Session')
         ax.set_ylabel('Volume (mm³)')
         ax.grid(True)
-        ax.legend()
+        # ax.legend(title='Sujet', bbox_to_anchor=(1.05, 1), loc='upper left')
         plt.tight_layout()
-        plt.savefig(os.path.join(output_path, f"evolution_volumes_{labels_names[label]}.png"))
+        plt.savefig(os.path.join(output_path, f"evolution_volumes_{label_info[label]['name']}.png"))
         plt.close()
 
 if __name__ == "__main__":
@@ -97,9 +98,11 @@ if __name__ == "__main__":
         os.makedirs(output_path)
 
     voxel_size = np.power(0.5, 3)
-    labels = [2, 3]  # Labels pour CSF, WM, GM, Ventricle
-    labels_names = ["WM", "GM"]
+    label_info = {
+        2: {"name": "WM"},
+        3: {"name": "GM"}
+    }
 
     # plot_one_subject(subject, input_folder, labels, labels_names, voxel_size)
-    plot_every_subject(input_folder, labels, labels_names, voxel_size)
+    plot_every_subject(input_folder, label_info, voxel_size)
 
