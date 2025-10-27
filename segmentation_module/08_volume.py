@@ -73,12 +73,13 @@ def plot_every_subject(input_folder, label_info, voxel_size):
             sessions = label_data[label][subject]["sessions"]
             volumes = label_data[label][subject]["volumes"]
 
-            sorted_pairs = sorted(zip(sessions, volumes), key=lambda x: all_sessions.index(x[0]))
+            sorted_pairs = sorted(zip(sessions, volumes), key=lambda x: int(x[0][3:]))
             sessions_sorted, volumes_sorted = zip(*sorted_pairs) if sorted_pairs else ([], [])
 
             ax.plot(sessions_sorted, volumes_sorted, marker='o', label=subject)
 
         ax.set_xticks(all_sessions)
+        ax.set_xticklabels(all_sessions)  # Affiche les labels dans l'ordre
         ax.set_title(f'Label {label_info[label]["name"]}')
         ax.set_xlabel('Session')
         ax.set_ylabel('Volume (mm³)')
