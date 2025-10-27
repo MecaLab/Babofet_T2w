@@ -24,7 +24,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-nnUNetv2_train {dataset_id} 3d_fullres all -tr {trainer} --npz --pretrained_weights {checkpoint_path}
+nnUNetv2_train {dataset_id} 3d_fullres all -tr {trainer} --npz -pretrained_weights {checkpoint_path}
 """
     # nnUNetv2_train {dataset_id} 3d_fullres all -tr {trainer} --npz
     with open(filename, "w", encoding="utf-8") as slurm_file:
