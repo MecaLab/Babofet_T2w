@@ -73,6 +73,7 @@ def plot_every_subject(input_folder, label_info, voxel_size):
 
             sorted_sessions_vols = sorted(zip(sessions, volumes), key=lambda x: int(x[0][3:]))
             sessions_sorted, volumes_sorted = zip(*sorted_sessions_vols) if sorted_sessions_vols else ([], [])
+            print(sessions_sorted, volumes_sorted)
 
             ax.plot(sessions_sorted, volumes_sorted, marker='o', label=subject)
 
