@@ -65,23 +65,25 @@ def plot_every_subject(input_folder, label_info, voxel_size):
                 label_data[label][subject]["sessions"].append(session)
                 label_data[label][subject]["volumes"].append(vols[label])
 
+    all_sessions = [f"ses{i:02d}" for i in range(1, 11)]  # ["ses01", "ses02", ..., "ses10"]
+
     for label in label_info:
         fig, ax = plt.subplots(figsize=(12, 6))
         for subject in label_data[label]:
             sessions = label_data[label][subject]["sessions"]
             volumes = label_data[label][subject]["volumes"]
 
-            sorted_sessions_vols = sorted(zip(sessions, volumes), key=lambda x: int(x[0][3:]))
-            sessions_sorted, volumes_sorted = zip(*sorted_sessions_vols) if sorted_sessions_vols else ([], [])
-            print(sessions_sorted, volumes_sorted)
+            sorted_pairs = sorted(zip(sessions, volumes), key=lambda x: all_sessions.index(x[0]))
+            sessions_sorted, volumes_sorted = zip(*sorted_pairs) if sorted_pairs else ([], [])
 
             ax.plot(sessions_sorted, volumes_sorted, marker='o', label=subject)
 
+        ax.set_xticks(all_sessions)
         ax.set_title(f'Label {label_info[label]["name"]}')
         ax.set_xlabel('Session')
         ax.set_ylabel('Volume (mm³)')
         ax.grid(True)
-        # ax.legend(title='Sujet', bbox_to_anchor=(1.05, 1), loc='upper left')
+        ax.legend(title='Sujet', bbox_to_anchor=(1.05, 1), loc='upper left')
         plt.tight_layout()
         plt.savefig(os.path.join(output_path, f"evolution_volumes_{label_info[label]['name']}.png"))
         plt.close()
