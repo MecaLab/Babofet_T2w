@@ -3,6 +3,11 @@ import os
 import subprocess
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
+import torch
+import numpy
+
+# Autoriser les anciens objets picklés
+torch.serialization.add_safe_globals([numpy.core.multiarray.scalar])
 
 
 def write_slurm_file(dataset_id, trainer, filename, checkpoint_path):
