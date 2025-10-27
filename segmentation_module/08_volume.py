@@ -70,7 +70,11 @@ def plot_every_subject(input_folder, label_info, voxel_size):
         for subject in label_data[label]:
             sessions = label_data[label][subject]["sessions"]
             volumes = label_data[label][subject]["volumes"]
-            ax.plot(sessions, volumes, marker='o', label=subject)
+
+            sorted_sessions_vols = sorted(zip(sessions, volumes), key=lambda x: int(x[0][3:]))
+            sessions_sorted, volumes_sorted = zip(*sorted_sessions_vols) if sorted_sessions_vols else ([], [])
+
+            ax.plot(sessions_sorted, volumes_sorted, marker='o', label=subject)
 
         ax.set_title(f'Label {label_info[label]["name"]}')
         ax.set_xlabel('Session')
