@@ -90,6 +90,7 @@ if __name__ == "__main__":
     else:
         input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/pred_dataset_{model_id}")
 
+    input_folder = os.path.join(cfg.CODE_PATH, "nnunet_mattia")
     output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/volumes")
 
     if not os.path.exists(output_path):
