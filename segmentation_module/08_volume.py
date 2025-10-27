@@ -37,9 +37,9 @@ if __name__ == "__main__":
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
-    voxel_size = 0.5
+    voxel_size = np.power(0.5, 3)
     labels = [1, 2, 3, 4]  # Labels pour CSF, WM, GM, Ventricle
-    labels_names = ["CSF", "WM", "GM", "Ventricle"]
+    labels_names = ["WM", "GM"]
 
     label_volumes = {label: [] for label in labels}
 
