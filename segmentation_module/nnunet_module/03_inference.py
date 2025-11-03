@@ -8,7 +8,7 @@ import configuration as cfg
 def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer):
     slurm_content = f"""#!/bin/bash
 
-#SBATCH --account='b219'
+#SBATCH --account='b391'
 #SBATCH --partition=volta
 #SBATCH --gres=gpu:1
 #SBATCH --time=10:00
