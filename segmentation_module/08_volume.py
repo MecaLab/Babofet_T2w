@@ -103,7 +103,7 @@ if __name__ == "__main__":
     else:
         input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/pred_dataset_{model_id}")
 
-    seg_folder = "Dataset003_Babofet_Uncropped_segmentations"
+    seg_folder = "Dataset007_MoreAgedData_segmentations"
 
     input_folder = os.path.join(cfg.CODE_PATH, seg_folder)
     # output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/volumes")
