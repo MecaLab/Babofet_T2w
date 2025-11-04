@@ -74,8 +74,6 @@ def plot_every_subject(input_folder, label_info, voxel_size, df):
                 label_data[label][subject]["gestational_days"].append(gestational_days)
                 label_data[label][subject]["volumes"].append(vols[label])
 
-    all_sessions = [f"ses{i:02d}" for i in range(1, 11)]  # ["ses01", "ses02", ..., "ses10"]
-
     for label in label_info:
         fig, ax = plt.subplots(figsize=(12, 6))
         for subject in label_data[label]:
@@ -105,14 +103,17 @@ if __name__ == "__main__":
     else:
         input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/pred_dataset_{model_id}")
 
-    input_folder = os.path.join(cfg.CODE_PATH, "nnunet_mattia")
-    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/volumes")
+    seg_folder = "Dataset003_Babofet_Uncropped_segmentations"
 
-    csv_path = os.path.join(cfg.CODE_PATH, "table_data", "sessions_to_days.csv")
-    df = pd.read_csv(csv_path)
+    input_folder = os.path.join(cfg.CODE_PATH, seg_folder)
+    # output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/volumes")
+    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{seg_folder}/volumes")
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
+
+    csv_path = os.path.join(cfg.CODE_PATH, "table_data", "sessions_to_days.csv")
+    df = pd.read_csv(csv_path)
 
     voxel_size = np.power(0.5, 3)
     label_info = {
