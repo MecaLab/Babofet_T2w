@@ -64,20 +64,19 @@ if __name__ == "__main__":
     else:
         dataset_name = f"Dataset{dataset_id}_{name}"
 
-    output_dir = "inference_all"
+    input_dir_3d_vol = "inference_all"
 
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-        copy_files(cfg.DATA_PATH, output_dir, subjects=["Aziza", "Bibi", "Borgne", "Fabienne", "Filoutte", "Forme", "Formule"])
+    if not os.path.exists(input_dir_3d_vol):
+        os.makedirs(input_dir_3d_vol)
+        copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Aziza", "Bibi", "Borgne", "Fabienne", "Filoutte", "Forme", "Formule"])
 
-    input_folder = output_dir  # input 3D volumes
-    output_folder = os.path.join(output_dir, "segmentations")  # output segmentations
+    output_folder = f"{dataset_name}_segmentations"  # output segmentations
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
     print("Starting inference")
     filename = "slurm_files/nnunet_prediction_all.slurm"
-    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer)
+    write_slurm_file(input_dir_3d_vol, output_folder, filename, dataset_id, trainer)
     subprocess.run(["sbatch", filename])
 
