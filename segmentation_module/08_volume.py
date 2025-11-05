@@ -21,6 +21,7 @@ def compute_vol(mask, voxel_size, labels=[1, 2, 3, 4]):
     return volumes
 
 
+
 def plot_one_subject(subject, input_folder, labels, labels_names, voxel_size):
     label_volumes = {label: [] for label in labels}
     sessions = []
