@@ -189,8 +189,10 @@ if __name__ == "__main__":
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
 
+    subjects = ["Fabienne", "Forme", "Aziza", "Filoutte", "Bibi", "Formule", "Filoutte"]
+
     for subject in os.listdir(recons_folder):
-        if subject != "Borgne":
+        if subject not in subjects:
             continue
         print(f"Starting {subject}")
 
@@ -201,8 +203,6 @@ if __name__ == "__main__":
 
         subject_path = os.path.join(recons_folder, subject)
         for session in os.listdir(subject_path):
-            if session not in ["ses01", "ses04", "ses05", "ses06"]:
-                continue
             print(f"\tSession: {session}")
 
             session_subject_path = os.path.join(subject_path, session)
@@ -234,7 +234,7 @@ if __name__ == "__main__":
             apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg, affine_file)
 
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
-            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}_corrected.nii.gz")   # CHANGE FOLDER NAME LATER !!!
+            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}.nii.gz")   # CHANGE FOLDER NAME LATER !!!
             fixed_seg = ants.image_read(t2_subj_seg)
 
             unique_label_t2 = np.unique(fixed_seg.numpy())
