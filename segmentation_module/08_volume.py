@@ -21,7 +21,6 @@ def compute_vol(mask, voxel_size, labels=[1, 2, 3, 4]):
     return volumes
 
 
-
 def plot_one_subject(subject, input_folder, labels, labels_names, voxel_size):
     label_volumes = {label: [] for label in labels}
     sessions = []
@@ -94,7 +93,67 @@ def plot_every_subject(input_folder, label_info, voxel_size, df):
         plt.savefig(os.path.join(output_path, f"evolution_volumes_{label_info[label]['name']}_by_gestational_days.png"))
         plt.close()
 
+
+def get_all_seg_hemi(root_dir):
+    datas = {}
+    for subject in os.listdir(root_dir):
+        subject_path = os.path.join(root_dir, subject)
+        for session in os.listdir(subject_path):
+            session_path = os.path.join(subject_path, session)
+            name = f"{subject}_{session}"
+            seg_path = os.path.join(session_path, f"{name}_hemi_new.nii.gz")
+            if os.path.exists(seg_path):
+                datas[f"{subject}_{session}"] = seg_path
+
+    return datas
+
+
+def plot_volume_hemisphere(input_folder, voxel_size, output_path):
+    hemisphere_labels = {
+        "left": {6: "WM_left", 7: "GM_left"},
+        "right": {2: "WM_right", 3: "GM_right"}
+    }
+
+    for hemisphere in hemisphere_labels:
+        label_data = {label: [] for label in hemisphere_labels[hemisphere]}
+        sessions = []
+
+        for file in sorted(os.listdir(input_folder)):
+            if file.endswith(".nii.gz"):
+                session = file.split(".")[0]  # SUJET_SESXX
+                pred_path = os.path.join(input_folder, file)
+                pred_img = nib.load(pred_path).get_fdata()
+
+                vols = compute_vol(pred_img, voxel_size, hemisphere_labels[hemisphere].keys())
+                for label in hemisphere_labels[hemisphere]:
+                    label_data[label].append(vols[label])
+                sessions.append(session)
+
+        fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+        for i, label in enumerate(hemisphere_labels[hemisphere]):
+            axes[i].plot(sessions, label_data[label], marker='o')
+            axes[i].set_title(f'{hemisphere.capitalize()} Hemisphere - {hemisphere_labels[hemisphere][label]}')
+            axes[i].set_xlabel('Session')
+            axes[i].set_ylabel('Volume (mm³)')
+            axes[i].grid(True)
+
+        plt.tight_layout()
+        plt.savefig(os.path.join(output_path, f"evolution_volumes_{hemisphere}_hemisphere.png"))
+
 if __name__ == "__main__":
+    # Hemisphere split
+
+    input_folder = ""
+
+    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/hemi_split/volumes")
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    datas = get_all_seg_hemi(os.path.join(cfg.BASE_PATH, "atlas_fetal_rhesus_v2/Seg_Hemi"))
+    print(datas)
+    # plot_volume_hemisphere(input_folder, voxel_size=0.5**3, output_path=".")
+
+
+    exit()
     subject = sys.argv[1]  # Nom du sujet, e.g., Fabienne / Formule / etc..
     model_id = sys.argv[2]  # should be: 'fusion' or a model's ID
     model_type = sys.argv[3]  # should be: 'nnunet' or 'longiseg'
