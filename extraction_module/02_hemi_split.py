@@ -234,7 +234,12 @@ if __name__ == "__main__":
             apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg, affine_file)
 
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
-            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}.nii.gz")   # CHANGE FOLDER NAME LATER !!!
+
+            # CHANGE FOLDER NAME LATER !!!
+            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}.nii.gz")
+            if not os.path.exists(t2_subj_seg):
+                print(f"\t\tSegmentation for {subject} {session} not found, skipping...")
+                continue
             fixed_seg = ants.image_read(t2_subj_seg)
 
             unique_label_t2 = np.unique(fixed_seg.numpy())
