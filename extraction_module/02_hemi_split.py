@@ -116,7 +116,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
     ref_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
 
-    ants_prefix = os.path.join(input_atlas_registered, "ants_")
+    ants_prefix = "ants_"
     ants_warped_image = filename
 
     best_atlas_name = os.path.basename(best_atlas)
@@ -149,6 +149,8 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
             check=True,
         )
 
+    shutil.move("ants_1Warp.nii.gz", os.path.join(input_atlas_registered, "ants_1Warp.nii.gz"))
+    shutil.move("ants_1InverseWarp.nii.gz", os.path.join(input_atlas_registered, "ants_1InverseWarp.nii.gz"))
     try:
         full_ouput_name_tmp = full_ouput_name.replace(" ", "")
         os.rename(f" {full_ouput_name}", full_ouput_name_tmp)
