@@ -107,6 +107,78 @@ def get_all_seg_hemi(root_dir):
 
     return datas
 
+
+def plot_hemisphere_volumes(seg_dict, voxel_size, df, output_path):
+    # Définition des labels par hémisphère
+    left_labels = {'WM_left': 6, 'GM_left': 7}
+    right_labels = {'WM_right': 2, 'GM_right': 3}
+
+    # Structure pour stocker les données par hémisphère et par tissu
+    hemisphere_data = {
+        'left': {tissue: {subject: {'gestational_days': [], 'volumes': []} for subject in set(subj.split('_')[0] for subj in seg_dict.keys())}
+                for tissue in ['WM', 'GM']},
+        'right': {tissue: {subject: {'gestational_days': [], 'volumes': []} for subject in set(subj.split('_')[0] for subj in seg_dict.keys())}
+                 for tissue in ['WM', 'GM']}
+    }
+
+    for subject_session, seg_path in seg_dict.items():
+        subject = "_".join(subject_session.split("_")[:-1])
+        session = subject_session.split("_")[-1]
+        session_col = f"ses-{session[3:]}"
+
+        # Charger l'image et calculer les volumes
+        seg_img = nib.load(seg_path).get_fdata()
+        vols = {label: np.sum(seg_img == value) * np.prod(voxel_size) for label, value in {**left_labels, **right_labels}.items()}
+
+        # Récupérer l'âge gestationnel
+        gestational_days = df.loc[df['subject'] == subject, session_col].values
+        if len(gestational_days) == 0 or np.isnan(gestational_days[0]):
+            print(f"Session {session} pour le sujet {subject} non trouvée ou NaN dans le CSV.")
+            continue
+        gestational_days = gestational_days[0]
+
+        # Stocker les volumes par hémisphère et tissu
+        for tissue, side_labels in [('WM', {'left': 6, 'right': 2}), ('GM', {'left': 7, 'right': 3})]:
+            for side, label in side_labels.items():
+                hemisphere_data[side][tissue][subject]['gestational_days'].append(gestational_days)
+                hemisphere_data[side][tissue][subject]['volumes'].append(vols[f"{tissue}_{side}"])
+
+    # Génération des graphiques
+    for tissue in ['WM', 'GM']:
+        fig, (ax_left, ax_right) = plt.subplots(1, 2, figsize=(14, 6))
+
+        # Plot hémisphère gauche
+        for subject in hemisphere_data['left'][tissue]:
+            days = hemisphere_data['left'][tissue][subject]['gestational_days']
+            volumes = hemisphere_data['left'][tissue][subject]['volumes']
+            sorted_pairs = sorted(zip(days, volumes), key=lambda x: x[0])
+            if sorted_pairs:
+                days_sorted, volumes_sorted = zip(*sorted_pairs)
+                ax_left.plot(days_sorted, volumes_sorted, marker='o', label=subject)
+        ax_left.set_title(f'{tissue} - Left Hemisphere')
+        ax_left.set_xlabel('Gestational Days')
+        ax_left.set_ylabel('Volume (mm³)')
+        ax_left.grid(True)
+        ax_left.legend(title='Subject', bbox_to_anchor=(1.05, 1), loc='upper left')
+
+        # Plot hémisphère droit
+        for subject in hemisphere_data['right'][tissue]:
+            days = hemisphere_data['right'][tissue][subject]['gestational_days']
+            volumes = hemisphere_data['right'][tissue][subject]['volumes']
+            sorted_pairs = sorted(zip(days, volumes), key=lambda x: x[0])
+            if sorted_pairs:
+                days_sorted, volumes_sorted = zip(*sorted_pairs)
+                ax_right.plot(days_sorted, volumes_sorted, marker='o', label=subject)
+        ax_right.set_title(f'{tissue} - Right Hemisphere')
+        ax_right.set_xlabel('Gestational Days')
+        ax_right.grid(True)
+
+        plt.tight_layout()
+        plt.savefig(os.path.join(output_path, f"evolution_volumes_{tissue}_by_hemisphere.png"))
+        plt.close()
+
+
+
 if __name__ == "__main__":
     # Hemisphere split
 
@@ -115,9 +187,14 @@ if __name__ == "__main__":
     output_path = os.path.join(cfg.CODE_PATH, f"snapshots/hemi_split/volumes")
     if not os.path.exists(output_path):
         os.makedirs(output_path)
-    datas = get_all_seg_hemi(os.path.join(cfg.BASE_PATH, "atlas_fetal_rhesus_v2/Seg_Hemi"))
-    for k, v in datas.items():
-        print(k, v)
+    seg_dict = get_all_seg_hemi(os.path.join(cfg.BASE_PATH, "atlas_fetal_rhesus_v2/Seg_Hemi"))
+
+    csv_path = os.path.join(cfg.CODE_PATH, "table_data", "sessions_to_days.csv")
+    df = pd.read_csv(csv_path)
+
+    voxel_size = np.power(0.5, 3)
+    plot_hemisphere_volumes(seg_dict, voxel_size=voxel_size, df=df, output_path=output_path)
+
     # plot_volume_hemisphere(input_folder, voxel_size=0.5**3, output_path=".")
 
 
