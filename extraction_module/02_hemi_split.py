@@ -116,12 +116,16 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
     ref_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
 
-    ants_prefix = "ants_"
+    ants_prefix = f"{input_atlas_registered}/ants_"
     ants_warped_image = filename
 
     best_atlas_name = os.path.basename(best_atlas)
     initial_moving_transform = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
     full_ouput_name = f"{ants_prefix}{ants_warped_image}"
+
+    print(full_ouput_name)
+
+    exit()
 
     if os.path.exists(f" {full_ouput_name}") or os.path.exists(full_ouput_name):
         print(f"\t\t{full_ouput_name} already exists, skipping...")
