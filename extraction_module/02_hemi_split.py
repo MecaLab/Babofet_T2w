@@ -147,14 +147,14 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
             check=True,
         )
 
-    shutil.move("ants_1Warp.nii.gz", os.path.join(input_atlas_registered, "ants_1Warp.nii.gz"))
-    shutil.move("ants_1InverseWarp.nii.gz", os.path.join(input_atlas_registered, "ants_1InverseWarp.nii.gz"))
-    try:
-        full_ouput_name_tmp = full_ouput_name.replace(" ", "")
-        os.rename(f" {full_ouput_name}", full_ouput_name_tmp)
-        shutil.move(full_ouput_name_tmp, os.path.join(input_atlas_registered, full_ouput_name_tmp))
-    except FileNotFoundError:
-        shutil.move(full_ouput_name, os.path.join(input_atlas_registered, full_ouput_name))
+        shutil.move("ants_1Warp.nii.gz", os.path.join(input_atlas_registered, "ants_1Warp.nii.gz"))
+        shutil.move("ants_1InverseWarp.nii.gz", os.path.join(input_atlas_registered, "ants_1InverseWarp.nii.gz"))
+        try:
+            full_ouput_name_tmp = full_ouput_name.replace(" ", "")
+            os.rename(f" {full_ouput_name}", full_ouput_name_tmp)
+            shutil.move(full_ouput_name_tmp, os.path.join(input_atlas_registered, full_ouput_name_tmp))
+        except FileNotFoundError:
+            shutil.move(full_ouput_name, os.path.join(input_atlas_registered, full_ouput_name))
 
 
 def apply_ants_transformations(input_atlas_registered, base_subj_path, moving_seg, affine_file):
