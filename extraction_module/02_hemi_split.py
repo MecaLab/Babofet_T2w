@@ -212,6 +212,10 @@ if __name__ == "__main__":
 
             recons_rhesus_folder = os.path.join(session_subject_path, "recons_rhesus/recon_template_space")
 
+            if not os.path.exists(recons_rhesus_folder):
+                print(f"\t\trecons_rhesus folder not found for {subject} {session}, skipping...")
+                continue
+
             file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi_new.nii.gz")
 
             fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
