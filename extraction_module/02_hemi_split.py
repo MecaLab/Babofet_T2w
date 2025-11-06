@@ -123,10 +123,8 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     initial_moving_transform = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
     full_ouput_name = f"{ants_prefix}{ants_warped_image}"
 
-
     if os.path.exists(f"{full_ouput_name}") or os.path.exists(full_ouput_name):
         print(f"\t\t{full_ouput_name} already exists, skipping...")
-
     else:
         subprocess.run(
         [
@@ -148,6 +146,9 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
         ],
             check=True,
         )
+
+    print(os.path.exists("ants_1Warp.nii.gz"))
+    exit()
 
     shutil.move("ants_1Warp.nii.gz", os.path.join(input_atlas_registered, "ants_1Warp.nii.gz"))
     shutil.move("ants_1InverseWarp.nii.gz", os.path.join(input_atlas_registered, "ants_1InverseWarp.nii.gz"))
@@ -276,3 +277,5 @@ if __name__ == "__main__":
             seg_out = fixed_seg.new_image_like(new_data)
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
+
+            exit()
