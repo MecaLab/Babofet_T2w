@@ -231,9 +231,9 @@ if __name__ == "__main__":
             mask_best_atlas = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "NFseg_bm"))
 
             filename = f"{subject}_{session}_warped_IMAGE.nii.gz"
-            # ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas, filename)
-
+            ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas, filename)
             subj_seg = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "structures_dilated"))
+
             affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace("_affine.nii.gz", "_affine.txt"))
             apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg, affine_file)
 
