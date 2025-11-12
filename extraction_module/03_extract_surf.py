@@ -40,8 +40,13 @@ if __name__ == "__main__":
                 print(f"\t\tProcessing {label_name}")
                 output_file = session_file.replace("_hemi_new.nii.gz", f"_new.{label_name}.white.gii")
 
+                if os.path.exists(os.path.join(subject_dst_path, output_file)):
+                    print(f"\t\t\tOutput file {output_file} already exists. Skipping.")
+                    continue
+
                 input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
                 output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file}"
+
 
                 subprocess.run([
                     "singularity", "run", "-B", f"{base_path}:/home/atlas_fetal_rhesus_v2", "surf_proc_v0.0.2a.sif",
