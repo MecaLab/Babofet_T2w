@@ -217,6 +217,9 @@ if __name__ == "__main__":
                 continue
 
             file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi_new.nii.gz")
+            if os.path.exists(file_seg_out):
+                print(f"\t\tSegmentation for {subject} {session} already exists, skipping...")
+                continue
 
             fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
 
