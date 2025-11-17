@@ -182,8 +182,6 @@ def plot_hemisphere_volumes(seg_dict, voxel_size, df, output_path):
 if __name__ == "__main__":
     # Hemisphere split
 
-    input_folder = ""
-
     output_path = os.path.join(cfg.CODE_PATH, f"snapshots/hemi_split/volumes")
     if not os.path.exists(output_path):
         os.makedirs(output_path)
