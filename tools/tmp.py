@@ -52,6 +52,7 @@ if __name__ == "__main__":
 
     for file in os.listdir(nnunet_seg_path):
         if file.endswith(".nii.gz"):
+            print("Processing file :", file)
             file_splited = file.split(".")[0]
             name, sess = file_splited.split("_")
             bounti_seg = os.path.join(cfg.SEG_OUTPUT_PATH, name, sess, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
