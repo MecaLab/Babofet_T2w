@@ -47,15 +47,24 @@ if __name__ == "__main__":
     models = load_models()
 
     nnunet_seg = os.path.join(cfg.CODE_PATH, "nnunet_mattia", "Aziza_ses02.nii.gz")
-    bounti_seg = os.path.join(cfg.SEG_OUTPUT_PATH, "Aziza", "ses02", "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
 
-    nnunet_img = nibabel.load(nnunet_seg).get_fdata()
-    bounti_img = nibabel.load(bounti_seg).get_fdata()
+    nnunet_seg_path = os.path.join(cfg.CODE_PATH, "nnunet_mattia")
 
-    labels = [1, 2, 3, 4]
+    for file in os.listdir(nnunet_seg_path):
+        if file.endswith(".nii.gz"):
+            file_splited = file.split(".")[0]
+            name, sess = file_splited.split("_")
+            bounti_seg = os.path.join(cfg.SEG_OUTPUT_PATH, name, sess, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
 
-    dice_scores = {}
-    for label in labels:
-        dice_scores[label] = dice_coefficient(nnunet_img, bounti_img, label)
+            file_seg = os.path.join(nnunet_seg_path, file)
 
-    print("DICE scores par label :", dice_scores)
+            nnunet_img = nibabel.load(file_seg).get_fdata()
+            bounti_img = nibabel.load(bounti_seg).get_fdata()
+
+            labels = [1, 2, 3, 4]
+
+            dice_scores = {}
+            for label in labels:
+                dice_scores[label] = dice_coefficient(nnunet_img, bounti_img, label)
+
+            print("DICE scores par label :", dice_scores)
