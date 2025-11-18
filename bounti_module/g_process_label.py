@@ -22,6 +22,8 @@ if __name__ == "__main__":
             print(f"\tFile already exists for session {session}, skipping...")
             continue
 
+        print(os.listdir(bounti_srr_seg_path))
+
         try:
             seg_img = nib.load(os.path.join(bounti_srr_seg_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-19.nii.gz"))
         except FileNotFoundError:
