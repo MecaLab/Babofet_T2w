@@ -79,5 +79,5 @@ if __name__ == "__main__":
             dice_scores.append(gdice)
             print(f"DICE généralisé pour {file} : {gdice:.4f}")
 
-        mean_dice = np.mean(dice_scores)
-        print(f"DICE moyen sur le jeu de données : {mean_dice:.4f}")
+    mean_dice = np.mean(dice_scores)
+    print(f"DICE moyen sur le jeu de données : {mean_dice:.4f}")
