@@ -52,7 +52,6 @@ if __name__ == "__main__":
 
     for file in os.listdir(nnunet_seg_path):
         if file.endswith(".nii.gz"):
-            print("Processing file :", file)
             file_splited = file.split(".")[0]
             name, sess = file_splited.split("_")
             bounti_seg = os.path.join(cfg.SEG_OUTPUT_PATH, name, sess, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
@@ -60,8 +59,8 @@ if __name__ == "__main__":
             file_seg = os.path.join(nnunet_seg_path, file)
 
             try:
-                nnunet_img = nibabel.load(file_seg).get_fdata()
-                bounti_img = nibabel.load(bounti_seg).get_fdata()
+                seg1 = nibabel.load(file_seg).get_fdata()
+                seg2 = nibabel.load(bounti_seg).get_fdata()
             except:
                 print("Error loading files :", file_seg, bounti_seg)
                 continue
@@ -70,6 +69,10 @@ if __name__ == "__main__":
 
             dice_scores = {}
             for label in labels:
-                dice_scores[label] = dice_coefficient(nnunet_img, bounti_img, label)
+                dice_scores[label] = dice_coefficient(seg1, seg2, label)
+
+            # DICE global (moyenne)
+            dice_global = np.mean(list(dice_scores.values()))
 
             print("DICE scores par label :", dice_scores)
+            print("DICE global (moyenne) :", dice_global)
