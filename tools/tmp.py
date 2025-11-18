@@ -22,12 +22,18 @@ def compute_bins(df, bins=5):
 
     return counts_qcut
 
-def dice_coefficient(seg1, seg2, label):
-    intersection = np.logical_and(seg1 == label, seg2 == label)
-    union = np.logical_or(seg1 == label, seg2 == label)
-    if (np.sum(union) == 0) and (np.sum(intersection) == 0):
-        return 1.0  # Si les deux segmentations sont vides pour ce label
-    return 2. * intersection.sum() / (seg1[seg1 == label].size + seg2[seg2 == label].size)
+
+def generalized_dice(seg1, seg2, labels):
+    numerator = 0
+    denominator = 0
+    for label in labels:
+        intersection = np.logical_and(seg1 == label, seg2 == label).sum()
+        size1 = (seg1 == label).sum()
+        size2 = (seg2 == label).sum()
+        w = 1.0 / ((size1 + size2) ** 2 + 1e-10)
+        numerator += w * intersection
+        denominator += w * (size1 + size2)
+    return 2 * numerator / denominator
 
 
 def load_models():
@@ -50,6 +56,8 @@ if __name__ == "__main__":
 
     nnunet_seg_path = os.path.join(cfg.CODE_PATH, "nnunet_mattia")
 
+    dice_scores = []
+
     for file in os.listdir(nnunet_seg_path):
         if file.endswith(".nii.gz"):
             file_splited = file.split(".")[0]
@@ -62,17 +70,14 @@ if __name__ == "__main__":
                 seg1 = nibabel.load(file_seg).get_fdata()
                 seg2 = nibabel.load(bounti_seg).get_fdata()
             except:
-                print("Error loading files :", file_seg, bounti_seg)
+                # print("Error loading files :", file_seg, bounti_seg)
                 continue
             
             labels = [1, 2, 3, 4]
 
-            dice_scores = {}
-            for label in labels:
-                dice_scores[label] = dice_coefficient(seg1, seg2, label)
+            gdice = generalized_dice(seg1, seg2, labels)
+            dice_scores.append(gdice)
+            print(f"DICE généralisé pour {file} : {gdice:.4f}")
 
-            # DICE global (moyenne)
-            dice_global = np.mean(list(dice_scores.values()))
-
-            print("DICE scores par label :", dice_scores)
-            print("DICE global (moyenne) :", dice_global)
+        mean_dice = np.mean(dice_scores)
+        print(f"DICE moyen sur le jeu de données : {mean_dice:.4f}")
