@@ -59,9 +59,13 @@ if __name__ == "__main__":
 
             file_seg = os.path.join(nnunet_seg_path, file)
 
-            nnunet_img = nibabel.load(file_seg).get_fdata()
-            bounti_img = nibabel.load(bounti_seg).get_fdata()
-
+            try:
+                nnunet_img = nibabel.load(file_seg).get_fdata()
+                bounti_img = nibabel.load(bounti_seg).get_fdata()
+            except:
+                print("Error loading files :", file_seg, bounti_seg)
+                continue
+            
             labels = [1, 2, 3, 4]
 
             dice_scores = {}
