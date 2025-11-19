@@ -95,13 +95,20 @@ if __name__ == "__main__":
     long, counts_qcut = compute_bins(df, bins=5)
     bin_dict = {bin_interval: [] for bin_interval in counts_qcut["bin_qcut"]}
 
-    print(bin_dict)
-
     name = "Bibi"
     sess = "ses-04"
 
     subject_row = df[df["subject"] == name]
-    sess_value = subject_row[sess_formated].values[0]
+    sess_value = subject_row[sess].values[0]
+    score_dice = 0.62
+
+    bin_interval = pd.cut([valeur], bins=long["bin_qcut"].cat.categories, right=True, labels=long["bin_qcut"].cat.categories)[0]
+
+    bin_dict[bin_interval].append(score_dice)
+
+    print(f"Score DICE {score_dice} ajouté au bin {bin_interval}.")
+    print("Dictionnaire mis à jour :")
+    print(bin_dict)
 
     exit()
 
