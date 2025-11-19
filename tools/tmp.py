@@ -50,6 +50,9 @@ def load_models():
 
 
 def format_bounti(input_path, output_path):
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    
     for subject in os.listdir(input_path):
         subject_path = os.path.join(input_path, subject)
         if not os.path.isdir(subject_path):
