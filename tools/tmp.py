@@ -72,8 +72,19 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
             seg_1 = os.path.join(exp_1_path, file)
             seg_2 = os.path.join(model_2_path, file)
 
-            seg1 = nibabel.load(seg_1).get_fdata()
-            seg2 = nibabel.load(seg_2).get_fdata()
+            try:
+                seg1 = nibabel.load(seg_1).get_fdata()
+            except FileNotFoundError:
+                if verbose:
+                    print(f"File not found: {seg_1}. Skipping.")
+                continue
+
+            try:
+                seg2 = nibabel.load(seg_2).get_fdata()
+            except FileNotFoundError:
+                if verbose:
+                    print(f"File not found: {seg_2}. Skipping.")
+                continue
 
             gdice = generalized_dice(seg1, seg2, labels)
             subject_row = df[df["subject"] == name]
