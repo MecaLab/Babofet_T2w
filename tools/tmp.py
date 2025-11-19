@@ -101,6 +101,9 @@ if __name__ == "__main__":
 
                 gdice = generalized_dice(seg1, seg2, labels)
                 dice_scores.append(gdice)
+                print(f"File: {file} - DICE généralisé pour {exp_1} vs {exp_2} : {gdice:.4f}")
+
+                exit()
 
         mean_dice = np.mean(dice_scores)
         print(f"DICE moyen sur le jeu de données sur {exp_1} vs {exp_2} : {mean_dice:.4f}")
