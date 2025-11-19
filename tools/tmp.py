@@ -82,8 +82,8 @@ if __name__ == "__main__":
     labels = [1, 2, 3, 4]
 
     for i in range(len(exp_to_compare) - 1):
-        exp_1 = exp_to_compare[i]
-        exp_2 = exp_to_compare[i + 1]
+        exp_1 = exp_to_compare[i + 1]
+        exp_2 = exp_to_compare[i]
 
         exp_1_path = os.path.join(root_dir, f"{exp_1}_segmentations")
         exp_2_path = os.path.join(root_dir, f"{exp_2}_segmentations")
