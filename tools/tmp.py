@@ -1,5 +1,6 @@
 import shutil
-
+import seaborn as sns
+import matplotlib.pyplot as plt
 import pandas as pd
 import os
 import sys
@@ -26,6 +27,7 @@ def compute_bins(df, bins=5):
 
 
 def generalized_dice(seg1, seg2, labels):
+    # https://arxiv.org/pdf/1707.03237 Generalized Dice Loss for Multi-Class Segmentation
     numerator = 0
     denominator = 0
     for label in labels:
@@ -143,5 +145,10 @@ if __name__ == "__main__":
             for bin_interval, scores in bin_dict.items()
         }
 
-        for bin_interval, mean_score in moyennes.items():
-            print(f"Bins: {bin_interval}: {mean_score:.3f}")
+        for bin_interval, mean_dice in moyennes.items():
+            print(f"Bins: {bin_interval}: {mean_dice:.3f}")
+
+        sns.barplot(x=[str(bin) for bin in moyennes.keys()], y=list(moyennes.values()))
+        plt.xticks(rotation=45)
+        plt.ylabel("Mean Dice Score")
+        plt.show()
