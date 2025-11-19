@@ -162,7 +162,7 @@ if __name__ == "__main__":
     print("\nMoyennes des scores DICE par bin et par comparaison :")
     print(results_df)
 
-    csv_path = os.path.join(root_dir, "dice_scores_by_bin_sequential.csv")
+    csv_path = os.path.join(root_dir, "dice_scores_by_bins.csv")
     results_df.to_csv(csv_path, index=True)
     print(f"\nRésultats sauvegardés dans : {csv_path}")
 
