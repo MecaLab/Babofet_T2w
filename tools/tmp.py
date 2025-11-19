@@ -131,9 +131,12 @@ if __name__ == "__main__":
     dice_scores = []
     labels = [1, 2, 3, 4]
 
+    all_results = {}
+
     for i in range(len(exp_to_compare) - 1):
-        exp_1 = exp_to_compare[i + 1]
-        exp_2 = exp_to_compare[i]
+        exp_1 = exp_to_compare[i]
+        exp_2 = exp_to_compare[i + 1]
+        comparison_name = f"{exp_1} vs {exp_2}"
 
         exp_1_path = os.path.join(root_dir, f"{exp_1}_segmentations")
         exp_2_path = os.path.join(root_dir, f"{exp_2}_segmentations")
@@ -148,8 +151,24 @@ if __name__ == "__main__":
         for bin_interval, mean_dice in moyennes.items():
             print(f"Bins: {bin_interval}: {mean_dice:.3f}")
 
-        sns.barplot(x=[str(bin) for bin in moyennes.keys()], y=list(moyennes.values()))
-        plt.xticks(rotation=45)
-        plt.ylabel("Mean Dice Score")
-        plt.savefig("tmp_dice_comparison.png")
-        plt.clf()
+        all_results[comparison_name] = moyennes
+
+    # Afficher les résultats sous forme de tableau
+    results_df = pd.DataFrame(all_results).T
+    results_df.columns = [str(bin) for bin in results_df.columns]
+
+    print("\nMoyennes des scores DICE par bin et par comparaison :")
+    print(results_df)
+
+    csv_path = os.path.join(root_dir, "dice_scores_by_bin_sequential.csv")
+    results_df.to_csv(csv_path, index=True)
+    print(f"\nRésultats sauvegardés dans : {csv_path}")
+
+    plt.figure(figsize=(12, 8))
+    sns.heatmap(results_df, annot=True, cmap="YlGnBu", fmt=".3f", cbar_kws={'label': 'Dice Score'})
+    plt.title("Moyennes des scores DICE par bin (comparaisons séquentielles)")
+    plt.xticks(rotation=45)
+    plt.yticks(rotation=0)
+    plt.tight_layout()
+    plt.savefig(os.path.join(root_dir, "heatmap_dice_by_bin.png"), dpi=200, bbox_inches='tight')
+    plt.clf()
