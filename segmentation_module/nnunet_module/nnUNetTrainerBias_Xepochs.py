@@ -180,5 +180,5 @@ if __name__ == "__main__":
     print("Copying file to appropriate directory")
 
     current_file_path = os.path.join(cfg.CODE_PATH, "segmentation_module/nnunet_module/"
-                                                    "nnUNetTrainerBiasField_Xepochs.py")
+                                                    "nnUNetTrainerBias_Xepochs.py")
     os.system(f"cp {current_file_path} {cfg.NNUNET_PYTHON_PATH}")
