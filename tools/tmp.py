@@ -69,6 +69,9 @@ def compare_models(model_1_path, model_2_path):
 if __name__ == "__main__":
     df = pd.read_csv("table_data/sessions_to_days.csv")
 
+    bins = compute_bins(df, bins=5)
+    print(bins)
+
     root_dir = os.path.join(cfg.CODE_PATH, "inference_all")
 
     bounti_seg_formated_path = os.path.join(root_dir, "BOUNTI_segmentations")
