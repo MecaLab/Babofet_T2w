@@ -60,7 +60,8 @@ def format_bounti(input_path, output_path):
 
             output_seg_path = os.path.join(output_path, f"{subject}_{session}.nii.gz")
 
-            shutil.copy(bounti_seg, output_seg_path)
+            if not os.path.exists(output_seg_path):
+                shutil.copy(bounti_seg, output_seg_path)
 
         print(f"End for {subject}")
 
@@ -125,7 +126,8 @@ if __name__ == "__main__":
 
     if not os.path.exists(root_dir):
         os.makedirs(root_dir)
-        format_bounti(cfg.SEG_OUTPUT_PATH, bounti_seg_formated_path)
+
+    format_bounti(cfg.SEG_OUTPUT_PATH, bounti_seg_formated_path)
 
     exp_to_compare = ["BOUNTI", "8"]  # ["BOUNTI", "2", "5", "6", "8"]
     dice_scores = []
