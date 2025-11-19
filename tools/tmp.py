@@ -78,12 +78,20 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
                 if verbose:
                     print(f"File not found: {seg_1}. Skipping.")
                 continue
+            except nibabel.filebasedimages.ImageFileError:
+                if verbose:
+                    print(f"Error loading file: {seg_1}. Skipping.")
+                continue
 
             try:
                 seg2 = nibabel.load(seg_2).get_fdata()
             except FileNotFoundError:
                 if verbose:
                     print(f"File not found: {seg_2}. Skipping.")
+                continue
+            except nibabel.filebasedimages.ImageFileError:
+                if verbose:
+                    print(f"Error loading file: {seg_2}. Skipping.")
                 continue
 
             gdice = generalized_dice(seg1, seg2, labels)
