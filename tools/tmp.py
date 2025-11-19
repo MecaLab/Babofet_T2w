@@ -22,7 +22,7 @@ def compute_bins(df, bins=5):
 
     counts_qcut = long.groupby("bin_qcut").size().reset_index(name="count")
 
-    return counts_qcut
+    return long, counts_qcut
 
 
 def generalized_dice(seg1, seg2, labels):
@@ -62,15 +62,50 @@ def format_bounti(input_path, output_path):
 
         print(f"End for {subject}")
 
-def compare_models(model_1_path, model_2_path):
-    pass
+def compare_models(model_1_path, model_2_path, df, bins, verbose=False):
+    results_bins = []
+    for file in os.listdir(model_1_path):
+        if file.endswith(".nii.gz"):
+            file_splited = file.split(".")[0]
+            name, sess = file_splited.split("_")
+            sess_formated = f"ses-{sess[3:]}"  # sesXX -> ses-XX
+            seg_1 = os.path.join(exp_1_path, file)
+            seg_2 = os.path.join(model_2_path, file)
+
+            seg1 = nibabel.load(seg_1).get_fdata()
+            seg2 = nibabel.load(seg_2).get_fdata()
+
+            gdice = generalized_dice(seg1, seg2, labels)
+            dice_scores.append(gdice)
+            subject_row = df[df["subject"] == name]
+            sess_value = subject_row[sess_formated].values[0]
+            
+            if verbose:
+                print(f"File: {file} - DICE généralisé pour {exp_1} vs {exp_2} : {gdice:.4f}")
+
+            exit()
+
+    mean_dice = np.mean(dice_scores)
+    print(f"DICE moyen sur le jeu de données sur {exp_1} vs {exp_2} : {mean_dice:.4f}")
 
 
 if __name__ == "__main__":
     df = pd.read_csv("table_data/sessions_to_days.csv")
 
-    bins = compute_bins(df, bins=5)
-    print(bins)
+    long, counts_qcut = compute_bins(df, bins=5)
+    bin_dict = {bin_interval: [] for bin_interval in counts_qcut["bin_qcut"]}
+
+    print(bin_dict)
+
+    name = "Bibi"
+    sess = "ses-04"
+
+    subject_row = df[df["subject"] == name]
+    sess_value = subject_row[sess_formated].values[0]
+
+    exit()
+
+
 
     root_dir = os.path.join(cfg.CODE_PATH, "inference_all")
 
@@ -91,25 +126,8 @@ if __name__ == "__main__":
         exp_1_path = os.path.join(root_dir, f"{exp_1}_segmentations")
         exp_2_path = os.path.join(root_dir, f"{exp_2}_segmentations")
 
-        for file in os.listdir(exp_1_path):
-            if file.endswith(".nii.gz"):
-                file_splited = file.split(".")[0]
-                name, sess = file_splited.split("_")
-                seg_1 = os.path.join(exp_1_path, file)
-                seg_2 = os.path.join(exp_2_path, file)
+        compare_models(exp_1_path, exp_2_path, df, bins, verbose=True)
 
-                seg1 = nibabel.load(seg_1).get_fdata()
-
-                seg2 = nibabel.load(seg_2).get_fdata()
-
-                gdice = generalized_dice(seg1, seg2, labels)
-                dice_scores.append(gdice)
-                print(f"File: {file} - DICE généralisé pour {exp_1} vs {exp_2} : {gdice:.4f}")
-
-                exit()
-
-        mean_dice = np.mean(dice_scores)
-        print(f"DICE moyen sur le jeu de données sur {exp_1} vs {exp_2} : {mean_dice:.4f}")
     exit()
 
     dice_scores = []
