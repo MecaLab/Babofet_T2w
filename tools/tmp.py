@@ -82,7 +82,6 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
                 if verbose:
                     print(f"Error loading file: {seg_1}. Skipping.")
                 continue
-
             try:
                 seg2 = nibabel.load(seg_2).get_fdata()
             except FileNotFoundError:
@@ -100,7 +99,12 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
 
             bin_interval = pd.cut([sess_value], bins=long["bin_qcut"].cat.categories, right=True,
                                   labels=long["bin_qcut"].cat.categories)[0]
-            bin_dict[bin_interval].append(gdice)
+            try:
+                bin_dict[bin_interval].append(gdice)
+            except KeyError:
+                if verbose:
+                    print(f"Value {sess_value} for subject {name} and session {sess_formated} does not fit in any bin.")
+                continue
             
             if verbose:
                 print(f"File: {file} - DICE généralisé pour {exp_1} vs {exp_2} : {gdice:.4f}. Added to bin {bin_interval}")
