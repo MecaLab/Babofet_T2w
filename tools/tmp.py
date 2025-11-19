@@ -100,6 +100,7 @@ if __name__ == "__main__":
 
     subject_row = df[df["subject"] == name]
     sess_value = subject_row[sess].values[0]
+    print(sess_value)
     score_dice = 0.62
 
     bin_interval = pd.cut([sess_value], bins=long["bin_qcut"].cat.categories, right=True, labels=long["bin_qcut"].cat.categories)[0]
