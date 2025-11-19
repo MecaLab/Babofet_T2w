@@ -5,11 +5,11 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer):
+def write_slurm_file(input_folder, output_folder, filename, partition, dataset_id, trainer):
     slurm_content = f"""#!/bin/bash
 
 #SBATCH --account='b219'
-#SBATCH --partition=volta
+#SBATCH --partition={partition}
 #SBATCH --gres=gpu:1
 #SBATCH --time=10:00
 #SBATCH -c 1
@@ -56,6 +56,7 @@ if __name__ == "__main__":
     dataset_id = int(sys.argv[1])
     name = sys.argv[2]
     trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs
+    partition = sys.argv[4]  # e.g., "volta", "kepler", etc
 
     if dataset_id < 10:
         dataset_name = f"Dataset00{dataset_id}_{name}"
@@ -77,6 +78,6 @@ if __name__ == "__main__":
 
     print("Starting inference")
     filename = "slurm_files/nnunet_prediction_all.slurm"
-    write_slurm_file(input_dir_3d_vol, output_folder, filename, dataset_id, trainer)
+    write_slurm_file(input_dir_3d_vol, output_folder, filename, partition, dataset_id, trainer)
     subprocess.run(["sbatch", filename])
 
