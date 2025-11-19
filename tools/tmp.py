@@ -95,12 +95,9 @@ if __name__ == "__main__":
                 seg_1 = os.path.join(exp_1_path, file)
                 seg_2 = os.path.join(exp_2_path, file)
 
-                try:
-                    seg1 = nibabel.load(seg_1).get_fdata()
-                    seg2 = nibabel.load(seg_2).get_fdata()
-                except:
-                    print("Error loading files: ", seg_1, seg_2)
-                    continue
+                seg1 = nibabel.load(seg_1).get_fdata()
+
+                seg2 = nibabel.load(seg_2).get_fdata()
 
                 gdice = generalized_dice(seg1, seg2, labels)
                 dice_scores.append(gdice)
