@@ -38,21 +38,10 @@ def generalized_dice(seg1, seg2, labels):
     return 2 * numerator / denominator
 
 
-def load_models():
-    models = {
-        "exp_1": ["2", "nnUNetTrainer_100epochs"],
-        "exp_2": ["5", "nnUNetTrainerBias_200epochs"],
-        "exp_3": ["6", "nnUNetTrainerBias_1000epochs"],
-        "exp_4": ["8", "nnUNetTrainerBias_3000epochs"],
-    }
-
-    return models
-
-
 def format_bounti(input_path, output_path):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
-    
+
     for subject in os.listdir(input_path):
         subject_path = os.path.join(input_path, subject)
         if not os.path.isdir(subject_path):
@@ -80,13 +69,45 @@ def compare_models(model_1_path, model_2_path):
 if __name__ == "__main__":
     df = pd.read_csv("table_data/sessions_to_days.csv")
 
-    models = load_models()
+    root_dir = os.path.join(cfg.CODE_PATH, "inference_all")
 
-    nnunet_seg_path = os.path.join(cfg.CODE_PATH, "nnunet_mattia")
+    bounti_seg_formated_path = os.path.join(root_dir, "BOUNTI_segmentations")
 
-    bounti_seg_formated_path = os.path.join(cfg.CODE_PATH, "nnunet_mattia", "BOUNTI_segmentations")
+    if not os.path.exists(root_dir):
+        os.makedirs(root_dir)
+        format_bounti(cfg.SEG_OUTPUT_PATH, bounti_seg_formated_path)
 
-    format_bounti(cfg.SEG_OUTPUT_PATH, bounti_seg_formated_path)
+    exp_to_compare = ["BOUNTI", "8"]  # ["BOUNTI", "2", "5", "6", "8"]
+    dice_scores = []
+    labels = [1, 2, 3, 4]
+
+    for i in range(len(exp_to_compare) - 1):
+        exp_1 = exp_to_compare[i]
+        exp_2 = exp_to_compare[i + 1]
+
+        exp_1_path = os.path.join(root_dir, f"{exp_1}_segmentations")
+        exp_2_path = os.path.join(root_dir, f"{exp_2}_segmentations")
+
+        for file in os.listdir(exp_1_path):
+            if file.endswith(".nii.gz"):
+                file_splited = file.split(".")[0]
+                name, sess = file_splited.split("_")
+                seg_1 = os.path.join(exp_1_path, file)
+                seg_2 = os.path.join(exp_2_path, file)
+
+                try:
+                    seg1 = nibabel.load(seg_1).get_fdata()
+                    seg2 = nibabel.load(seg_2).get_fdata()
+                except:
+                    print("Error loading files: ", seg_1, seg_2)
+                    continue
+
+                gdice = generalized_dice(seg1, seg2, labels)
+                dice_scores.append(gdice)
+
+        mean_dice = np.mean(dice_scores)
+        print(f"DICE moyen sur le jeu de données sur {exp_1} vs {exp_2} : {mean_dice:.4f}")
+    exit()
 
     dice_scores = []
 
