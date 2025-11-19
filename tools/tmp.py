@@ -136,7 +136,7 @@ if __name__ == "__main__":
         exp_1_path = os.path.join(root_dir, f"{exp_1}_segmentations")
         exp_2_path = os.path.join(root_dir, f"{exp_2}_segmentations")
 
-        bin_dict = compare_models(exp_1_path, exp_2_path, counts_qcut, long, verbose=True)
+        bin_dict = compare_models(exp_1_path, exp_2_path, counts_qcut, long, verbose=False)
 
         moyennes = {
             bin_interval: sum(scores) / len(scores) if scores else 0
