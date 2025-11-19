@@ -71,7 +71,7 @@ if __name__ == "__main__":
         os.makedirs(input_dir_3d_vol)
         copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Aziza", "Bibi", "Borgne", "Fabienne", "Filoutte", "Forme", "Formule"])
 
-    output_folder = os.path.join(input_dir_3d_vol, "segmentations", f"{dataset_id}_segmentations")  # output segmentations
+    output_folder = os.path.join(input_dir_3d_vol, f"{dataset_id}_segmentations")  # output segmentations
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
