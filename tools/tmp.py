@@ -102,8 +102,7 @@ if __name__ == "__main__":
     sess_value = subject_row[sess].values[0]
     score_dice = 0.62
 
-    bin_interval = pd.cut([valeur], bins=long["bin_qcut"].cat.categories, right=True, labels=long["bin_qcut"].cat.categories)[0]
-
+    bin_interval = pd.cut([sess_value], bins=long["bin_qcut"].cat.categories, right=True, labels=long["bin_qcut"].cat.categories)[0]
     bin_dict[bin_interval].append(score_dice)
 
     print(f"Score DICE {score_dice} ajouté au bin {bin_interval}.")
