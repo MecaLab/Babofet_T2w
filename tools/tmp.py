@@ -20,7 +20,7 @@ def compute_bins(df, bins=5):
 
     long["bin_qcut"] = pd.qcut(long["day"], q=bins, duplicates='drop')
 
-    counts_qcut = long.groupby("bin_qcut").size().reset_index(name="count")
+    counts_qcut = long.groupby("bin_qcut", observed=False).size().reset_index(name="count")
 
     return long, counts_qcut
 
