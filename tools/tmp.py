@@ -1,3 +1,5 @@
+import shutil
+
 import pandas as pd
 import os
 import sys
@@ -39,12 +41,37 @@ def generalized_dice(seg1, seg2, labels):
 def load_models():
     models = {
         "exp_1": ["2", "nnUNetTrainer_100epochs"],
-        "exp_2": ["5", "nnUNetTrainerBiasField200epochs"],
-        "exp_3": ["6", "nnUNetTrainerBiasField1000epochs"],
+        "exp_2": ["5", "nnUNetTrainerBias_200epochs"],
+        "exp_3": ["6", "nnUNetTrainerBias_1000epochs"],
         "exp_4": ["8", "nnUNetTrainerBias_3000epochs"],
     }
 
     return models
+
+
+def format_bounti(input_path, output_path):
+    for subject in os.listdir(input_path):
+        subject_path = os.path.join(input_path, subject)
+        if not os.path.isdir(subject_path):
+            continue
+
+        for session in os.listdir(subject_path):
+            session_path = os.path.join(subject_path, session)
+            if not os.path.isdir(session_path):
+                continue
+
+            bounti_seg = os.path.join(session_path, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
+            if not os.path.exists(bounti_seg):
+                continue
+
+            output_seg_path = os.path.join(output_path, f"{subject}_{session}.nii.gz")
+
+            shutil.copy(bounti_seg, output_seg_path)
+
+        print(f"End for {subject}")
+
+def compare_models(model_1_path, model_2_path):
+    pass
 
 
 if __name__ == "__main__":
@@ -52,9 +79,11 @@ if __name__ == "__main__":
 
     models = load_models()
 
-    nnunet_seg = os.path.join(cfg.CODE_PATH, "nnunet_mattia", "Aziza_ses02.nii.gz")
-
     nnunet_seg_path = os.path.join(cfg.CODE_PATH, "nnunet_mattia")
+
+    bounti_seg_formated_path = os.path.join(cfg.CODE_PATH, "nnunet_mattia", "BOUNTI_segmentations")
+
+    format_bounti(cfg.SEG_OUTPUT_PATH, bounti_seg_formated_path)
 
     dice_scores = []
 
