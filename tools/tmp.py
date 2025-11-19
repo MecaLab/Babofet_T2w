@@ -62,8 +62,8 @@ def format_bounti(input_path, output_path):
 
         print(f"End for {subject}")
 
-def compare_models(model_1_path, model_2_path, df, bins, verbose=False):
-    results_bins = []
+def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False):
+    bin_dict = {bin_interval: [] for bin_interval in counts_qcut["bin_qcut"]}
     for file in os.listdir(model_1_path):
         if file.endswith(".nii.gz"):
             file_splited = file.split(".")[0]
@@ -76,43 +76,23 @@ def compare_models(model_1_path, model_2_path, df, bins, verbose=False):
             seg2 = nibabel.load(seg_2).get_fdata()
 
             gdice = generalized_dice(seg1, seg2, labels)
-            dice_scores.append(gdice)
             subject_row = df[df["subject"] == name]
             sess_value = subject_row[sess_formated].values[0]
+
+            bin_interval = pd.cut([sess_value], bins=long["bin_qcut"].cat.categories, right=True,
+                                  labels=long["bin_qcut"].cat.categories)[0]
+            bin_dict[bin_interval].append(gdice)
             
             if verbose:
-                print(f"File: {file} - DICE généralisé pour {exp_1} vs {exp_2} : {gdice:.4f}")
+                print(f"File: {file} - DICE généralisé pour {exp_1} vs {exp_2} : {gdice:.4f}. Added to bin {bin_interval}")
 
-            exit()
-
-    mean_dice = np.mean(dice_scores)
-    print(f"DICE moyen sur le jeu de données sur {exp_1} vs {exp_2} : {mean_dice:.4f}")
+    return bin_dict
 
 
 if __name__ == "__main__":
     df = pd.read_csv("table_data/sessions_to_days.csv")
 
     long, counts_qcut = compute_bins(df, bins=5)
-    bin_dict = {bin_interval: [] for bin_interval in counts_qcut["bin_qcut"]}
-
-    name = "Bibi"
-    sess = "ses-04"
-
-    subject_row = df[df["subject"] == name]
-    sess_value = subject_row[sess].values[0]
-    print(sess_value)
-    score_dice = 0.62
-
-    bin_interval = pd.cut([sess_value], bins=long["bin_qcut"].cat.categories, right=True, labels=long["bin_qcut"].cat.categories)[0]
-    bin_dict[bin_interval].append(score_dice)
-
-    print(f"Score DICE {score_dice} ajouté au bin {bin_interval}.")
-    print("Dictionnaire mis à jour :")
-    print(bin_dict)
-
-    exit()
-
-
 
     root_dir = os.path.join(cfg.CODE_PATH, "inference_all")
 
@@ -133,32 +113,12 @@ if __name__ == "__main__":
         exp_1_path = os.path.join(root_dir, f"{exp_1}_segmentations")
         exp_2_path = os.path.join(root_dir, f"{exp_2}_segmentations")
 
-        compare_models(exp_1_path, exp_2_path, df, bins, verbose=True)
+        bin_dict = compare_models(exp_1_path, exp_2_path, counts_qcut, long, verbose=True)
 
-    exit()
+        moyennes = {
+            bin_interval: sum(scores) / len(scores) if scores else 0
+            for bin_interval, scores in bin_dict.items()
+        }
 
-    dice_scores = []
-
-    for file in os.listdir(nnunet_seg_path):
-        if file.endswith(".nii.gz"):
-            file_splited = file.split(".")[0]
-            name, sess = file_splited.split("_")
-            bounti_seg = os.path.join(cfg.SEG_OUTPUT_PATH, name, sess, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
-
-            file_seg = os.path.join(nnunet_seg_path, file)
-
-            try:
-                seg1 = nibabel.load(file_seg).get_fdata()
-                seg2 = nibabel.load(bounti_seg).get_fdata()
-            except:
-                # print("Error loading files :", file_seg, bounti_seg)
-                continue
-            
-            labels = [1, 2, 3, 4]
-
-            gdice = generalized_dice(seg1, seg2, labels)
-            dice_scores.append(gdice)
-            print(f"DICE généralisé pour {file} : {gdice:.4f}")
-
-    mean_dice = np.mean(dice_scores)
-    print(f"DICE moyen sur le jeu de données : {mean_dice:.4f}")
+        for bin_interval, mean_score in moyennes.items():
+            print(f"Bins: {bin_interval}: {mean_score:.3f}")
