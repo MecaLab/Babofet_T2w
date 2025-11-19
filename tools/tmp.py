@@ -151,4 +151,5 @@ if __name__ == "__main__":
         sns.barplot(x=[str(bin) for bin in moyennes.keys()], y=list(moyennes.values()))
         plt.xticks(rotation=45)
         plt.ylabel("Mean Dice Score")
-        plt.show()
+        plt.savefig("tmp_dice_comparison.png")
+        plt.clf()
