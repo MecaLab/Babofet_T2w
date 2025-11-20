@@ -138,6 +138,7 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
 
 
 if __name__ == "__main__":
+    root_dir = os.path.join(cfg.CODE_PATH, "inference_all")
     csv_path = os.path.join(root_dir, "dice_scores_by_bins.csv")
     df = pd.read_csv(csv_path)
     print(df)
