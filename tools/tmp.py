@@ -171,6 +171,8 @@ if __name__ == "__main__":
             print("Make sure to run the prediction scripts (05_predict_all) for all experiments before comparing.")
             continue
 
+
+        print(f"Comparing {comparison_name}:")
         bin_dict = compare_models(exp_1_path, exp_2_path, counts_qcut, long, verbose=False)
 
         moyennes = {
@@ -180,6 +182,7 @@ if __name__ == "__main__":
 
         for bin_interval, mean_dice in moyennes.items():
             print(f"Bins: {bin_interval}: {mean_dice:.3f}")
+        print("\n")
 
         all_results[comparison_name] = moyennes
 
