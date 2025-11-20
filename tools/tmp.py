@@ -152,7 +152,7 @@ if __name__ == "__main__":
 
     format_bounti(cfg.SEG_OUTPUT_PATH, bounti_seg_formated_path)
 
-    exp_to_compare = ["BOUNTI", "2", "5", "6", "8"]
+    exp_to_compare = ["BOUNTI", "2", "5", "6", "7", "8"]
     dice_scores = []
     labels = [1, 2, 3, 4]
 
@@ -165,6 +165,11 @@ if __name__ == "__main__":
 
         exp_1_path = os.path.join(root_dir, f"{exp_1}_segmentations")
         exp_2_path = os.path.join(root_dir, f"{exp_2}_segmentations")
+
+        if not os.path.exists(exp_1_path) or not os.path.exists(exp_2_path):
+            print(f"One of the experiment paths does not exist: {exp_1_path} or {exp_2_path}. Skipping comparison.")
+            print("Make sure to run the prediction scripts (05_predict_all) for all experiments before comparing.")
+            continue
 
         bin_dict = compare_models(exp_1_path, exp_2_path, counts_qcut, long, verbose=False)
 
