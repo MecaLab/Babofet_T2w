@@ -27,16 +27,20 @@ def compute_bins(df, bins=5):
 
 
 def generalized_dice(seg1, seg2, labels):
-    # https://arxiv.org/pdf/1707.03237 Generalized Dice Loss for Multi-Class Segmentation
-    numerator = 0
-    denominator = 0
-    for label in labels:
-        intersection = np.logical_and(seg1 == label, seg2 == label).sum()
-        size1 = (seg1 == label).sum()
-        size2 = (seg2 == label).sum()
-        w = 1.0 / ((size1 + size2) ** 2 + 1e-10)
-        numerator += w * intersection
-        denominator += w * (size1 + size2)
+    # Crée un masque pour chaque label
+    masks1 = np.stack([seg1 == label for label in labels], axis=0)
+    masks2 = np.stack([seg2 == label for label in labels], axis=0)
+
+    # Calcul des intersections et tailles
+    intersection = np.logical_and(masks1, masks2).sum(axis=(1, 2, 3))
+    size1 = masks1.sum(axis=(1, 2, 3))
+    size2 = masks2.sum(axis=(1, 2, 3))
+
+    # Poids et score
+    w = 1.0 / ((size1 + size2) ** 2 + 1e-10)
+    numerator = np.sum(w * intersection)
+    denominator = np.sum(w * (size1 + size2))
+
     return 2 * numerator / denominator
 
 
@@ -105,6 +109,9 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
                 if verbose:
                     print(f"Error loading file: {seg_2}. Skipping.")
                 continue
+
+            print(seg1.shape)
+            exit()
 
             gdice = generalized_dice(seg1, seg2, labels)
             """dice_scores = []
