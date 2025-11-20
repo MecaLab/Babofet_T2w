@@ -101,7 +101,7 @@ class nnUNetTrainerBias_200epochs(nnUNetTrainerBias):
         self.num_epochs = 200
 
 
-class nnUNetTrainerBiasField_200epochs(nnUNetTrainerBias_200epochs):
+class nnUNetTrainerBiasField200epochs(nnUNetTrainerBias_200epochs):
     pass
 
 
