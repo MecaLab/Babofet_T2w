@@ -40,6 +40,16 @@ def generalized_dice(seg1, seg2, labels):
     return 2 * numerator / denominator
 
 
+def dice_coefficient(seg1, seg2, label):
+    # Intersection et union pour le label donné
+    intersection = np.logical_and(seg1 == label, seg2 == label)
+    union = np.logical_or(seg1 == label, seg2 == label)
+    # Éviter la division par zéro
+    if (np.sum(union) == 0) and (np.sum(intersection) == 0):
+        return 1.0  # Si les deux segmentations sont vides pour ce label
+    return 2. * intersection.sum() / (seg1[seg1 == label].size + seg2[seg2 == label].size)
+
+
 def format_bounti(input_path, output_path):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -96,7 +106,8 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
                     print(f"Error loading file: {seg_2}. Skipping.")
                 continue
 
-            gdice = generalized_dice(seg1, seg2, labels)
+            # gdice = generalized_dice(seg1, seg2, labels)
+            gdice = dice_coefficient(seg1, seg2, labels)
             subject_row = df[df["subject"] == name]
             sess_value = subject_row[sess_formated].values[0]
 
