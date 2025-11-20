@@ -181,20 +181,28 @@ if __name__ == "__main__":
 
         all_results[comparison_name] = moyennes
 
-    # Afficher les résultats sous forme de tableau
+    # Créer le DataFrame
     results_df = pd.DataFrame(all_results).T
-    results_df.columns = [str(bin) for bin in results_df.columns]
 
-    print("\nMoyennes des scores DICE par bin et par comparaison :")
+    # Calculer la moyenne par bin (toutes comparaisons confondues)
+    results_df.loc["Moyenne par bin"] = results_df.mean(axis=0)
+
+    # Réorganiser pour que la ligne "Moyenne par bin" soit à la fin
+    results_df = results_df.reindex([idx for idx in results_df.index if idx != "Moyenne par bin"] + ["Moyenne par bin"])
+
+    # Afficher les résultats
+    print("\nMoyennes des scores DICE par bin (toutes comparaisons) :")
     print(results_df)
 
+    # Sauvegarder les résultats
     csv_path = os.path.join(root_dir, "dice_scores_by_bins.csv")
     results_df.to_csv(csv_path, index=True)
     print(f"\nRésultats sauvegardés dans : {csv_path}")
 
-    plt.figure(figsize=(12, 8))
+    # Générer la heatmap
+    plt.figure(figsize=(12, 10))
     sns.heatmap(results_df, annot=True, cmap="YlGnBu", fmt=".3f", cbar_kws={'label': 'Dice Score'})
-    plt.title("Moyennes des scores DICE par bin (comparaisons séquentielles)")
+    plt.title("Moyennes des scores DICE par bin (toutes combinaisons) + moyenne par bin")
     plt.xticks(rotation=45)
     plt.yticks(rotation=0)
     plt.tight_layout()
