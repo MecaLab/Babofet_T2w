@@ -110,10 +110,8 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
                     print(f"Error loading file: {seg_2}. Skipping.")
                 continue
 
-
             gdice = generalized_dice(seg1, seg2, labels)
-            print(gdice)
-            exit()
+
             """dice_scores = []
             for label in labels:
                 dice = dice_coefficient(seg1, seg2, label)
