@@ -185,7 +185,7 @@ if __name__ == "__main__":
     # Créer le DataFrame
     results_df = pd.DataFrame(all_results).T
 
-    results_df["Total"] = results_df.mean(axis=1)
+    results_df["Mean Dice"] = results_df.mean(axis=1)
 
     # Afficher les résultats
     print("\nMoyennes des scores DICE par bin (toutes comparaisons) :")
