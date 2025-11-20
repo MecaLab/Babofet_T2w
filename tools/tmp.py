@@ -1,4 +1,5 @@
 import shutil
+import itertools
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -25,7 +26,6 @@ def compute_bins(df, bins=5):
 
     return long, counts_qcut
 
-
 def generalized_dice(seg1, seg2, labels):
     # Crée un masque pour chaque label
     masks1 = np.stack([seg1 == label for label in labels], axis=0)
@@ -42,7 +42,6 @@ def generalized_dice(seg1, seg2, labels):
     denominator = np.sum(w * (size1 + size2))
 
     return 2 * numerator / denominator
-
 
 def dice_coefficient(seg1, seg2, label):
     # Intersection et union pour le label donné
@@ -158,11 +157,8 @@ if __name__ == "__main__":
 
     all_results = {}
 
-    for i in range(len(exp_to_compare) - 1):
-        exp_1 = exp_to_compare[i]
-        exp_2 = exp_to_compare[i + 1]
+    for exp_1, exp_2 in itertools.combinations(exp_to_compare, 2):
         comparison_name = f"{exp_1} vs {exp_2}"
-
         exp_1_path = os.path.join(root_dir, f"{exp_1}_segmentations")
         exp_2_path = os.path.join(root_dir, f"{exp_2}_segmentations")
 
@@ -172,7 +168,7 @@ if __name__ == "__main__":
             continue
 
 
-        print(f"Comparing {comparison_name}:")
+        print(f"\nComparing {comparison_name}:")
         bin_dict = compare_models(exp_1_path, exp_2_path, counts_qcut, long, verbose=False)
 
         moyennes = {
@@ -181,8 +177,7 @@ if __name__ == "__main__":
         }
 
         for bin_interval, mean_dice in moyennes.items():
-            print(f"Bins: {bin_interval}: {mean_dice:.3f}")
-        print("\n")
+            print(f"\tBins: {bin_interval}: {mean_dice:.3f}")
 
         all_results[comparison_name] = moyennes
 
