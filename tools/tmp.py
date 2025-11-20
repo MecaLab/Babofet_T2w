@@ -185,10 +185,7 @@ if __name__ == "__main__":
     results_df = pd.DataFrame(all_results).T
 
     # Calculer la moyenne par bin (toutes comparaisons confondues)
-    results_df.loc["Moyenne par bin"] = results_df.mean(axis=0)
-
-    # Réorganiser pour que la ligne "Moyenne par bin" soit à la fin
-    results_df = results_df.reindex([idx for idx in results_df.index if idx != "Moyenne par bin"] + ["Moyenne par bin"])
+    results_df.loc["Moyenne par comparaison"] = results_df.mean(axis=1)
 
     # Afficher les résultats
     print("\nMoyennes des scores DICE par bin (toutes comparaisons) :")
@@ -202,7 +199,7 @@ if __name__ == "__main__":
     # Générer la heatmap
     plt.figure(figsize=(12, 10))
     sns.heatmap(results_df, annot=True, cmap="YlGnBu", fmt=".3f", cbar_kws={'label': 'Dice Score'})
-    plt.title("Moyennes des scores DICE par bin (toutes combinaisons) + moyenne par bin")
+    plt.title("Moyennes des scores DICE par bin")
     plt.xticks(rotation=45)
     plt.yticks(rotation=0)
     plt.tight_layout()
