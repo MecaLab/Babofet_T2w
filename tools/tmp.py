@@ -106,14 +106,14 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
                     print(f"Error loading file: {seg_2}. Skipping.")
                 continue
 
-            # gdice = generalized_dice(seg1, seg2, labels)
-            dice_scores = []
+            gdice = generalized_dice(seg1, seg2, labels)
+            """dice_scores = []
             for label in labels:
                 dice = dice_coefficient(seg1, seg2, label)
                 dice_scores.append(dice)
 
             # Score global = moyenne des Dice par label
-            gdice = np.mean(dice_scores)
+            gdice = np.mean(dice_scores)"""
 
             subject_row = df[df["subject"] == name]
             sess_value = subject_row[sess_formated].values[0]
