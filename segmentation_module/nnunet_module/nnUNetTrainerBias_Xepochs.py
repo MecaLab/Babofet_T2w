@@ -136,6 +136,10 @@ class nnUNetTrainerBias_1000epochs(nnUNetTrainerBias):
         self.num_epochs = 1000
 
 
+class nnUNetTrainerBiasField1000epochs(nnUNetTrainerBias_1000epochs):
+    pass
+
+
 class nnUNetTrainerBias_2000epochs(nnUNetTrainerBias):
     """
     Custom trainer for nnUNet that applies a bias field artifact during training.
