@@ -147,7 +147,7 @@ if __name__ == "__main__":
 
     format_bounti(cfg.SEG_OUTPUT_PATH, bounti_seg_formated_path)
 
-    exp_to_compare = ["BOUNTI", "2", "8"]  # ["BOUNTI", "2", "5", "6", "8"]
+    exp_to_compare = ["BOUNTI", "2", "5", "6", "8"]
     dice_scores = []
     labels = [1, 2, 3, 4]
 
