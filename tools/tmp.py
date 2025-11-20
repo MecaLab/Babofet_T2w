@@ -138,6 +138,17 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
 
 
 if __name__ == "__main__":
+    csv_path = os.path.join(root_dir, "dice_scores_by_bins.csv")
+    df = pd.read_csv(csv_path)
+    print(df)
+
+    df["Total"] = df.mean(axis=1)
+
+    # Afficher le DataFrame mis à jour
+    print(df)
+
+
+    exit()
     df = pd.read_csv("table_data/sessions_to_days.csv")
 
     long, counts_qcut = compute_bins(df, bins=5)
@@ -183,9 +194,6 @@ if __name__ == "__main__":
 
     # Créer le DataFrame
     results_df = pd.DataFrame(all_results).T
-
-    # Calculer la moyenne par bin (toutes comparaisons confondues)
-    results_df.loc["Moyenne par comparaison"] = results_df.mean(axis=1)
 
     # Afficher les résultats
     print("\nMoyennes des scores DICE par bin (toutes comparaisons) :")
