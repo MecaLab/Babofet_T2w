@@ -52,7 +52,6 @@ def dice_coefficient(seg1, seg2, label):
         return 1.0  # Si les deux segmentations sont vides pour ce label
     return 2. * intersection.sum() / (seg1[seg1 == label].size + seg2[seg2 == label].size)
 
-
 def format_bounti(input_path, output_path):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -85,8 +84,15 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
             file_splited = file.split(".")[0]
             name, sess = file_splited.split("_")
             sess_formated = f"ses-{sess[3:]}"  # sesXX -> ses-XX
+
             seg_1 = os.path.join(exp_1_path, file)
             seg_2 = os.path.join(model_2_path, file)
+
+            if not os.path.exists(seg_1):
+                seg_1 = os.path.join(model_1_path, f"{name}_{sess}_bias.nii.gz")
+
+            if not os.path.exists(seg_2):
+                seg_2 = os.path.join(model_2_path, f"{name}_{sess}_bias.nii.gz")
 
             try:
                 seg1 = nibabel.load(seg_1).get_fdata()
@@ -151,7 +157,7 @@ if __name__ == "__main__":
 
     format_bounti(cfg.SEG_OUTPUT_PATH, bounti_seg_formated_path)
 
-    exp_to_compare = ["BOUNTI", "2", "5", "6", "7", "8"]
+    exp_to_compare = ["BOUNTI", "2", "5", "6", "7", "8", "manual"]
     dice_scores = []
     labels = [1, 2, 3, 4]
 
