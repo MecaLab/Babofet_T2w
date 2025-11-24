@@ -1,10 +1,12 @@
 import os
 import sys
 import torch
-from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
-
+    from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
 import torchio as tio
 import gc
+
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 
 
 def aug_bias_field(img, seg):
@@ -109,3 +111,15 @@ class ArtifactTransform(BasicTransform):
         except Exception as e:
             print(f"Erreur dans _apply_to_image: {e}")
             return image, segmentation
+
+
+if __name__ == "__main__":
+    image = os.path.join(cfg.BASE_PATH, "3D_Borgne_ses08.nii.gz")
+    seg = os.path.join(cfg.BASE_PATH, "seg_Borgne_ses08.nii.gz")
+
+    import nibabel as nib
+    img_data = nib.load(image).get_fdata()
+    seg_data = nib.load(seg).get_fdata()
+
+    print(img_data.shape)
+    print(seg_data.shape)
