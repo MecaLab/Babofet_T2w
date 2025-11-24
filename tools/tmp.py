@@ -204,7 +204,6 @@ if __name__ == "__main__":
             print(f"\tBins: {bin_interval}: {mean_dice:.3f}")
 
         all_results[comparison_name] = moyennes
-        break
 
     # Créer le DataFrame
     results_df = pd.DataFrame(all_results).T
