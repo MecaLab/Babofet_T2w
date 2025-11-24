@@ -116,12 +116,18 @@ if __name__ == "__main__":
 
     img_out, seg_out = aug_bias_field(img_nii.get_fdata(), seg_nii.get_fdata())
 
-    if isinstance(img_out, torch.Tensor):
-        img_out = img_out.cpu().numpy()
+    img_np = img_out.cpu().numpy() if isinstance(img_out, torch.Tensor) else np.array(img_out)
+    seg_np = seg_out.cpu().numpy() if isinstance(seg_out, torch.Tensor) else np.array(seg_out)
 
-    if isinstance(seg_out, torch.Tensor):
-        seg_out = seg_out.cpu().numpy()
+    # 2) Retirer la dimension channel si C=1
+    if img_np.ndim == 4 and img_np.shape[0] == 1:
+        img_np = img_np[0]
 
-    print("Augmentation appliquée avec succès.")
-    nib.save(nib.Nifti1Image(img_out, affine_img), "img_out.nii.gz")
-    nib.save(nib.Nifti1Image(seg_out, affine_seg), "seg_out.nii.gz")
+    if seg_np.ndim == 4 and seg_np.shape[0] == 1:
+        seg_np = seg_np[0]
+
+    # 3) Sauvegarder
+    nib.save(nib.Nifti1Image(img_np, affine_img), "img_out.nii.gz")
+    nib.save(nib.Nifti1Image(seg_np, affine_seg), "seg_out.nii.gz")
+
+    print("OK : Fichiers sauvegardés.")
