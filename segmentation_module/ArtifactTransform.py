@@ -118,13 +118,14 @@ if __name__ == "__main__":
     seg = os.path.join(cfg.BASE_PATH, "seg_Borgne_ses08.nii.gz")
 
     import nibabel as nib
-    img_data = nib.load(image).get_fdata()
-    seg_data = nib.load(seg).get_fdata()
 
-    img_out, seg_out = aug_bias_field(img_data, seg_data)
+    img_nii = nib.load(image)
+    seg_nii = nib.load(seg)
+    affine_img = img_nii.affine
+    affine_seg = seg_nii.affine
+
+    img_out, seg_out = aug_bias_field(img_nii.get_fdata(), seg_nii.get_fdata())
 
     print("Augmentation appliquée avec succès.")
-    out_img_nifti = nib.Nifti1Image(img_out, affine=nib.load(img_data).affine)
-    nib.save(out_img_nifti, os.path.join(cfg.BASE_PATH, "3D_Borgne_ses08_bias.nii.gz"))
-    out_seg_nifti = nib.Nifti1Image(seg_out, affine=nib.load(seg_data).affine)
-    nib.save(out_seg_nifti, os.path.join(cfg.BASE_PATH, "seg_Borgne_ses08_bias.nii.gz"))
+    nib.save(nib.Nifti1Image(img_out, affine_img), "img_out.nii.gz")
+    nib.save(nib.Nifti1Image(seg_out, affine_seg), "seg_out.nii.gz")
