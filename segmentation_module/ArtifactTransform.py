@@ -1,5 +1,6 @@
 import os
 import sys
+import numpy as np
 import torch
 from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
 import torchio as tio
