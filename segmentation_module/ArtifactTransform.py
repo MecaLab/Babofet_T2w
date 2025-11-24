@@ -116,18 +116,20 @@ if __name__ == "__main__":
 
     img_out, seg_out = aug_bias_field(img_nii.get_fdata(), seg_nii.get_fdata())
 
-    img_np = img_out.cpu().numpy() if isinstance(img_out, torch.Tensor) else np.array(img_out)
-    seg_np = seg_out.cpu().numpy() if isinstance(seg_out, torch.Tensor) else np.array(seg_out)
+    img_np = img_out.cpu().numpy()
+    seg_np = seg_out.cpu().numpy()
 
-    # 2) Retirer la dimension channel si C=1
+    # Retrait du canal si nécessaire (C=1)
     if img_np.ndim == 4 and img_np.shape[0] == 1:
         img_np = img_np[0]
 
     if seg_np.ndim == 4 and seg_np.shape[0] == 1:
         seg_np = seg_np[0]
 
-    # 3) Sauvegarder
+    # Normalisation des types de données
+    img_np = img_np.astype(np.float32)  # image anatomique
+    seg_np = seg_np.astype(np.uint8)  # segmentation (labels entiers)
+
+    # Sauvegarde NIfTI
     nib.save(nib.Nifti1Image(img_np, affine_img), "img_out.nii.gz")
     nib.save(nib.Nifti1Image(seg_np, affine_seg), "seg_out.nii.gz")
-
-    print("OK : Fichiers sauvegardés.")
