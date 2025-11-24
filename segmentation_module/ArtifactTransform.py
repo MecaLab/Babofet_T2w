@@ -10,61 +10,47 @@ import configuration as cfg
 
 
 def aug_bias_field(img, seg):
-    """
-    Applique un bias field avec gestion d'erreurs robuste
-    """
     try:
-        # Vérification des inputs
         if img is None or seg is None:
             return img, seg
 
-        img = torch.tensor(img)
-        seg = torch.tensor(seg)
+        # Convertir en tenseurs Torch
+        if isinstance(img, np.ndarray):
+            img = torch.from_numpy(img)
+        if isinstance(seg, np.ndarray):
+            seg = torch.from_numpy(seg)
 
-        # Vérification que ce sont bien des tenseurs
-        if not isinstance(img, torch.Tensor) or not isinstance(seg, torch.Tensor):
-            return img, seg
-
-        # Conversion de type
         img = img.float()
         seg = seg.long()
 
-        # Vérification des dimensions
-        if img.ndim < 3 or seg.ndim < 3:
-            return img, seg
+        # TorchIO exige 4 dimensions : (C, D, H, W)
+        # Si 3D → ajouter une dimension de canal
+        if img.ndim == 3:
+            img = img.unsqueeze(0)   # (1, D, H, W)
+        if seg.ndim == 3:
+            seg = seg.unsqueeze(0)   # (1, D, H, W)
 
+        # Vérifier maintenant
+        if img.ndim != 4:
+            raise ValueError(f"Image shape invalid: {img.shape}")
+        if seg.ndim != 4:
+            raise ValueError(f"Seg shape invalid: {seg.shape}")
 
-        # TorchIO attend (C, D, H, W) - ajustement si nécessaire
-        if img.ndim == 4 and img.shape[0] not in [1, 3]:
-            img = img.permute(3, 0, 1, 2)
-        if seg.ndim == 4 and seg.shape[0] not in [1]:
-            seg = seg.permute(3, 0, 1, 2)
-
-        # Application du bias field avec gestion d'erreur
+        # SUBJECT TorchIO
         subject = tio.Subject(
             image=tio.ScalarImage(tensor=img),
             seg=tio.LabelMap(tensor=seg)
         )
 
-        transform = tio.RandomBiasField(coefficients=1, order=3)
+        transform = tio.RandomBiasField(coefficients=0.5, order=3)
         subject = transform(subject)
 
         img_out, seg_out = subject.image.data, subject.seg.data
-
-        print("Transformations appliquées :", subject.history)
-
-        diff = torch.mean(torch.abs(img_out - img))
-        print("\nDiff après bias field :", diff.item())
-
-        # Nettoyage mémoire
-        del subject, transform
-        gc.collect()
 
         return img_out, seg_out
 
     except Exception as e:
         print(f"Erreur dans aug_bias_field: {e}")
-        # Retourner les données originales en cas d'erreur
         return img, seg
 
 
@@ -127,10 +113,7 @@ if __name__ == "__main__":
     affine_img = img_nii.affine
     affine_seg = seg_nii.affine
 
-    img = img_nii.get_fdata().unsqueeze(0)
-    seg = seg_nii.get_fdata().unsqueeze(0)
-
-    img_out, seg_out = aug_bias_field(img, seg)
+    img_out, seg_out = aug_bias_field(img_nii.get_fdata(), seg_nii.get_fdata())
 
     print("Augmentation appliquée avec succès.")
     nib.save(nib.Nifti1Image(img_out, affine_img), "img_out.nii.gz")
