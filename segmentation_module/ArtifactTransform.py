@@ -53,6 +53,11 @@ def aug_bias_field(img, seg):
 
         img_out, seg_out = subject.image.data, subject.seg.data
 
+        print("Transformations appliquées :", subject.history)
+
+        diff = torch.mean(torch.abs(img_out - img))
+        print("\nDiff après bias field :", diff.item())
+
         # Nettoyage mémoire
         del subject, transform
         gc.collect()
