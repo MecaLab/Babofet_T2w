@@ -18,16 +18,12 @@ def aug_bias_field(img, seg):
         if img is None or seg is None:
             return img, seg
 
-        print("here")
         img = torch.tensor(img)
         seg = torch.tensor(seg)
 
-        print(type(img), type(seg))
         # Vérification que ce sont bien des tenseurs
         if not isinstance(img, torch.Tensor) or not isinstance(seg, torch.Tensor):
             return img, seg
-
-        print("here 2")
 
         # Conversion de type
         img = img.float()
@@ -37,7 +33,6 @@ def aug_bias_field(img, seg):
         if img.ndim < 3 or seg.ndim < 3:
             return img, seg
 
-        print("here 3")
 
         # TorchIO attend (C, D, H, W) - ajustement si nécessaire
         if img.ndim == 4 and img.shape[0] not in [1, 3]:
@@ -132,7 +127,10 @@ if __name__ == "__main__":
     affine_img = img_nii.affine
     affine_seg = seg_nii.affine
 
-    img_out, seg_out = aug_bias_field(img_nii.get_fdata(), seg_nii.get_fdata())
+    img = img_nii.get_fdata().unsqueeze(0)
+    seg = seg_nii.get_fdata().unsqueeze(0)
+
+    img_out, seg_out = aug_bias_field(img, seg)
 
     print("Augmentation appliquée avec succès.")
     nib.save(nib.Nifti1Image(img_out, affine_img), "img_out.nii.gz")
