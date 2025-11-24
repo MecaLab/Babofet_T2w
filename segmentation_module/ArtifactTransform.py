@@ -43,8 +43,10 @@ def aug_bias_field(img, seg):
             seg=tio.LabelMap(tensor=seg)
         )
 
-        transform = tio.RandomBiasField(coefficients=1, order=3)
+        transform = tio.RandomBiasField(coefficients=0.5, order=3)
         subject = transform(subject)
+
+        print(subject.history)
 
         img_out, seg_out = subject.image.data, subject.seg.data
 
