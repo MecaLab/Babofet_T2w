@@ -18,6 +18,8 @@ def aug_bias_field(img, seg):
         if img is None or seg is None:
             return img, seg
 
+        print("here")
+
         # Conversion en tenseur si nécessaire
         if isinstance(img, list):
             img = torch.tensor(img)
@@ -28,6 +30,8 @@ def aug_bias_field(img, seg):
         if not isinstance(img, torch.Tensor) or not isinstance(seg, torch.Tensor):
             return img, seg
 
+        print("here 2")
+
         # Conversion de type
         img = img.float()
         seg = seg.long()
@@ -35,6 +39,8 @@ def aug_bias_field(img, seg):
         # Vérification des dimensions
         if img.ndim < 3 or seg.ndim < 3:
             return img, seg
+
+        print("here 3")
 
         # TorchIO attend (C, D, H, W) - ajustement si nécessaire
         if img.ndim == 4 and img.shape[0] not in [1, 3]:
