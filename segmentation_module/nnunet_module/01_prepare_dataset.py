@@ -64,7 +64,7 @@ if __name__ == "__main__":
         print(f"\tProcessing subject: {subject}")
         # input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
         # input_path_3d_segs = os.path.join(cfg.BASE_PATH, "nnunet_mattia")
-        input_path_3d_segs = os.path.join(cfg.BASE_PATH, "gt_dataset")
+        input_path_3d_segs = os.path.join(cfg.BASE_PATH, "gt_dataset", "train_dataset")
 
         if mode_dataset == "unmasked":
             input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
@@ -112,7 +112,8 @@ if __name__ == "__main__":
     # test processing
     for subject, sessions in test_subject_sessions.items():
         print(f"\tProcessing subject: {subject}")
-        input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
+        #input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
+        input_path_3d_segs = os.path.join(cfg.BASE_PATH, "gt_dataset", "test_dataset")
 
         if mode_dataset == "unmasked":
             input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
