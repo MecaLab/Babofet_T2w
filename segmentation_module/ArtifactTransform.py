@@ -26,6 +26,7 @@ def aug_bias_field(img, seg):
         if isinstance(seg, list):
             seg = torch.tensor(seg)
 
+        print(type(img), type(seg))
         # Vérification que ce sont bien des tenseurs
         if not isinstance(img, torch.Tensor) or not isinstance(seg, torch.Tensor):
             return img, seg
