@@ -133,7 +133,7 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
                 continue
 
             # gdice = generalized_dice(seg1, seg2, labels)
-            metric = mean_iou(seg1, seg2, labels)
+            metric = mean_iou(seg1, seg2, labels)[0]
 
             """dice_scores = []
             for label in labels:
