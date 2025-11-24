@@ -34,7 +34,7 @@ if __name__ == "__main__":
     train_subject_sessions = data["train_subject_sessions"]
     test_subject_sessions = data["test_subject_sessions"]
 
-    mode_dataset = "unmasked"  # "masked" or "unmasked" or "debiased-2" or "full"
+    mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2" or "full"
 
     id_dataset = int(sys.argv[1])  # should be integer, eg, 1, 2, 3, etc.
     name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
@@ -82,23 +82,23 @@ if __name__ == "__main__":
             elif mode_dataset == "masked":
                 input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
             elif mode_dataset == "debiased-2":
-                # input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
+                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
                 input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
 
             # input_path_3d_seg = os.path.join(input_path_3d_segs, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
             input_path_3d_seg = os.path.join(input_path_3d_segs, f"{subject}_{session}.nii.gz")
 
             if mode_dataset == "debiased-2":
-                # output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_bias_0000.nii.gz")
+                output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_bias_0000.nii.gz")
                 output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{session}_debias_0000.nii.gz")
 
-                # output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
+                output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
                 output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{session}_debias.nii.gz")
 
-                # os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
+                os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
                 os.system(f"cp {input_path_3d_stack_bis} {output_path_3d_stack_bis}")
 
-                # os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
+                os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
                 os.system(f"cp {input_path_3d_seg} {output_path_3d_seg_bis}")
 
             else:
