@@ -116,6 +116,12 @@ if __name__ == "__main__":
 
     img_out, seg_out = aug_bias_field(img_nii.get_fdata(), seg_nii.get_fdata())
 
+    if isinstance(img_out, torch.Tensor):
+        img_out = img_out.cpu().numpy()
+
+    if isinstance(seg_out, torch.Tensor):
+        seg_out = seg_out.cpu().numpy()
+
     print("Augmentation appliquée avec succès.")
     nib.save(nib.Nifti1Image(img_out, affine_img), "img_out.nii.gz")
     nib.save(nib.Nifti1Image(seg_out, affine_seg), "seg_out.nii.gz")
