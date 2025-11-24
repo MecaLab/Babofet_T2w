@@ -43,6 +43,23 @@ def generalized_dice(seg1, seg2, labels):
 
     return 2 * numerator / denominator
 
+
+def mean_iou(seg1, seg2, labels):
+    # Crée un masque binaire pour chaque label
+    masks1 = np.stack([seg1 == label for label in labels], axis=0)
+    masks2 = np.stack([seg2 == label for label in labels], axis=0)
+
+    # Calcul des intersections et unions
+    intersection = np.logical_and(masks1, masks2).sum(axis=(1, 2, 3))
+    union = np.logical_or(masks1, masks2).sum(axis=(1, 2, 3))
+
+    # Évite la division par zéro
+    iou = intersection / (union + 1e-10)
+
+    # Retourne la moyenne et les scores par label
+    mean_iou_score = np.mean(iou)
+    return mean_iou_score, iou
+
 def dice_coefficient(seg1, seg2, label):
     # Intersection et union pour le label donné
     intersection = np.logical_and(seg1 == label, seg2 == label)
@@ -115,7 +132,8 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
                     print(f"Error loading file: {seg_2}. Skipping.")
                 continue
 
-            gdice = generalized_dice(seg1, seg2, labels)
+            # gdice = generalized_dice(seg1, seg2, labels)
+            metric = mean_iou(seg1, seg2, labels)
 
             """dice_scores = []
             for label in labels:
@@ -131,7 +149,7 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
             bin_interval = pd.cut([sess_value], bins=long["bin_qcut"].cat.categories, right=True,
                                   labels=long["bin_qcut"].cat.categories)[0]
             try:
-                bin_dict[bin_interval].append(gdice)
+                bin_dict[bin_interval].append(metric)
             except KeyError:
                 if verbose:
                     print(f"Value {sess_value} for subject {name} and session {sess_formated} does not fit in any bin.")
@@ -186,27 +204,28 @@ if __name__ == "__main__":
             print(f"\tBins: {bin_interval}: {mean_dice:.3f}")
 
         all_results[comparison_name] = moyennes
+        break
 
     # Créer le DataFrame
     results_df = pd.DataFrame(all_results).T
 
-    results_df["Mean Dice"] = results_df.mean(axis=1)
+    results_df["Mean IoU"] = results_df.mean(axis=1)
 
     # Afficher les résultats
-    print("\nMoyennes des scores DICE par bin (toutes comparaisons) :")
+    print("\nMoyennes des scores IoU par bin (toutes comparaisons) :")
     print(results_df)
 
     # Sauvegarder les résultats
-    csv_path = os.path.join(root_dir, "dice_scores_by_bins.csv")
+    csv_path = os.path.join(root_dir, "iou_scores_by_bins.csv")
     results_df.to_csv(csv_path, index=True)
     print(f"\nRésultats sauvegardés dans : {csv_path}")
 
     # Générer la heatmap
     plt.figure(figsize=(12, 10))
-    sns.heatmap(results_df, annot=True, cmap="YlGnBu", fmt=".3f", cbar_kws={'label': 'Dice Score'})
-    plt.title("Moyennes des scores DICE par bin")
+    sns.heatmap(results_df, annot=True, cmap="YlGnBu", fmt=".3f", cbar_kws={'label': 'IoU Score'})
+    plt.title("Moyennes des scores IoU par bin")
     plt.xticks(rotation=45)
     plt.yticks(rotation=0)
     plt.tight_layout()
-    plt.savefig(os.path.join(root_dir, "heatmap_dice_by_bin.png"), dpi=200, bbox_inches='tight')
+    plt.savefig(os.path.join(root_dir, "heatmap_iou_by_bin.png"), dpi=200, bbox_inches='tight')
     plt.clf()
