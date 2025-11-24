@@ -121,5 +121,4 @@ if __name__ == "__main__":
     img_data = nib.load(image).get_fdata()
     seg_data = nib.load(seg).get_fdata()
 
-    print(img_data.shape)
-    print(seg_data.shape)
+    img_out, seg_out = aug_bias_field(img_data, seg_data)
