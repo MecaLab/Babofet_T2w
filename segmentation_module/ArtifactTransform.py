@@ -1,7 +1,7 @@
 import os
 import sys
 import torch
-    from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
+from batchgeneratorsv2.transforms.base.basic_transform import BasicTransform
 import torchio as tio
 import gc
 
