@@ -124,7 +124,7 @@ if __name__ == "__main__":
     img_out, seg_out = aug_bias_field(img_data, seg_data)
 
     print("Augmentation appliquée avec succès.")
-    out_img_nifti = nib.Nifti1Image(img_out.numpy(), affine=nib.load(image).affine)
+    out_img_nifti = nib.Nifti1Image(img_out, affine=nib.load(img_data).affine)
     nib.save(out_img_nifti, os.path.join(cfg.BASE_PATH, "3D_Borgne_ses08_bias.nii.gz"))
-    out_seg_nifti = nib.Nifti1Image(seg_out.numpy(), affine=nib.load(seg).affine)
+    out_seg_nifti = nib.Nifti1Image(seg_out, affine=nib.load(seg_data).affine)
     nib.save(out_seg_nifti, os.path.join(cfg.BASE_PATH, "seg_Borgne_ses08_bias.nii.gz"))
