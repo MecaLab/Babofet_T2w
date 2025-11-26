@@ -6,7 +6,7 @@ import subprocess
 def write_slurm_file(dataset_id, trainer, filename):
     slurm_content = f"""#!/bin/bash
 
-#SBATCH --account='b219'
+#SBATCH --account='b391'
 #SBATCH --partition=volta
 #SBATCH --gres=gpu:1
 #SBATCH --time=96:00:00

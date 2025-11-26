@@ -6,7 +6,7 @@ import subprocess
 def write_slurm_file(dataset_id, trainer, filename):
     slurm_content = f"""#!/bin/bash
 
-#SBATCH --account='b219'
+#SBATCH --account='b391'
 #SBATCH --partition=volta
 #SBATCH --gres=gpu:1
 #SBATCH --time=96:00:00
@@ -22,7 +22,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-nnUNetv2_train {dataset_id} 3d_fullres all -tr {trainer} --npz --c
+nnUNetv2_train {dataset_id} 3d_fullres all -tr {trainer} --npz
 """
     # nnUNetv2_train {dataset_id} 3d_fullres all -tr {trainer} --npz
     with open(filename, "w", encoding="utf-8") as slurm_file:
