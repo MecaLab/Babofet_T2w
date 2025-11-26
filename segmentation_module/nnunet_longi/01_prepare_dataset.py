@@ -94,5 +94,5 @@ if __name__ == "__main__":
         print(f"End for {subject}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
-    num_training = len(os.listdir(images_tr_path))
+    num_training = len(os.listdir(labels_tr_path))
     write_json_file(dataset_json, num_training, dataset_name)
