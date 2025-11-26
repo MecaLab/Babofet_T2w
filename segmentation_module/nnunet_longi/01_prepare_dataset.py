@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
             previous_session = get_previous_session(session)
             previous_volume_path = get_file_from_subject_session(subject, previous_session)
-            previous_seg = os.path.join(cfg.CODE_PATH, "inference_all", "8_segmentations", f"{subject}_{previous_session}_seg.nii.gz")
+            previous_seg = os.path.join(cfg.CODE_PATH, "inference_all", "8_segmentations", f"{subject}_{previous_session}.nii.gz")
 
             output_path_current_vol = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
             output_path_previous_vol = os.path.join(images_tr_path, f"{subject}_{session}_0001.nii.gz")
