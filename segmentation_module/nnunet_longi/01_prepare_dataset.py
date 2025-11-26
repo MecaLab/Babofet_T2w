@@ -91,6 +91,7 @@ if __name__ == "__main__":
             os.system(f"cp {previous_seg} {output_path_previous_seg}")
 
             os.system(f"cp {current_seg_path} {output_path_current_seg}")
+        print(f"End for {subject}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
     num_training = len(os.listdir(images_tr_path))
