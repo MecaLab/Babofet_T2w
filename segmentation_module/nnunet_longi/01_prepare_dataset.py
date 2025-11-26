@@ -86,11 +86,11 @@ if __name__ == "__main__":
 
             output_path_current_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
 
-            shutil.copy(current_volume_path, output_path_current_vol)
-            shutil.copy(previous_volume_path, output_path_previous_vol)
-            shutil.copy(previous_seg, output_path_previous_seg)
+            os.system(f"cp {current_volume_path} {output_path_current_vol}")
+            os.system(f"cp {previous_volume_path} {output_path_previous_vol}")
+            os.system(f"cp {previous_seg} {output_path_previous_seg}")
 
-            shutil.copy(current_seg_path, output_path_current_seg)
+            os.system(f"cp {current_seg_path} {output_path_current_seg}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
     num_training = len(os.listdir(images_tr_path))
