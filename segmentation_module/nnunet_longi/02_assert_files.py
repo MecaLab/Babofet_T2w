@@ -15,7 +15,7 @@ def verify_nnunet_channels(dataset_id="001"):
     print("=" * 60)
 
     # 1. Vérifier dataset_fingerprint.json
-    fingerprint_path = base_path / "dataset_fingerprint.json"
+    fingerprint_path = os.path.join(base_path, "dataset_fingerprint.json")
     if fingerprint_path.exists():
         with open(fingerprint_path) as f:
             fingerprint = json.load(f)
@@ -44,7 +44,7 @@ def verify_nnunet_channels(dataset_id="001"):
         return
 
     # 2. Vérifier les plans
-    plans_path = base_path / "nnUNetPlans.json"
+    plans_path = os.path.join(base_path, "nnUNetPlans.json")
     if plans_path.exists():
         with open(plans_path) as f:
             plans = json.load(f)
