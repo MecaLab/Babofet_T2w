@@ -51,7 +51,12 @@ if __name__ == "__main__":
     id_dataset = 20
     name = "tmp_longi"
 
-    dataset_name = f"Dataset{id_dataset}_{name}"
+    if id_dataset < 10:
+        dataset_name = f"Dataset00{id_dataset}_{name}"
+    elif id_dataset < 100:
+        dataset_name = f"Dataset0{id_dataset}_{name}"
+    else:
+        dataset_name = f"Dataset{id_dataset}_{name}"
 
     output_path = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name)
 
@@ -84,4 +89,9 @@ if __name__ == "__main__":
             shutil.copy(current_volume_path, output_path_current_vol)
             shutil.copy(previous_volume_path, output_path_previous_vol)
             shutil.copy(previous_seg, output_path_previous_seg)
+
             shutil.copy(current_seg_path, output_path_current_seg)
+
+    dataset_json = os.path.join(output_path, "dataset.json")
+    num_training = len(os.listdir(images_tr_path))
+    write_json_file(dataset_json, num_training, dataset_name)
