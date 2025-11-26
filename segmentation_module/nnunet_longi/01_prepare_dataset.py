@@ -45,7 +45,7 @@ def get_file_from_subject_session(subject, session):
 
 if __name__ == "__main__":
     subjects = {
-        "Borgne": ["ses01", "ses08"],
+        "Borgne": ["ses08"],
         "Bibi": ["ses02", "ses07"],
         "Fabienne": ["ses03", "ses08"],
         "Filoutte": ["ses04", "ses05"],
