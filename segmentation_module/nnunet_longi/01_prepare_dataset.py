@@ -44,12 +44,18 @@ def get_file_from_subject_session(subject, session):
 
 
 if __name__ == "__main__":
-    subjects = {
+    train_data = {
         "Borgne": ["ses08"],
         "Bibi": ["ses02", "ses07"],
         "Fabienne": ["ses03", "ses08"],
         "Filoutte": ["ses04", "ses05"],
         "Formule": ["ses02", "ses03"]
+    }
+
+    test_data = {
+        "Borgne": ["ses09"],
+        "Fabienne": ["ses04", "ses05"],
+        "Filoutte": ["ses03", "ses08"]
     }
 
     id_dataset = 20
@@ -75,8 +81,8 @@ if __name__ == "__main__":
     if not os.path.exists(labels_tr_path):
         os.makedirs(labels_tr_path)
 
-    for subject in subjects:
-        for session in subjects[subject]:
+    for subject in train_data:
+        for session in train_data[subject]:
             current_volume_path = get_file_from_subject_session(subject, session)
             current_seg_path = os.path.join(cfg.BASE_PATH, "gt_dataset", "train_dataset", f"{subject}_{session}.nii.gz")
 
@@ -90,11 +96,26 @@ if __name__ == "__main__":
 
             output_path_current_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
 
+            if not os.path.exists(output_path_current_vol):
+                os.system(f"cp {current_volume_path} {output_path_current_vol}")  # T2w t
+                os.system(f"cp {previous_volume_path} {output_path_previous_vol}")  # T2w t-1
+                os.system(f"cp {previous_seg} {output_path_previous_seg}")  # seg t-1
+                os.system(f"cp {current_seg_path} {output_path_current_seg}")  # seg t
+
+        print(f"End for {subject}")
+
+    for subject in test_data:
+        for session in test_data[subject]:
+            current_volume_path = get_file_from_subject_session(subject, session)
+
+            previous_session = get_previous_session(session)
+            previous_volume_path = get_file_from_subject_session(subject, previous_session)
+
+            output_path_current_vol = os.path.join(images_ts_path, f"{subject}_{session}_0000.nii.gz")
+            output_path_previous_vol = os.path.join(images_ts_path, f"{subject}_{session}_0001.nii.gz")
+
             os.system(f"cp {current_volume_path} {output_path_current_vol}")
             os.system(f"cp {previous_volume_path} {output_path_previous_vol}")
-            os.system(f"cp {previous_seg} {output_path_previous_seg}")
-
-            os.system(f"cp {current_seg_path} {output_path_current_seg}")
         print(f"End for {subject}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
