@@ -1,8 +1,6 @@
 import os
-import subprocess
 import nibabel as nib
 import sys
-
 import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.curdir))
@@ -12,6 +10,7 @@ def prepare_t1_seg(input_folder, prepared_folder):
     for file_t in os.listdir(input_folder):
         if "0000" in file_t:
             case_name = file_t.replace("_0000.nii.gz", "")
+            file_t_path = os.path.join(input_folder, file_t)
             file_t1_path = os.path.join(input_folder, f"{case_name}_0001.nii.gz")
 
             image_t1 = nib.load(file_t1_path)
@@ -21,6 +20,9 @@ def prepare_t1_seg(input_folder, prepared_folder):
                 nib.Nifti1Image(seg_t1, image_t1.affine, image_t1.header),
                 os.path.join(prepared_folder, f"{case_name}_0002.nii.gz")
             )
+
+            os.system(f"cp {file_t_path} {os.path.join(prepared_folder, f'{case_name}_0000.nii.gz')}")
+            os.system(f"cp {file_t1_path} {os.path.join(prepared_folder, f'{case_name}_0001.nii.gz')}")
 
     print(f"t-1 segmentations prepared.\nSaved in {prepared_folder}")
 
