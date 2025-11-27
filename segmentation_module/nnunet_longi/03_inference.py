@@ -54,6 +54,98 @@ def prepare_t1_for_prediction(prepared_folder, temp_t1_input):
             )
     print(f"T2w images prepared for prediction.\nSaved in {temp_t1_input}")
 
+
+def create_helper_script(helper_script_path):
+    """
+    Crée un script Python helper pour les opérations appelées par SLURM.
+    """
+    helper_content = f"""#!/usr/bin/env python3
+\"\"\"
+Script helper pour l'inférence longitudinale nnUNet.
+Appelé par le job SLURM pour manipuler les fichiers.
+\"\"\"
+
+import argparse
+import shutil
+from pathlib import Path
+import nibabel as nib
+import numpy as np
+
+
+def update_channel2(input_folder, pred_t1_folder):
+    \"\"\"Met à jour le canal 2 avec les prédictions de t-1.\"\"\"
+    input_folder = Path(input_folder)
+    pred_t1_folder = Path(pred_t1_folder)
+
+    updated = 0
+    total = 0
+
+    for file_t in input_folder.glob("*_0000.nii.gz"):
+        case_name = file_t.name.replace("_0000.nii.gz", "")
+        total += 1
+
+        pred_file = pred_t1_folder / f"{{case_name}}_t1.nii.gz"
+
+        if pred_file.exists():
+            shutil.copy(pred_file, input_folder / f"{{case_name}}_0002.nii.gz")
+            updated += 1
+            print(f"✓ {{case_name}}: canal 2 mis à jour")
+        else:
+            print(f"⚠️  {{case_name}}: prédiction t-1 non trouvée")
+
+    print(f"\\n✓ {{updated}}/{{total}} canaux 2 mis à jour")
+
+
+def ensure_channel2(input_folder):
+    \"\"\"Crée le canal 2 avec des zéros s'il n'existe pas.\"\"\"
+    input_folder = Path(input_folder)
+
+    created = 0
+
+    for file_t in input_folder.glob("*_0000.nii.gz"):
+        case_name = file_t.name.replace("_0000.nii.gz", "")
+        file_canal2 = input_folder / f"{{case_name}}_0002.nii.gz"
+
+        if not file_canal2.exists():
+            img = nib.load(file_t)
+            zeros = np.zeros_like(img.get_fdata())
+            nib.save(
+                nib.Nifti1Image(zeros, img.affine),
+                file_canal2
+            )
+            created += 1
+            print(f"⚠️  {{case_name}}: canal 2 créé avec zéros")
+
+    if created > 0:
+        print(f"\\n⚠️  {{created}} canaux 2 créés avec zéros (performances dégradées)")
+    else:
+        print("\\n✓ Tous les canaux 2 présents")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", required=True, choices=["update_channel2", "ensure_channel2"])
+    parser.add_argument("--input", required=True, help="Dossier d'entrée")
+    parser.add_argument("--pred_t1", help="Dossier des prédictions t-1 (pour mode update_channel2)")
+
+    args = parser.parse_args()
+
+    if args.mode == "update_channel2":
+        if not args.pred_t1:
+            raise ValueError("--pred_t1 requis pour mode update_channel2")
+        update_channel2(args.input, args.pred_t1)
+    elif args.mode == "ensure_channel2":
+        ensure_channel2(args.input)
+"""
+
+    helper_script_path.parent.mkdir(exist_ok=True, parents=True)
+
+    with open(helper_script_path, "w", encoding="utf-8") as f:
+        f.write(helper_content)
+
+    os.chmod(helper_script_path, 0o755)
+    print(f"✓ Script helper créé : {helper_script_path}")
+
 def write_slurm_cascade_prediction(filename):
     slurm_content = f"""#!/bin/bash
 #SBATCH --account='b391'
@@ -89,6 +181,7 @@ nnUNetv2_predict -i {temp_t1_input} -o {temp_t1_output} -d {dataset_id} -c 3d_fu
 
     os.chmod(filename, 0o700)
 
+
 if __name__ == "__main__":
     dataset_id = int(sys.argv[1])
     name = sys.argv[2]
@@ -111,6 +204,12 @@ if __name__ == "__main__":
     prepared_folder = os.path.join(output_folder, "prepared_t1_seg")
     temp_t1_input = os.path.join(output_folder, "temp_t1_input")
     temp_t1_output = os.path.join(output_folder, "temp_t1_predictions")
+
+    helper_script_path = os.path.join(cfg.CODE_PATH, "segmentation_module/nnunet_longi/helper.py")
+
+    create_helper_script(helper_script_path)
+
+    exit()
 
     prepare_longitudinal_inference(input_folder, prepared_folder)
     # cascade mode
