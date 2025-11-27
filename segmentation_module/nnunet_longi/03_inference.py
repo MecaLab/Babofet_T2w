@@ -65,66 +65,35 @@ Script helper pour l'inférence longitudinale nnUNet.
 Appelé par le job SLURM pour manipuler les fichiers.
 \"\"\"
 
+import os
 import argparse
 import shutil
-from pathlib import Path
 import nibabel as nib
 import numpy as np
 
-
 def update_channel2(input_folder, pred_t1_folder):
     \"\"\"Met à jour le canal 2 avec les prédictions de t-1.\"\"\"
-    input_folder = Path(input_folder)
-    pred_t1_folder = Path(pred_t1_folder)
-
     updated = 0
     total = 0
-
-    for file_t in input_folder.glob("*_0000.nii.gz"):
-        case_name = file_t.name.replace("_0000.nii.gz", "")
-        total += 1
-
-        pred_file = pred_t1_folder / f"{{case_name}}_t1.nii.gz"
-
-        if pred_file.exists():
-            shutil.copy(pred_file, input_folder / f"{{case_name}}_0002.nii.gz")
-            updated += 1
-            print(f"✓ {{case_name}}: canal 2 mis à jour")
-        else:
-            print(f"⚠️  {{case_name}}: prédiction t-1 non trouvée")
-
-    print(f"\\n✓ {{updated}}/{{total}} canaux 2 mis à jour")
-
-
-def ensure_channel2(input_folder):
-    \"\"\"Crée le canal 2 avec des zéros s'il n'existe pas.\"\"\"
-    input_folder = Path(input_folder)
-
-    created = 0
-
-    for file_t in input_folder.glob("*_0000.nii.gz"):
-        case_name = file_t.name.replace("_0000.nii.gz", "")
-        file_canal2 = input_folder / f"{{case_name}}_0002.nii.gz"
-
-        if not file_canal2.exists():
-            img = nib.load(file_t)
-            zeros = np.zeros_like(img.get_fdata())
-            nib.save(
-                nib.Nifti1Image(zeros, img.affine),
-                file_canal2
-            )
-            created += 1
-            print(f"⚠️  {{case_name}}: canal 2 créé avec zéros")
-
-    if created > 0:
-        print(f"\\n⚠️  {{created}} canaux 2 créés avec zéros (performances dégradées)")
-    else:
-        print("\\n✓ Tous les canaux 2 présents")
-
+    for file_t in os.listdir(input_folder):
+        if file_t.endswith("_0000.nii.gz"):
+            case_name = file_t.replace("_0000.nii.gz", "")
+            total += 1
+            pred_file = os.path.join(pred_t1_folder, f"{{case_name}}_t1.nii.gz")
+            if os.path.exists(pred_file):
+                shutil.copy(
+                    pred_file,
+                    os.path.join(input_folder, f"{{case_name}}_0002.nii.gz")
+                )
+                updated += 1
+                print(f"✓ {{case_name}}: canal 2 mis à jour")
+            else:
+                print(f"⚠️  {{case_name}}: prédiction t-1 non trouvée")
+    print(f"\n✓ {{updated}}/{{total}} canaux 2 mis à jour")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", required=True, choices=["update_channel2", "ensure_channel2"])
+    parser.add_argument("--mode", required=True, choices=["update_channel2"])
     parser.add_argument("--input", required=True, help="Dossier d'entrée")
     parser.add_argument("--pred_t1", help="Dossier des prédictions t-1 (pour mode update_channel2)")
 
@@ -143,6 +112,7 @@ if __name__ == "__main__":
 
     os.chmod(helper_script_path, 0o755)
     print(f"✓ Script helper créé : {helper_script_path}")
+
 
 def write_slurm_cascade_prediction(filename, dataset_id, trainer, temp_t1_input, temp_t1_output,
                                    helper_script, input_folder):
