@@ -144,7 +144,8 @@ if __name__ == "__main__":
     os.chmod(helper_script_path, 0o755)
     print(f"✓ Script helper créé : {helper_script_path}")
 
-def write_slurm_cascade_prediction(filename):
+def write_slurm_cascade_prediction(filename, dataset_id, trainer, temp_t1_input, temp_t1_output,
+                                   helper_script, input_folder):
     slurm_content = f"""#!/bin/bash
 #SBATCH --account='b391'
 #SBATCH --partition=volta
@@ -171,7 +172,14 @@ echo "ÉTAPE 1: Prédiction des segmentations t-1"
 echo "------------------------------------------"
 
 # Prédire les segmentations de t-1
-nnUNetv2_predict -i {temp_t1_input} -o {temp_t1_output} -d {dataset_id} -c 3d_fullres -tr {trainer} -f all
+# nnUNetv2_predict -i {temp_t1_input} -o {temp_t1_output} -d {dataset_id} -c 3d_fullres -tr {trainer} -f all
+
+echo ""
+echo "ÉTAPE 2: Mise à jour du canal 2"
+echo "------------------------------------------"
+
+# Mettre à jour le canal 2 avec les prédictions t-1
+python {helper_script} --mode update_channel2 --input {input_folder} --pred_t1 {temp_t1_output}
 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
