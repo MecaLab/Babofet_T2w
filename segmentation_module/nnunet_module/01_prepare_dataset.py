@@ -114,7 +114,7 @@ if __name__ == "__main__":
                 os.system(f"cp {input_path_3d_stack_bis} {output_path_3d_stack_bis}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
-    num_training = len(os.listdir(images_tr_path))
+    num_training = len(os.listdir(labels_tr_path))
     write_json_file(dataset_json, num_training, dataset_name, use_debias)
 
     print("Dataset preparation completed")
