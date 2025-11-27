@@ -1,7 +1,6 @@
 import os
 import subprocess
 import sys
-import shutil
 from pathlib import Path
 import nibabel as nib
 import numpy as np
@@ -33,7 +32,7 @@ def prepare_t1_for_prediction(input_folder, temp_t1_folder):
             continue
 
         # Canal 0 : image t-1
-        shutil.copy(file_t1, temp_t1_folder / f"{case_name}_t1_0000.nii.gz")
+        os.system(f"cp {file_t1} {temp_t1_folder / f'{case_name}_t1_0000.nii.gz'}")
 
         # Canaux 1 et 2 : zéros (pas d'info longitudinale pour prédire t-1)
         img = nib.load(file_t1)
@@ -67,7 +66,7 @@ def update_channel2_with_predictions(input_folder, pred_t1_folder, cases):
 
         if pred_file.exists():
             # Remplacer le canal 2 par la prédiction t-1
-            shutil.copy(pred_file, input_folder / f"{case_name}_0002.nii.gz")
+            os.system(f"cp {pred_file} {input_folder / f'{case_name}_0002.nii.gz'}")
             updated += 1
         else:
             print(f"⚠️  Prédiction t-1 non trouvée pour {case_name}")
@@ -100,10 +99,10 @@ def prepare_longitudinal_inference(images_ts_folder, prepared_folder):
             continue
 
         # Canal 0 : image t
-        shutil.copy(file, prepared_folder / f"{case_name}_0000.nii.gz")
+        os.system(f"cp {file} {prepared_folder / f'{case_name}_0000.nii.gz'}")
 
         # Canal 1 : image t-1
-        shutil.copy(file_t1, prepared_folder / f"{case_name}_0001.nii.gz")
+        os.system(f"cp {file_t1} {prepared_folder / f'{case_name}_0001.nii.gz'}")
 
         # Canal 2 : segmentation t-1 (initialement zéros)
         img_t1 = nib.load(file_t1)
@@ -238,7 +237,6 @@ Appelé par le job SLURM pour manipuler les fichiers.
 \"\"\"
 
 import argparse
-import shutil
 from pathlib import Path
 import nibabel as nib
 import numpy as np
@@ -259,7 +257,7 @@ def update_channel2(input_folder, pred_t1_folder):
         pred_file = pred_t1_folder / f"{{case_name}}_t1.nii.gz"
 
         if pred_file.exists():
-            shutil.copy(pred_file, input_folder / f"{{case_name}}_0002.nii.gz")
+            os.system(f"cp {{pred_file}} {{input_folder / f'{{{{case_name}}}}_0002.nii.gz'}}")
             updated += 1
             print(f"✓ {{case_name}}: canal 2 mis à jour")
         else:
