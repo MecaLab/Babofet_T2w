@@ -88,19 +88,24 @@ if __name__ == "__main__":
 
             previous_session = get_previous_session(session)
             previous_volume_path = get_file_from_subject_session(subject, previous_session)
-            previous_seg = os.path.join(cfg.CODE_PATH, "inference_all", "8_segmentations", f"{subject}_{previous_session}.nii.gz")
 
-            output_path_current_vol = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
-            output_path_previous_vol = os.path.join(images_tr_path, f"{subject}_{session}_0001.nii.gz")
-            output_path_previous_seg = os.path.join(images_tr_path, f"{subject}_{session}_0002.nii.gz")
+            if previous_session in train_data[subject]:
+                previous_seg = os.path.join(cfg.BASE_PATH, "gt_dataset", "train_dataset", f"{subject}_{previous_session}.nii.gz")
+            else:
+                previous_seg = os.path.join(cfg.BASE_PATH, "gt_dataset", "previous_timepoint", f"{subject}_{previous_session}.nii.gz")
 
-            output_path_current_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
+            output_path_current_vol = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")   # T2w t
+            output_path_current_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")  # seg t
+
+            output_path_previous_vol = os.path.join(images_tr_path, f"{subject}_{session}_0001.nii.gz")  # T2w t-1
+            output_path_previous_seg = os.path.join(images_tr_path, f"{subject}_{session}_0002.nii.gz")  # seg t-1
 
             if not os.path.exists(output_path_current_vol):
-                os.system(f"cp {current_volume_path} {output_path_current_vol}")  # T2w t
-                os.system(f"cp {previous_volume_path} {output_path_previous_vol}")  # T2w t-1
-                os.system(f"cp {previous_seg} {output_path_previous_seg}")  # seg t-1
-                os.system(f"cp {current_seg_path} {output_path_current_seg}")  # seg t
+                os.system(f"cp {current_volume_path} {output_path_current_vol}")
+                os.system(f"cp {current_seg_path} {output_path_current_seg}")
+
+                os.system(f"cp {previous_volume_path} {output_path_previous_vol}")
+                os.system(f"cp {previous_seg} {output_path_previous_seg}")
 
         print(f"End for {subject}")
 
