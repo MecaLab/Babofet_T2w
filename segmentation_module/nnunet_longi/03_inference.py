@@ -64,10 +64,9 @@ def create_helper_script(helper_script_path):
 Script helper pour l'inférence longitudinale nnUNet.
 Appelé par le job SLURM pour manipuler les fichiers.
 \"\"\"
-
-import os
 import argparse
 import shutil
+import os
 import nibabel as nib
 import numpy as np
 
@@ -89,16 +88,14 @@ def update_channel2(input_folder, pred_t1_folder):
                 print(f"✓ {{case_name}}: canal 2 mis à jour")
             else:
                 print(f"⚠️  {{case_name}}: prédiction t-1 non trouvée")
-    print(f"\n✓ {{updated}}/{{total}} canaux 2 mis à jour")
+    print(f"\\\\n✓ {{updated}}/{{total}} canaux 2 mis à jour")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", required=True, choices=["update_channel2"])
+    parser.add_argument("--mode", required=True, choices=["update_channel2", "ensure_channel2"])
     parser.add_argument("--input", required=True, help="Dossier d'entrée")
     parser.add_argument("--pred_t1", help="Dossier des prédictions t-1 (pour mode update_channel2)")
-
     args = parser.parse_args()
-
     if args.mode == "update_channel2":
         if not args.pred_t1:
             raise ValueError("--pred_t1 requis pour mode update_channel2")
@@ -106,10 +103,8 @@ if __name__ == "__main__":
     elif args.mode == "ensure_channel2":
         ensure_channel2(args.input)
 """
-
     with open(helper_script_path, "w", encoding="utf-8") as f:
         f.write(helper_content)
-
     os.chmod(helper_script_path, 0o755)
     print(f"✓ Script helper créé : {helper_script_path}")
 
