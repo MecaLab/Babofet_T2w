@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
 
 def write_slurm_cascade_prediction(filename, dataset_id, trainer, temp_t1_input, temp_t1_output,
-                                   helper_script, input_folder):
+                                   helper_script, prepared_folder):
     slurm_content = f"""#!/bin/bash
 #SBATCH --account='b391'
 #SBATCH --partition=volta
@@ -144,7 +144,7 @@ echo "ÉTAPE 2: Mise à jour du canal 2"
 echo "------------------------------------------"
 
 # Mettre à jour le canal 2 avec les prédictions t-1
-python {helper_script} --mode update_channel2 --input {input_folder} --pred_t1 {temp_t1_output}
+python {helper_script} --mode update_channel2 --input {prepared_folder} --pred_t1 {temp_t1_output}
 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -186,6 +186,6 @@ if __name__ == "__main__":
 
     slurm_filename = "slurm_files/nnunet_longitudinal_prediction.slurm"
     write_slurm_cascade_prediction(slurm_filename, dataset_id, trainer, temp_t1_input, temp_t1_output,
-                                   helper_script_path, input_folder)
+                                   helper_script_path, prepared_folder)
     subprocess.run(["sbatch", slurm_filename])
 
