@@ -215,8 +215,6 @@ if __name__ == "__main__":
 
     create_helper_script(helper_script_path)
 
-    exit()
-
     prepare_longitudinal_inference(input_folder, prepared_folder)
     # cascade mode
     prepare_t1_for_prediction(prepared_folder, temp_t1_input)
