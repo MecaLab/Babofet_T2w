@@ -24,7 +24,6 @@ conda activate nnunet
 
 nnUNetv2_train {dataset_id} 3d_fullres all -tr {trainer} --npz
 """
-    # nnUNetv2_train {dataset_id} 3d_fullres all -tr {trainer} --npz
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
