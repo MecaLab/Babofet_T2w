@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def write_json_file(path, num_training, dataset_name):
+def write_json_file(path, num_training, dataset_name, use_debias=False):
     dico_data = {
         "channel_names": {
             "0": "T2W",
@@ -21,6 +21,12 @@ def write_json_file(path, num_training, dataset_name):
         "file_ending": ".nii.gz",
         "dataset_name": dataset_name
     }
+    if use_debias:
+        dico_data["channel_names"] = {
+            "0": "T2W",
+            "1": "T2W",
+        }
+
     with open(path, 'w') as f:
         json.dump(dico_data, f, indent=4)
 
@@ -34,10 +40,11 @@ if __name__ == "__main__":
     train_subject_sessions = data["train_subject_sessions"]
     test_subject_sessions = data["test_subject_sessions"]
 
-    mode_dataset = "debiased-2"  # "masked" or "unmasked" or "debiased-2" or "full"
 
     id_dataset = int(sys.argv[1])  # should be integer, eg, 1, 2, 3, etc.
     name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
+    use_debias = sys.argv[3].lower() == 'true'  # whether to use debiasing or not
+
     if id_dataset < 10:
         dataset_name = f"Dataset00{id_dataset}_{name}"
     elif id_dataset < 100:
@@ -58,96 +65,57 @@ if __name__ == "__main__":
     if not os.path.exists(labels_tr_path):
         os.makedirs(labels_tr_path)
 
-    print("Train processing...")
-    # train processing
+
+    print("Training files...")
     for subject, sessions in train_subject_sessions.items():
         print(f"\tProcessing subject: {subject}")
-        # input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
-        # input_path_3d_segs = os.path.join(cfg.BASE_PATH, "nnunet_mattia")
         input_path_3d_segs = os.path.join(cfg.BASE_PATH, "gt_dataset", "train_dataset")
 
-        if mode_dataset == "unmasked":
-            input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
-        elif mode_dataset == "masked":
-            input_path_3d_stacks = os.path.join(cfg.SEG_INPUT_PATH, subject)
-        elif mode_dataset == "debiased-2":
-            input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
-        else:
-            raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
+        input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
 
         for session in sessions:
             print(f"\t\tProcessing session: {session}")
-            if mode_dataset == "unmasked":
-                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
-            elif mode_dataset == "masked":
-                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
-            elif mode_dataset == "debiased-2":
-                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
-                input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
 
-            # input_path_3d_seg = os.path.join(input_path_3d_segs, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
+            input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
             input_path_3d_seg = os.path.join(input_path_3d_segs, f"{subject}_{session}.nii.gz")
 
-            if mode_dataset == "debiased-2":
-                output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_bias_0000.nii.gz")
-                output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{session}_debias_0000.nii.gz")
+            output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
+            output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
 
-                output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}_bias.nii.gz")
-                output_path_3d_seg_bis = os.path.join(labels_tr_path, f"{subject}_{session}_debias.nii.gz")
+            os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
+            os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
 
-                os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
+            if use_debias:
+                input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+                output_path_3d_stack_bis = os.path.join(images_tr_path, f"{subject}_{session}_0001.nii.gz")
+
                 os.system(f"cp {input_path_3d_stack_bis} {output_path_3d_stack_bis}")
 
-                os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
-                os.system(f"cp {input_path_3d_seg} {output_path_3d_seg_bis}")
-
-            else:
-                output_path_3d_stack = os.path.join(images_tr_path, f"{subject}_{session}_0000.nii.gz")
-                output_path_3d_seg = os.path.join(labels_tr_path, f"{subject}_{session}.nii.gz")
-
-                os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
-                os.system(f"cp {input_path_3d_seg} {output_path_3d_seg}")
-
-    print("Test processing...")
-    # test processing
+    print("Testing files...")
     for subject, sessions in test_subject_sessions.items():
         print(f"\tProcessing subject: {subject}")
-        #input_path_3d_segs = os.path.join(cfg.SEG_OUTPUT_PATH, subject)
         input_path_3d_segs = os.path.join(cfg.BASE_PATH, "gt_dataset", "test_dataset")
 
-        if mode_dataset == "unmasked":
-            input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
-        elif mode_dataset == "masked":
-            input_path_3d_stacks = os.path.join(cfg.SEG_INPUT_PATH, subject)
-        elif mode_dataset == "debiased-2":
-            input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
-        else:
-            raise ValueError(f"Unknown mode_dataset: {mode_dataset}")
+        input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
 
         for session in sessions:
             print(f"\t\tProcessing session: {session}")
-            if mode_dataset == "unmasked":
-                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
-            elif mode_dataset == "masked":
-                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "reo-SVR-output-brain_rhesus.nii.gz")
-            elif mode_dataset == "debiased-2":
-                input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
+
+            input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
+
+            output_path_3d_stack = os.path.join(images_ts_path, f"{subject}_{session}_0000.nii.gz")
+
+            os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
+
+            if use_debias:
                 input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+                output_path_3d_stack_bis = os.path.join(images_ts_path, f"{subject}_{session}_0001.nii.gz")
 
-            if mode_dataset == "debiased-2":
-                # output_path_3d_stack = os.path.join(images_ts_path, f"{subject}_{session}_bias_0000.nii.gz")
-                output_path_3d_stack_bis = os.path.join(images_ts_path, f"{subject}_{session}_debias_0000.nii.gz")
-
-                # os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
                 os.system(f"cp {input_path_3d_stack_bis} {output_path_3d_stack_bis}")
-
-            else:
-                output_path_3d_stack = os.path.join(images_ts_path, f"{subject}_{session}_0000.nii.gz")
-                os.system(f"cp {input_path_3d_stack} {output_path_3d_stack}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
     num_training = len(os.listdir(images_tr_path))
-    write_json_file(dataset_json, num_training, dataset_name)
+    write_json_file(dataset_json, num_training, dataset_name, use_debias)
 
     print("Dataset preparation completed")
     print("Running dataset check...")
