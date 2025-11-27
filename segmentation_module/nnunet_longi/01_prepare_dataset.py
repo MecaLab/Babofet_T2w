@@ -81,8 +81,11 @@ if __name__ == "__main__":
     if not os.path.exists(labels_tr_path):
         os.makedirs(labels_tr_path)
 
+    print("Training files...")
     for subject in train_data:
+        print(f"\tProcessing subject: {subject}")
         for session in train_data[subject]:
+            print(f"\t\tProcessing session: {session}")
             current_volume_path = get_file_from_subject_session(subject, session)
             current_seg_path = os.path.join(cfg.BASE_PATH, "gt_dataset", "train_dataset", f"{subject}_{session}.nii.gz")
 
@@ -107,10 +110,11 @@ if __name__ == "__main__":
                 os.system(f"cp {previous_volume_path} {output_path_previous_vol}")
                 os.system(f"cp {previous_seg} {output_path_previous_seg}")
 
-        print(f"End for {subject}")
-
+    print("Testing files...")
     for subject in test_data:
+        print(f"\tProcessing subject: {subject}")
         for session in test_data[subject]:
+            print(f"\t\tProcessing session: {session}")
             current_volume_path = get_file_from_subject_session(subject, session)
 
             previous_session = get_previous_session(session)
@@ -121,8 +125,8 @@ if __name__ == "__main__":
 
             os.system(f"cp {current_volume_path} {output_path_current_vol}")
             os.system(f"cp {previous_volume_path} {output_path_previous_vol}")
-        print(f"End for {subject}")
 
     dataset_json = os.path.join(output_path, "dataset.json")
     num_training = len(os.listdir(labels_tr_path))
     write_json_file(dataset_json, num_training, dataset_name)
+    os.system(f"nnUNetv2_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")
