@@ -236,6 +236,7 @@ Script helper pour l'inférence longitudinale nnUNet.
 Appelé par le job SLURM pour manipuler les fichiers.
 \"\"\"
 
+import os
 import argparse
 from pathlib import Path
 import nibabel as nib
