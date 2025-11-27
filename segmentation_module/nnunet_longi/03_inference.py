@@ -22,7 +22,7 @@ def prepare_t1_seg(input_folder, prepared_folder):
                 os.path.join(prepared_folder, f"{case_name}_0002.nii.gz")
             )
 
-    print(f"t-1 segmentations prepared. Saved in {prepared_folder}")
+    print(f"t-1 segmentations prepared.\nSaved in {prepared_folder}")
 
 
 if __name__ == "__main__":
