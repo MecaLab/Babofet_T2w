@@ -220,6 +220,7 @@ if __name__ == "__main__":
     prepare_t1_for_prediction(prepared_folder, temp_t1_input)
 
     slurm_filename = "slurm_files/nnunet_longitudinal_prediction.slurm"
-    write_slurm_cascade_prediction(slurm_filename)
+    write_slurm_cascade_prediction(slurm_filename, dataset_id, trainer, temp_t1_input, temp_t1_output,
+                                   helper_script_path, input_folder)
     subprocess.run(["sbatch", slurm_filename])
 
