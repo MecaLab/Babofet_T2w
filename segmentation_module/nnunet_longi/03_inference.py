@@ -10,11 +10,14 @@ import configuration as cfg
 
 def prepare_t1_seg(input_folder, prepared_folder):
     for file_t in os.listdir(input_folder):
+        print(file_t)
         case_name = file_t.replace("_0000.nii.gz", "")
         print(case_name)
         file_t1_path = os.path.join(input_folder, f"{case_name}_0001.nii.gz")
         print(file_t1_path)
-        
+
+        exit()
+
         image_t1 = nib.load(file_t1_path)
         data_t1 = image_t1.get_fdata()
         seg_t1 = np.zeros_like(data_t1)
