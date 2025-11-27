@@ -37,6 +37,8 @@ if __name__ == "__main__":
         dataset_name = f"Dataset{dataset_id}_{name}"
 
     input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
+    print(f"Input folder: {input_folder}")
+    print(os.path.exists(input_folder))
 
     output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_longi/pred_dataset_{dataset_id}")
 
