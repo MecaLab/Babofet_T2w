@@ -138,8 +138,6 @@ if __name__ == "__main__":
         ensure_channel2(args.input)
 """
 
-    helper_script_path.parent.mkdir(exist_ok=True, parents=True)
-
     with open(helper_script_path, "w", encoding="utf-8") as f:
         f.write(helper_content)
 
