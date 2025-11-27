@@ -46,4 +46,5 @@ if __name__ == "__main__":
     prepared_folder = os.path.join(output_folder, "prepared_t1_seg")
     if not os.path.exists(prepared_folder):
         os.makedirs(prepared_folder)
+    prepare_t1_seg(input_folder, prepared_folder)
 
