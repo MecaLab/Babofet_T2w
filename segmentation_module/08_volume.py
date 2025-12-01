@@ -215,5 +215,5 @@ if __name__ == "__main__":
     }
 
     # plot_one_subject(subject, input_folder, labels, labels_names, voxel_size)
-    plot_every_subject(input_folder, label_info, voxel_size, df)
+    plot_every_subject(input_folder, label_info, voxel_size, df, dataset_id)
 
