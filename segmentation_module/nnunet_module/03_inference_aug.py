@@ -17,16 +17,14 @@ def augment_volume(img_np):
 
     # Flips aléatoires
     if random.random() > 0.5:
-    img_np = img_np[::-1, :, :]
+        img_np = img_np[::-1, :, :]
     if random.random() > 0.5:
-    img_np = img_np[:, ::-1, :]
+        img_np = img_np[:, ::-1, :]
     if random.random() > 0.5:
-    img_np = img_np[:, :, ::-1]
-
+        img_np = img_np[:, :, ::-1]
 
     # Bruit léger
     img_np = img_np + np.random.normal(0, 0.01, img_np.shape)
-
 
     return img_np
 
