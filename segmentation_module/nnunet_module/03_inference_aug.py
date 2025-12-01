@@ -6,7 +6,8 @@ import nibabel as nib
 import numpy as np
 from scipy.ndimage import rotate
 import json
-import shutil
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 
 def augment_volume(img_np):
     transforms = {
@@ -135,8 +136,8 @@ if __name__ == "__main__":
             dataset_name = f"Dataset{dataset_id}_{name}"
 
 
-        input_folder = os.path.join("data", dataset_name, "imagesTs")
-        output_folder = os.path.join("snapshots", f"nnunet_res/pred_dataset_{dataset_id}")
+        input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
+        output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
         os.makedirs(output_folder, exist_ok=True)
         print("Creating augmented inputs...")
         make_augmented_inputs(input_folder, N=N)
