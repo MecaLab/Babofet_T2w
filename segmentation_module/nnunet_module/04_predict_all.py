@@ -78,7 +78,7 @@ if __name__ == "__main__":
     if not os.path.exists(input_dir_3d_vol):
         os.makedirs(input_dir_3d_vol)
     
-    copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Aziza", "Bibi", "Borgne", "Fabienne", "Filoutte", "Forme", "Formule"])
+    copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Aziza", "Bibi", "Borgne", "Fabienne", "Filoutte", "Forme", "Formule"], use_debias=use_debias)
 
     output_folder = os.path.join(input_dir_3d_vol, f"{dataset_id}_segmentations")  # output segmentations
 
