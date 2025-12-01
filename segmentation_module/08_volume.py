@@ -52,8 +52,6 @@ def plot_every_subject(input_folder, label_info, voxel_size, df, dataset_id):
     label_data = {label: {} for label in label_info}
     for file in sorted(os.listdir(input_folder)):
         if file.endswith(".nii.gz"):
-            if "debias" in file:
-                continue
             subject_session = file.split(".")[0]  # SUJET_SESXX
             subject = "_".join(subject_session.split("_")[:-1])
             session = subject_session.split("_")[-1]  # SESXX
@@ -199,7 +197,7 @@ if __name__ == "__main__":
 
     dataset_id = int(sys.argv[1])
 
-    input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
+    input_folder = os.path.join(cfg.CODE_PATH, f"inference_all/{dataset_id}_segmentations")
 
     # output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/volumes")
     output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/volumes")
