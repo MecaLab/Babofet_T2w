@@ -52,6 +52,8 @@ def plot_every_subject(input_folder, label_info, voxel_size, df, dataset_id):
     label_data = {label: {} for label in label_info}
     for file in sorted(os.listdir(input_folder)):
         if file.endswith(".nii.gz"):
+            if "debias" in file:
+                continue
             subject_session = file.split(".")[0]  # SUJET_SESXX
             subject = "_".join(subject_session.split("_")[:-1])
             session = subject_session.split("_")[-1]  # SESXX
