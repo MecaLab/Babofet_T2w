@@ -33,7 +33,7 @@ nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_full
     os.chmod(filename, 0o700)
 
 
-def copy_files(main_path, output_path, subjects, use_debias=False):
+def copy_files(main_path, output_path, subjects):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
@@ -49,12 +49,11 @@ def copy_files(main_path, output_path, subjects, use_debias=False):
             if not os.path.exists(t2w_biased_dest):
                 subprocess.run(["cp", t2w_biased, t2w_biased_dest])
 
-            if use_debias:
-                t2w_debiased = os.path.join(session_path, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
-                t2w_debiased_dest = os.path.join(output_path, f"{subject}_{session}_0001.nii.gz")
+            t2w_debiased = os.path.join(session_path, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+            t2w_debiased_dest = os.path.join(output_path, f"{subject}_{session}_0001.nii.gz")
 
-                if not os.path.exists(t2w_debiased_dest):
-                    subprocess.run(["cp", t2w_debiased, t2w_debiased_dest])
+            if not os.path.exists(t2w_debiased_dest):
+                subprocess.run(["cp", t2w_debiased, t2w_debiased_dest])
 
         print(f"End for {subject}")
 
@@ -64,7 +63,6 @@ if __name__ == "__main__":
     name = sys.argv[2]
     trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs
     partition = sys.argv[4]  # e.g., "volta", "kepler", etc
-    use_debias = sys.argv[5].lower() == 'true'  # whether to use debiasing or not
 
     if dataset_id < 10:
         dataset_name = f"Dataset00{dataset_id}_{name}"
@@ -78,7 +76,7 @@ if __name__ == "__main__":
     if not os.path.exists(input_dir_3d_vol):
         os.makedirs(input_dir_3d_vol)
     
-    copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Aziza", "Bibi", "Borgne", "Fabienne", "Filoutte", "Forme", "Formule"], use_debias=use_debias)
+    copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Aziza", "Bibi", "Borgne", "Fabienne", "Filoutte", "Forme", "Formule"])
 
     output_folder = os.path.join(input_dir_3d_vol, f"{dataset_id}_segmentations")  # output segmentations
 
