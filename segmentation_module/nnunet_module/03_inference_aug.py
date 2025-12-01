@@ -45,6 +45,8 @@ def make_augmented_inputs(input_folder, N=10):
             out_path = os.path.join(aug_folder, filename)
             nib.save(nib.Nifti1Image(aug_np, affine), out_path)
 
+        print(f"Created {N} augmentations for {filename} at {aug_folder}")
+
 
 def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, N=10):
     slurm_content = f"""#!/bin/bash
@@ -57,12 +59,10 @@ def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer,
 #SBATCH -o predict_nnunet_%j.out
 #SBATCH -e predict_nnunet_%j.err
 
-
 module purge
 module load userspace/all
 module load gcc/14.1.0
 module load cuda/12.4
-
 
 source ~/.bashrc
 conda activate nnunet
@@ -107,7 +107,7 @@ if __name__ == "__main__":
 
     print("Writing SLURM file...")
     slurm_filename = "slurm_files/nnunet_prediction.slurm"
-    write_slurm_file(input_folder, output_folder, slurm_filename, dataset_id, trainer, N=10)
+    write_slurm_file(input_folder, output_folder, slurm_filename, dataset_id, trainer, N=1)
 
 
     print("Submitting job to SLURM")
