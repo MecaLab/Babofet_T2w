@@ -32,11 +32,17 @@ def moyenne_dice_scores(dice_scores_list):
 
 
 if __name__ == "__main__":
-    model_type = sys.argv[1]  # should be nnunet or longiseg
-    inference_folder = sys.argv[2]
+    dataset_id = int(sys.argv[1])
+    name = sys.argv[2]
 
-    # input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}_res/{inference_folder}")
-    input_folder = os.path.join(cfg.CODE_PATH, "pred_borgne_olivier_res_output")
+    if dataset_id < 10:
+        dataset_name = f"Dataset00{dataset_id}_{name}"
+    elif dataset_id < 100:
+        dataset_name = f"Dataset0{dataset_id}_{name}"
+    else:
+        dataset_name = f"Dataset{dataset_id}_{name}"
+
+    input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
     dice_scores_list = []
 
     labels = [1, 2, 3, 4]
@@ -54,7 +60,7 @@ if __name__ == "__main__":
             session = file_splitted[1]
             print(f"Processing {file}")
 
-            gt_path = os.path.join(cfg.SEG_OUTPUT_PATH, subject, session, "reo-SVR-output-brain_rhesus-mask-brain_bounti-4.nii.gz")
+            gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}.nii.gz")
             gt_img = nib.load(gt_path).get_fdata()
 
             pred_path = os.path.join(input_folder, file)
