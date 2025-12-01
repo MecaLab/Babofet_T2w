@@ -180,7 +180,7 @@ def plot_hemisphere_volumes(seg_dict, voxel_size, df, output_path):
 
 
 if __name__ == "__main__":
-    # Hemisphere split
+    """# Hemisphere split
 
     output_path = os.path.join(cfg.CODE_PATH, f"snapshots/hemi_split/volumes")
     if not os.path.exists(output_path):
@@ -193,24 +193,14 @@ if __name__ == "__main__":
     voxel_size = np.power(0.5, 3)
     plot_hemisphere_volumes(seg_dict, voxel_size=voxel_size, df=df, output_path=output_path)
 
-    # plot_volume_hemisphere(input_folder, voxel_size=0.5**3, output_path=".")
+    # plot_volume_hemisphere(input_folder, voxel_size=0.5**3, output_path=".")"""
 
+    dataset_id = int(sys.argv[1])
 
-    exit()
-    subject = sys.argv[1]  # Nom du sujet, e.g., Fabienne / Formule / etc..
-    model_id = sys.argv[2]  # should be: 'fusion' or a model's ID
-    model_type = sys.argv[3]  # should be: 'nnunet' or 'longiseg'
+    input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
 
-    if model_id == "fusion":
-        input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/fusion_labels")
-    else:
-        input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/pred_dataset_{model_id}")
-
-    seg_folder = "Dataset008_MoreYoungData_segmentations"
-
-    input_folder = os.path.join(cfg.CODE_PATH, seg_folder)
     # output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{model_type}/volumes")
-    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/{seg_folder}/volumes")
+    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/volumes")
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
