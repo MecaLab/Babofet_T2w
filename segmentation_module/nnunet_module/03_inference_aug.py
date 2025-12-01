@@ -87,6 +87,8 @@ if __name__ == "__main__":
     name = sys.argv[2]
     trainer = sys.argv[3]
 
+    N = 5
+
 
     if dataset_id < 10:
         dataset_name = f"Dataset00{dataset_id}_{name}"
@@ -102,12 +104,12 @@ if __name__ == "__main__":
 
 
     print("Creating augmented inputs...")
-    make_augmented_inputs(input_folder, N=10)
+    make_augmented_inputs(input_folder, N=N)
 
 
     print("Writing SLURM file...")
     slurm_filename = "slurm_files/nnunet_prediction.slurm"
-    write_slurm_file(input_folder, output_folder, slurm_filename, dataset_id, trainer, N=1)
+    write_slurm_file(input_folder, output_folder, slurm_filename, dataset_id, trainer, N=N)
 
 
     print("Submitting job to SLURM")
