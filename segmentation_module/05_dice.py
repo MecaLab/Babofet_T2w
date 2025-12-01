@@ -60,8 +60,12 @@ if __name__ == "__main__":
             session = file_splitted[1]  # sesXX.nii.gz
             print(f"Processing {file}")
 
-            gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}")
-            gt_img = nib.load(gt_path).get_fdata()
+            try:
+                gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}")
+                gt_img = nib.load(gt_path).get_fdata()
+            except FileNotFoundError:
+                gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}.nii.gz")
+                gt_img = nib.load(gt_path).get_fdata()
 
             pred_path = os.path.join(input_folder, file)
             pred_img = nib.load(pred_path).get_fdata()
