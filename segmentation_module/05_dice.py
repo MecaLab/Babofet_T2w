@@ -59,6 +59,7 @@ if __name__ == "__main__":
             subject = file_splitted[0]
             session = file_splitted[1]
             print(f"Processing {file}")
+            print(subject, session)
 
             gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}.nii.gz")
             gt_img = nib.load(gt_path).get_fdata()
