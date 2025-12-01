@@ -156,7 +156,7 @@ def compare_models(model_1_path, model_2_path, counts_qcut, long, verbose=False)
                 continue
             
             if verbose:
-                print(f"File: {file} - DICE généralisé pour {exp_1} vs {exp_2} : {gdice:.4f}. Added to bin {bin_interval}")
+                print(f"File: {file} - DICE généralisé pour {exp_1} vs {exp_2} : {metric:.4f}. Added to bin {bin_interval}")
 
     return bin_dict
 
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     format_bounti(cfg.SEG_OUTPUT_PATH, bounti_seg_formated_path)
 
     # exp_to_compare = ["BOUNTI", "2", "5", "6", "7", "8", "manual"]
-    exp_to_compare = ["10", "11", "12"]
+    exp_to_compare = ["10", "11", "12", "manual"]
     dice_scores = []
     labels = [1, 2, 3, 4]
 
