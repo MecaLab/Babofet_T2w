@@ -57,11 +57,10 @@ if __name__ == "__main__":
         if file.endswith(".nii.gz"):
             file_splitted = file.split("_")
             subject = file_splitted[0]
-            session = file_splitted[1]
+            session = file_splitted[1]  # sesXX.nii.gz
             print(f"Processing {file}")
-            print(subject, session)
 
-            gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}.nii.gz")
+            gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}")
             gt_img = nib.load(gt_path).get_fdata()
 
             pred_path = os.path.join(input_folder, file)
