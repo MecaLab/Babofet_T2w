@@ -48,7 +48,7 @@ def plot_one_subject(subject, input_folder, labels, labels_names, voxel_size):
     plt.savefig(os.path.join(output_path, f"evolution_volumes_{subject}_{model_id}.png"))
 
 
-def plot_every_subject(input_folder, label_info, voxel_size, df):
+def plot_every_subject(input_folder, label_info, voxel_size, df, dataset_id):
     label_data = {label: {} for label in label_info}
     for file in sorted(os.listdir(input_folder)):
         if file.endswith(".nii.gz"):
@@ -90,7 +90,7 @@ def plot_every_subject(input_folder, label_info, voxel_size, df):
         ax.grid(True)
         ax.legend(title='Sujet', bbox_to_anchor=(1.05, 1), loc='upper left')
         plt.tight_layout()
-        plt.savefig(os.path.join(output_path, f"evolution_volumes_{label_info[label]['name']}_by_gestational_days.png"))
+        plt.savefig(os.path.join(output_path, f"evolution_volumes_{label_info[label]['name']}_by_gestational_days_{dataset_id}.png"))
         plt.close()
 
 
