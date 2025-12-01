@@ -113,4 +113,4 @@ if __name__ == "__main__":
 
 
     print("Submitting job to SLURM")
-    subprocess.run(["sbatch", slurm_filename])
+    #subprocess.run(["sbatch", slurm_filename])
