@@ -108,7 +108,7 @@ def reverse_all_transforms(input_folder, output_folder, N=10):
     for filename in transforms_dict:
         for i in range(N):
             aug_output = os.path.join(output_folder, f"aug{i}")
-            pred_path = os.path.join(aug_output, filename)
+            pred_path = os.path.join(aug_output, filename.replace("_0000", ""))
             print(pred_path)
             if os.path.exists(pred_path):
                 pred_img = nib.load(pred_path)
