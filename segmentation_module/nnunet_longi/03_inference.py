@@ -9,7 +9,7 @@ def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer)
     slurm_content = f"""#!/bin/bash
 
 #SBATCH --account='b391'
-#SBATCH --partition=kepler
+#SBATCH --partition=pascal
 #SBATCH --gres=gpu:1
 #SBATCH --time=30:00
 #SBATCH -c 1
