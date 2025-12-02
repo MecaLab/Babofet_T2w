@@ -109,7 +109,6 @@ def reverse_all_transforms(input_folder, output_folder, N=10):
         for i in range(N):
             aug_output = os.path.join(output_folder, f"aug{i}")
             pred_path = os.path.join(aug_output, filename.replace("_0000", ""))
-            print(pred_path)
             if os.path.exists(pred_path):
                 pred_img = nib.load(pred_path)
                 pred_np = pred_img.get_fdata()
