@@ -5,6 +5,8 @@ import numpy as np
 import pandas as pd
 from scipy.ndimage import distance_transform_edt
 from scipy.stats import wilcoxon
+import matplotlib.pyplot as plt
+import seaborn as sns
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -164,73 +166,112 @@ def csv_to_wilcoxon(csv_path="resultats_segmentation.csv"):
     df_wilcoxon.to_csv(csv_path, index=False)
     return df_wilcoxon
 
+
+def visualiser_boxplots(csv_path="resultats_segmentation.csv"):
+    df = pd.read_csv(csv_path)
+    boxplot_data = []
+    for _, row in df.iterrows():
+        model_id = row['Model_ID']
+        for metric in ['Dice', 'IoU', 'Hausdorff']:
+            scores = list(map(float, row[f'{metric}_Scores'].split(',')))
+            for score in scores:
+                boxplot_data.append({
+                    'Model': f"Model {model_id}",
+                    'Label': row['Label'],
+                    'Metric': metric,
+                    'Score': score
+                })
+
+    boxplot_df = pd.DataFrame(boxplot_data)
+    plt.figure(figsize=(18, 6))
+    sns.set_style("whitegrid")
+
+    for i, metric in enumerate(['Dice', 'IoU', 'Hausdorff'], 1):
+        plt.subplot(1, 3, i)
+        sns.boxplot(x='Label', y='Score', hue='Model', data=boxplot_df[boxplot_df['Metric'] == metric])
+        plt.title(f'{metric} Scores by Label and Model')
+        if metric in ['Dice', 'IoU']:
+            plt.ylim(0, 1)
+        else:
+            plt.ylim(0, 60)
+        plt.legend(title='Model')
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(cfg.CODE_PATH, "nnunet_res", "boxplots_comparaison_modeles.png"))
+    plt.close()
+
+
 if __name__ == "__main__":
     models = [int(x) for x in sys.argv[1].split(",")]
+    results_seg_csv_path = os.path.join(cfg.CODE_PATH, "table_data", "resultats_segmentation.csv")
 
-    for model in models:
-        print(model)
-        dataset_id = int(model)
-        input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
-        dice_scores_list = []
-        iou_scores_list = []
-        hausdorff_scores_list = []
+    if not os.path.exists(results_seg_csv_path):
+        for model in models:
+            dataset_id = int(model)
+            input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
+            dice_scores_list = []
+            iou_scores_list = []
+            hausdorff_scores_list = []
 
-        labels = [1, 2, 3, 4]
-        labels_map = {
-            1: "CSF",
-            2: "WM",
-            3: "GM",
-            4: "Ventricle"
-        }
+            labels = [1, 2, 3, 4]
+            labels_map = {
+                1: "CSF",
+                2: "WM",
+                3: "GM",
+                4: "Ventricle"
+            }
 
-        for file in os.listdir(input_folder):
-            if file.endswith(".nii.gz"):
-                file_splitted = file.split("_")
-                subject = file_splitted[0]
-                session = file_splitted[1]  # sesXX.nii.gz
-                print(f"Processing {file}")
+            for file in os.listdir(input_folder):
+                if file.endswith(".nii.gz"):
+                    file_splitted = file.split("_")
+                    subject = file_splitted[0]
+                    session = file_splitted[1]  # sesXX.nii.gz
+                    print(f"Processing {file}")
 
-                try:
-                    gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}")
-                    gt_img = nib.load(gt_path).get_fdata()
-                except FileNotFoundError:
-                    gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}.nii.gz")
-                    gt_img = nib.load(gt_path).get_fdata()
+                    try:
+                        gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}")
+                        gt_img = nib.load(gt_path).get_fdata()
+                    except FileNotFoundError:
+                        gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}.nii.gz")
+                        gt_img = nib.load(gt_path).get_fdata()
 
-                pred_path = os.path.join(input_folder, file)
-                pred_img = nib.load(pred_path).get_fdata()
+                    pred_path = os.path.join(input_folder, file)
+                    pred_img = nib.load(pred_path).get_fdata()
 
-                dice_scores = calculer_dice_score(pred_img, gt_img, labels)
-                iou_scores = calculer_iou_score(pred_img, gt_img, labels)
-                hausdorff_scores = calculer_hausdorff_distance(pred_img, gt_img, labels)
+                    dice_scores = calculer_dice_score(pred_img, gt_img, labels)
+                    iou_scores = calculer_iou_score(pred_img, gt_img, labels)
+                    hausdorff_scores = calculer_hausdorff_distance(pred_img, gt_img, labels)
 
-                dice_scores_list.append(dice_scores)
-                iou_scores_list.append(iou_scores)
-                hausdorff_scores_list.append(hausdorff_scores)
+                    dice_scores_list.append(dice_scores)
+                    iou_scores_list.append(iou_scores)
+                    hausdorff_scores_list.append(hausdorff_scores)
 
-                for label, dice, iou, hd in zip(labels, dice_scores, iou_scores, hausdorff_scores):
-                    print(f"\t{labels_map[label]}: Dice={dice:.4f}, IoU={iou:.4f}, Hausdorff={hd:.4f}")
+                    for label, dice, iou, hd in zip(labels, dice_scores, iou_scores, hausdorff_scores):
+                        print(f"\t{labels_map[label]}: Dice={dice:.4f}, IoU={iou:.4f}, Hausdorff={hd:.4f}")
 
-        moyennes_dice, stds_dice = moyenne_et_std(dice_scores_list)
-        moyennes_iou, stds_iou = moyenne_et_std(iou_scores_list)
-        moyennes_hausdorff, stds_hausdorff = moyenne_et_std(hausdorff_scores_list)
+            moyennes_dice, stds_dice = moyenne_et_std(dice_scores_list)
+            moyennes_iou, stds_iou = moyenne_et_std(iou_scores_list)
+            moyennes_hausdorff, stds_hausdorff = moyenne_et_std(hausdorff_scores_list)
 
-        # Affichage des résultats finaux
-        print("\n--- Résultats finaux (moyenne ± std) ---")
-        for label, dice, std_dice, iou, std_iou, hd, std_hd in zip(labels, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff, stds_hausdorff):
-            print(
-                f"{labels_map[label]}: "
-                f"Dice={dice:.4f}±{std_dice:.4f}, "
-                f"IoU={iou:.4f}±{std_iou:.4f}, "
-                f"Hausdorff={hd:.4f}±{std_hd:.4f}"
-            )
+            # Affichage des résultats finaux
+            print("\n--- Résultats finaux (moyenne ± std) ---")
+            for label, dice, std_dice, iou, std_iou, hd, std_hd in zip(labels, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff, stds_hausdorff):
+                print(
+                    f"{labels_map[label]}: "
+                    f"Dice={dice:.4f}±{std_dice:.4f}, "
+                    f"IoU={iou:.4f}±{std_iou:.4f}, "
+                    f"Hausdorff={hd:.4f}±{std_hd:.4f}"
+                )
 
-        save_results(dataset_id, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff,
-                                  stds_hausdorff, dice_scores_list, iou_scores_list, hausdorff_scores_list, labels_map)
+            save_results(dataset_id, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff,
+                                      stds_hausdorff, dice_scores_list, iou_scores_list, hausdorff_scores_list, labels_map)
 
-    df_wilcoxon = csv_to_wilcoxon(csv_path=os.path.join(cfg.CODE_PATH, "table_data", "resultats_segmentation.csv"))
+    results_seg_csv_path = os.path.join(cfg.CODE_PATH, "table_data", "resultats_segmentation.csv")
+    df_wilcoxon = csv_to_wilcoxon(csv_path=results_seg_csv_path)
     print("\n--- Résultats des tests de Wilcoxon ---")
     print(df_wilcoxon)
+
+    visualiser_boxplots(csv_path=results_seg_csv_path)
 
     """
     10:
