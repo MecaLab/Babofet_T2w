@@ -117,7 +117,55 @@ def reverse_all_transforms(input_folder, output_folder, N=10):
                 nib.save(nib.Nifti1Image(pred_np_reversed, pred_img.affine), pred_path)
                 print(f"Reversed transforms for {filename} (augmentation {i})")
 
+def compute_std(pred_root, input_folder, N=10):
+    for filename in os.listdir(input_folder):
+        if not filename.endswith(".nii.gz"):
+            continue
+
+        base = filename.replace("_0000.nii.gz", "")
+        preds = []
+
+        for i in range(N):
+            npz_path = os.path.join(pred_root, f"aug{i}", base + ".npz")
+            if not os.path.exists(npz_path):
+                raise FileNotFoundError(npz_path)
+
+            data = np.load(npz_path)["probabilities"]  # shape: (C, X, Y, Z)
+            preds.append(data)
+
+        preds = np.stack(preds)  # (N, C, X, Y, Z)
+        mean_map = preds.mean(axis=0)
+        std_map  = preds.std(axis=0)
+
+        # sauvegarde la STD sur la classe foreground (1)
+        affine = nib.load(os.path.join(input_folder, filename)).affine
+        out_path = os.path.join(pred_root, f"uncertainty_STD_{base}.nii.gz")
+        nib.save(nib.Nifti1Image(std_map[1], affine), out_path)
+        print(f"Saved uncertainty for {base}")
+
 if __name__ == "__main__":
+    INPUT_FOLDER = "/chemin/imagesTs"
+    PRED_ROOT = "/chemin/output/pred_dataset_X"
+    N = 10
+    compute_std(PRED_ROOT, INPUT_FOLDER, N)
+
+if __name__ == "__main__":
+
+    dataset_id = int(sys.argv[1])
+    name = sys.argv[2]
+
+    if dataset_id < 10:
+        dataset_name = f"Dataset00{dataset_id}_{name}"
+    elif dataset_id < 100:
+        dataset_name = f"Dataset0{dataset_id}_{name}"
+    else:
+        dataset_name = f"Dataset{dataset_id}_{name}"
+
+    input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
+    output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
+    compute_std(input_folder, output_folder, N=5)
+
+    exit()
     if "--reverse" in sys.argv:
         input_folder = sys.argv[2]
         output_folder = sys.argv[3]
