@@ -76,7 +76,6 @@ def save_results(dataset_id, name, moyennes_dice, stds_dice, moyennes_iou, stds_
     for label in labels_map:
         results.append({
             "Model_ID": dataset_id,
-            "Model_Name": name,
             "Label": labels_map[label],
             "Dice_Mean": moyennes_dice[label-1],
             "Dice_Std": stds_dice[label-1],
@@ -166,73 +165,71 @@ def csv_to_wilcoxon(csv_path="resultats_segmentation.csv"):
     return df_wilcoxon
 
 if __name__ == "__main__":
-    dataset_id = int(sys.argv[1])
-    name = sys.argv[2]
+    models = sys.argv[1]  # "[dataset_id_1,dataset_id_2,...]"
+    n = len(models)
+    models = sys.argv[1][1:n - 1]
+    models = models.split(",")
 
-    if dataset_id < 10:
-        dataset_name = f"Dataset00{dataset_id}_{name}"
-    elif dataset_id < 100:
-        dataset_name = f"Dataset0{dataset_id}_{name}"
-    else:
-        dataset_name = f"Dataset{dataset_id}_{name}"
 
-    input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
-    dice_scores_list = []
-    iou_scores_list = []
-    hausdorff_scores_list = []
+    for model in models:
+        dataset_id = int(model)
+        input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
+        dice_scores_list = []
+        iou_scores_list = []
+        hausdorff_scores_list = []
 
-    labels = [1, 2, 3, 4]
-    labels_map = {
-        1: "CSF",
-        2: "WM",
-        3: "GM",
-        4: "Ventricle"
-    }
+        labels = [1, 2, 3, 4]
+        labels_map = {
+            1: "CSF",
+            2: "WM",
+            3: "GM",
+            4: "Ventricle"
+        }
 
-    for file in os.listdir(input_folder):
-        if file.endswith(".nii.gz"):
-            file_splitted = file.split("_")
-            subject = file_splitted[0]
-            session = file_splitted[1]  # sesXX.nii.gz
-            print(f"Processing {file}")
+        for file in os.listdir(input_folder):
+            if file.endswith(".nii.gz"):
+                file_splitted = file.split("_")
+                subject = file_splitted[0]
+                session = file_splitted[1]  # sesXX.nii.gz
+                print(f"Processing {file}")
 
-            try:
-                gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}")
-                gt_img = nib.load(gt_path).get_fdata()
-            except FileNotFoundError:
-                gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}.nii.gz")
-                gt_img = nib.load(gt_path).get_fdata()
+                try:
+                    gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}")
+                    gt_img = nib.load(gt_path).get_fdata()
+                except FileNotFoundError:
+                    gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}.nii.gz")
+                    gt_img = nib.load(gt_path).get_fdata()
 
-            pred_path = os.path.join(input_folder, file)
-            pred_img = nib.load(pred_path).get_fdata()
+                pred_path = os.path.join(input_folder, file)
+                pred_img = nib.load(pred_path).get_fdata()
 
-            dice_scores = calculer_dice_score(pred_img, gt_img, labels)
-            iou_scores = calculer_iou_score(pred_img, gt_img, labels)
-            hausdorff_scores = calculer_hausdorff_distance(pred_img, gt_img, labels)
+                dice_scores = calculer_dice_score(pred_img, gt_img, labels)
+                iou_scores = calculer_iou_score(pred_img, gt_img, labels)
+                hausdorff_scores = calculer_hausdorff_distance(pred_img, gt_img, labels)
 
-            dice_scores_list.append(dice_scores)
-            iou_scores_list.append(iou_scores)
-            hausdorff_scores_list.append(hausdorff_scores)
+                dice_scores_list.append(dice_scores)
+                iou_scores_list.append(iou_scores)
+                hausdorff_scores_list.append(hausdorff_scores)
 
-            for label, dice, iou, hd in zip(labels, dice_scores, iou_scores, hausdorff_scores):
-                print(f"\t{labels_map[label]}: Dice={dice:.4f}, IoU={iou:.4f}, Hausdorff={hd:.4f}")
+                for label, dice, iou, hd in zip(labels, dice_scores, iou_scores, hausdorff_scores):
+                    print(f"\t{labels_map[label]}: Dice={dice:.4f}, IoU={iou:.4f}, Hausdorff={hd:.4f}")
 
-    moyennes_dice, stds_dice = moyenne_et_std(dice_scores_list)
-    moyennes_iou, stds_iou = moyenne_et_std(iou_scores_list)
-    moyennes_hausdorff, stds_hausdorff = moyenne_et_std(hausdorff_scores_list)
+        moyennes_dice, stds_dice = moyenne_et_std(dice_scores_list)
+        moyennes_iou, stds_iou = moyenne_et_std(iou_scores_list)
+        moyennes_hausdorff, stds_hausdorff = moyenne_et_std(hausdorff_scores_list)
 
-    # Affichage des résultats finaux
-    print("\n--- Résultats finaux (moyenne ± std) ---")
-    for label, dice, std_dice, iou, std_iou, hd, std_hd in zip(labels, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff, stds_hausdorff):
-        print(
-            f"{labels_map[label]}: "
-            f"Dice={dice:.4f}±{std_dice:.4f}, "
-            f"IoU={iou:.4f}±{std_iou:.4f}, "
-            f"Hausdorff={hd:.4f}±{std_hd:.4f}"
-        )
+        # Affichage des résultats finaux
+        print("\n--- Résultats finaux (moyenne ± std) ---")
+        for label, dice, std_dice, iou, std_iou, hd, std_hd in zip(labels, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff, stds_hausdorff):
+            print(
+                f"{labels_map[label]}: "
+                f"Dice={dice:.4f}±{std_dice:.4f}, "
+                f"IoU={iou:.4f}±{std_iou:.4f}, "
+                f"Hausdorff={hd:.4f}±{std_hd:.4f}"
+            )
 
-    save_results(dataset_id, name, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff,
-                              stds_hausdorff, dice_scores_list, iou_scores_list, hausdorff_scores_list, labels_map)
+        save_results(dataset_id, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff,
+                                  stds_hausdorff, dice_scores_list, iou_scores_list, hausdorff_scores_list, labels_map)
 
     df_wilcoxon = csv_to_wilcoxon(csv_path=os.path.join(cfg.CODE_PATH, "table_data", "resultats_segmentation.csv"))
     print("\n--- Résultats des tests de Wilcoxon ---")
