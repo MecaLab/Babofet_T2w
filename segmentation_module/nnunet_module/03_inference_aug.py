@@ -144,12 +144,6 @@ def compute_std(pred_root, input_folder, N=10):
         print(f"Saved uncertainty for {base}")
 
 if __name__ == "__main__":
-    INPUT_FOLDER = "/chemin/imagesTs"
-    PRED_ROOT = "/chemin/output/pred_dataset_X"
-    N = 10
-    compute_std(PRED_ROOT, INPUT_FOLDER, N)
-
-if __name__ == "__main__":
 
     dataset_id = int(sys.argv[1])
     name = sys.argv[2]
