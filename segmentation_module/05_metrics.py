@@ -170,8 +170,8 @@ if __name__ == "__main__":
     models = sys.argv[1][1:n - 1]
     models = models.split(",")
 
-
     for model in models:
+        print(model)
         dataset_id = int(model)
         input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
         dice_scores_list = []
