@@ -165,10 +165,11 @@ def csv_to_wilcoxon(csv_path="resultats_segmentation.csv"):
     return df_wilcoxon
 
 if __name__ == "__main__":
-    models = sys.argv[1]  # "[dataset_id_1,dataset_id_2,...]"
+    models = sys.argv[1]  # [dataset_id_1,dataset_id_2,...]
     n = len(models)
     models = sys.argv[1][1:n - 1]
     models = models.split(",")
+    print(models)
 
     for model in models:
         print(model)
