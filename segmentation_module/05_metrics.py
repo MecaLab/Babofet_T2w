@@ -197,7 +197,8 @@ def visualiser_boxplots(csv_path="resultats_segmentation.csv"):
         plt.legend(title='Model')
 
     plt.tight_layout()
-    plt.savefig(os.path.join(cfg.CODE_PATH, "nnunet_res", "boxplots_comparaison_modeles.png"))
+    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/boxplots_comparaison_modeles.png")
+    plt.savefig(output_path)
     plt.close()
 
 
