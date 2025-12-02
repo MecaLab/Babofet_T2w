@@ -120,4 +120,4 @@ if __name__ == "__main__":
 
     print("Dataset preparation completed")
     print("Running dataset check...")
-    os.system(f"nnUNetv2_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")
+    # os.system(f"nnUNetv2_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")

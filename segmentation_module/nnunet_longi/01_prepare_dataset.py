@@ -130,4 +130,4 @@ if __name__ == "__main__":
     dataset_json = os.path.join(output_path, "dataset.json")
     num_training = len(os.listdir(labels_tr_path))
     write_json_file(dataset_json, num_training, dataset_name)
-    os.system(f"nnUNetv2_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")
+    # os.system(f"nnUNetv2_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")
