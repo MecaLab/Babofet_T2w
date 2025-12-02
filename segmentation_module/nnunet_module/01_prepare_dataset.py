@@ -68,6 +68,7 @@ if __name__ == "__main__":
 
     print("Training files...")
     for subject, sessions in train_subject_sessions.items():
+        break
         print(f"\tProcessing subject: {subject}")
         input_path_3d_segs = os.path.join(cfg.BASE_PATH, "gt_dataset", "train_dataset")
 

@@ -83,6 +83,7 @@ if __name__ == "__main__":
 
     print("Training files...")
     for subject in train_data:
+        break
         print(f"\tProcessing subject: {subject}")
         for session in train_data[subject]:
             print(f"\t\tProcessing session: {session}")
