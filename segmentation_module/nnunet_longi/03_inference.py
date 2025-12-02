@@ -1,121 +1,17 @@
 import os
-import nibabel as nib
-import sys
 import subprocess
-import numpy as np
-
+import sys
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
-def prepare_longitudinal_inference(input_folder, prepared_folder):
-    if not os.path.exists(prepared_folder):
-        os.makedirs(prepared_folder)
 
-    for file_t in os.listdir(input_folder):
-        if "0000" in file_t:
-            case_name = file_t.replace("_0000.nii.gz", "")
-            file_t_path = os.path.join(input_folder, file_t)
-            file_t1_path = os.path.join(input_folder, f"{case_name}_0001.nii.gz")
-
-            image_t1 = nib.load(file_t1_path)
-            data_t1 = image_t1.get_fdata()
-            seg_t1 = np.zeros_like(data_t1)
-            nib.save(
-                nib.Nifti1Image(seg_t1, image_t1.affine, image_t1.header),
-                os.path.join(prepared_folder, f"{case_name}_0002.nii.gz")
-            )
-
-            os.system(f"cp {file_t_path} {os.path.join(prepared_folder, f'{case_name}_0000.nii.gz')}")
-            os.system(f"cp {file_t1_path} {os.path.join(prepared_folder, f'{case_name}_0001.nii.gz')}")
-
-    print(f"t-1 segmentations prepared.\nSaved in {prepared_folder}")
-
-
-def prepare_t1_for_prediction(prepared_folder, temp_t1_input):
-    if not os.path.exists(temp_t1_input):
-        os.makedirs(temp_t1_input)
-
-    for file in os.listdir(prepared_folder):
-        if "0001" in file:
-            case_name = file.replace("_0001.nii.gz", "")
-            file_t1_path = os.path.join(prepared_folder, file)
-
-            os.system(f"cp {file_t1_path} {os.path.join(temp_t1_input, f'{case_name}_0000.nii.gz')}")
-
-            img = nib.load(file_t1_path)
-            zeros = np.zeros_like(img.get_fdata())
-            nib.save(
-                nib.Nifti1Image(zeros, img.affine, img.header),
-                os.path.join(temp_t1_input, f"{case_name}_0001.nii.gz")
-            )
-            nib.save(
-                nib.Nifti1Image(zeros, img.affine, img.header),
-                os.path.join(temp_t1_input, f"{case_name}_0002.nii.gz")
-            )
-    print(f"T2w images prepared for prediction.\nSaved in {temp_t1_input}")
-
-
-def create_helper_script(helper_script_path):
-    """
-    Crée un script Python helper pour les opérations appelées par SLURM.
-    """
-    helper_content = f"""#!/usr/bin/env python3
-\"\"\"
-Script helper pour l'inférence longitudinale nnUNet.
-Appelé par le job SLURM pour manipuler les fichiers.
-\"\"\"
-import argparse
-import shutil
-import os
-import nibabel as nib
-import numpy as np
-
-def update_channel2(input_folder, pred_t1_folder):
-    \"\"\"Met à jour le canal 2 avec les prédictions de t-1.\"\"\"
-    updated = 0
-    total = 0
-    for file_t in os.listdir(input_folder):
-        if file_t.endswith("_0000.nii.gz"):
-            case_name = file_t.replace("_0000.nii.gz", "")
-            total += 1
-            pred_file = os.path.join(pred_t1_folder, f"{{case_name}}_t1.nii.gz")
-            if os.path.exists(pred_file):
-                shutil.copy(
-                    pred_file,
-                    os.path.join(input_folder, f"{{case_name}}_0002.nii.gz")
-                )
-                updated += 1
-                print(f"✓ {{case_name}}: canal 2 mis à jour")
-            else:
-                print(f"⚠️  {{case_name}}: prédiction t-1 non trouvée")
-    print(f"\\\\n✓ {{updated}}/{{total}} canaux 2 mis à jour")
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", required=True, choices=["update_channel2", "ensure_channel2"])
-    parser.add_argument("--input", required=True, help="Dossier d'entrée")
-    parser.add_argument("--pred_t1", help="Dossier des prédictions t-1 (pour mode update_channel2)")
-    args = parser.parse_args()
-    if args.mode == "update_channel2":
-        if not args.pred_t1:
-            raise ValueError("--pred_t1 requis pour mode update_channel2")
-        update_channel2(args.input, args.pred_t1)
-    elif args.mode == "ensure_channel2":
-        ensure_channel2(args.input)
-"""
-    with open(helper_script_path, "w", encoding="utf-8") as f:
-        f.write(helper_content)
-    os.chmod(helper_script_path, 0o755)
-    print(f"✓ Script helper créé : {helper_script_path}")
-
-
-def write_slurm_cascade_prediction(filename, dataset_id, trainer, temp_t1_input, temp_t1_output,
-                                   helper_script, prepared_folder):
+def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer):
     slurm_content = f"""#!/bin/bash
+
 #SBATCH --account='b391'
 #SBATCH --partition=volta
 #SBATCH --gres=gpu:1
-#SBATCH --time=10:00
+#SBATCH --time=30:00
 #SBATCH -c 1
 #SBATCH -o predict_nnunet_%j.out
 #SBATCH -e predict_nnunet_%j.err
@@ -128,23 +24,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-echo "=========================================="
-echo "INFÉRENCE LONGITUDINALE EN CASCADE"
-echo "=========================================="
-
-echo ""
-echo "ÉTAPE 1: Prédiction des segmentations t-1"
-echo "------------------------------------------"
-
-# Prédire les segmentations de t-1
-# nnUNetv2_predict -i {temp_t1_input} -o {temp_t1_output} -d {dataset_id} -c 3d_fullres -tr {trainer} -f all
-
-echo ""
-echo "ÉTAPE 2: Mise à jour du canal 2"
-echo "------------------------------------------"
-
-# Mettre à jour le canal 2 avec les prédictions t-1
-python {helper_script} --mode update_channel2 --input {prepared_folder} --pred_t1 {temp_t1_output}
+nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f all --save_probabilities
 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
@@ -167,25 +47,14 @@ if __name__ == "__main__":
 
     input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
 
-    output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_longi/pred_dataset_{dataset_id}")
+    # input_folder = os.path.join(cfg.CODE_PATH, "tmp_seg_input")
+    output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    prepared_folder = os.path.join(output_folder, "prepared_t1_seg")
-    temp_t1_input = os.path.join(output_folder, "temp_t1_input")
-    temp_t1_output = os.path.join(output_folder, "temp_t1_predictions")
+    print("Starting inference")
 
-    helper_script_path = os.path.join(cfg.CODE_PATH, "segmentation_module/nnunet_longi/helper.py")
-
-    create_helper_script(helper_script_path)
-
-    prepare_longitudinal_inference(input_folder, prepared_folder)
-    # cascade mode
-    prepare_t1_for_prediction(prepared_folder, temp_t1_input)
-
-    slurm_filename = "slurm_files/nnunet_longitudinal_prediction.slurm"
-    write_slurm_cascade_prediction(slurm_filename, dataset_id, trainer, temp_t1_input, temp_t1_output,
-                                   helper_script_path, prepared_folder)
-    subprocess.run(["sbatch", slurm_filename])
-
+    filename = "slurm_files/nnunet_prediction.slurm"
+    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer)
+    subprocess.run(["sbatch", filename])
