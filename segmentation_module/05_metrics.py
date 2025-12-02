@@ -167,12 +167,8 @@ def csv_to_wilcoxon(csv_path="resultats_segmentation.csv"):
     return df_wilcoxon
 
 
-def visualiser_boxplots(csv_path="resultats_segmentation.csv", wilcoxon_path="resultats_wilcoxon.csv"):
-    # Charger les données
+def visualiser_boxplots(csv_path="resultats_segmentation.csv"):
     df = pd.read_csv(csv_path)
-    wilcoxon_df = pd.read_csv(wilcoxon_path)
-
-    # Préparer les données pour les boxplots
     boxplot_data = []
     for _, row in df.iterrows():
         model_id = row['Model_ID']
@@ -187,8 +183,6 @@ def visualiser_boxplots(csv_path="resultats_segmentation.csv", wilcoxon_path="re
                 })
 
     boxplot_df = pd.DataFrame(boxplot_data)
-
-    # Créer les boxplots
     plt.figure(figsize=(18, 6))
     sns.set_style("whitegrid")
 
@@ -200,24 +194,6 @@ def visualiser_boxplots(csv_path="resultats_segmentation.csv", wilcoxon_path="re
             plt.ylim(0, 1)
         else:
             plt.ylim(0, 60)
-
-        # Ajouter les résultats de Wilcoxon sur le graphique
-        for label in boxplot_df['Label'].unique():
-            subset_wilcoxon = wilcoxon_df[(wilcoxon_df['Label'] == label) & (wilcoxon_df['Metric'] == metric)]
-            y_min, y_max = plt.ylim()
-            y_pos = y_max - (y_max - y_min) * 0.1
-            for _, wilcoxon_row in subset_wilcoxon.iterrows():
-                plt.text(
-                    x=list(boxplot_df['Label'].unique()).index(label),
-                    y=y_pos,
-                    s=f"{wilcoxon_row['Model1_ID']} vs {wilcoxon_row['Model2_ID']}: p={wilcoxon_row['p-value']:.3f}",
-                    ha='center',
-                    va='top',
-                    fontsize=8,
-                    bbox=dict(facecolor='white', alpha=0.8)
-                )
-                y_pos -= (y_max - y_min) * 0.05
-
         plt.legend(title='Model')
 
     plt.tight_layout()
@@ -296,7 +272,7 @@ if __name__ == "__main__":
     print("\n--- Résultats des tests de Wilcoxon ---")
     print(df_wilcoxon)
 
-    visualiser_boxplots(csv_path=results_seg_csv_path, wilcoxon_path=os.path.join(cfg.CODE_PATH, "table_data", "resultats_wilcoxon.csv"))
+    visualiser_boxplots(csv_path=results_seg_csv_path)
 
     """
     10:
