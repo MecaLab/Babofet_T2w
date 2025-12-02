@@ -95,7 +95,7 @@ conda activate nnunet
         os.makedirs(aug_output, exist_ok=True)
         slurm_content += f"nnUNetv2_predict -i {aug_input} -o {aug_output} -d {dataset_id} -c 3d_fullres -tr {trainer} -f all --save_probabilities\n"
     # Ajouter l'appel au script Python pour inverser les transformations
-    slurm_content += f"python3 {os.path.abspath(__file__)} --reverse {input_folder} {output_folder} {N}\n"
+    slurm_content += f"python {os.path.abspath(__file__)} --reverse {input_folder} {output_folder} {N}\n"
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
     os.chmod(filename, 0o700)
