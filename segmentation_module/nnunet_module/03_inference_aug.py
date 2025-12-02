@@ -117,54 +117,46 @@ def reverse_all_transforms(input_folder, output_folder, N=10):
                 nib.save(nib.Nifti1Image(pred_np_reversed, pred_img.affine), pred_path)
                 print(f"Reversed transforms for {filename} (augmentation {i})")
 
-def compute_std(pred_root, input_folder, N=10):
-    for filename in os.listdir(input_folder):
-        if not filename.endswith(".nii.gz"):
-            continue
+def compute_std(output_folder, original_filename, N=10):
+    # Liste pour stocker les prédictions alignées
+    predictions = []
+    affine = None
 
-        base = filename.replace("_0000.nii.gz", "")
-        preds = []
+    # Charger chaque prédiction alignée
+    for i in range(N):
+        aug_folder = os.path.join(output_folder, f"aug{i}")
+        pred_path = os.path.join(aug_folder, original_filename)
+        if os.path.exists(pred_path):
+            pred_img = nib.load(pred_path)
+            pred_np = pred_img.get_fdata()
+            predictions.append(pred_np)
+            if affine is None:
+                affine = pred_img.affine
 
-        for i in range(N):
-            npz_path = os.path.join(pred_root, f"aug{i}", base + ".npz")
-            if not os.path.exists(npz_path):
-                raise FileNotFoundError(npz_path)
+    # Empiler les prédictions et calculer l'écart-type
+    predictions_stack = np.stack(predictions, axis=-1)
+    std_np = np.std(predictions_stack, axis=-1)
 
-            data = np.load(npz_path)["probabilities"]  # shape: (C, X, Y, Z)
-            preds.append(data)
+    # Retourner une image NIfTI de l'écart-type
+    return nib.Nifti1Image(std_np, affine)
 
-        preds = np.stack(preds)  # (N, C, X, Y, Z)
-        mean_map = preds.mean(axis=0)
-        std_map  = preds.std(axis=0)
-
-        # sauvegarde la STD sur la classe foreground (1)
-        affine = nib.load(os.path.join(input_folder, filename)).affine
-        out_path = os.path.join(pred_root, f"uncertainty_STD_{base}.nii.gz")
-        nib.save(nib.Nifti1Image(std_map[1], affine), out_path)
-        print(f"Saved uncertainty for {base}")
+# Exemple d'utilisation (à ajouter dans la section --reverse ou après)
+def compute_and_save_std(output_folder, input_folder, N=10):
+    with open(os.path.join(input_folder, 'transforms.json'), 'r') as f:
+        transforms_dict = json.load(f)
+    for filename in transforms_dict:
+        std_img = compute_std(output_folder, filename, N)
+        std_path = os.path.join(output_folder, f"std_{filename}")
+        nib.save(std_img, std_path)
+        print(f"Saved std map for {filename} at {std_path}")
 
 if __name__ == "__main__":
-
-    dataset_id = int(sys.argv[1])
-    name = sys.argv[2]
-
-    if dataset_id < 10:
-        dataset_name = f"Dataset00{dataset_id}_{name}"
-    elif dataset_id < 100:
-        dataset_name = f"Dataset0{dataset_id}_{name}"
-    else:
-        dataset_name = f"Dataset{dataset_id}_{name}"
-
-    input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
-    output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
-    compute_std(input_folder, output_folder, N=5)
-
-    exit()
     if "--reverse" in sys.argv:
         input_folder = sys.argv[2]
         output_folder = sys.argv[3]
         N = int(sys.argv[4])
         reverse_all_transforms(input_folder, output_folder, N)
+        compute_and_save_std(output_folder, input_folder, N)
     else:
         dataset_id = int(sys.argv[1])
         name = sys.argv[2]
