@@ -191,7 +191,7 @@ if __name__ == "__main__":
 
     # subjects = ["Fabienne", "Forme", "Aziza", "Filoutte", "Bibi", "Formule", "Filoutte"]
     subjects = ["Borgne"]
-    
+
     for subject in os.listdir(recons_folder):
         if subject not in subjects:
             continue
@@ -217,7 +217,7 @@ if __name__ == "__main__":
                 print(f"\t\trecons_rhesus folder not found for {subject} {session}, skipping...")
                 continue
 
-            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi_new.nii.gz")
+            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi.nii.gz")
             if os.path.exists(file_seg_out):
                 print(f"\t\tSegmentation for {subject} {session} already exists, skipping...")
                 continue
@@ -244,7 +244,8 @@ if __name__ == "__main__":
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
 
             # CHANGE FOLDER NAME LATER !!!
-            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}.nii.gz")
+            # t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}.nii.gz")
+            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "12_segmentations", f"{subject}_{session}.nii.gz")
             if not os.path.exists(t2_subj_seg):
                 print(f"\t\tSegmentation for {subject} {session} not found, skipping...")
                 continue
