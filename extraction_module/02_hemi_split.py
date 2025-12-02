@@ -189,8 +189,9 @@ if __name__ == "__main__":
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
 
-    subjects = ["Fabienne", "Forme", "Aziza", "Filoutte", "Bibi", "Formule", "Filoutte"]
-
+    # subjects = ["Fabienne", "Forme", "Aziza", "Filoutte", "Bibi", "Formule", "Filoutte"]
+    subjects = ["Borgne"]
+    
     for subject in os.listdir(recons_folder):
         if subject not in subjects:
             continue
