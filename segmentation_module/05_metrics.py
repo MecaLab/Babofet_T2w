@@ -202,7 +202,7 @@ def visualiser_boxplots(csv_path="resultats_segmentation.csv"):
     plt.close()
 
 
-def plot_metrics_subplots(csv_path="resultats_segmentation.csv"):
+def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
     # Charger les données
     df = pd.read_csv(csv_path)
 
@@ -242,6 +242,7 @@ def plot_metrics_subplots(csv_path="resultats_segmentation.csv"):
     output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/metrics_by_model.png")
     plt.savefig(output_path, dpi=200, bbox_inches='tight')
     plt.close()
+
 
 if __name__ == "__main__":
     models = [int(x) for x in sys.argv[1].split(",")]
