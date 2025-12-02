@@ -70,7 +70,7 @@ def wilcoxon_test(scores1, scores2):
     return stat, p
 
 
-def save_results(dataset_id, name, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff, stds_hausdorff, dice_scores_list, iou_scores_list, hausdorff_scores_list, labels_map):
+def save_results(dataset_id, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff, stds_hausdorff, dice_scores_list, iou_scores_list, hausdorff_scores_list, labels_map):
     # Créer un DataFrame pour les résultats
     results = []
     for label in labels_map:
