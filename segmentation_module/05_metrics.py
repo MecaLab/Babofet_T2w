@@ -228,7 +228,7 @@ def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
 
             # Annoter les points
             for m, val in zip(models, metric_values):
-                ax.text(str(m), val + 0.01 if metric != 'Hausdorff_Mean' else val + 0.5, f"{val:.2f}",
+                ax.text(str(m), val + 0.01 if metric != 'Hausdorff_Mean' else val + 0.5, f"{val:.3f}",
                         ha='center', va='bottom', fontsize=8, color=label_colors[label])
 
         # Configurer les axes
