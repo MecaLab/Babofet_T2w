@@ -202,6 +202,56 @@ def visualiser_boxplots(csv_path="resultats_segmentation.csv"):
     plt.close()
 
 
+def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
+    # Charger les données
+    df = pd.read_csv(csv_path)
+
+    # Préparer les données pour le graphique
+    metrics = ['Dice_Mean', 'IoU_Mean', 'Hausdorff_Mean']
+    labels = df['Label'].unique()
+
+    # Créer une figure
+    plt.figure(figsize=(12, 8))
+
+    # Pour chaque label, tracer une ligne de points
+    for label in labels:
+        label_df = df[df['Label'] == label]
+        models = label_df['Model_ID'].unique()
+        models.sort()
+
+        # Extraire les moyennes des métriques
+        dice_means = label_df['Dice_Mean'].values
+        iou_means = label_df['IoU_Mean'].values
+        hausdorff_means = label_df['Hausdorff_Mean'].values
+
+        # Tracer les points pour chaque métrique
+        plt.scatter([str(m) for m in models], dice_means, label=f'{label} Dice' if label == labels[0] else "", color='blue', marker='o')
+        plt.scatter([str(m) for m in models], iou_means, label=f'{label} IoU' if label == labels[0] else "", color='green', marker='o')
+        plt.scatter([str(m) for m in models], hausdorff_means, label=f'{label} Hausdorff' if label == labels[0] else "", color='red', marker='o')
+
+        # Relier les points pour chaque modèle
+        for model in models:
+            model_data = label_df[label_df['Model_ID'] == model]
+            plt.plot([str(model), str(model)], [model_data['Dice_Mean'].values[0], model_data['IoU_Mean'].values[0], model_data['Hausdorff_Mean'].values[0]],
+                     color='gray', linestyle='--', alpha=0.3, marker='o')
+
+        # Annoter les points
+        for i, model in enumerate(models):
+            plt.text(str(model), dice_means[i] + 0.01, f"{dice_means[i]:.3f}", ha='center', va='bottom', fontsize=8, color='blue')
+            plt.text(str(model), iou_means[i] + 0.01, f"{iou_means[i]:.3f}", ha='center', va='bottom', fontsize=8, color='green')
+            plt.text(str(model), hausdorff_means[i] + 0.5, f"{hausdorff_means[i]:.2f}", ha='center', va='bottom', fontsize=8, color='red')
+
+    # Ajouter des légendes et des labels
+    plt.title('Moyennes des Métriques par Modèle et Label')
+    plt.xlabel('Modèle')
+    plt.ylabel('Score')
+    plt.ylim(0, 20)
+    plt.legend(loc='upper right', bbox_to_anchor=(1.2, 1))
+    plt.grid(True, linestyle='--', alpha=0.6)
+
+    plt.savefig("metrics_by_model.png", dpi=200, bbox_inches='tight')
+    plt.close()
+
 if __name__ == "__main__":
     models = [int(x) for x in sys.argv[1].split(",")]
     results_seg_csv_path = os.path.join(cfg.CODE_PATH, "table_data", "resultats_segmentation.csv")
@@ -267,12 +317,13 @@ if __name__ == "__main__":
             save_results(dataset_id, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff,
                                       stds_hausdorff, dice_scores_list, iou_scores_list, hausdorff_scores_list, labels_map)
 
-    results_seg_csv_path = os.path.join(cfg.CODE_PATH, "table_data", "resultats_segmentation.csv")
     df_wilcoxon = csv_to_wilcoxon(csv_path=results_seg_csv_path)
     print("\n--- Résultats des tests de Wilcoxon ---")
     print(df_wilcoxon)
 
     visualiser_boxplots(csv_path=results_seg_csv_path)
+
+    plot_metrics_by_model(csv_path=results_seg_csv_path)
 
     """
     10:
