@@ -147,4 +147,4 @@ if __name__ == "__main__":
         write_slurm_file(input_folder, output_folder, slurm_filename, dataset_id, trainer, N=N)
 
         print("Submitting job to SLURM")
-        subprocess.run(["sbatch", slurm_filename])
+        # subprocess.run(["sbatch", slurm_filename])
