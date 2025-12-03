@@ -38,11 +38,18 @@ def plot_one_subject(subject, input_folder, label_info, voxel_size):
 
     fig, axes = plt.subplots(1, len(label_info), figsize=(20, 6))
     for i, label in enumerate(label_info):
-        axes[i].plot(sessions, label_data[label], marker='o')
-        axes[i].set_title(f'Label {label_info[label]["name"]}')
-        axes[i].set_xlabel('Session')
-        axes[i].set_ylabel('Volume (mm³)')
-        axes[i].grid(True)
+        try:
+            axes[i].plot(sessions, label_data[label], marker='o')
+            axes[i].set_title(f'Label {label_info[label]["name"]}')
+            axes[i].set_xlabel('Session')
+            axes[i].set_ylabel('Volume (mm³)')
+            axes[i].grid(True)
+        except TypeError as e:
+            axes.plot(sessions, label_data[label], marker='o')
+            axes.set_title(f'Label {label_info[label]["name"]}')
+            axes.set_xlabel('Session')
+            axes.set_ylabel('Volume (mm³)')
+            axes.grid(True)
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_path, f"evolution_volumes_{subject}.png"))
