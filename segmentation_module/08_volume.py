@@ -39,7 +39,7 @@ def plot_one_subject(subject, input_folder, label_info, voxel_size):
     fig, axes = plt.subplots(1, len(label_info), figsize=(20, 6))
     for i, label in enumerate(label_info):
         axes[i].plot(sessions, label_data[label], marker='o')
-        axes[i].set_title(f'Label {label}')
+        axes[i].set_title(f'Label {label_data[label]}')
         axes[i].set_xlabel('Session')
         axes[i].set_ylabel('Volume (mm³)')
         axes[i].grid(True)
