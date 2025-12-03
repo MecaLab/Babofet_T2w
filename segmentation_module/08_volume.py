@@ -21,8 +21,8 @@ def compute_vol(mask, voxel_size, labels=[1, 2, 3, 4]):
     return volumes
 
 
-def plot_one_subject(subject, input_folder, labels, labels_names, voxel_size):
-    label_volumes = {label: [] for label in labels}
+def plot_one_subject(subject, input_folder, label_info, voxel_size):
+    label_data = {label: {} for label in label_info}
     sessions = []
     for file in sorted(os.listdir(input_folder)):
         if file.endswith(".nii.gz") and subject in file:
@@ -31,21 +31,21 @@ def plot_one_subject(subject, input_folder, labels, labels_names, voxel_size):
             pred_path = os.path.join(input_folder, file)
             pred_img = nib.load(pred_path).get_fdata()
 
-            vols = compute_vol(pred_img, voxel_size, labels)
-            for label in labels:
-                label_volumes[label].append(vols[label])
+            vols = compute_vol(pred_img, voxel_size, label_info.keys())
+            for label in label_info:
+                label_data[label].append(vols[label])
             sessions.append(session)
 
     fig, axes = plt.subplots(1, 4, figsize=(20, 6))
-    for i, label in enumerate(labels):
-        axes[i].plot(sessions, label_volumes[label], marker='o')
-        axes[i].set_title(f'Label {labels_names[i]}')
+    for i, label in enumerate(label_data):
+        axes[i].plot(sessions, label_data[label], marker='o')
+        axes[i].set_title(f'Label {label_data[i]}')
         axes[i].set_xlabel('Session')
         axes[i].set_ylabel('Volume (mm³)')
         axes[i].grid(True)
 
     plt.tight_layout()
-    plt.savefig(os.path.join(output_path, f"evolution_volumes_{subject}_{model_id}.png"))
+    plt.savefig(os.path.join(output_path, f"evolution_volumes_{subject}.png"))
 
 
 def plot_every_subject(input_folder, label_info, voxel_size, df, dataset_id):
@@ -213,7 +213,7 @@ if __name__ == "__main__":
         2: {"name": "WM"},
         3: {"name": "GM"}
     }
-
-    # plot_one_subject(subject, input_folder, labels, labels_names, voxel_size)
-    plot_every_subject(input_folder, label_info, voxel_size, df, dataset_id)
+    subject = "Borgne"
+    plot_one_subject(subject, input_folder, label_info, voxel_size)
+    # plot_every_subject(input_folder, label_info, voxel_size, df, dataset_id)
 
