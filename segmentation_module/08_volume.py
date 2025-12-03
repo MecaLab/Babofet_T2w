@@ -211,7 +211,7 @@ if __name__ == "__main__":
     voxel_size = np.power(0.5, 3)
     label_info = {
         2: {"name": "WM"},
-        3: {"name": "GM"}
+        # 3: {"name": "GM"}
     }
     subject = "Borgne"
     plot_one_subject(subject, input_folder, label_info, voxel_size)
