@@ -22,7 +22,7 @@ def compute_vol(mask, voxel_size, labels=[1, 2, 3, 4]):
 
 
 def plot_one_subject(subject, input_folder, label_info, voxel_size):
-    label_data = {label: {} for label in label_info}
+    label_data = {label: [] for label in label_info}
     sessions = []
     for file in sorted(os.listdir(input_folder)):
         if file.endswith(".nii.gz") and subject in file:
@@ -37,9 +37,9 @@ def plot_one_subject(subject, input_folder, label_info, voxel_size):
             sessions.append(session)
 
     fig, axes = plt.subplots(1, 4, figsize=(20, 6))
-    for i, label in enumerate(label_data):
+    for i, label in enumerate(label_info):
         axes[i].plot(sessions, label_data[label], marker='o')
-        axes[i].set_title(f'Label {label_data[i]}')
+        axes[i].set_title(f'Label {label}')
         axes[i].set_xlabel('Session')
         axes[i].set_ylabel('Volume (mm³)')
         axes[i].grid(True)
