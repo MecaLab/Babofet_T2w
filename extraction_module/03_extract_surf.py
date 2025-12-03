@@ -25,20 +25,20 @@ if __name__ == "__main__":
         if not os.path.exists(subject_dst_path):
             os.makedirs(subject_dst_path)
 
-        if subject == "Borgne":
+        if subject != "Borgne":
             continue
 
         print(f"Processing subject: {subject}")
 
         for session in os.listdir(subject_src_path):
-            session_file = f"{subject}_{session}_hemi_new.nii.gz"
+            session_file = f"{subject}_{session}_hemi.nii.gz"
             if not os.path.exists(os.path.join(subject_src_path, session, session_file)):
                 continue
             print(f"\tSession file: {session_file}")
 
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
-                output_file = session_file.replace("_hemi_new.nii.gz", f"_new.{label_name}.white.gii")
+                output_file = session_file.replace("_hemi.nii.gz", f".{label_name}.white.gii")
 
                 if os.path.exists(os.path.join(subject_dst_path, output_file)):
                     print(f"\t\t\tOutput file {output_file} already exists. Skipping.")
