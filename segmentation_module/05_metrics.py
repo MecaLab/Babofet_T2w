@@ -202,44 +202,36 @@ def visualiser_boxplots(csv_path="resultats_segmentation.csv"):
     plt.close()
 
 
-def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
-    # Charger les données
+def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png"):
+    # Charger CSV
     df = pd.read_csv(csv_path)
 
-    # Créer une figure avec trois sous-graphiques
+    # Colonnes contenant les scores individuels
+    score_columns = {
+        "Dice": "Dice_Scores",
+        "IoU": "IoU_Scores",
+        "Hausdorff": "Hausdorff_Scores"
+    }
+
+    # Création figure avec 3 subplots
     fig, axes = plt.subplots(1, 3, figsize=(18, 6))
 
-    # Couleurs pour chaque label
-    label_colors = {'CSF': 'blue', 'WM': 'green', 'GM': 'purple', 'Ventricle': 'red'}
+    for idx, (metric, col) in enumerate(score_columns.items()):
+        # Convertir "a,b,c..." en liste de float
+        all_scores = []
+        for row in df[col]:
+            scores = [float(x) for x in row.split(",")]
+            all_scores.extend(scores)
 
-    # Pour chaque métrique
-    for i, metric in enumerate(['Dice_Mean', 'IoU_Mean', 'Hausdorff_Mean']):
-        ax = axes[i]
-        ax.set_title(metric.replace('_Mean', ''))
+        # Boxplot
+        axes[idx].boxplot(all_scores)
+        axes[idx].set_title(f"{metric}")
+        axes[idx].set_ylabel(metric)
+        axes[idx].grid(True, linestyle='--', alpha=0.5)
 
-        # Pour chaque label, tracer les points
-        for label in df['Label'].unique():
-            label_df = df[df['Label'] == label]
-            models = sorted(label_df['Model_ID'].unique())
-            metric_values = label_df[metric].values
-
-            # Tracer les points
-            ax.scatter([str(m) for m in models], metric_values, color=label_colors[label], marker='o', label=label)
-
-            # Annoter les points
-            for m, val in zip(models, metric_values):
-                ax.text(str(m), val + 0.01 if metric != 'Hausdorff_Mean' else val + 0.5, f"{val:.3f}",
-                        ha='center', va='bottom', fontsize=8, color=label_colors[label])
-
-        # Configurer les axes
-        ax.set_xlabel('Modèle')
-        ax.set_ylabel('Score')
-        ax.set_xticks([str(m) for m in sorted(df['Model_ID'].unique())])
-        ax.grid(True, linestyle='--', alpha=0.6)
-        ax.legend()
-
+    # Ajuster l'espacement
     plt.tight_layout()
-    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/metrics_by_model.png")
+    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/{save_path}.png")
     plt.savefig(output_path, dpi=200, bbox_inches='tight')
     plt.close()
 
