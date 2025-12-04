@@ -307,7 +307,7 @@ if __name__ == "__main__":
 
     visualiser_boxplots(csv_path=results_seg_csv_path)
 
-    plot_metrics_by_model(csv_path=results_seg_csv_path)
+    plot_and_save_boxplots(csv_path=results_seg_csv_path)
 
     """
     10:
