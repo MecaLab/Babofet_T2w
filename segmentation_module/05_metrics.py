@@ -167,7 +167,7 @@ def csv_to_wilcoxon(csv_path="resultats_segmentation.csv"):
     return df_wilcoxon
 
 
-def plot_grouped_boxplots(csv_path, save_path="boxplots_metrics.png", figsize=(18,6)):
+def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png", figsize=(18,6)):
     """
     Lis le CSV et crée 1 figure avec 3 subplots (Dice, IoU, Hausdorff).
     Dans chaque subplot : x = labels (ex: CSF, WM, GM, Ventricle).
