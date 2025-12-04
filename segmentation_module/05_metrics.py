@@ -167,41 +167,6 @@ def csv_to_wilcoxon(csv_path="resultats_segmentation.csv"):
     return df_wilcoxon
 
 
-def visualiser_boxplots(csv_path="resultats_segmentation.csv"):
-    df = pd.read_csv(csv_path)
-    boxplot_data = []
-    for _, row in df.iterrows():
-        model_id = row['Model_ID']
-        for metric in ['Dice', 'IoU', 'Hausdorff']:
-            scores = list(map(float, row[f'{metric}_Scores'].split(',')))
-            for score in scores:
-                boxplot_data.append({
-                    'Model': f"Model {model_id}",
-                    'Label': row['Label'],
-                    'Metric': metric,
-                    'Score': score
-                })
-
-    boxplot_df = pd.DataFrame(boxplot_data)
-    plt.figure(figsize=(18, 6))
-    sns.set_style("whitegrid")
-
-    for i, metric in enumerate(['Dice', 'IoU', 'Hausdorff'], 1):
-        plt.subplot(1, 3, i)
-        sns.boxplot(x='Label', y='Score', hue='Model', data=boxplot_df[boxplot_df['Metric'] == metric])
-        plt.title(f'{metric} Scores by Label and Model')
-        if metric in ['Dice', 'IoU']:
-            plt.ylim(0, 1)
-        else:
-            plt.ylim(0, 60)
-        plt.legend(title='Model')
-
-    plt.tight_layout()
-    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/boxplots_comparaison_modeles.png")
-    plt.savefig(output_path)
-    plt.close()
-
-
 def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png"):
     # Charger CSV
     df = pd.read_csv(csv_path)
@@ -231,7 +196,49 @@ def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png"):
 
     # Ajuster l'espacement
     plt.tight_layout()
-    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/{save_path}.png")
+    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/{save_path}")
+    plt.savefig(output_path)
+    plt.close()
+
+
+def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
+    # Charger les données
+    df = pd.read_csv(csv_path)
+
+    # Créer une figure avec trois sous-graphiques
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+
+    # Couleurs pour chaque label
+    label_colors = {'CSF': 'blue', 'WM': 'green', 'GM': 'purple', 'Ventricle': 'red'}
+
+    # Pour chaque métrique
+    for i, metric in enumerate(['Dice_Mean', 'IoU_Mean', 'Hausdorff_Mean']):
+        ax = axes[i]
+        ax.set_title(metric.replace('_Mean', ''))
+
+        # Pour chaque label, tracer les points
+        for label in df['Label'].unique():
+            label_df = df[df['Label'] == label]
+            models = sorted(label_df['Model_ID'].unique())
+            metric_values = label_df[metric].values
+
+            # Tracer les points
+            ax.scatter([str(m) for m in models], metric_values, color=label_colors[label], marker='o', label=label)
+
+            # Annoter les points
+            for m, val in zip(models, metric_values):
+                ax.text(str(m), val + 0.01 if metric != 'Hausdorff_Mean' else val + 0.5, f"{val:.3f}",
+                        ha='center', va='bottom', fontsize=8, color=label_colors[label])
+
+        # Configurer les axes
+        ax.set_xlabel('Modèle')
+        ax.set_ylabel('Score')
+        ax.set_xticks([str(m) for m in sorted(df['Model_ID'].unique())])
+        ax.grid(True, linestyle='--', alpha=0.6)
+        ax.legend()
+
+    plt.tight_layout()
+    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/metrics_by_model.png")
     plt.savefig(output_path, dpi=200, bbox_inches='tight')
     plt.close()
 
@@ -305,9 +312,9 @@ if __name__ == "__main__":
     print("\n--- Résultats des tests de Wilcoxon ---")
     print(df_wilcoxon)
 
-    visualiser_boxplots(csv_path=results_seg_csv_path)
-
     plot_and_save_boxplots(csv_path=results_seg_csv_path)
+
+    plot_metrics_by_model(csv_path=results_seg_csv_path)
 
     """
     10:
