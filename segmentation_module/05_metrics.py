@@ -181,28 +181,24 @@ def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png"):
     fig, axes = plt.subplots(1, 3, figsize=(18, 6))
 
     # Boxplot pour Dice
-    sns.boxplot(x='Label', y='Dice_Scores', data=data.explode('Dice_Scores'), ax=axes[0], palette=custom_palette, order=label_order)
+    sns.boxplot(x='Label', y='Dice_Scores', hue='Model_ID', data=data.explode('Dice_Scores'), ax=axes[0], palette=custom_palette, order=label_order)
     axes[0].set_title('Dice')
     axes[0].set_ylim(0.8, 1.0)
     axes[0].set_xlabel('Label')
     axes[0].set_ylabel('Dice Score')
 
     # Boxplot pour IoU
-    sns.boxplot(x='Label', y='IoU_Scores', data=data.explode('IoU_Scores'), ax=axes[1], palette=custom_palette, order=label_order)
+    sns.boxplot(x='Label', y='IoU_Scores', hue='Model_ID', data=data.explode('IoU_Scores'), ax=axes[1], palette=custom_palette, order=label_order)
     axes[1].set_title('IoU')
     axes[1].set_ylim(0.6, 1.0)
     axes[1].set_xlabel('Label')
     axes[1].set_ylabel('IoU Score')
 
     # Boxplot pour Hausdorff
-    sns.boxplot(x='Label', y='Hausdorff_Scores', data=data.explode('Hausdorff_Scores'), ax=axes[2], palette=custom_palette, order=label_order)
+    sns.boxplot(x='Label', y='Hausdorff_Scores', hue='Model_ID', data=data.explode('Hausdorff_Scores'), ax=axes[2], palette=custom_palette, order=label_order)
     axes[2].set_title('Hausdorff')
     axes[2].set_xlabel('Label')
     axes[2].set_ylabel('Hausdorff Distance')
-
-    # Légende
-    handles, labels = axes[0].get_legend_handles_labels()
-    fig.legend(handles, labels, title='Model ID', loc='upper right')
 
     # Sauvegarder le graphique
     plt.tight_layout()
