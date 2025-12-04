@@ -167,45 +167,41 @@ def csv_to_wilcoxon(csv_path="resultats_segmentation.csv"):
     return df_wilcoxon
 
 
-def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png"):
-    data = pd.read_csv(csv_path)
-
-    # Convert string lists to actual lists
-    data['Dice_Scores'] = data['Dice_Scores'].apply(eval)
-    data['IoU_Scores'] = data['IoU_Scores'].apply(eval)
-    data['Hausdorff_Scores'] = data['Hausdorff_Scores'].apply(eval)
-
-    # Définir une palette de couleurs personnalisée
-    custom_palette = {10: "blue", 11: "orange", 12: "green"}
-
-    # Créer une figure avec trois sous-graphiques
+def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
+    df = pd.read_csv(csv_path)
     fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+    label_colors = {'CSF': 'blue', 'WM': 'green', 'GM': 'purple', 'Ventricle': 'red'}
 
-    # Boxplot pour Dice
-    sns.boxplot(x='Label', y='Dice_Scores', hue='Model_ID', data=data.explode('Dice_Scores'), ax=axes[0],
-                palette=custom_palette)
-    axes[0].set_title('Dice')
-    axes[0].set_ylim(0.8, 1.0)
+    for i, metric in enumerate(['Dice_Mean', 'IoU_Mean', 'Hausdorff_Mean']):
+        ax = axes[i]
+        ax.set_title(metric.replace('_Mean', ''))
+        std_metric = metric.replace('_Mean', '_Std')
 
-    # Boxplot pour IoU
-    sns.boxplot(x='Label', y='IoU_Scores', hue='Model_ID', data=data.explode('IoU_Scores'), ax=axes[1],
-                palette=custom_palette)
-    axes[1].set_title('IoU')
-    axes[1].set_ylim(0.6, 1.0)
+        for label in df['Label'].unique():
+            label_df = df[df['Label'] == label]
+            models = sorted(label_df['Model_ID'].unique())
+            metric_values = label_df[metric].values
+            std_values = label_df[std_metric].values
 
-    # Boxplot pour Hausdorff
-    sns.boxplot(x='Label', y='Hausdorff_Scores', hue='Model_ID', data=data.explode('Hausdorff_Scores'), ax=axes[2],
-                palette=custom_palette)
-    axes[2].set_title('Hausdorff')
+            ax.errorbar(
+                [str(m) for m in models],
+                metric_values,
+                yerr=std_values,
+                color=label_colors[label],
+                marker='o',
+                label=label,
+                capsize=5
+            )
 
-    # Afficher la légende une seule fois
-    handles, labels = axes[0].get_legend_handles_labels()
-    fig.legend(handles, labels, title='Model ID', loc='upper right')
+        ax.set_xlabel('Modèle')
+        ax.set_ylabel('Score')
+        ax.set_xticks([str(m) for m in sorted(df['Model_ID'].unique())])
+        ax.grid(True, linestyle='--', alpha=0.6)
+        ax.legend()
 
-    # Afficher le graphique
     plt.tight_layout()
-    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/{save_path}")
-    plt.savefig(output_path)
+    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/metrics_by_model.png")
+    plt.savefig(output_path, dpi=200, bbox_inches='tight')
     plt.close()
 
 
