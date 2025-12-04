@@ -175,24 +175,34 @@ def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png"):
     data['IoU_Scores'] = data['IoU_Scores'].apply(eval)
     data['Hausdorff_Scores'] = data['Hausdorff_Scores'].apply(eval)
 
-    # Create a figure with three subplots
+    # Définir une palette de couleurs personnalisée
+    custom_palette = {10: "blue", 11: "orange", 12: "green"}
+
+    # Créer une figure avec trois sous-graphiques
     fig, axes = plt.subplots(1, 3, figsize=(18, 6))
 
-    # Boxplot for Dice
-    sns.boxplot(x='Label', y='Dice_Scores', hue='Model_ID', data=data.explode('Dice_Scores'), ax=axes[0])
+    # Boxplot pour Dice
+    sns.boxplot(x='Label', y='Dice_Scores', hue='Model_ID', data=data.explode('Dice_Scores'), ax=axes[0],
+                palette=custom_palette)
     axes[0].set_title('Dice')
     axes[0].set_ylim(0.8, 1.0)
 
-    # Boxplot for IoU
-    sns.boxplot(x='Label', y='IoU_Scores', hue='Model_ID', data=data.explode('IoU_Scores'), ax=axes[1])
+    # Boxplot pour IoU
+    sns.boxplot(x='Label', y='IoU_Scores', hue='Model_ID', data=data.explode('IoU_Scores'), ax=axes[1],
+                palette=custom_palette)
     axes[1].set_title('IoU')
     axes[1].set_ylim(0.6, 1.0)
 
-    # Boxplot for Hausdorff
-    sns.boxplot(x='Label', y='Hausdorff_Scores', hue='Model_ID', data=data.explode('Hausdorff_Scores'), ax=axes[2])
+    # Boxplot pour Hausdorff
+    sns.boxplot(x='Label', y='Hausdorff_Scores', hue='Model_ID', data=data.explode('Hausdorff_Scores'), ax=axes[2],
+                palette=custom_palette)
     axes[2].set_title('Hausdorff')
 
-    # Show the plot
+    # Afficher la légende une seule fois
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, title='Model ID', loc='upper right')
+
+    # Afficher le graphique
     plt.tight_layout()
     output_path = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/{save_path}")
     plt.savefig(output_path)
