@@ -167,88 +167,32 @@ def csv_to_wilcoxon(csv_path="resultats_segmentation.csv"):
     return df_wilcoxon
 
 
-def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png", figsize=(18,6)):
-    """
-    Lis le CSV et crée 1 figure avec 3 subplots (Dice, IoU, Hausdorff).
-    Dans chaque subplot : x = labels (ex: CSF, WM, GM, Ventricle).
-    Pour chaque label on affiche N boxplots côte-à-côte, un par Model_ID présent dans le CSV.
-    Sauvegarde la figure dans save_path.
-    """
-    df = pd.read_csv(csv_path)
+def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png"):
+    data = pd.read_csv(csv_path)
 
-    # Ordre des métriques et colonnes correspondantes
-    metric_cols = {
-        "Dice": "Dice_Scores",
-        "IoU": "IoU_Scores",
-        "Hausdorff": "Hausdorff_Scores"
-    }
+    # Convert string lists to actual lists
+    data['Dice_Scores'] = data['Dice_Scores'].apply(eval)
+    data['IoU_Scores'] = data['IoU_Scores'].apply(eval)
+    data['Hausdorff_Scores'] = data['Hausdorff_Scores'].apply(eval)
 
-    # Extraire labels et modèles dans l'ordre d'apparition (stable)
-    labels = list(dict.fromkeys(df["Label"].tolist()))
-    model_ids = sorted(df["Model_ID"].unique())  # tri pour ordre stable
+    # Create a figure with three subplots
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6))
 
-    # Parse function: "a,b,c" -> [float,...]
-    def parse_scores(s):
-        if pd.isna(s):
-            return []
-        return [float(x) for x in str(s).split(",") if x.strip() != ""]
+    # Boxplot for Dice
+    sns.boxplot(x='Label', y='Dice_Scores', hue='Model_ID', data=data.explode('Dice_Scores'), ax=axes[0])
+    axes[0].set_title('Dice')
+    axes[0].set_ylim(0.8, 1.0)
 
-    # Construire structure: data[metric][model_id][label] = list(scores)
-    data = {m: {mid: {lab: [] for lab in labels} for mid in model_ids} for m in metric_cols}
-    for _, row in df.iterrows():
-        mid = row["Model_ID"]
-        lab = row["Label"]
-        for metric, col in metric_cols.items():
-            scores = parse_scores(row[col])
-            data[metric][mid][lab] = scores
+    # Boxplot for IoU
+    sns.boxplot(x='Label', y='IoU_Scores', hue='Model_ID', data=data.explode('IoU_Scores'), ax=axes[1])
+    axes[1].set_title('IoU')
+    axes[1].set_ylim(0.6, 1.0)
 
-    # Plot
-    fig, axes = plt.subplots(1, 3, figsize=figsize, sharey=False)
-    colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
-    n_models = len(model_ids)
-    group_spacing = 1.0                      # distance entre groupes (labels)
-    group_width = 0.75                       # largeur totale allouée pour les box d'un label
-    box_width = group_width / n_models       # largeur d'une box
-    offsets = np.linspace(-group_width/2 + box_width/2, group_width/2 - box_width/2, n_models)
+    # Boxplot for Hausdorff
+    sns.boxplot(x='Label', y='Hausdorff_Scores', hue='Model_ID', data=data.explode('Hausdorff_Scores'), ax=axes[2])
+    axes[2].set_title('Hausdorff')
 
-    for ax, (metric, col) in zip(axes, metric_cols.items()):
-        all_positions = []
-        all_datasets = []
-        position_labels = []
-
-        # pour chaque label, préparer datasets et positions pour les n_models boxplots
-        for i, lab in enumerate(labels):
-            base_x = i * group_spacing
-            for j, mid in enumerate(model_ids):
-                pos = base_x + offsets[j]
-                scores = data[metric][mid].get(lab, [])
-                # si pas de scores, mettre une liste vide -> matplotlib ignore et n'affiche rien
-                all_positions.append(pos)
-                all_datasets.append(scores if len(scores) > 0 else [np.nan])  # éviter erreur si vide
-            position_labels.append(base_x)
-
-        # Faire boxplots en un seul appel (positions correspondantes)
-        bplots = ax.boxplot(all_datasets, positions=all_positions, widths=box_width*0.9, patch_artist=True, manage_ticks=False)
-
-        # Colorer par modèle (on colorera en cycles selon bloc de n_models)
-        for idx, patch in enumerate(bplots['boxes']):
-            model_index = idx % n_models
-            patch.set_facecolor(colors[model_index % len(colors)])
-            patch.set_alpha(0.7)
-
-        # Axes / ticks / labels
-        ax.set_title(metric)
-        ax.set_xticks(position_labels)
-        ax.set_xticklabels(labels)
-        ax.set_xlabel("Label")
-        ax.set_ylabel(metric)
-        ax.grid(True, linestyle='--', alpha=0.4)
-
-    # Légende (proxy artists)
-    from matplotlib.patches import Patch
-    legend_handles = [Patch(facecolor=colors[i % len(colors)], label=f"Model {mid}", alpha=0.7) for i, mid in enumerate(model_ids)]
-    axes[2].legend(handles=legend_handles, loc='upper right')
-
+    # Show the plot
     plt.tight_layout()
     output_path = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/{save_path}")
     plt.savefig(output_path)
