@@ -169,34 +169,47 @@ def csv_to_wilcoxon(csv_path="resultats_segmentation.csv"):
 
 def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png"):
     data = pd.read_csv(csv_path)
-
-    # Convert string lists to actual lists
+    # Convertir les listes de scores
     data['Dice_Scores'] = data['Dice_Scores'].apply(eval)
     data['IoU_Scores'] = data['IoU_Scores'].apply(eval)
     data['Hausdorff_Scores'] = data['Hausdorff_Scores'].apply(eval)
 
-    # Create a figure with three subplots
+    # Définir l'ordre des labels
+    label_order = ['CSF', 'WM', 'GM', 'Ventricle']
+    custom_palette = {10: "blue", 11: "orange", 12: "green"}
+
     fig, axes = plt.subplots(1, 3, figsize=(18, 6))
 
-    # Boxplot for Dice
-    sns.boxplot(x='Label', y='Dice_Scores', hue='Model_ID', data=data.explode('Dice_Scores'), ax=axes[0])
+    # Boxplot pour Dice
+    sns.boxplot(x='Label', y='Dice_Scores', hue='Model_ID', data=data.explode('Dice_Scores'), ax=axes[0], palette=custom_palette, order=label_order)
     axes[0].set_title('Dice')
     axes[0].set_ylim(0.8, 1.0)
+    axes[0].set_xlabel('Label')
+    axes[0].set_ylabel('Dice Score')
 
-    # Boxplot for IoU
-    sns.boxplot(x='Label', y='IoU_Scores', hue='Model_ID', data=data.explode('IoU_Scores'), ax=axes[1])
+    # Boxplot pour IoU
+    sns.boxplot(x='Label', y='IoU_Scores', hue='Model_ID', data=data.explode('IoU_Scores'), ax=axes[1], palette=custom_palette, order=label_order)
     axes[1].set_title('IoU')
     axes[1].set_ylim(0.6, 1.0)
+    axes[1].set_xlabel('Label')
+    axes[1].set_ylabel('IoU Score')
 
-    # Boxplot for Hausdorff
-    sns.boxplot(x='Label', y='Hausdorff_Scores', hue='Model_ID', data=data.explode('Hausdorff_Scores'), ax=axes[2])
+    # Boxplot pour Hausdorff
+    sns.boxplot(x='Label', y='Hausdorff_Scores', hue='Model_ID', data=data.explode('Hausdorff_Scores'), ax=axes[2], palette=custom_palette, order=label_order)
     axes[2].set_title('Hausdorff')
+    axes[2].set_xlabel('Label')
+    axes[2].set_ylabel('Hausdorff Distance')
 
-    # Show the plot
+    # Légende
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, title='Model ID', loc='upper right')
+
+    # Sauvegarder le graphique
     plt.tight_layout()
     output_path = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/{save_path}")
-    plt.savefig(output_path)
+    plt.savefig(output_path, dpi=200, bbox_inches='tight')
     plt.close()
+
 
 
 def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
