@@ -62,5 +62,5 @@ if __name__ == "__main__":
     print("Starting inference")
 
     filename = "slurm_files/nnunet_prediction.slurm"
-    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer)
+    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path)
     subprocess.run(["sbatch", filename])
