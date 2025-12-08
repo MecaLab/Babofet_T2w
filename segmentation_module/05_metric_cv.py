@@ -26,6 +26,10 @@ CLASSES = ["1", "2", "3", "4"]
 # FONCTION LECTURE summary.json
 # ==============================
 
+def extract_name(dataset):
+    parts = dataset.split("_")
+    return parts[1] if len(parts) > 1 else dataset
+
 def load_summary(path):
     f = os.path.join(path, "summary.json")
     if not os.path.isfile(f):
@@ -66,9 +70,9 @@ for model_name, trainer_dir in MODELS.items():
 # 1) BOXPLOTS
 # ==============================
 
-models = list(MODELS.keys())
+models = [extract_name(m) for m in MODELS]
 
-fig, axes = plt.subplots(1, len(CLASSES), figsize=(18, 4), sharey=True)
+fig, axes = plt.subplots(1, len(CLASSES), figsize=(20, 5), sharey=True)
 
 for idx, cls in enumerate(CLASSES):
     data = [dice_by_class_models[m][cls] for m in models]
