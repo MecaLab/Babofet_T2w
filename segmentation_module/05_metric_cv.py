@@ -11,14 +11,22 @@ import configuration as cfg
 # Dossier où sont stockés les résultats nnUNet
 BASE_DIR = cfg.NNUNET_RESULTS_PATH
 
+BASE_DIR = "../data/nnUNet_trained_models"
+
 MODELS = {
     "Dataset010_Starter": "nnUNetTrainer_2000epochs__nnUNetPlans__3d_fullres",
     "Dataset011_DebiasData": "nnUNetTrainer_2000epochs__nnUNetPlans__3d_fullres",
     "Dataset012_FullExp": "nnUNetTrainerBias_2000epochs__nnUNetPlans__3d_fullres"
 }
 
+CLASSES = ["1", "2", "3", "4"]
+
+
+# ==============================
+# FONCTION LECTURE summary.json
+# ==============================
+
 def load_summary(path):
-    """Lit le summary.json d'un fold."""
     f = os.path.join(path, "summary.json")
     if not os.path.isfile(f):
         print(f"[WARNING] summary.json missing: {f}")
@@ -27,73 +35,42 @@ def load_summary(path):
         return json.load(fp)
 
 
-all_results = {}
+# ==============================
+# EXTRACTION DES DICE
+# ==============================
+
+dice_by_class_models = {}  # structure : model -> class -> list[fold dice]
 
 for model_name, trainer_dir in MODELS.items():
-
     model_path = os.path.join(BASE_DIR, model_name, trainer_dir)
 
-    dice_by_class = {cls: [] for cls in ["1", "2", "3", "4"]}
+    # Structure pour stocker les Dice d'un modèle
+    dice_by_class = {cls: [] for cls in CLASSES}
 
-    for fold in range(5):
-        fold_path = os.path.join(model_path, f"fold_{fold}", "validation")
+    # Lire les folds
+    for fold_idx in range(5):
+        fold_path = os.path.join(model_path, f"fold_{fold_idx}", "validation")
         summary = load_summary(fold_path)
         if summary is None:
             continue
 
         # Ton format : summary["mean"][cls]["Dice"]
-        for cls in dice_by_class:
+        for cls in CLASSES:
             dice_value = summary["mean"][cls]["Dice"]
             dice_by_class[cls].append(dice_value)
-
-    # stats
-    dice_mean = {cls: float(np.mean(vals)) for cls, vals in dice_by_class.items()}
-    dice_std  = {cls: float(np.std(vals))  for cls, vals in dice_by_class.items()}
-
-    all_results[model_name] = {"dice_mean": dice_mean, "dice_std": dice_std}
-
-
-# ----- Construction du tableau final -----
-rows = []
-for model, metrics in all_results.items():
-    for cls in ["1", "2", "3", "4"]:
-        rows.append({
-            "Model": model,
-            "Class": cls,
-            "Dice Mean": metrics["dice_mean"][cls],
-            "Dice Std": metrics["dice_std"][cls]
-        })
-
-df = pd.DataFrame(rows).sort_values(["Class", "Model"])
-print(df.to_string(index=False))
-
-dice_by_class_models = {}
-
-for model_name, trainer_dir in MODELS.items():
-    model_path = os.path.join(BASE_DIR, model_name, trainer_dir)
-
-    # récupérer les Dice par classe
-    dice_by_class = {cls: [] for cls in ["1", "2", "3", "4"]}
-
-    for fold in range(5):
-        fold_path = os.path.join(model_path, f"fold_{fold}")
-        summary = load_summary(fold_path)
-        if summary is None:
-            continue
-
-        for cls in dice_by_class:
-            dice_by_class[cls].append(summary["mean"][cls]["Dice"])
 
     dice_by_class_models[model_name] = dice_by_class
 
 
-# --- plot ---
-models = list(dice_by_class_models.keys())
-classes = ["1", "2", "3", "4"]
+# ==============================
+# 1) BOXPLOTS
+# ==============================
 
-fig, axes = plt.subplots(1, 4, figsize=(18, 4), sharey=True)
+models = list(MODELS.keys())
 
-for idx, cls in enumerate(classes):
+fig, axes = plt.subplots(1, len(CLASSES), figsize=(18, 4), sharey=True)
+
+for idx, cls in enumerate(CLASSES):
     data = [dice_by_class_models[m][cls] for m in models]
     axes[idx].boxplot(data, labels=models)
     axes[idx].set_title(f"Classe {cls}")
@@ -103,16 +80,15 @@ plt.tight_layout()
 plt.savefig("tmp.png")
 
 
-# ======================================================================
-# 2) CLASSEMENT DES MODELS
-# ======================================================================
+# ==============================
+# 2) CLASSEMENT GLOBAL
+# ==============================
 
-# Calcul du Dice moyen global par modèle
 ranking = []
 
 for model in models:
     all_values = []
-    for cls in classes:
+    for cls in CLASSES:
         all_values.extend(dice_by_class_models[model][cls])
     mean_dice = float(np.mean(all_values))
     ranking.append((model, mean_dice))
@@ -126,15 +102,19 @@ print("====================")
 print(ranking_df.to_string(index=False))
 
 
-# Classement par classe
+# ==============================
+# 3) CLASSEMENT PAR CLASSE
+# ==============================
+
 rows = []
-for cls in classes:
+for cls in CLASSES:
     for model in models:
         mean_cls = np.mean(dice_by_class_models[model][cls])
         rows.append([cls, model, mean_cls])
 
 ranking_per_class = pd.DataFrame(rows, columns=["Class", "Model", "Dice Mean"])
-ranking_per_class = ranking_per_class.sort_values(["Class", "Dice Mean"], ascending=[True, False])
+ranking_per_class = ranking_per_class.sort_values(["Class", "Dice Mean"],
+                                                  ascending=[True, False])
 
 print("\n====================")
 print("CLASSEMENT PAR CLASSE")
