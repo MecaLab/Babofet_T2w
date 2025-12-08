@@ -43,6 +43,7 @@ for model_name, trainer_dir in MODELS.items():
             continue
 
         # nnUNet v2: results -> mean -> metrics
+        print(summary)
         dice = summary["results"]["Dice"]
         hd95 = summary["results"].get("HD95", {})
 
