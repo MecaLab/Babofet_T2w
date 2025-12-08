@@ -10,76 +10,69 @@ import configuration as cfg
 # Dossier où sont stockés les résultats nnUNet
 BASE_DIR = cfg.NNUNET_RESULTS_PATH
 
-MODELS = [
-    "Dataset010_Starter",
-    "Dataset011_DebiasData",
-    "Dataset012_FullExp"
-]
-
-CONFIG = "3d_fullres"   # ou ton config spécifique
-TRAINER = None          # si tu veux forcer un trainer spécifique (sinon auto-detect)
+MODELS = {
+    "Dataset010_Starter": "nnUNetTrainer_2000epochs__nnUNetPlans__3d_fullres",
+    "Dataset011_DebiasData": "nnUNetTrainer_2000epochs__nnUNetPlans__3d_fullres",
+    "Dataset012_FullExp": "nnUNetTrainerBias_2000epochs__nnUNetPlans__3d_fullres"
+}
 
 
 def load_summary_json(path):
-    if not os.path.isfile(path):
-        print(f"[WARN] summary.json not found: {path}")
+    """Charge summary.json dans un fold."""
+    summary_path = os.path.join(path, "summary.json")
+    if not os.path.isfile(summary_path):
+        print(f"[WARNING] summary.json not found: {summary_path}")
         return None
-    with open(path, "r") as f:
+    with open(summary_path, "r") as f:
         return json.load(f)
-
-
-def find_trainer_dir(dataset_dir):
-    """Détecte automatiquement le dossier du trainer."""
-    for d in os.listdir(dataset_dir):
-        if os.path.isdir(os.path.join(dataset_dir, d)) and "__nnUNetPlans" in d:
-            return d
-    return None
 
 
 all_results = {}
 
-for model in MODELS:
-    dataset_dir = os.path.join(BASE_DIR, model)
+for model_name, trainer_dir in MODELS.items():
 
-    trainer_dir = find_trainer_dir(dataset_dir)
-    if trainer_dir is None:
-        print(f"[ERROR] Aucun trainer trouvé dans {dataset_dir}")
-        continue
+    model_path = os.path.join(BASE_DIR, model_name, trainer_dir)
 
-    summary_path = os.path.join(dataset_dir, trainer_dir, "summary.json")
-    summary = load_summary_json(summary_path)
+    dice_by_fold = {}
+    hd95_by_fold = {}
 
-    if summary is None:
-        continue
+    for fold in range(5):
+        fold_dir = os.path.join(model_path, f"fold_{fold}")
+        summary = load_summary_json(fold_dir)
+        if summary is None:
+            continue
 
-    # structure nnUNet v2
-    dice_per_class = summary["results"]["mean"]["Dice"]
-    hd95_per_class = summary["results"]["mean"].get("HD95", None)
+        # nnUNet v2: results -> mean -> metrics
+        dice = summary["results"]["Dice"]
+        hd95 = summary["results"].get("HD95", {})
 
-    # Convert to numpy for safety
-    dice_means = {cls: np.mean(vals) for cls, vals in dice_per_class.items()}
-    dice_stds = {cls: np.std(vals) for cls, vals in dice_per_class.items()}
+        # accumulate Dice
+        for cls, value in dice.items():
+            dice_by_fold.setdefault(cls, []).append(value)
 
-    if hd95_per_class:
-        hd95_means = {cls: np.mean(vals) for cls, vals in hd95_per_class.items()}
-        hd95_stds = {cls: np.std(vals) for cls, vals in hd95_per_class.items()}
-    else:
-        hd95_means = hd95_stds = {}
+        # accumulate HD95
+        for cls, value in hd95.items():
+            hd95_by_fold.setdefault(cls, []).append(value)
 
-    all_results[model] = {
-        "dice_mean": dice_means,
-        "dice_std": dice_stds,
-        "hd95_mean": hd95_means,
-        "hd95_std": hd95_stds
+    # compute statistics
+    dice_mean = {cls: np.mean(vals) for cls, vals in dice_by_fold.items()}
+    dice_std = {cls: np.std(vals) for cls, vals in dice_by_fold.items()}
+
+    hd95_mean = {cls: np.mean(vals) for cls, vals in hd95_by_fold.items()} if hd95_by_fold else {}
+    hd95_std = {cls: np.std(vals) for cls, vals in hd95_by_fold.items()} if hd95_by_fold else {}
+
+    all_results[model_name] = {
+        "dice_mean": dice_mean,
+        "dice_std": dice_std,
+        "hd95_mean": hd95_mean,
+        "hd95_std": hd95_std
     }
 
 
 # ---------- CONSTRUCTION DU TABLEAU FINAL ----------
 rows = []
-
 for model, metrics in all_results.items():
-    classes = metrics["dice_mean"].keys()
-    for cls in classes:
+    for cls in metrics["dice_mean"]:
         rows.append({
             "Model": model,
             "Class": cls,
@@ -90,7 +83,9 @@ for model, metrics in all_results.items():
         })
 
 df = pd.DataFrame(rows)
+print(df)
+
 df = df.sort_values(by=["Class", "Model"])
 
-print("\n========= COMPARAISON DES MODELS nnUNet =========\n")
+print("\n===== COMPARAISON DES MODELS nnUNet =====\n")
 print(df.to_string(index=False))
