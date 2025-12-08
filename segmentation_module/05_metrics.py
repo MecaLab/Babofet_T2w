@@ -315,9 +315,9 @@ if __name__ == "__main__":
             save_results(dataset_id, moyennes_dice, stds_dice, moyennes_iou, stds_iou, moyennes_hausdorff,
                                       stds_hausdorff, dice_scores_list, iou_scores_list, hausdorff_scores_list, labels_map)
 
-    df_wilcoxon = csv_to_wilcoxon(csv_path=results_seg_csv_path)
+    """df_wilcoxon = csv_to_wilcoxon(csv_path=results_seg_csv_path)
     print("\n--- Résultats des tests de Wilcoxon ---")
-    print(df_wilcoxon)
+    print(df_wilcoxon)"""
 
     plot_and_save_boxplots(csv_path=results_seg_csv_path)
 
