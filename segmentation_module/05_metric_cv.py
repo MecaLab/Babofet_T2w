@@ -37,7 +37,7 @@ for model_name, trainer_dir in MODELS.items():
     hd95_by_fold = {}
 
     for fold in range(5):
-        fold_dir = os.path.join(model_path, f"fold_{fold}")
+        fold_dir = os.path.join(model_path, f"fold_{fold}", "validation")
         summary = load_summary_json(fold_dir)
         if summary is None:
             continue
