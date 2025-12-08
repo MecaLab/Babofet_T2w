@@ -49,7 +49,7 @@ if __name__ == "__main__":
     else:
         dataset_name = f"Dataset{dataset_id}_{name}"
 
-    model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, trainer)
+    model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
     input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
 
