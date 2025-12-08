@@ -70,13 +70,14 @@ for model_name, trainer_dir in MODELS.items():
 # 1) BOXPLOTS
 # ==============================
 
-models = [extract_name(m) for m in MODELS]
+models = list(MODELS.keys())
+models_name = [extract_name(m) for m in models]
 
 fig, axes = plt.subplots(1, len(CLASSES), figsize=(20, 5), sharey=True)
 
 for idx, cls in enumerate(CLASSES):
     data = [dice_by_class_models[m][cls] for m in models]
-    axes[idx].boxplot(data, labels=models)
+    axes[idx].boxplot(data, labels=models_name)
     axes[idx].set_title(f"Classe {cls}")
     axes[idx].set_ylabel("Dice")
 
