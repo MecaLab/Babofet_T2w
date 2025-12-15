@@ -82,6 +82,8 @@ if __name__ == "__main__":
     
     copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Bibi"])
 
+    model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
+
     output_folder = os.path.join(input_dir_3d_vol, f"{dataset_id}_segmentations")  # output segmentations
 
     if not os.path.exists(output_folder):
@@ -89,6 +91,6 @@ if __name__ == "__main__":
 
     print("Starting inference")
     filename = "slurm_files/nnunet_prediction_all.slurm"
-    write_slurm_file(input_dir_3d_vol, output_folder, filename, partition, dataset_id, trainer)
+    write_slurm_file(input_dir_3d_vol, output_folder, filename, partition, dataset_id, trainer, model_path)
     subprocess.run(["sbatch", filename])
 
