@@ -14,7 +14,7 @@ def write_slurm_file(input_folder, output_folder, filename, partition, dataset_i
 #SBATCH --account='b219'
 #SBATCH --partition={partition}
 #SBATCH --gres=gpu:1
-#SBATCH --time=50:00
+#SBATCH --time=02:00:00
 #SBATCH -c 12
 #SBATCH -o predict_nnunet_%j.out
 #SBATCH -e predict_nnunet_%j.err
