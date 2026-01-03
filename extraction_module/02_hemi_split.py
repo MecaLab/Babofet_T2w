@@ -231,8 +231,6 @@ if __name__ == "__main__":
             affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace("_affine.nii.gz", "_affine.txt"))
             apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg, affine_file)
 
-            exit()
-
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
 
             # CHANGE FOLDER NAME LATER !!!
