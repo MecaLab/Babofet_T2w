@@ -123,10 +123,6 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
     initial_moving_transform = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
     full_ouput_name = f"{ants_prefix}{ants_warped_image}"
 
-    print(ants_prefix)
-    print(full_ouput_name)
-    exit()
-
     if os.path.exists(full_ouput_name):
         print(f"\t\t{full_ouput_name} already exists, skipping...")
     else:
