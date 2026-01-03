@@ -132,7 +132,7 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
             "--verbose", "1",
             "--dimensionality", "3",
             "--float", "0",
-            "--output", f"[{ants_prefix}, {full_ouput_name}]",
+            "--output", f"[{ants_prefix},{full_ouput_name}]",
             "--interpolation", "BSpline",
             "--use-histogram-matching", "1",
             "--winsorize-image-intensities", "[0.001,0.999]",
@@ -230,6 +230,8 @@ if __name__ == "__main__":
 
             affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace("_affine.nii.gz", "_affine.txt"))
             apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg, affine_file)
+
+            exit()
 
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
 
