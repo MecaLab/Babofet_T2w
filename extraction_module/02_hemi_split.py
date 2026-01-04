@@ -235,7 +235,7 @@ if __name__ == "__main__":
 
             # CHANGE FOLDER NAME LATER !!!
             # t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}.nii.gz")
-            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "12_segmentations", f"{subject}_{session}.nii.gz")
+            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "pred_dataset_12", f"{subject}_{session}.nii.gz")
             if not os.path.exists(t2_subj_seg):
                 print(f"\t\tSegmentation for {subject} {session} not found, skipping...")
                 continue
