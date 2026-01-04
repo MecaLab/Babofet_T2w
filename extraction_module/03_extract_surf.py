@@ -25,9 +25,6 @@ if __name__ == "__main__":
         if not os.path.exists(subject_dst_path):
             os.makedirs(subject_dst_path)
 
-        if subject != "Borgne":
-            continue
-
         print(f"Processing subject: {subject}")
 
         for session in os.listdir(subject_src_path):
