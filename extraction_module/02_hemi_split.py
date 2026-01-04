@@ -269,4 +269,3 @@ if __name__ == "__main__":
             seg_out = fixed_seg.new_image_like(new_data)
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
-            exit()
