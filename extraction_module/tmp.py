@@ -34,7 +34,7 @@ class Visualisation:
         self.points = None
         self.labels = None
         if mesh_opacity is None:
-            self.mesh_opacity = 0.5
+            self.mesh_opacity = 1
         else:
             self.mesh_opacity = mesh_opacity
         self.camera = dict(
@@ -70,16 +70,6 @@ class Visualisation:
         mesh = nib.load(mesh_path)
         vertices = mesh.darrays[0].data.astype(float)
         faces = mesh.darrays[1].data.astype(int)
-        self.fig.add_trace(go.Mesh3d(
-            x=vertices[:, 0],
-            y=vertices[:, 1],
-            z=vertices[:, 2],
-            i=faces[:, 0],
-            j=faces[:, 1],
-            k=faces[:, 2],
-            color='gray',
-            opacity=self.mesh_opacity
-        ))
         self.fig.add_trace(go.Mesh3d(
             x=vertices[:, 0],
             y=vertices[:, 1],
