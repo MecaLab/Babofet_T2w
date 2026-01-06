@@ -109,7 +109,7 @@ if __name__ == "__main__":
         for session in sessions:
             for side in sides:
                 title = f"{subject}_ses{session}_{side}"
-                vis = Visualisation()
+                vis = Visualisation(title=title)
                 vis.plot_mesh(os.path.join(main_path, f"Surf_Hemi/{subject}/{subject}_ses{session}.{side}.white.gii"))
                 vis.save_as_html(os.path.join(main_path, f"Surf_Hemi_html/{subject}"))
                 vis.show_fig()
