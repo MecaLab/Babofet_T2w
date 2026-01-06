@@ -100,8 +100,8 @@ class Visualisation:
 
 if __name__ == "__main__":
     main_path = "/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/"
-    subjects = ["Bibi"]
-    sessions = ["02", "07"]
+    subjects = ["Fabienne"]
+    sessions = ["02", "03"]
     vis = Visualisation()
     for subject in subjects:
         for session in sessions:
