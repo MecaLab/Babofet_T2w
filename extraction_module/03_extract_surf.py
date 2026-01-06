@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
-                output_file = session_file.replace(f"_hemi{suffix}.nii.gz", f".{label_name}.white.gii")
+                output_file = session_file.replace(f"_hemi{suffix}.nii.gz", f"{suffix}.{label_name}.white.gii")
 
                 if os.path.exists(os.path.join(subject_dst_path, output_file)):
                     print(f"\t\t\tOutput file {output_file} already exists. Skipping.")
