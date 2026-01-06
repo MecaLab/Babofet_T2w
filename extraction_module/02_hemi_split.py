@@ -199,6 +199,11 @@ if __name__ == "__main__":
         for session in os.listdir(subject_path):
             print(f"\tSession: {session}")
 
+            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, seg_3d_folder, f"{subject}_{session}.nii.gz")
+            if not os.path.exists(t2_subj_seg):
+                print(f"\t\tSegmentation for {subject} {session} not found, skipping...")
+                continue
+
             session_subject_path = os.path.join(subject_path, session)
             subject_output_split_seg_session = os.path.join(subject_output_split_seg, session)
             if not os.path.exists(subject_output_split_seg_session):
@@ -213,11 +218,6 @@ if __name__ == "__main__":
             file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi{suffix}.nii.gz")
             if os.path.exists(file_seg_out):
                 print(f"\t\tSegmentation for {subject} {session} already exists, skipping...")
-                continue
-
-            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, seg_3d_folder, f"{subject}_{session}.nii.gz")
-            if not os.path.exists(t2_subj_seg):
-                print(f"\t\tSegmentation for {subject} {session} not found, skipping...")
                 continue
 
             fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
