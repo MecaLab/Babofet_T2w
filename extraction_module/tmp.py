@@ -101,14 +101,15 @@ class Visualisation:
 
 if __name__ == "__main__":
     main_path = "/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/"
-    subjects = ["Fabienne", "Bibi"]
-    sessions = ["02", "03", "07"]
+    subjects = ["Fabienne"]
+    sessions = ["01"]
     sides = ["left", "right"]
+    suffix = "_corrected"
     for subject in subjects:
         for session in sessions:
             for side in sides:
-                title = f"{subject}_ses{session}_{side}"
+                title = f"{subject}_ses{session}_{side}{suffix}"
                 vis = Visualisation(title=title)
-                vis.plot_mesh(os.path.join(main_path, f"Surf_Hemi/{subject}/{subject}_ses{session}.{side}.white.gii"))
+                vis.plot_mesh(os.path.join(main_path, f"Surf_Hemi/{subject}/{subject}_ses{session}{suffix}.{side}.white.gii"))
                 vis.save_as_html(os.path.join(main_path, f"Surf_Hemi_html/{subject}"))
                 vis.show_fig()
