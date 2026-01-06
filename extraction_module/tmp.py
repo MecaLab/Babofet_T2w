@@ -96,6 +96,7 @@ class Visualisation:
         )
     def show_fig(self):
         self.fig.show()
+        self.fig.data = []
 
 
 if __name__ == "__main__":
