@@ -15,6 +15,8 @@ if __name__ == "__main__":
         "left": 6,  # WM left
     }
 
+    suffix = "_corrected"
+
     if not os.path.exists(dst_path):
         os.makedirs(dst_path)
 
@@ -28,7 +30,7 @@ if __name__ == "__main__":
         print(f"Processing subject: {subject}")
 
         for session in os.listdir(subject_src_path):
-            session_file = f"{subject}_{session}_hemi.nii.gz"
+            session_file = f"{subject}_{session}_hemi{suffix}.nii.gz"
             if not os.path.exists(os.path.join(subject_src_path, session, session_file)):
                 continue
             print(f"\tSession file: {session_file}")

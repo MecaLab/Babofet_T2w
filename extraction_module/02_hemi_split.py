@@ -177,6 +177,9 @@ if __name__ == "__main__":
     segmentation_atlas_path = os.path.join(atlas_path, "Segmentations", "structures_dilated")
     output_split_seg = os.path.join(atlas_path, "Seg_Hemi")
 
+    suffix = "_corrected"
+    seg_3d_folder = "pred_dataset_12_corrected"  # Change this folder name later !!!
+
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
 
@@ -207,7 +210,7 @@ if __name__ == "__main__":
                 print(f"\t\trecons_rhesus folder not found for {subject} {session}, skipping...")
                 continue
 
-            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi.nii.gz")
+            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi{suffix}.nii.gz")
             if os.path.exists(file_seg_out):
                 print(f"\t\tSegmentation for {subject} {session} already exists, skipping...")
                 continue
@@ -235,7 +238,7 @@ if __name__ == "__main__":
 
             # CHANGE FOLDER NAME LATER !!!
             # t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}.nii.gz")
-            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "pred_dataset_12", f"{subject}_{session}.nii.gz")
+            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, seg_3d_folder, f"{subject}_{session}.nii.gz")
             if not os.path.exists(t2_subj_seg):
                 print(f"\t\tSegmentation for {subject} {session} not found, skipping...")
                 continue
