@@ -34,7 +34,7 @@ class Visualisation:
         self.points = None
         self.labels = None
         if mesh_opacity is None:
-            self.mesh_opacity = 1
+            self.mesh_opacity = 0.6
         else:
             self.mesh_opacity = mesh_opacity
         self.camera = dict(
@@ -77,8 +77,8 @@ class Visualisation:
             i=faces[:, 0],
             j=faces[:, 1],
             k=faces[:, 2],
-            # color='white',
-            opacity=1,
+            color='white',
+            opacity=self.mesh_opacity,
             name="Mesh Full Opacity"
         ))
 
