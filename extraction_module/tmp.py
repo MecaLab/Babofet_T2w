@@ -77,7 +77,7 @@ class Visualisation:
             i=faces[:, 0],
             j=faces[:, 1],
             k=faces[:, 2],
-            color='gray',
+            # color='white',
             opacity=1,
             name="Mesh Full Opacity"
         ))
