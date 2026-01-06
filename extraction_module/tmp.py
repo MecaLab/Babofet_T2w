@@ -107,6 +107,6 @@ class Visualisation:
 
 if __name__ == "__main__":
     vis = Visualisation()
-    vis.plot_mesh("/envau/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Surf_Hemi/Fabienne/Fabienne_ses02.left.white.gii")
-    vis.save_as_html("/envau/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Surf_Hemi_html/Fabienne/Fabienne_ses02_left.html")
+    vis.plot_mesh("/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Surf_Hemi/Fabienne/Fabienne_ses02.left.white.gii")
+    vis.save_as_html("/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/Surf_Hemi_html/Fabienne/Fabienne_ses02_left.html")
     vis.show_fig()
