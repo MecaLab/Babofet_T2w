@@ -34,7 +34,7 @@ class Visualisation:
         self.points = None
         self.labels = None
         if mesh_opacity is None:
-            self.mesh_opacity = 0.6
+            self.mesh_opacity = 1
         else:
             self.mesh_opacity = mesh_opacity
         self.camera = dict(
