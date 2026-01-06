@@ -59,7 +59,7 @@ class Visualisation:
 
     def save_as_html(self, path_to_save: str) -> None:
         if not os.path.exists(path_to_save):
-            os.mkdir(path_to_save)
+            os.makedirs(path_to_save)
         self.fig.write_html(os.path.join(path_to_save, self.title + ".html"))
 
     def plot_mesh(
