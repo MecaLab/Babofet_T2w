@@ -79,7 +79,9 @@ class Visualisation:
             k=faces[:, 2],
             color='gray',
             opacity=self.mesh_opacity,
-            name="Mesh Full Opacity"
+            name="Mesh Full Opacity",
+            lighting=self.lighting_effects,
+            lightposition=self.lightposition,
         ))
 
         self.fig.update_layout(
