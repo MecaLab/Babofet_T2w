@@ -215,6 +215,11 @@ if __name__ == "__main__":
                 print(f"\t\tSegmentation for {subject} {session} already exists, skipping...")
                 continue
 
+            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, seg_3d_folder, f"{subject}_{session}.nii.gz")
+            if not os.path.exists(t2_subj_seg):
+                print(f"\t\tSegmentation for {subject} {session} not found, skipping...")
+                continue
+
             fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
 
             best_atlas = find_best_atlas(subject_output_split_seg_session, recons_rhesus_folder)
@@ -236,12 +241,6 @@ if __name__ == "__main__":
 
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
 
-            # CHANGE FOLDER NAME LATER !!!
-            # t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}.nii.gz")
-            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, seg_3d_folder, f"{subject}_{session}.nii.gz")
-            if not os.path.exists(t2_subj_seg):
-                print(f"\t\tSegmentation for {subject} {session} not found, skipping...")
-                continue
             fixed_seg = ants.image_read(t2_subj_seg)
 
             unique_label_t2 = np.unique(fixed_seg.numpy())
