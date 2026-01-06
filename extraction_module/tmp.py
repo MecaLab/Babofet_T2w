@@ -103,7 +103,5 @@ if __name__ == "__main__":
     subjects = ["Fabienne"]
     sessions = ["02", "03", "07"]
     vis = Visualisation()
-    for subject in subjects:
-        for session in sessions:
-            vis.plot_mesh(os.path.join(main_path, f"Surf_Hemi/{subject}/{subject}_ses{session}.left.white.gii"))
-            vis.save_as_html(os.path.join(main_path, f"Surf_Hemi_html/{subject}/{subject}_ses{session}_left"))
+    vis.plot_mesh(os.path.join(main_path, f"Surf_Hemi/{subjects[0]}/{subjects[0]}_ses{sessions[0]}.left.white.gii"))
+    vis.save_as_html(os.path.join(main_path, f"Surf_Hemi_html/{subjects[0]}/{subjects}_ses{sessions[0]}_left"))
