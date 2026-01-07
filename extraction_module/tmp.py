@@ -66,8 +66,11 @@ class Visualisation:
             self,
             mesh_path: str,
     ) -> None:
-        print(mesh_path)
-        mesh = nib.load(mesh_path)
+        try:
+            mesh = nib.load(mesh_path)
+        except FileNotFoundError:
+            print(f"File not found: {mesh_path}")
+            return
         vertices = mesh.darrays[0].data.astype(float)
         faces = mesh.darrays[1].data.astype(int)
         self.fig.add_trace(go.Mesh3d(
@@ -101,15 +104,16 @@ class Visualisation:
 
 if __name__ == "__main__":
     main_path = "/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/"
-    subjects = ["Fabienne"]
-    sessions = ["07"]
+    subjects = ["Fabienne", "Bibi"]
+    sessions = ["02", "03", "07"]
     sides = ["left", "right"]
-    suffix = "_corrected"
+    suffixs = ["_corrected", ""]
     for subject in subjects:
         for session in sessions:
             for side in sides:
-                title = f"{subject}_ses{session}_{side}{suffix}"
-                vis = Visualisation(title=title)
-                vis.plot_mesh(os.path.join(main_path, f"Surf_Hemi/{subject}/{subject}_ses{session}{suffix}.{side}.white.gii"))
-                vis.save_as_html(os.path.join(main_path, f"Surf_Hemi_html/{subject}"))
-                vis.show_fig()
+                for suffix in suffixs:
+                    title = f"{subject}_ses{session}_{side}{suffix}"
+                    vis = Visualisation(title=title)
+                    vis.plot_mesh(os.path.join(main_path, f"Surf_Hemi/{subject}/{subject}_ses{session}{suffix}.{side}.white.gii"))
+                    vis.save_as_html(os.path.join(main_path, f"Surf_Hemi_html/{subject}"))
+                    vis.show_fig()
