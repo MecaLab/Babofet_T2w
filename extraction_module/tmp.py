@@ -105,7 +105,7 @@ class Visualisation:
 if __name__ == "__main__":
     main_path = "/envau/work/meca/data/babofet_DB/2024_new_stuff/atlas_fetal_rhesus_v2/"
     subjects = ["Fabienne", "Bibi"]
-    sessions = ["02", "03", "07"]
+    sessions = ["03"]
     sides = ["left", "right"]
     suffixs = ["_corrected", ""]
     for subject in subjects:
