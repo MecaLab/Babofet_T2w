@@ -78,7 +78,7 @@ class Visualisation:
             i=faces[:, 0],
             j=faces[:, 1],
             k=faces[:, 2],
-            color='Beige',
+            color='lightblue',
             opacity=self.mesh_opacity,
             name="Mesh Full Opacity",
             lighting=self.lighting_effects,
