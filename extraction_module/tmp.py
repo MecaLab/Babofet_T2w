@@ -107,7 +107,7 @@ if __name__ == "__main__":
     subjects = ["Fabienne", "Bibi"]
     sessions = ["03"]
     sides = ["left", "right"]
-    suffixs = ["_corrected", ""]
+    suffixs = ["_corrected"]
     for subject in subjects:
         for session in sessions:
             for side in sides:
