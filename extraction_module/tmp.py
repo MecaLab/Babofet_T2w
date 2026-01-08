@@ -86,6 +86,8 @@ class Visualisation:
             lighting=self.lighting_effects,
             lightposition=self.lightposition,
             showlegend=True,
+            intensitymode="vertices",
+            intensity=1,
         ))
 
         self.fig.update_layout(
