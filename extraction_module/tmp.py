@@ -80,12 +80,12 @@ class Visualisation:
             i=faces[:, 0],
             j=faces[:, 1],
             k=faces[:, 2],
-            color='Blue',
+            color='lightblue',  # Utilise des couleurs plus claires
             opacity=self.mesh_opacity,
             name="Mesh Full Opacity",
             flatshading=True,  # Ajoute ça
-            lighting=self.lighting_effects,
-            lightposition=self.lightposition,
+            lighting=dict(ambient=0.9, diffuse=0.1, specular=0.1, roughness=0.5, fresnel=0.2),
+            lightposition=dict(x=100, y=200, z=300),
             showlegend=True,
         ))
 
