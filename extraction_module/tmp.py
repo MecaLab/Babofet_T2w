@@ -42,10 +42,8 @@ class Visualisation:
             center=dict(x=0, y=0, z=0),  # Looking at center
             up=dict(x=0, y=0, z=1)  # Up vector points in positive z direction
         )
-        self.lighting_effects = dict(ambient=0.4, diffuse=0.5, roughness=0.9, specular=0.6, fresnel=0.2)
-        self.lightposition = dict(
-            x=-10, y=10, z=10
-        )
+        self.lighting_effects = dict(ambient=0.7, diffuse=0.5, specular=0.3, roughness=0.5, fresnel=0.2)
+        self.lightposition = dict(x=100, y=200, z=300)
         self.colorscale = 'jet'
         self.all_color = [
             'Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple', 'Pink', 'Brown', 'Black', 'White',
