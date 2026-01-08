@@ -108,13 +108,12 @@ if __name__ == "__main__":
     subjects = ["Fabienne", "Bibi"]
     sessions = ["03"]
     sides = ["left", "right"]
-    suffixs = ["_corrected"]
+    suffixs = "_corrected"
     for subject in subjects:
         for session in sessions:
             for side in sides:
-                for suffix in suffixs:
-                    title = f"{subject}_ses{session}_{side}{suffix}"
-                    vis = Visualisation(title=title)
-                    vis.plot_mesh(os.path.join(main_path, f"Surf_Hemi/{subject}/{subject}_ses{session}{suffix}.{side}.white.gii"))
-                    vis.save_as_html(os.path.join(main_path, f"Surf_Hemi_html/{subject}"))
-                    vis.show_fig()
+                title = f"{subject}_ses{session}_{side}{suffixs}"
+                vis = Visualisation(title=title)
+                vis.plot_mesh(os.path.join(main_path, f"Surf_Hemi/{subject}/{subject}_ses{session}{suffixs}.{side}.white.gii"))
+                vis.save_as_html(os.path.join(main_path, f"Surf_Hemi_html/{subject}"))
+                vis.show_fig()
