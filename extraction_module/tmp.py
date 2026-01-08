@@ -85,6 +85,7 @@ class Visualisation:
             name="Mesh Full Opacity",
             lighting=self.lighting_effects,
             lightposition=self.lightposition,
+            showlegend=True,
         ))
 
         self.fig.update_layout(
