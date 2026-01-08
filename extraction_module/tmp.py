@@ -83,11 +83,10 @@ class Visualisation:
             color='Blue',
             opacity=self.mesh_opacity,
             name="Mesh Full Opacity",
+            flatshading=True,  # Ajoute ça
             lighting=self.lighting_effects,
             lightposition=self.lightposition,
             showlegend=True,
-            intensitymode="vertices",
-            intensity=1,
         ))
 
         self.fig.update_layout(
