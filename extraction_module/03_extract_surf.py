@@ -43,10 +43,22 @@ if __name__ == "__main__":
                     print(f"\t\t\tOutput file {output_file} already exists. Skipping.")
                     continue
 
-                input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
+                """input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
                 output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file}"
 
                 subprocess.run([
                     "singularity", "run", "-B", f"{base_path}:/home/atlas_fetal_rhesus_v2", "surf_proc_v0.0.2a.sif",
                     "generate_mesh", "-s", input_full_path, "-l", str(label_val), "-m", output_full_path
+                ], check=True)"""
+
+                input_full_path = os.path.join(subject_src_path, session, session_file)
+                output_full_path = os.path.join(subject_dst_path, output_file)
+
+                subprocess.run([
+                    "python3", "surface_processing.generate_mesh.py",
+                    "-s", input_full_path,
+                    "-l", str(label_val),
+                    "-m", output_full_path,
+                    "-r", 0,
+                    "-n", 10
                 ], check=True)
