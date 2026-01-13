@@ -242,7 +242,7 @@ if __name__ == "__main__":
         "left": 6,  # WM left
     }
 
-    suffix = "_corrected"
+    suffix = "_tmp"
 
     if not os.path.exists(dst_path):
         os.makedirs(dst_path)
