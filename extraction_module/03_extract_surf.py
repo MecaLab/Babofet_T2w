@@ -242,7 +242,7 @@ if __name__ == "__main__":
         "left": 6,  # WM left
     }
 
-    suffix = "_tmp"
+    suffix = "_corrected"
 
     if not os.path.exists(dst_path):
         os.makedirs(dst_path)
@@ -275,7 +275,8 @@ if __name__ == "__main__":
 
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
-                output_filename = session_file.replace(f"_hemi{suffix}.nii.gz", f"{suffix}.{label_name}.white.gii")
+                # output_filename = session_file.replace(f"_hemi{suffix}.nii.gz", f"{suffix}.{label_name}.white.gii")
+                output_filename = session_file.replace(f"_hemi{suffix}.nii.gz", f"_tmp.{label_name}.white.gii")
                 output_full_path = os.path.join(subject_dst_path, output_filename)
 
                 if os.path.exists(output_full_path):
