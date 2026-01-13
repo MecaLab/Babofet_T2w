@@ -300,4 +300,6 @@ if __name__ == "__main__":
                 except Exception as e:
                     print(f"\t\t\tError processing {label_name}: {e}")
 
+                exit()
+
 
