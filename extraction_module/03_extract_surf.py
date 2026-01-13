@@ -59,6 +59,6 @@ if __name__ == "__main__":
                     "-s", input_full_path,
                     "-l", str(label_val),
                     "-m", output_full_path,
-                    "-r", 0,
-                    "-n", 10
+                    "-r", "0",
+                    "-n", "10"
                 ], check=True)
