@@ -232,7 +232,6 @@ def mesh_extraction(
         smoothed_mesh.export(path_mesh)
 
 
-
 if __name__ == "__main__":
     base_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
     src_path = os.path.join(base_path, "Seg_Hemi")
@@ -243,7 +242,7 @@ if __name__ == "__main__":
         "left": 6,  # WM left
     }
 
-    suffix = "_tmp"
+    suffix = "_corrected"
 
     if not os.path.exists(dst_path):
         os.makedirs(dst_path)
@@ -257,34 +256,31 @@ if __name__ == "__main__":
 
         print(f"Processing subject: {subject}")
 
+        # Vérifier si subject_src_path est bien un dossier
+        if not os.path.isdir(subject_src_path):
+            continue
+
         for session in os.listdir(subject_src_path):
-            session_file = f"{subject}_{session}_hemi{suffix}.nii.gz"
-            if not os.path.exists(os.path.join(subject_src_path, session, session_file)):
+            session_dir = os.path.join(subject_src_path, session)
+            if not os.path.isdir(session_dir):
                 continue
+
+            session_file = f"{subject}_{session}_hemi{suffix}.nii.gz"
+            input_full_path = os.path.join(session_dir, session_file)
+
+            if not os.path.exists(input_full_path):
+                continue
+
             print(f"\tSession file: {session_file}")
 
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
-                output_file = session_file.replace(f"_hemi{suffix}.nii.gz", f"{suffix}.{label_name}.white.gii")
+                output_filename = session_file.replace(f"_hemi{suffix}.nii.gz", f"{suffix}.{label_name}.white.gii")
+                output_full_path = os.path.join(subject_dst_path, output_filename)
 
-                if os.path.exists(os.path.join(subject_dst_path, output_file)):
-                    print(f"\t\t\tOutput file {output_file} already exists. Skipping.")
+                if os.path.exists(output_full_path):
+                    print(f"\t\t\tOutput file {output_filename} already exists. Skipping.")
                     continue
-
-                # BASE_NIOLON_PATH
-
-                input_full_path = os.path.join(cfg.BASE_NIOLON_PATH, f"Seg_Hemi/{subject}/{session}/{session_file}")
-                output_full_path = os.path.join(cfg.BASE_NIOLON_PATH, f"Surf_Hemi/{subject}/{output_file}")
-
-                """
-                input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
-                output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file}"
-
-                subprocess.run([
-                    "singularity", "run", "-B", f"{base_path}:/home/atlas_fetal_rhesus_v2", "surf_proc_v0.0.2a.sif",
-                    "generate_mesh", "-s", input_full_path, "-l", str(label_val), "-m", output_full_path
-                ], check=True)
-                """
 
                 # --- APPEL DIRECT À LA FONCTION ---
                 try:
@@ -292,11 +288,11 @@ if __name__ == "__main__":
                         path_seg_vol=input_full_path,
                         labels_concat=str(label_val),
                         path_mesh=output_full_path,
-                        refinment=0,
+                        refinment=1,  # Valeur par défaut
                         nb_smoothing_iter=10,  # Valeur par défaut
                         smoothing_step=0.1  # Valeur par défaut
                     )
-                    print(f"\t\t\tSuccessfully generated: {output_file}")
+                    print(f"\t\t\tSuccessfully generated: {output_filename}")
                 except Exception as e:
                     print(f"\t\t\tError processing {label_name}: {e}")
 
