@@ -8,9 +8,9 @@ from skimage.measure import marching_cubes
 from skimage.measure import label as compute_cc
 from skimage.filters import gaussian
 import trimesh
-import tools.tca as utca
 import nibabel as nib
 sys.path.insert(0, os.path.abspath(os.curdir))
+import tools.tca as utca
 import configuration as cfg
 
 LUT_FILE = os.path.join(os.path.dirname(__file__), 'tools/critical186LUT.raw.gz')  # used in seg2surf()
