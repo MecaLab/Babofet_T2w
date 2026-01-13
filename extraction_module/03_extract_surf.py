@@ -16,8 +16,6 @@ if __name__ == "__main__":
     }
 
     args_extraction = sys.argv[1]  # should be viz or full
-    print(args_extraction)
-    exit()
     suffix = "_corrected"
 
     if not os.path.exists(dst_path):
