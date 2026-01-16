@@ -14,6 +14,7 @@ if not os.path.exists(dst_path):
     os.makedirs(dst_path)
 
 for subject in os.listdir(vol_3d_path):
+    print("Processing subject:", subject)
     vol_subject_path = os.path.join(vol_3d_path, subject)
     seg_subject_path = os.path.join(seg_3d_path, subject)
 
@@ -22,6 +23,7 @@ for subject in os.listdir(vol_3d_path):
         os.makedirs(vol_dst_subject_path)
 
     for session in os.listdir(vol_subject_path):
+        print("\tProcessing session:", session)
         vol_file = "reo-SVR-output-brain_rhesus.nii.gz"
         seg_file = "reo-SVR-output-brain_rhesus-mask-bet-1.nii.gz"
 
@@ -37,5 +39,3 @@ for subject in os.listdir(vol_3d_path):
 
         os.system("cp " + vol_src + " " + vol_dst)
         os.system("cp " + seg_src + " " + seg_dst)
-
-        exit()
