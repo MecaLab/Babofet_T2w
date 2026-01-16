@@ -23,7 +23,7 @@ for subject in os.listdir(vol_3d_path):
 
     for session in os.listdir(vol_subject_path):
         vol_file = "reo-SVR-output-brain_rhesus.nii.gz"
-        seg_file = "reo-SVR-output-brain_rhesus-mask-bet-1.nii"
+        seg_file = "reo-SVR-output-brain_rhesus-mask-bet-1.nii.gz"
 
         vol_dst_full_path = os.path.join(vol_dst_subject_path, session)
         if not os.path.exists(vol_dst_full_path):
