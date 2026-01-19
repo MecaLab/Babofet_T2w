@@ -10,7 +10,7 @@ def write_json_file(path, num_training, dataset_name):
         "channel_names": {
             "0": "T2W_t",
             "1": "T2W_t-1",
-            "2": "noNorm_Seg_t-1",
+            "2": "noNorm",
         },
         "labels": {
             "background": 0, "CSF": 1, "WM": 2, "GM": 3, "Ventricle": 4,
