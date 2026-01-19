@@ -40,6 +40,7 @@ if __name__ == "__main__":
     train_subject_sessions = data["train_subject_sessions"]
     test_subject_sessions = data["test_subject_sessions"]
 
+    seg_dataset = "gt_dataset_2"
 
     id_dataset = int(sys.argv[1])  # should be integer, eg, 1, 2, 3, etc.
     name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
@@ -68,9 +69,8 @@ if __name__ == "__main__":
 
     print("Training files...")
     for subject, sessions in train_subject_sessions.items():
-        break
         print(f"\tProcessing subject: {subject}")
-        input_path_3d_segs = os.path.join(cfg.BASE_PATH, "gt_dataset", "train_dataset")
+        input_path_3d_segs = os.path.join(cfg.BASE_PATH, seg_dataset, "train_dataset")
 
         input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     print("Testing files...")
     for subject, sessions in test_subject_sessions.items():
         print(f"\tProcessing subject: {subject}")
-        input_path_3d_segs = os.path.join(cfg.BASE_PATH, "gt_dataset", "test_dataset")
+        input_path_3d_segs = os.path.join(cfg.BASE_PATH, seg_dataset, "test_dataset")
 
         input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
 
@@ -120,4 +120,4 @@ if __name__ == "__main__":
 
     print("Dataset preparation completed")
     print("Running dataset check...")
-    # os.system(f"nnUNetv2_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")
+    os.system(f"nnUNetv2_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")
