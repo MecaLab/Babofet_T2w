@@ -30,6 +30,8 @@ def overlay_structure(base_path, structure_path, output_path, structure_label):
 
 
 if __name__ == "__main__":
+    print("coucou")
+    exit()
     atlas_folder = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
     seg_folder = os.path.join(atlas_folder, "Segmentations")
