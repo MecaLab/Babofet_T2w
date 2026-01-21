@@ -44,12 +44,15 @@ if __name__ == "__main__":
     name = sys.argv[2]
     trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs"
 
+
     if dataset_id < 10:
         dataset_name = f"Dataset00{dataset_id}_{name}"
     elif dataset_id < 100:
         dataset_name = f"Dataset0{dataset_id}_{name}"
     else:
         dataset_name = f"Dataset{dataset_id}_{name}"
+
+    model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
     input_folder = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name, "imagesTs")
 
@@ -62,5 +65,5 @@ if __name__ == "__main__":
     print("Starting inference")
 
     filename = "slurm_files/nnunet_prediction.slurm"
-    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer)
+    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path)
     subprocess.run(["sbatch", filename])
