@@ -5,14 +5,14 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path):
+def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path, partition="volta"):
     cross_val_path = os.path.join(model_path, f"crossval_results_folds_0_1_2_3_4")
     pkl_file = os.path.join(cross_val_path, "postprocessing.pkl")
     plans_json = os.path.join(cross_val_path, "plans.json")
     slurm_content = f"""#!/bin/bash
 
 #SBATCH --account='b391'
-#SBATCH --partition=pascal
+#SBATCH --partition={partition}
 #SBATCH --gres=gpu:1
 #SBATCH --time=30:00
 #SBATCH -c 1
@@ -43,6 +43,7 @@ if __name__ == "__main__":
     dataset_id = int(sys.argv[1])
     name = sys.argv[2]
     trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs"
+    partition = sys.argv[4] if len(sys.argv) > 4 else "volta"
 
 
     if dataset_id < 10:
@@ -65,5 +66,5 @@ if __name__ == "__main__":
     print("Starting inference")
 
     filename = "slurm_files/nnunet_prediction.slurm"
-    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path)
+    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path, partition)
     subprocess.run(["sbatch", filename])
