@@ -13,7 +13,6 @@ def write_slurm_file(dataset_id, trainer, filename):
 #SBATCH -c 12
 #SBATCH -o training_nnunet_%j.out
 #SBATCH -e training_nnunet_%j.err
-#SBATCH --array=0-4   # Lance 5 jobs : fold 0 à 4
 
 module purge
 module load userspace/all
@@ -24,8 +23,9 @@ source ~/.bashrc
 conda activate nnunet
 
 
-nnUNetv2_train {dataset_id} 3d_fullres 2 -tr {trainer} --npz --val 
+nnUNetv2_train {dataset_id} 3d_fullres 1 -tr {trainer} --npz --val 
 """
+    # #SBATCH --array=0-4   # Lance 5 jobs : fold 0 à 4
     # nnUNetv2_train {dataset_id} 3d_fullres $SLURM_ARRAY_TASK_ID -tr {trainer} --npz
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
