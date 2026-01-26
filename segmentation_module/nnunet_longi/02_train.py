@@ -22,6 +22,10 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
+export PYTHONPATH=$PYTHONPATH:/scratcj/lbaptiste/Babofet_T2w
+
+cd $HOME
+
 nnUNetv2_train {dataset_id} 3d_fullres 4 -tr {trainer} --npz --val 
 """
     # nnUNetv2_train {dataset_id} 3d_fullres $SLURM_ARRAY_TASK_ID -tr {trainer} --npz
