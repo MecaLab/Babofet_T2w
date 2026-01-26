@@ -23,10 +23,10 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
-# nnUNetv2_train {dataset_id} 3d_fullres $SLURM_ARRAY_TASK_ID -tr {trainer} --npz
+
 nnUNetv2_train {dataset_id} 3d_fullres 2 -tr {trainer} --npz --val 
 """
-    # nnUNetv2_train {dataset_id} 3d_fullres all -tr {trainer} --npz
+    # nnUNetv2_train {dataset_id} 3d_fullres $SLURM_ARRAY_TASK_ID -tr {trainer} --npz
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
