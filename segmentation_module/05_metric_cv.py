@@ -11,11 +11,11 @@ import configuration as cfg
 # Dossier où sont stockés les résultats nnUNet
 BASE_DIR = cfg.NNUNET_RESULTS_PATH
 
-BASE_DIR = "../data/nnUNet_trained_models"
+BASE_DIR = "/scratch/lbaptiste/data/nnUNet_trained_models"
 
 MODELS = {
     "Dataset013_OnlyYoungSess": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
-    "Dataset020_tmp_logni": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
+    "Dataset020_tmp_longi": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
 }
 
 CLASSES = ["1", "2", "3", "4"]
