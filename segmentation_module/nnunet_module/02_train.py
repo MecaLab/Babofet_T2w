@@ -23,7 +23,7 @@ source ~/.bashrc
 conda activate nnunet
 
 
-nnUNetv2_train {dataset_id} 3d_fullres 1 -tr {trainer} --npz --val 
+nnUNetv2_train {dataset_id} 3d_fullres 4 -tr {trainer} --npz --val 
 """
     # #SBATCH --array=0-4   # Lance 5 jobs : fold 0 à 4
     # nnUNetv2_train {dataset_id} 3d_fullres $SLURM_ARRAY_TASK_ID -tr {trainer} --npz
