@@ -14,9 +14,8 @@ BASE_DIR = cfg.NNUNET_RESULTS_PATH
 BASE_DIR = "../data/nnUNet_trained_models"
 
 MODELS = {
-    "Dataset010_Starter": "nnUNetTrainer_2000epochs__nnUNetPlans__3d_fullres",
-    "Dataset011_DebiasData": "nnUNetTrainer_2000epochs__nnUNetPlans__3d_fullres",
-    "Dataset012_FullExp": "nnUNetTrainerBias_2000epochs__nnUNetPlans__3d_fullres"
+    "Dataset013_OnlyYoungSess": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
+    "Dataset020_tmp_logni": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
 }
 
 CLASSES = ["1", "2", "3", "4"]
