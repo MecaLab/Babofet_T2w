@@ -36,11 +36,10 @@ singularity exec \\
     -B "$MAIN_PATH":/data \\
     -B "$OUTPUT_PATH":/output \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
-    niftymic_run_reconstruction_pipeline \\
+    niftymic_reconstruct_volume \\
         --filenames {input_stacks} \\
-        --dir-output /output/ \\
+        --output /output/ \\
         --isotropic-resolution 0.8 \\
-        --bias-field-correction 0 \\
 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
