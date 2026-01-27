@@ -38,7 +38,7 @@ singularity exec \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
     niftymic_reconstruct_volume \\
         --filenames {input_stacks} \\
-        --output /output/ \\
+        --output $OUTPUT_FILE \\
         --isotropic-resolution 0.8 \\
 
 """
