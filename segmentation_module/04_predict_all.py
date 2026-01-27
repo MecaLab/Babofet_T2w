@@ -70,12 +70,7 @@ if __name__ == "__main__":
 
     looking_for = ["Borgne_ses06"]
 
-    if dataset_id < 10:
-        dataset_name = f"Dataset00{dataset_id}_{name}"
-    elif dataset_id < 100:
-        dataset_name = f"Dataset0{dataset_id}_{name}"
-    else:
-        dataset_name = f"Dataset{dataset_id}_{name}"
+    dataset_name = f"Dataset{dataset_id:03d}_{name}"
 
     input_dir_3d_vol = "inference_all"
 
@@ -89,7 +84,7 @@ if __name__ == "__main__":
         os.makedirs(tmp_path)
 
     for sess in looking_for:
-        curr_sess = sess.split("_")[-1][:2]
+        curr_sess = sess.split("_")[-1][3:]
         print(curr_sess)
         exit()
 
