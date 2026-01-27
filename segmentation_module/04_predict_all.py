@@ -79,7 +79,7 @@ if __name__ == "__main__":
     
     # copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Bibi"])
 
-    seg_dataset = os.path.join(cfg.DATA_PATH, "gt_dataset_2/train_dataset")
+    seg_dataset = os.path.join(cfg.BASE_PATH, "gt_dataset_2/train_dataset")
 
     tmp_path = os.path.join(input_dir_3d_vol, "pred_tmp")
     if not os.path.exists(tmp_path):
