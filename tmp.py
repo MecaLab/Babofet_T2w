@@ -1,7 +1,7 @@
 import os
 import sys
 import configuration as cfg
-
+import subprocess
 
 def write_slurm_file_nifty(denoised_files):
     filename = "slurm_files/tmp_nifty_reconstruction.slurm"
@@ -53,5 +53,7 @@ singularity exec \\
 if __name__ == "__main__":
     denoised_files = os.listdir("/scratch/lbaptiste/data/tmp_data/")
     write_slurm_file_nifty(denoised_files)
+    print("lets go")
+    subprocess.run(["sbatch", "slurm_files/tmp_nifty_reconstruction.slurm"])
 
 
