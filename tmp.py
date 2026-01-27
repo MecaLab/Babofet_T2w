@@ -12,8 +12,8 @@ def write_slurm_file_nifty(denoised_files):
 #SBATCH --time=24:00:00
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=48G
-#SBATCH -o recon_pipeline_niftymic_tmp.out
-#SBATCH -e recon_pipeline_niftymic_tmp.err
+#SBATCH -o recon_pipeline_niftymic_tmp_bis.out
+#SBATCH -e recon_pipeline_niftymic_tmp_bis.err
 
 MAIN_PATH="/scratch/lbaptiste/data/tmp_data/"
 
