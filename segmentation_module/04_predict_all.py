@@ -26,8 +26,7 @@ module load cuda/12.4
 
 source ~/.bashrc
 conda activate nnunet
-
-nnUNetv2_find_best_configuration {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4
+x
 nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4 -p nnUNetPlans
 nnUNetv2_apply_postprocessing -i {output_folder} -o {output_folder} -pp_pkl_file {pkl_file} -np 8 -plans_json {plans_json}
 
@@ -98,8 +97,8 @@ if __name__ == "__main__":
 
         if os.path.exists(full_path_curr_sess) and os.path.exists(full_path_prev_sess) and os.path.exists(full_path_prev_seg):
             dest_curr_sess = os.path.join(tmp_path, f"{file}_0000.nii.gz")
-            dest_prev_sess = os.path.join(tmp_path, f"{prev_sess}_0001.nii.gz")
-            dest_prev_seg = os.path.join(tmp_path, f"{prev_sess}_0002.nii.gz")
+            dest_prev_sess = os.path.join(tmp_path, f"{file}_0001.nii.gz")
+            dest_prev_seg = os.path.join(tmp_path, f"{file}_0002.nii.gz")
 
             subprocess.run(["cp", full_path_curr_sess, dest_curr_sess])
             subprocess.run(["cp", full_path_prev_sess, dest_prev_sess])
