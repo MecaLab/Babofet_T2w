@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
     for sess in looking_for:
         subject, sess = sess.split("_")
-        curr_sess = sess[-1][3:]
+        curr_sess = sess[3:]
         prev_nb = int(curr_sess) - 1
         prev_sess = f"{subject}_ses{prev_nb:02d}"
         print(prev_sess)
