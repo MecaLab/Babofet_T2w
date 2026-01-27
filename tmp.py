@@ -21,7 +21,6 @@ OUTPUT_PATH="HYPE00_tmp"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 OUTPUT_FILE="srr_3d_tmp.nii.gz"
 
-TEMPLATE_PATH="/scratch/lbaptiste/data/atlas_fetal_rhesus/"
 """
 
     slurm_content += "\n"
@@ -34,9 +33,8 @@ TEMPLATE_PATH="/scratch/lbaptiste/data/atlas_fetal_rhesus/"
 
     slurm_content += f"""
 singularity exec \\
-    -B "MAIN_PATH":/data \\
+    -B "$MAIN_PATH":/data \\
     -B "$OUTPUT_PATH":/output \\
-    -B "$TEMPLATE_PATH":/template \\
     /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
     niftymic_run_reconstruction_pipeline \\
         --filenames {input_stacks} \\
