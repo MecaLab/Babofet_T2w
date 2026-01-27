@@ -90,6 +90,7 @@ if __name__ == "__main__":
 
     for sess in looking_for:
         curr_sess = sess.split("_")[-1][:2]
+        print(curr_sess)
         exit()
 
 
