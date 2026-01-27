@@ -7,7 +7,7 @@ def write_slurm_file(dataset_id, filename):
     slurm_content = f"""#!/bin/bash
 
 #SBATCH --account='b391'
-#SBATCH --partition=pascal
+#SBATCH --partition=volta
 #SBATCH --gres=gpu:1
 #SBATCH --time=120:00:00
 #SBATCH -c 12
