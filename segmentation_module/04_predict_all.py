@@ -84,8 +84,11 @@ if __name__ == "__main__":
         os.makedirs(tmp_path)
 
     for sess in looking_for:
-        curr_sess = sess.split("_")[-1][3:]
-        print(curr_sess)
+        subject, sess = sess.split("_")
+        curr_sess = sess[-1][3:]
+        prev_nb = int(curr_sess) - 1
+        prev_sess = f"{subject}_ses{prev_nb:02d}"
+        print(prev_sess)
         exit()
 
 
