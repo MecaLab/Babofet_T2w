@@ -1,0 +1,16 @@
+{
+  "train_subject_sessions": {
+    "Borgne": ["ses01", "ses03","ses05"],
+    "Bibi": ["ses01", "ses02", "ses04"],
+    "Fabienne": ["ses01", "ses02", "ses04"],
+    "Filoutte": ["ses01", "ses02", "ses03"],
+    "Formule": ["ses02", "ses03", "ses04"]
+  },
+  "test_subject_sessions": {
+    "Borgne": ["ses04"],
+    "Bibi": ["ses03"],
+    "Fabienne": ["ses03"],
+    "Filoutte": ["ses04"],
+    "Formule": ["ses01"]
+  }
+}
