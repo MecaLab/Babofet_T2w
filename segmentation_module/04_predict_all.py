@@ -79,19 +79,32 @@ if __name__ == "__main__":
     
     # copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Bibi"])
 
+    seg_dataset = os.path.join(cfg.DATA_PATH, "gt_dataset_2/train_dataset")
+
     tmp_path = os.path.join(input_dir_3d_vol, "pred_tmp")
     if not os.path.exists(tmp_path):
         os.makedirs(tmp_path)
 
-    for sess in looking_for:
-        subject, sess = sess.split("_")
+    for file in looking_for:
+        subject, sess = file.split("_")
         curr_sess = sess[3:]
         prev_nb = int(curr_sess) - 1
         prev_sess = f"{subject}_ses{prev_nb:02d}"
-        print(prev_sess)
+
+        full_path_curr_sess = os.path.join(input_dir_3d_vol, f"{file}_0000.nii.gz")
+        full_path_prev_sess = os.path.join(input_dir_3d_vol, f"{prev_sess}_0000.nii.gz")
+        full_path_prev_seg = os.path.join(seg_dataset, f"{prev_sess}.nii.gz")
+
+        if os.path.exists(full_path_curr_sess) and os.path.exists(full_path_prev_sess) and os.path.exists(full_path_prev_seg):
+            dest_curr_sess = os.path.join(tmp_path, f"{file}_0000.nii.gz")
+            dest_prev_sess = os.path.join(tmp_path, f"{prev_sess}_0001.nii.gz")
+            dest_prev_seg = os.path.join(tmp_path, f"{prev_sess}_0002.nii.gz")
+
+            subprocess.run(["cp", full_path_curr_sess, dest_curr_sess])
+            subprocess.run(["cp", full_path_prev_sess, dest_prev_sess])
+            subprocess.run(["cp", full_path_prev_seg, dest_prev_seg])
+
         exit()
-
-
 
     model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
