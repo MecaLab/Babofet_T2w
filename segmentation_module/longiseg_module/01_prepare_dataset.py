@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
     num_training = len(os.listdir(labels_tr_path))
     write_json_file(dataset_json, num_training, dataset_name, use_debias)
-    write_patients_tr(patients_tr_json, dico_subj.keys())
+    write_patients_tr(patients_tr_json, dico_subj)
 
     print("Dataset preparation completed")
     print("Running dataset check...")
