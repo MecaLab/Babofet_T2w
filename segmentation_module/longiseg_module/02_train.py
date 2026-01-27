@@ -3,7 +3,7 @@ import os
 import subprocess
 
 
-def write_slurm_file(dataset_id, filename):
+def write_slurm_file(dataset_id, trainer, filename):
     slurm_content = f"""#!/bin/bash
 
 #SBATCH --account='b391'
@@ -25,7 +25,7 @@ conda activate longiseg_new
 
 export PYTHONPATH=$PYTHONPATH:/scratch/lbaptiste/Babofet_T2w/LongiSeg
 
-LongiSeg_train {dataset_id} 3d_fullres $SLURM_ARRAY_TASK_ID --npz 
+LongiSeg_train {dataset_id} 3d_fullres $SLURM_ARRAY_TASK_ID -tr {trainer} --npz 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
@@ -37,9 +37,10 @@ if __name__ == "__main__":
     print("Starting training")
 
     dataset_id = sys.argv[1]
+    trainer = sys.argv[2]
 
     filename = "slurm_files/longiseg_train.slurm"
-    write_slurm_file(dataset_id, filename)
+    write_slurm_file(dataset_id, trainer, filename)
     subprocess.run(["sbatch", filename])
 
 
