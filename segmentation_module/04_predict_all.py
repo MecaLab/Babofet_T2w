@@ -27,6 +27,7 @@ module load cuda/12.4
 source ~/.bashrc
 conda activate nnunet
 
+nnUNetv2_find_best_configuration {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4
 nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4 -p nnUNetPlans
 nnUNetv2_apply_postprocessing -i {output_folder} -o {output_folder} -pp_pkl_file {pkl_file} -np 8 -plans_json {plans_json}
 
@@ -108,7 +109,7 @@ if __name__ == "__main__":
             subprocess.run(["cp", full_path_prev_sess, dest_prev_sess])
             subprocess.run(["cp", full_path_prev_seg, dest_prev_seg])
 
-        exit()
+            print(f"Copied files for {file} and {prev_sess} to {tmp_path}")
 
     model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
