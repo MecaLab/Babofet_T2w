@@ -95,6 +95,10 @@ if __name__ == "__main__":
         full_path_prev_sess = os.path.join(input_dir_3d_vol, f"{prev_sess}_0000.nii.gz")
         full_path_prev_seg = os.path.join(seg_dataset, f"{prev_sess}.nii.gz")
 
+        print(full_path_curr_sess)
+        print(full_path_prev_sess)
+        print(full_path_prev_seg)
+
         if os.path.exists(full_path_curr_sess) and os.path.exists(full_path_prev_sess) and os.path.exists(full_path_prev_seg):
             dest_curr_sess = os.path.join(tmp_path, f"{file}_0000.nii.gz")
             dest_prev_sess = os.path.join(tmp_path, f"{prev_sess}_0001.nii.gz")
