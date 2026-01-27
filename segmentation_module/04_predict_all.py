@@ -68,6 +68,8 @@ if __name__ == "__main__":
     trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs
     partition = sys.argv[4]  # e.g., "volta", "kepler", etc
 
+    looking_for = ["Borgne_ses06"]
+
     if dataset_id < 10:
         dataset_name = f"Dataset00{dataset_id}_{name}"
     elif dataset_id < 100:
@@ -80,7 +82,17 @@ if __name__ == "__main__":
     if not os.path.exists(input_dir_3d_vol):
         os.makedirs(input_dir_3d_vol)
     
-    copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Bibi"])
+    # copy_files(cfg.DATA_PATH, input_dir_3d_vol, subjects=["Bibi"])
+
+    tmp_path = os.path.join(input_dir_3d_vol, "pred_tmp")
+    if not os.path.exists(tmp_path):
+        os.makedirs(tmp_path)
+
+    for sess in looking_for:
+        curr_sess = sess.split("_")[-1][:2]
+        exit()
+
+
 
     model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
