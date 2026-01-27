@@ -33,8 +33,7 @@ def write_json_file(path, num_training, dataset_name, use_debias=False):
 
 def write_patients_tr(path, patients):
     with open(path, 'w') as f:
-        for patient in patients:
-            f.write(f"{patient}\n")
+        json.dump(patients, f, indent=4)
 
 
 if __name__ == "__main__":
@@ -82,9 +81,6 @@ if __name__ == "__main__":
             print(f"\t\tProcessing session: {session}")
 
             dico_subj[subject].append(f"{subject}_{session}")
-            print(dico_subj)
-
-            exit()
 
             input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
             input_path_3d_seg = os.path.join(input_path_3d_segs, f"{subject}_{session}.nii.gz")
