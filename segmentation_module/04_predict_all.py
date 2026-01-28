@@ -26,7 +26,7 @@ module load cuda/12.4
 
 source ~/.bashrc
 conda activate nnunet
-x
+
 nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4 -p nnUNetPlans
 nnUNetv2_apply_postprocessing -i {output_folder} -o {output_folder} -pp_pkl_file {pkl_file} -np 8 -plans_json {plans_json}
 
@@ -67,6 +67,7 @@ if __name__ == "__main__":
     name = sys.argv[2]
     trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs
     partition = sys.argv[4]  # e.g., "volta", "kepler", etc
+    use_longi = sys.argv[5].lower() == 'true'  # 'True' or 'False'
 
     looking_for = ["Borgne_ses06"]
 
@@ -85,6 +86,8 @@ if __name__ == "__main__":
     if not os.path.exists(tmp_path):
         os.makedirs(tmp_path)
 
+    subprocess.run(["rm", "-rf", os.path.join(tmp_path, "*")])
+
     for file in looking_for:
         subject, sess = file.split("_")
         curr_sess = sess[3:]
@@ -92,19 +95,20 @@ if __name__ == "__main__":
         prev_sess = f"{subject}_ses{prev_nb:02d}"
 
         full_path_curr_sess = os.path.join(input_dir_3d_vol, f"{file}_0000.nii.gz")
-        full_path_prev_sess = os.path.join(input_dir_3d_vol, f"{prev_sess}_0000.nii.gz")
-        full_path_prev_seg = os.path.join(seg_dataset, f"{prev_sess}.nii.gz")
+        dest_curr_sess = os.path.join(tmp_path, f"{file}_0000.nii.gz")
+        subprocess.run(["cp", full_path_curr_sess, dest_curr_sess])
 
-        if os.path.exists(full_path_curr_sess) and os.path.exists(full_path_prev_sess) and os.path.exists(full_path_prev_seg):
-            dest_curr_sess = os.path.join(tmp_path, f"{file}_0000.nii.gz")
+        if use_longi:
+            full_path_prev_sess = os.path.join(input_dir_3d_vol, f"{prev_sess}_0000.nii.gz")
+            full_path_prev_seg = os.path.join(seg_dataset, f"{prev_sess}.nii.gz")
+
             dest_prev_sess = os.path.join(tmp_path, f"{file}_0001.nii.gz")
             dest_prev_seg = os.path.join(tmp_path, f"{file}_0002.nii.gz")
 
-            subprocess.run(["cp", full_path_curr_sess, dest_curr_sess])
             subprocess.run(["cp", full_path_prev_sess, dest_prev_sess])
             subprocess.run(["cp", full_path_prev_seg, dest_prev_seg])
 
-            print(f"Copied files for {file} and {prev_sess} to {tmp_path}")
+        print(f"Copied files for {file} and {prev_sess} to {tmp_path}")
 
     model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
