@@ -68,6 +68,7 @@ if __name__ == "__main__":
     trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs
     partition = sys.argv[4]  # e.g., "volta", "kepler", etc
     use_longi = sys.argv[5].lower() == 'true'  # 'True' or 'False'
+    use_debias = sys.argv[6].lower() == 'true'  # 'True' or 'False'
 
     looking_for = ["Borgne_ses06"]
 
@@ -107,6 +108,14 @@ if __name__ == "__main__":
 
             subprocess.run(["cp", full_path_prev_sess, dest_prev_sess])
             subprocess.run(["cp", full_path_prev_seg, dest_prev_seg])
+
+        if use_debias:
+            input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
+            input_path_3d_stack_bis = os.path.join(input_path_3d_stacks, sess, "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+
+            output_path_3d_stack_bis = os.path.join(tmp_path, f"{file}_0001.nii.gz")
+
+            subprocess.run(["cp", input_path_3d_stack_bis, output_path_3d_stack_bis])
 
         print(f"Copied files for {file} and {prev_sess} to {tmp_path}")
 
