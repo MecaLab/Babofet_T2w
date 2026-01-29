@@ -51,8 +51,9 @@ if __name__ == "__main__":
     model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
     input_folder = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name, "imagesTs")
+    print(input_folder)
     patients_json = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name, "patientsTr.json")
-
+    exit()
     # input_folder = os.path.join(cfg.CODE_PATH, "tmp_seg_input")
     output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
 
