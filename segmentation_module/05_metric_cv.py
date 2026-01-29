@@ -40,9 +40,9 @@ def load_summary(path):
 dice_by_class_models = {}  # structure : model -> class -> list[fold dice]
 
 for model_name, trainer_dir in MODELS.items():
-    if "nnUNet" in trainer_dir:
+    if trainer_dir.startswith("nnUNetTrainer"):
         model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, model_name, trainer_dir)
-    elif "LongiSeg" in trainer_dir:
+    elif trainer_dir.startswith("LongiSegTrainer"):
         model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH, model_name, trainer_dir)
 
     # Structure pour stocker les Dice d'un modèle
