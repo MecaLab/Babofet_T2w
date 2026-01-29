@@ -10,7 +10,7 @@ import configuration as cfg
 MODELS = {
     "Dataset013_OnlyYoungSess": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
     "Dataset020_tmp_longi": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
-    "Dataset01_FirstTry": "LongiSegTrainer__nnUNetPlans__3d_fullres",
+    "Dataset001_FirstTry": "LongiSegTrainer__nnUNetPlans__3d_fullres",
 }
 
 CLASSES = ["1", "2", "3", "4"]
@@ -43,10 +43,7 @@ for model_name, trainer_dir in MODELS.items():
     if "nnUNet" in trainer_dir:
         model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, model_name, trainer_dir)
     else:
-        print(trainer_dir)
         model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH, model_name, trainer_dir)
-        print(model_path)
-        print("\n\n\n")
 
     # Structure pour stocker les Dice d'un modèle
     dice_by_class = {cls: [] for cls in CLASSES}
