@@ -7,15 +7,10 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
-
-# Dossier où sont stockés les résultats nnUNet
-BASE_DIR = cfg.NNUNET_RESULTS_PATH
-
-BASE_DIR = "/scratch/lbaptiste/data/nnUNet_trained_models"
-
 MODELS = {
     "Dataset013_OnlyYoungSess": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
     "Dataset020_tmp_longi": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
+    "Dataset01_FirstTry": "LongiSegTrainer__nnUNetPlans__3d_fullres",
 }
 
 CLASSES = ["1", "2", "3", "4"]
@@ -45,7 +40,10 @@ def load_summary(path):
 dice_by_class_models = {}  # structure : model -> class -> list[fold dice]
 
 for model_name, trainer_dir in MODELS.items():
-    model_path = os.path.join(BASE_DIR, model_name, trainer_dir)
+    if "nnUNet" in trainer_dir:
+        model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, model_name, trainer_dir)
+    elif "LongiSeg" in trainer_dir:
+        model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH, model_name, trainer_dir)
 
     # Structure pour stocker les Dice d'un modèle
     dice_by_class = {cls: [] for cls in CLASSES}
