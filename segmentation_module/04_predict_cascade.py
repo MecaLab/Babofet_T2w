@@ -109,3 +109,5 @@ if __name__ == "__main__":
          start_ses=5,
          end_ses=10
     )
+
+    subprocess.run(["sbatch", "slurm_files/run_cascade.slurm"])
