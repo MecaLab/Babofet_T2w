@@ -11,7 +11,7 @@ MODELS = {
     "Dataset013_OnlyYoungSess": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
     "Dataset020_tmp_longi": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
     "Dataset001_FirstTry": "LongiSegTrainer__nnUNetPlans__3d_fullres",
-    "Dataset001_FirstTry": "LongiSegTrainerDiffWeighting__nnUNetPlans__3d_fullres",
+    "Dataset001_FirstTry_dup": "LongiSegTrainerDiffWeighting__nnUNetPlans__3d_fullres",
 }
 
 CLASSES = ["1", "2", "3", "4"]
@@ -36,7 +36,11 @@ def compute_metric_models(nb_folds=5):
         if trainer_dir.startswith("nnUNetTrainer"):
             model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, model_name, trainer_dir)
         elif trainer_dir.startswith("LongiSegTrainer"):
-            model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH, model_name, trainer_dir)
+            if "dup" in model_name:
+                original_model_name = model_name.replace("_dup", "")
+                model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH, original_model_name, trainer_dir)
+            else:
+                model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH, model_name, trainer_dir)
 
         dice_by_class = {cls: [] for cls in CLASSES}
 
