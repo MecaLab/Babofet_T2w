@@ -11,7 +11,7 @@ MODELS = {
     "Dataset013_OnlyYoungSess": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
     "Dataset020_tmp_longi": "nnUNetTrainerBias_1000epochs__nnUNetPlans__3d_fullres",
     "Dataset001_FirstTry": "LongiSegTrainer__nnUNetPlans__3d_fullres",
-    "Dataset001_FirsTry": "LongiSegTrainerDiffWeighting__nnUNetPlans__3d_fullres",
+    "Dataset001_FirstTry": "LongiSegTrainerDiffWeighting__nnUNetPlans__3d_fullres",
 }
 
 CLASSES = ["1", "2", "3", "4"]
