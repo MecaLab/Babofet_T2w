@@ -5,88 +5,102 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def get_actual_previous_session(subject, current_session, full_dict):
-    """Trouve la session précédente réelle dans la liste des sessions disponibles."""
-    sessions = sorted(full_dict[subject])
-    idx = sessions.index(current_session)
-    if idx > 0:
-        return sessions[idx - 1]
-    return None
-
-
-import os
-
-
-def write_slurm_cascade(base_input, final_output, filename, dataset_id, trainer, model_path, start_ses, end_ses,
-                        partition="volta"):
+def write_longiseg_cascade(base_input, final_output, filename, dataset_id, trainer, model_path, start_ses, end_ses,
+                           partition="volta"):
     cross_val_path = os.path.join(model_path, f"crossval_results_folds_0_1_2_3_4")
     pkl_file = os.path.join(cross_val_path, "postprocessing.pkl")
     plans_json = os.path.join(cross_val_path, "plans.json")
 
     slurm_content = f"""#!/bin/bash
-#SBATCH --account='b391'
+
+#SBATCH --account='b219'
 #SBATCH --partition={partition}
 #SBATCH --gres=gpu:1
-#SBATCH --time=04:00:00
+#SBATCH --time=08:00:00
 #SBATCH -c 12
-#SBATCH -o predict_cascade_%j.out
-#SBATCH -e predict_cascade_%j.err
+#SBATCH -o cascade_%j.out
+#SBATCH -e cascade_%j.err
 
 module purge
-module load userspace/all 
-module load gcc/14.1.0
-module load cuda/12.4
-
+module load userspace/all gcc/14.1.0 cuda/12.4
 source ~/.bashrc
 conda activate longiseg_new
 
-# Dossiers de travail temporaires
-CURRENT_INPUT="{base_input}"
+# --- CONFIGURATION ---
+BASE_INPUT="{base_input}"
 FINAL_DEST="{final_output}"
-mkdir -p $FINAL_DEST
+mkdir -p "$FINAL_DEST"
 
-# Boucle de cascade de {start_ses} à {end_ses}
+WORK_DIR="work_longiseg_$SLURM_JOB_ID"
+mkdir -p "$WORK_DIR"
+
+# Initialisation du dossier d'entrée
+CURRENT_INPUT="$WORK_DIR/step_input"
+mkdir -p "$CURRENT_INPUT"
+cp "$BASE_INPUT"/*.nii.gz "$CURRENT_INPUT/"
+
+# --- BOUCLE DE CASCADE ---
 for (( s={start_ses}; s<{end_ses}; s++ ))
 do
-    # Formater les noms de sessions (ex: 05, 06...)
-    NEXT_S=$((s + 1))
     CURR_STR=$(printf "%02d" $s)
+    NEXT_S=$((s + 1))
     NEXT_STR=$(printf "%02d" $NEXT_S)
 
-    echo "--- Prédiction de la session $NEXT_STR à partir de $CURR_STR ---"
+    echo ">>> CASCADE STEP: Predisant session $NEXT_STR depuis $CURR_STR"
 
-    TMP_OUT="tmp_out_ses_$NEXT_STR"
-    mkdir -p $TMP_OUT
+    STEP_OUT="$WORK_DIR/out_ses_$NEXT_STR"
+    mkdir -p "$STEP_OUT"
 
-    # 1. Inférence
-    LongiSeg_predict -i $CURRENT_INPUT -o $TMP_OUT -d {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4 -p nnUNetPlans
+    # 1. GÉNÉRATION DYNAMIQUE DU PATIENTS.JSON
+    # On scanne le dossier CURRENT_INPUT pour lister les patients présents pour cette session précise
+    JSON_PATH="$WORK_DIR/patients_step.json"
+    python3 -c "
+import os, json
+files = [f for f in os.listdir('$CURRENT_INPUT') if f.endswith('.nii.gz')]
+patients = {{}}
+for f in files:
+    # On suppose le format: PatientID_sesXX_0000.nii.gz
+    parts = f.split('_ses')
+    if len(parts) > 1:
+        p_id = parts[0]
+        patients[p_id] = ['ses$CURR_STR']
+with open('$JSON_PATH', 'w') as jout:
+    json.dump(patients, jout)
+"
 
-    # 2. Post-processing
-    LongiSeg_apply_postprocessing -i $TMP_OUT -o $TMP_OUT -pp_pkl_file {pkl_file} -np 8 -plans_json {plans_json}
+    # 2. INFERENCE LONGISEG
+    LongiSeg_predict -i "$CURRENT_INPUT" -o "$STEP_OUT" -d {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4 --save_probabilities -pat "$JSON_PATH"
 
-    # 3. Préparation pour le prochain tour
-    # On déplace le résultat vers le dossier final
-    cp $TMP_OUT/*.nii.gz $FINAL_DEST/
+    # 3. POST-PROCESSING
+    LongiSeg_apply_postprocessing -i "$STEP_OUT" -o "$STEP_OUT" -pp_pkl_file {pkl_file} -np 8 -plans_json {plans_json}
 
-    # On prépare le dossier input du prochain tour : 
-    # Le résultat 'Patient_ses05.nii.gz' doit devenir 'Patient_ses06_0000.nii.gz'
-    NEXT_INPUT="input_ses_$NEXT_STR"
-    mkdir -p $NEXT_INPUT
+    # 4. SAUVEGARDE ET PRÉPARATION DU STEP SUIVANT
+    cp "$STEP_OUT"/*.nii.gz "$FINAL_DEST/"
 
-    for f in $TMP_OUT/*.nii.gz; do
-        basename=$(basename "$f" .nii.gz)
-        # On remplace l'ancienne session par la nouvelle dans le nom du fichier
-        new_name=$(echo $basename | sed "s/ses$CURR_STR/ses$NEXT_STR/")
-        cp "$f" "$NEXT_INPUT/${{new_name}}_0000.nii.gz"
+    # On prépare le nouveau dossier d'entrée pour l'itération s+1
+    NEXT_INPUT_DIR="$WORK_DIR/step_input_next"
+    mkdir -p "$NEXT_INPUT_DIR"
+
+    for f in "$STEP_OUT"/*.nii.gz; do
+        fname=$(basename "$f" .nii.gz)
+        # On remplace 'ses05' par 'ses06' et on force le suffixe modalité _0000
+        new_name=$(echo "$fname" | sed "s/ses$CURR_STR/ses$NEXT_STR/")
+        cp "$f" "$NEXT_INPUT_DIR/${{new_name}}_0000.nii.gz"
     done
 
-    # Mettre à jour le pointeur pour la prochaine itération
-    CURRENT_INPUT=$NEXT_INPUT
-    rm -rf $TMP_OUT
+    # Rotation des dossiers
+    rm -rf "$CURRENT_INPUT"
+    mv "$NEXT_INPUT_DIR" "$CURRENT_INPUT"
+    rm -rf "$STEP_OUT"
 done
 
-echo "Cascade terminée. Résultats dans $FINAL_DEST"
+rm -rf "$WORK_DIR"
+echo "Cascade LongiSeg terminée."
 """
+    with open(filename, "w", encoding="utf-8") as slurm_file:
+        slurm_file.write(slurm_content)
+    os.chmod(filename, 0o700)
+    print(f"Script de cascade généré : {filename}")
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
     os.chmod(filename, 0o700)
@@ -99,7 +113,7 @@ if __name__ == "__main__":
     base_input = "tmp_borgne_data"
     final_output = "tmp_borgne_data/results_cascade"
 
-    write_slurm_cascade(
+    write_longiseg_cascade(
          base_input=base_input,
          final_output=final_output,
          filename="slurm_files/run_cascade.slurm",
