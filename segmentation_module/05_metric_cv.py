@@ -50,6 +50,8 @@ def compute_metric_models(nb_folds=5):
                 dice_value = summary["mean"][cls]["Dice"]
                 dice_by_class[cls].append(dice_value)
 
+        if model_name in dice_by_class_models:
+            model_name = f"{model_name}_dup"
         dice_by_class_models[model_name] = dice_by_class
 
     return dice_by_class_models
