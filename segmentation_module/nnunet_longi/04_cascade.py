@@ -47,5 +47,5 @@ def organize_files(subject, input_path, output_path):
 
 if __name__ == "__main__":
     input_path = cfg.DATA_PATH
-    output_path = ""
+    output_path = "data_nnunet_longi/Borgne"
     organize_files("Borgne", input_path, output_path)
