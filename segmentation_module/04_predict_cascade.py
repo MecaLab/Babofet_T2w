@@ -15,8 +15,8 @@ def write_slurm_file(filename):
 
 # --- CONFIGURATION ---
 INPUT_DIR="/scratch/lbaptiste/Babofet_T2w/tmp_borgne_data"
-OUTPUT_DIR="/scratch/lbaptiste/Babofet_T2w/tmp_borgne_data/results_segmentations"
-MODEL_FOLDER="/scratch/lbaptiste/data/LongiSeg_results/Dataset001_FirstTry/LongiSegTrainer__nnUNetPlans__3d_fullres"
+OUTPUT_DIR="/scratch/lbaptiste/Babofet_T2w/tmp_borgne_data/results_segmentations_diff"
+MODEL_FOLDER="/scratch/lbaptiste/data/LongiSeg_results/Dataset001_FirstTry/LongiSegTrainerDiffWeighting__nnUNetPlans__3d_fullres"
 
 PKL_FILE="${{MODEL_FOLDER}}/crossval_results_folds_0_1_2_3_4/postprocessing.pkl"
 PLANS_JSON="${{MODEL_FOLDER}}/crossval_results_folds_0_1_2_3_4/plans.json"
