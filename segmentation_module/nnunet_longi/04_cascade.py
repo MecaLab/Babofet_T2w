@@ -68,6 +68,7 @@ def organize_files(subject, sessions, input_path, output_path):
             os.system(f"cp {curr_vol} {output_curr_vol}")
             os.system(f"cp {prev_vol} {output_prev_vol}")
             if prev_seg:
+                print("OUI", prev_seg)
                 output_prev_seg = os.path.join(dir_sess, f"{subject}_{session}_0002.nii.gz")
                 os.system(f"cp {prev_seg} {output_prev_seg}")
 
