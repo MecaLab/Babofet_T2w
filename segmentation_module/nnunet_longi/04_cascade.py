@@ -59,7 +59,7 @@ def organize_files(subject, sessions, input_path, output_path):
             prev_seg = os.path.join(cfg.BASE_PATH, seg_dataset, "train_dataset", f"{subject}_{prev_sess}.nii.gz")
             if not os.path.exists(prev_seg):
                 prev_seg = os.path.join(cfg.BASE_PATH, seg_dataset, "test_dataset", f"{subject}_{prev_sess}.nii.gz")
-            else:
+            if not os.path.exists(prev_seg):
                 prev_seg = None
 
             output_curr_vol = os.path.join(dir_sess, f"{subject}_{session}_0000.nii.gz")
