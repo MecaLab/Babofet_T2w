@@ -50,6 +50,7 @@ def organize_files(subject, sessions, input_path, output_path):
                 os.makedirs(dir_sess)
 
             prev_sess = f"ses{int(session[-2:]) - 1:02d}"
+            print(prev_sess)
 
             curr_vol = os.path.join(subject_input_dir, session,
                                     "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
