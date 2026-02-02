@@ -38,7 +38,7 @@ BASE_DIR="{abs_output_path}"
         slurm_content += f"""
 echo "--- Processing {subject} {session} ---"
 # Lancer la prédiction pour la session actuelle
-nnUNetv2_predict -i $BASE_DIR/pred_{session} -o $BASE_DIR/pred_{session} -d {dataset_id} tr nnUNetTrainerBias_1000epochs -c 3d_fullres -f 0 1 2 3 4 --save_probabilities
+nnUNetv2_predict -i $BASE_DIR/pred_{session} -o $BASE_DIR/pred_{session} -d {dataset_id} -tr nnUNetTrainerBias_1000epochs -c 3d_fullres -f 0 1 2 3 4 --save_probabilities
 nnUNetv2_apply_postprocessing -i $BASE_DIR/pred_{session} -o $BASE_DIR/pred_{session} -pp_pkl_file {pkl_file} -np 8 -plans_json {plans_json}
 
 """
