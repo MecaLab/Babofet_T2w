@@ -50,5 +50,5 @@ def organize_files(subject, sessions, input_path, output_path):
 if __name__ == "__main__":
     input_path = cfg.DATA_PATH
     output_path = "data_nnunet_longi/Borgne"
-    sessions = ["ses06", "ses07", "ses08", "ses09", "ses10"]
+    sessions = sorted(["ses06", "ses07", "ses08", "ses09", "ses10"])
     organize_files("Borgne", sessions, input_path, output_path)
