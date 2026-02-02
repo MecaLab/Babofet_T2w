@@ -5,8 +5,7 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def write_cascade_slurm(subject, sessions, output_path, model_path, dataset_id):
-    filename = f"slurm_files/cascade_{subject}.slurm"
+def write_cascade_slurm(filename, subject, sessions, output_path, model_path, dataset_id):
     cross_val_path = os.path.join(model_path, f"crossval_results_folds_0_1_2_3_4")
     pkl_file = os.path.join(cross_val_path, "postprocessing.pkl")
     plans_json = os.path.join(cross_val_path, "plans.json")
@@ -104,8 +103,11 @@ if __name__ == "__main__":
     trainer = "nnUNetTrainerBias_1000epochs"
     dataset_id = 20
     dataset_name = f"Dataset{dataset_id:03d}_tmp_longi"
+    subject = "Borgne"
     model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
-    organize_files("Borgne", sessions, input_path, output_path)
+    organize_files(subject, sessions, input_path, output_path)
 
-    write_cascade_slurm("Borgne", sessions, output_path, model_path, dataset_id=20)
+    filename = f"slurm_files/cascade_{subject}.slurm"
+    write_cascade_slurm(filename, subject, sessions, output_path, model_path, dataset_id=20)
+    subprocess.run(["sbatch", filename])
