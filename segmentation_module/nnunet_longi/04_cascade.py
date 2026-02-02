@@ -32,7 +32,7 @@ conda activate longiseg_new
 
     os.chmod(filename, 0o700)
 
-def organize_files(subject, input_path, output_path):
+def organize_files(subject, sessions, input_path, output_path):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
@@ -42,10 +42,13 @@ def organize_files(subject, input_path, output_path):
 
         subject_input_dir = os.path.join(input_path, subject)
         for session in os.listdir(subject_input_dir):
+            if session not in sessions:
+                continue
             print(session)
 
 
 if __name__ == "__main__":
     input_path = cfg.DATA_PATH
     output_path = "data_nnunet_longi/Borgne"
-    organize_files("Borgne", input_path, output_path)
+    sessions = ["ses06", "ses07", "ses08", "ses09", "ses10"]
+    organize_files("Borgne", sessions, input_path, output_path)
