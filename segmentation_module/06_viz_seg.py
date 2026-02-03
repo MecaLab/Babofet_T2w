@@ -1,61 +1,65 @@
 import nibabel as nib
 import matplotlib.pyplot as plt
 import numpy as np
-import random
 
 
-def get_5_random_slices(path, num_slices=5):
-    """Charge le volume et choisit 5 indices de coupes aléatoires."""
-    img = nib.load(path)
-    data = img.get_fdata()
-    z_max = data.shape[2]
+def plot_nifti_comparison_fixed(paths, model_names, file_id, slice_range=(20, 115)):
+    """
+    Affiche une grille 3x5 de segmentations.
+    slice_range: tuple (min, max) pour borner les coupes choisies.
+    """
+    num_models = len(paths)
+    num_slices = 5
 
-    # On évite les tranches extrêmes (souvent vides) en prenant entre 10% et 90%
-    slice_indices = np.linspace(z_max * 0.1, z_max * 0.9, num_slices).astype(int)
-    # Si tu veux du VRAI aléatoire, décommente la ligne suivante :
-    # slice_indices = sorted(random.sample(range(z_max), num_slices))
+    # 1. Sélection des indices de coupes (répartis uniformément entre min et max)
+    slice_indices = np.linspace(slice_range[0], slice_range[1], num_slices).astype(int)
 
-    return data, slice_indices
+    fig, axes = plt.subplots(num_models, num_slices, figsize=(18, 10))
+    fig.suptitle(f"Analyse Qualitative : {file_id}", fontsize=20, y=0.95)
 
+    # Palette de couleurs pour 5 classes (Label 0 inclus)
+    cmap = plt.get_cmap('tab10', 5)
 
-def plot_nifti_multi_slices(paths, model_names, file_id):
-    # On récupère les indices sur le premier modèle pour synchroniser l'affichage
-    first_vol, slice_indices = get_5_random_slices(paths[0])
+    for row in range(num_models):
+        # Chargement du volume pour le modèle actuel
+        data = nib.load(paths[row]).get_fdata()
 
-    fig, axes = plt.subplots(3, 5, figsize=(20, 10))
-    fig.suptitle(f"Comparaison Multi-Coupes - {file_id}", fontsize=20)
-
-    cmap = plt.cm.get_cmap('tab10', 5)
-
-    for row, path in enumerate(paths):
-        # Pour le premier on a déjà les données, pour les autres on charge
-        if row == 0:
-            data = first_vol
-        else:
-            data = nib.load(path).get_fdata()
-
-        for col, slice_idx in enumerate(slice_indices):
+        for col in range(num_slices):
             ax = axes[row, col]
+            idx = slice_indices[col]
 
-            # Extraction et rotation pour l'orientation médicale standard
-            slice_data = np.rot90(data[:, :, slice_idx])
+            # Extraction et orientation (NIfTI -> Image standard)
+            slice_data = np.rot90(data[:, :, idx])
 
+            # Affichage
             im = ax.imshow(slice_data, cmap=cmap, vmin=0, vmax=4)
 
-            # Titres informatifs
+            # --- Mise en forme ---
+            # Titre seulement sur la première ligne
             if row == 0:
-                ax.set_title(f"Coupe index: {slice_idx}", fontsize=12)
+                ax.set_title(f"Coupe {idx}", fontsize=14, pad=10)
+
+            # Nom du modèle sur la première colonne (Label Y)
             if col == 0:
-                ax.set_ylabel(model_names[row], fontsize=14, fontweight='bold')
+                ax.set_ylabel(model_names[row], fontsize=14, fontweight='bold', rotation=0, labelpad=60, va='center')
 
-            ax.axis('off')
+            # Nettoyage des axes
+            ax.set_xticks([])
+            ax.set_yticks([])
 
-    # Ajustement de la légende
-    cbar_ax = fig.add_axes([0.92, 0.15, 0.02, 0.7])
-    fig.colorbar(im, cax=cbar_ax, ticks=range(5))
+            # Bordure pour séparer visuellement les modèles
+            for spine in ax.spines.values():
+                spine.set_visible(True)
+                spine.set_color('#CCCCCC')
 
-    plt.subplots_adjust(left=0.05, right=0.9, top=0.9, bottom=0.1, wspace=0.1, hspace=0.2)
-    plt.savefig(f"comparison_multi_slices_{file_id}.png", dpi=300)
+    # Barre de légende pour les classes à droite
+    cbar_ax = fig.add_axes([0.93, 0.15, 0.02, 0.7])
+    cbar = fig.colorbar(im, cax=cbar_ax, ticks=range(5))
+    cbar.set_label('Labels de segmentation', fontsize=12)
+
+    # Ajustement des marges
+    plt.subplots_adjust(left=0.15, right=0.9, top=0.88, bottom=0.1, wspace=0.05, hspace=0.1)
+    plt.savefig("segmentation_comparison_fixed.png", dpi=300)
 
 
 # --- Configuration ---
@@ -66,4 +70,4 @@ model_paths = [
 ]
 names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
 
-plot_nifti_multi_slices(model_paths, names, "Borgne_ses06")
+plot_nifti_comparison_fixed(model_paths, names, "Borgne_ses06")
