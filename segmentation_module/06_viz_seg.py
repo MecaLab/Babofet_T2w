@@ -3,55 +3,59 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_nifti_comparison_fixed(paths, model_names, file_id, slice_range=(25, 115)):
+def plot_nifti_comparison_percent(paths, model_names, file_id, pct_range=(0.2, 0.8)):
     """
-    Affiche une grille 3x5 de segmentations.
-    slice_range: tuple (min, max) pour borner les coupes choisies.
+    pct_range: tuple (min, max) en pourcentage du volume (ex: 0.2 pour 20%)
     """
     num_models = len(paths)
-    num_slices = 7
+    num_slices = 5
 
-    # 1. Sélection des indices de coupes (répartis uniformément entre min et max)
-    slice_indices = np.linspace(slice_range[0], slice_range[1], num_slices).astype(int)
+    # 1. Charger le premier volume pour calculer les indices de coupes
+    first_img = nib.load(paths[0])
+    z_max = first_img.shape[2]
 
-    fig, axes = plt.subplots(num_models, num_slices, figsize=(18, 10))
-    fig.suptitle(f"Analyse Qualitative : {file_id}", fontsize=20, y=0.95)
+    start_idx = int(z_max * pct_range[0])
+    end_idx = int(z_max * pct_range[1])
+    slice_indices = np.linspace(start_idx, end_idx, num_slices).astype(int)
 
-    # Palette de couleurs pour 5 classes (Label 0 inclus)
+    fig, axes = plt.subplots(num_models, num_slices, figsize=(20, 11))
+    fig.suptitle(
+        f"Comparaison de Segmentation : {file_id}\n(Coupes de {pct_range[0] * 100}% à {pct_range[1] * 100}% du volume)",
+        fontsize=18, y=0.97)
+
     cmap = plt.get_cmap('tab10', 5)
 
     for row in range(num_models):
-        # Chargement du volume pour le modèle actuel
+        # Chargement sécurisé de chaque modèle
         data = nib.load(paths[row]).get_fdata()
 
         for col in range(num_slices):
             ax = axes[row, col]
             idx = slice_indices[col]
 
-            # Extraction et orientation (NIfTI -> Image standard)
+            # Extraction et rotation pour l'orientation médicale (Radiologique)
             slice_data = np.rot90(data[:, :, idx])
 
-            # Affichage
-            im = ax.imshow(slice_data, cmap=cmap, vmin=0, vmax=4)
+            im = ax.imshow(slice_data, cmap=cmap, vmin=0, vmax=4, interpolation='nearest')
 
+            # --- Labels et Esthétique ---
             if row == 0:
-                ax.set_title(f"Coupe {idx}", fontsize=14, pad=10)
+                ax.set_title(f"Coupe {idx}\n({int((idx / z_max) * 100)}%)", fontsize=12, pad=10)
 
             if col == 0:
-                ax.set_ylabel(model_names[row], fontsize=14, fontweight='bold', rotation=0, labelpad=60, va='center')
+                # Placement du nom du modèle à gauche de la ligne
+                ax.set_ylabel(model_names[row], fontsize=14, fontweight='bold',
+                              rotation=0, labelpad=80, va='center')
 
             ax.set_xticks([])
             ax.set_yticks([])
 
-            for spine in ax.spines.values():
-                spine.set_visible(True)
-                spine.set_color('#CCCCCC')
-
-    cbar_ax = fig.add_axes([0.93, 0.15, 0.02, 0.7])
+    # Légende des classes
+    cbar_ax = fig.add_axes([0.92, 0.2, 0.015, 0.6])
     cbar = fig.colorbar(im, cax=cbar_ax, ticks=range(5))
-    cbar.set_label('Labels de segmentation', fontsize=12)
+    cbar.ax.set_yticklabels(['Fond (0)', 'Label 1', 'Label 2', 'Label 3', 'Label 4'])
 
-    plt.subplots_adjust(left=0.15, right=0.9, top=0.88, bottom=0.1, wspace=0.05, hspace=0.1)
+    plt.subplots_adjust(left=0.18, right=0.9, top=0.85, bottom=0.15, wspace=0.05, hspace=0.15)
     plt.savefig("segmentation_comparison_fixed.png")
 
 
@@ -63,4 +67,4 @@ model_paths = [
 ]
 names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
 
-plot_nifti_comparison_fixed(model_paths, names, "Borgne_ses06")
+plot_nifti_comparison_percent(model_paths, names, "Borgne_ses06")
