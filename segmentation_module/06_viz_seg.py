@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_nifti_comparison_fixed(paths, model_names, file_id, slice_range=(20, 115)):
+def plot_nifti_comparison_fixed(paths, model_names, file_id, slice_range=(25, 115)):
     """
     Affiche une grille 3x5 de segmentations.
     slice_range: tuple (min, max) pour borner les coupes choisies.
     """
     num_models = len(paths)
-    num_slices = 5
+    num_slices = 7
 
     # 1. Sélection des indices de coupes (répartis uniformément entre min et max)
     slice_indices = np.linspace(slice_range[0], slice_range[1], num_slices).astype(int)
@@ -34,32 +34,25 @@ def plot_nifti_comparison_fixed(paths, model_names, file_id, slice_range=(20, 11
             # Affichage
             im = ax.imshow(slice_data, cmap=cmap, vmin=0, vmax=4)
 
-            # --- Mise en forme ---
-            # Titre seulement sur la première ligne
             if row == 0:
                 ax.set_title(f"Coupe {idx}", fontsize=14, pad=10)
 
-            # Nom du modèle sur la première colonne (Label Y)
             if col == 0:
                 ax.set_ylabel(model_names[row], fontsize=14, fontweight='bold', rotation=0, labelpad=60, va='center')
 
-            # Nettoyage des axes
             ax.set_xticks([])
             ax.set_yticks([])
 
-            # Bordure pour séparer visuellement les modèles
             for spine in ax.spines.values():
                 spine.set_visible(True)
                 spine.set_color('#CCCCCC')
 
-    # Barre de légende pour les classes à droite
     cbar_ax = fig.add_axes([0.93, 0.15, 0.02, 0.7])
     cbar = fig.colorbar(im, cax=cbar_ax, ticks=range(5))
     cbar.set_label('Labels de segmentation', fontsize=12)
 
-    # Ajustement des marges
     plt.subplots_adjust(left=0.15, right=0.9, top=0.88, bottom=0.1, wspace=0.05, hspace=0.1)
-    plt.savefig("segmentation_comparison_fixed.png", dpi=300)
+    plt.savefig("segmentation_comparison_fixed.png")
 
 
 # --- Configuration ---
