@@ -7,7 +7,8 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=(0.2, 0.8)):
+def plot_full_comparison(raw_path, model_paths, model_names, file_id, axis=2, pct_range=(0.2, 0.8)):
+    axis_names = {0: "SAGITTAL", 1: "CORONAL", 2: "AXIAL"}
     num_slices = 7
     num_models = len(model_paths)
     num_rows = 1 + num_models  # Source + Modèles
@@ -20,7 +21,7 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=
 
     # Création de la figure
     fig, axes = plt.subplots(num_rows, num_slices, figsize=(22, 3.5 * num_rows))
-    fig.suptitle(f"Analyse Qualitative : {file_id}", fontsize=20, y=0.98)
+    fig.suptitle(f"Vue {axis_names[axis]} - {file_id}", fontsize=22, y=0.98, fontweight='bold')
 
     cmap_seg = plt.get_cmap('tab10', 5)
 
@@ -39,7 +40,15 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=
         for col in range(num_slices):
             ax = axes[row, col]
             idx = slice_indices[col]
-            slice_data = np.rot90(data[:, :, idx])
+
+            if axis == 0:
+                slice_data = data[idx, :, :]
+            elif axis == 1:
+                slice_data = data[:, idx, :]
+            else:
+                slice_data = data[:, :, idx]
+
+            slice_data = np.rot90(slice_data)
 
             # Affichage
             im = ax.imshow(slice_data, cmap=current_cmap,
@@ -67,7 +76,7 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=
     cbar_ax = fig.add_axes([0.92, 0.15, 0.015, 0.4])
     fig.colorbar(plt.cm.ScalarMappable(cmap=cmap_seg, norm=plt.Normalize(0, 4)),
                  cax=cbar_ax, ticks=range(5))
-    plt.savefig("segmentation_comparison_fixed.png")
+    plt.savefig(f"segmentation_comparison_{axis_names}.png", dpi=300)
 
 
 # --- Configuration ---
@@ -79,4 +88,5 @@ model_paths = [
 raw_path = os.path.join(cfg.DATA_PATH, "Borgne", "ses06", "recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
 names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
 
-plot_full_comparison(raw_path, model_paths, names, "Borgne 06", pct_range=(0.30, 0.70))
+for a in [2, 1, 0]: # Axial, Coronal, Sagittal
+    plot_full_comparison(raw_path, model_paths, names, "Borgne 06", axis=a, pct_range=(0.30, 0.70))
