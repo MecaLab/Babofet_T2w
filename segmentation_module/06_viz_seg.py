@@ -1,58 +1,67 @@
+import os
+import sys
 import nibabel as nib
 import matplotlib.pyplot as plt
 import numpy as np
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 
-
-def plot_nifti_comparison_percent(paths, model_names, file_id, pct_range=(0.30, 0.75)):
-    num_models = len(paths)
+def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=(0.3, 0.75)):
+    """
+    raw_path: chemin du fichier NIfTI original (le volume source)
+    model_paths: liste des 3 chemins vers les segmentations
+    """
     num_slices = 7
 
-    # 1. Charger le premier volume pour calculer les indices de coupes
-    first_img = nib.load(paths[0])
-    z_max = first_img.shape[2]
+    # 1. Chargement des données
+    raw_data = nib.load(raw_path).get_fdata()
+    z_max = raw_data.shape[2]
 
-    start_idx = int(z_max * pct_range[0])
-    end_idx = int(z_max * pct_range[1])
-    slice_indices = np.linspace(start_idx, end_idx, num_slices).astype(int)
+    # Calcul des indices selon les pourcentages
+    slice_indices = np.linspace(int(z_max * pct_range[0]), int(z_max * pct_range[1]), num_slices).astype(int)
 
-    fig, axes = plt.subplots(num_models, num_slices, figsize=(20, 11))
-    fig.suptitle(
-        f"Comparaison de Segmentation : {file_id}\n",
-        fontsize=18, y=0.97)
+    # On crée 4 lignes (1 Source + 3 Modèles)
+    fig, axes = plt.subplots(4, num_slices, figsize=(20, 15))
+    fig.suptitle(f"Comparaison Anatomique : {file_id}", fontsize=22, y=0.98)
 
-    cmap = plt.get_cmap('tab10', 5)
+    cmap_seg = plt.get_cmap('tab10', 5)
 
-    for row in range(num_models):
-        # Chargement sécurisé de chaque modèle
-        data = nib.load(paths[row]).get_fdata()
+    # --- LIGNE 1 : VOLUME SOURCE (RAW) ---
+    for col in range(num_slices):
+        ax = axes[0, col]
+        idx = slice_indices[col]
+        slice_raw = np.rot90(raw_data[:, :, idx])
+
+        # Affichage en nuances de gris pour le volume brut
+        ax.imshow(slice_raw, cmap='gray')
+        ax.set_title(f"Coupe {idx} ({int((idx / z_max) * 100)}%)", fontsize=12)
+        if col == 0:
+            ax.set_ylabel("SOURCE (IRM/CT)", fontsize=14, fontweight='bold', rotation=0, labelpad=80, va='center')
+        ax.axis('off')
+
+    # --- LIGNES 2, 3, 4 : MODÈLES ---
+    for row_idx, m_path in enumerate(model_paths):
+        current_row = row_idx + 1  # +1 car la ligne 0 est la source
+        seg_data = nib.load(m_path).get_fdata()
 
         for col in range(num_slices):
-            ax = axes[row, col]
+            ax = axes[current_row, col]
             idx = slice_indices[col]
+            slice_seg = np.rot90(seg_data[:, :, idx])
 
-            # Extraction et rotation pour l'orientation médicale (Radiologique)
-            slice_data = np.rot90(data[:, :, idx])
-
-            im = ax.imshow(slice_data, cmap=cmap, vmin=0, vmax=4, interpolation='nearest')
-
-            # --- Labels et Esthétique ---
-            if row == 0:
-                ax.set_title(f"Coupe {idx}\n", fontsize=12, pad=10)
+            im = ax.imshow(slice_seg, cmap=cmap_seg, vmin=0, vmax=4, interpolation='nearest')
 
             if col == 0:
-                # Placement du nom du modèle à gauche de la ligne
-                ax.set_ylabel(model_names[row], fontsize=14, fontweight='bold',
-                              rotation=0, labelpad=80, va='center')
+                ax.set_ylabel(model_names[row_idx], fontsize=14, fontweight='bold', rotation=0, labelpad=80,
+                              va='center')
+            ax.axis('off')
 
-            ax.set_xticks([])
-            ax.set_yticks([])
+    # Ajustement et Légende
+    plt.subplots_adjust(left=0.2, right=0.9, top=0.9, bottom=0.1, wspace=0.05, hspace=0.15)
 
-    # Légende des classes
-    cbar_ax = fig.add_axes([0.92, 0.2, 0.015, 0.6])
-    cbar = fig.colorbar(im, cax=cbar_ax, ticks=range(5))
-    cbar.ax.set_yticklabels(['Fond (0)', 'Label 1 (CSF)', 'Label 2 (WM)', 'Label 3 (GM)', 'Label 4 (Ventricules)'])
-
-    plt.subplots_adjust(left=0.18, right=0.9, top=0.85, bottom=0.15, wspace=0.05, hspace=0.15)
+    # Barre de couleur uniquement pour les segmentations
+    cbar_ax = fig.add_axes([0.92, 0.12, 0.015, 0.5])
+    fig.colorbar(im, cax=cbar_ax, ticks=range(5))
     plt.savefig("segmentation_comparison_fixed.png")
 
 
@@ -62,6 +71,7 @@ model_paths = [
     "tmp_borgne_data/results_segmentations_diff/seg_Borgne_ses06.nii.gz",
     "tmp_borgne_data/results_segmentations_nnunet_longi/Borgne_ses06.nii.gz"
 ]
+raw_path = os.path.join(cfg.DATA_PATH, "Borgne", "ses06", "recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
 names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
 
-plot_nifti_comparison_percent(model_paths, names, "Borgne_ses06")
+plot_full_comparison(raw_path, model_paths, names, "Borgne 06")
