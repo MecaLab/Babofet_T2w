@@ -54,8 +54,6 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=
             if col == 0:
                 ax.set_ylabel(model_names[row_idx], fontsize=14, fontweight='bold', rotation=0, labelpad=80,
                               va='center')
-            if col == 0:
-                ax.set_ylabel(model_names[row_idx], fontsize=14, fontweight='bold', rotation=0, labelpad=60, va='center')
             ax.axis('off')
 
     # Barre de couleur uniquement pour les segmentations
