@@ -3,12 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_nifti_comparison_percent(paths, model_names, file_id, pct_range=(0.2, 0.8)):
-    """
-    pct_range: tuple (min, max) en pourcentage du volume (ex: 0.2 pour 20%)
-    """
+def plot_nifti_comparison_percent(paths, model_names, file_id, pct_range=(0.30, 0.75)):
     num_models = len(paths)
-    num_slices = 5
+    num_slices = 7
 
     # 1. Charger le premier volume pour calculer les indices de coupes
     first_img = nib.load(paths[0])
@@ -20,7 +17,7 @@ def plot_nifti_comparison_percent(paths, model_names, file_id, pct_range=(0.2, 0
 
     fig, axes = plt.subplots(num_models, num_slices, figsize=(20, 11))
     fig.suptitle(
-        f"Comparaison de Segmentation : {file_id}\n(Coupes de {pct_range[0] * 100}% à {pct_range[1] * 100}% du volume)",
+        f"Comparaison de Segmentation : {file_id}\n",
         fontsize=18, y=0.97)
 
     cmap = plt.get_cmap('tab10', 5)
@@ -40,7 +37,7 @@ def plot_nifti_comparison_percent(paths, model_names, file_id, pct_range=(0.2, 0
 
             # --- Labels et Esthétique ---
             if row == 0:
-                ax.set_title(f"Coupe {idx}\n({int((idx / z_max) * 100)}%)", fontsize=12, pad=10)
+                ax.set_title(f"Coupe {idx}\n", fontsize=12, pad=10)
 
             if col == 0:
                 # Placement du nom du modèle à gauche de la ligne
