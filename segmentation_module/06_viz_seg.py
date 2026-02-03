@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def plot_full_comparison_final(raw_path, model_paths, model_names, file_id, pct_range=(0.2, 0.8)):
+def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=(0.2, 0.8)):
     num_slices = 5
     num_models = len(model_paths)
     num_rows = 1 + num_models  # Source + Modèles
