@@ -17,24 +17,38 @@ folders = {
 labels_interest = [1, 2, 3, 4]
 
 def extract_id(filename):
-    """Extrait l'ID (ex: '001') du nom du fichier."""
     match = re.search(r'\d+', filename)
     return match.group() if match else filename
 
 def load_nifti(path):
-    """Charge le NIfTI en mémoire."""
     img = nib.load(path)
     return np.asanyarray(img.dataobj).astype(np.int16)
 
 def dice_coeff(mask, ref, label):
-    """Calcule le coefficient de Dice pour un label donné."""
     m = (mask == label)
     r = (ref == label)
     intersection = np.sum(m & r)
     total = np.sum(m) + np.sum(r)
     return (2. * intersection) / total if total > 0 else 1.0
 
-# 1. RÉPERTORIER LES FICHIERS
+def compute_all_metrics(mask, ref, label):
+    m = (mask == label)
+    r = (ref == label)
+
+    tp = np.sum(m & r)
+    fp = np.sum(m & ~r)
+    fn = np.sum(~m & r)
+
+    # Dice
+    dice = (2. * tp) / (2. * tp + fp + fn) if (2. * tp + fp + fn) > 0 else 1.0
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 1.0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 1.0
+    vol_mask = np.sum(m)
+    vol_ref = np.sum(r)
+    v_err = (vol_mask - vol_ref) / vol_ref if vol_ref > 0 else 0.0
+
+    return dice, precision, recall, v_err
+
 database = {}
 for model_name, path in folders.items():
     for f in os.listdir(path):
@@ -43,11 +57,10 @@ for model_name, path in folders.items():
             if sid not in database: database[sid] = {}
             database[sid][model_name] = os.path.join(path, f)
 
-# On garde les IDs complets (présents dans les 3 dossiers)
 common_ids = [sid for sid, p in database.items() if len(p) == len(folders)]
 print(f"Sujets à traiter : {len(common_ids)}")
 
-# 2. TRAITEMENT SÉQUENTIEL
+
 results = []
 
 for sid in tqdm(common_ids, desc="Analyse en cours"):
@@ -61,28 +74,17 @@ for sid in tqdm(common_ids, desc="Analyse en cours"):
     # Sinon, on prend m2 (car si m2 == m3, c'est m2 qui gagne).
     consensus = np.where((m1 == m2) | (m1 == m3), m1, m2)
 
-    # Calcul des scores
-    for name, mask in [("LongiSeg", m1), ("LongiSegDiff", m2), ("nnUNetLongi", m3)]:
+    for name, mask in [("Model_A", m1), ("Model_B", m2), ("Model_C", m3)]:
         for l in labels_interest:
-            score = dice_coeff(mask, consensus, l)
+            d, p, r, v = compute_all_metrics(mask, consensus, l)
             results.append({
-                "Sujet": sid,
-                "Modèle": name,
-                "Label": f"L{l}",
-                "Dice": score
+                "Sujet": sid, "Modèle": name, "Label": f"L{l}",
+                "Dice": d, "Précision": p, "Recall": r, "Vol_Error": v
             })
 
+# 3. SYNTHÈSE
 df = pd.DataFrame(results)
-summary = df.groupby(['Modèle', 'Label'])['Dice'].mean().unstack()
+summary = df.groupby(['Modèle', 'Label'])[['Dice', 'Précision', 'Recall', 'Vol_Error']].mean()
 
-print("\n--- DICE MOYEN (VS CONSENSUS) ---")
+print("\n--- ANALYSE DÉTAILLÉE PAR RAPPORT AU CONSENSUS ---")
 print(summary.round(4))
-
-
-summary.plot(kind='bar', figsize=(10, 6))
-plt.title("Performance par Label et par Modèle")
-plt.ylabel("Dice Score")
-plt.ylim(0, 1)
-plt.legend(title="Labels", bbox_to_anchor=(1.05, 1))
-plt.tight_layout()
-plt.savefig("model_comparison_dice_scores.png")
