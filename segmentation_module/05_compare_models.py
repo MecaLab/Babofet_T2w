@@ -62,7 +62,7 @@ for sid in tqdm(common_ids, desc="Analyse en cours"):
     consensus = np.where((m1 == m2) | (m1 == m3), m1, m2)
 
     # Calcul des scores
-    for name, mask in [("Model_A", m1), ("Model_B", m2), ("Model_C", m3)]:
+    for name, mask in [("LongiSeg", m1), ("LongiSegDiff", m2), ("nnUNetLongi", m3)]:
         for l in labels_interest:
             score = dice_coeff(mask, consensus, l)
             results.append({
