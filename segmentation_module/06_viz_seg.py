@@ -8,7 +8,7 @@ import configuration as cfg
 
 
 def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=(0.2, 0.8)):
-    num_slices = 5
+    num_slices = 7
     num_models = len(model_paths)
     num_rows = 1 + num_models  # Source + Modèles
 
@@ -49,7 +49,7 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=
 
             # Titres des colonnes (seulement sur la première ligne)
             if row == 0:
-                ax.set_title(f"Coupe {idx}\n({int((idx / z_max) * 100)}%)", fontsize=11, fontweight='bold')
+                ax.set_title(f"Coupe {idx}\n", fontsize=11, fontweight='bold')
 
             # --- AFFICHAGE DU NOM DU MODÈLE (L'astuce est ici) ---
             if col == 0:
@@ -79,4 +79,4 @@ model_paths = [
 raw_path = os.path.join(cfg.DATA_PATH, "Borgne", "ses06", "recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
 names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
 
-plot_full_comparison(raw_path, model_paths, names, "Borgne 06")
+plot_full_comparison(raw_path, model_paths, names, "Borgne 06", pct_range=(0.30, 0.70))
