@@ -7,11 +7,14 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def plot_full_comparison(raw_path, model_paths, model_names, file_id, axis=2, pct_range=(0.2, 0.8)):
+def plot_full_comparison(raw_path, model_paths, model_names, file_id, output, axis=2, pct_range=(0.2, 0.8)):
     axis_names = {0: "SAGITTAL", 1: "CORONAL", 2: "AXIAL"}
     num_slices = 7
     num_models = len(model_paths)
     num_rows = 1 + num_models  # Source + Modèles
+    if not os.path.exists(output):
+        os.makedirs(output)
+    output_filename = os.path.join(output, f"segmentation_comparison_{axis_names[axis]}.png")
 
     # 1. Chargement et calcul des indices
     raw_img = nib.load(raw_path)
@@ -76,17 +79,31 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, axis=2, pc
     cbar_ax = fig.add_axes([0.92, 0.15, 0.015, 0.4])
     fig.colorbar(plt.cm.ScalarMappable(cmap=cmap_seg, norm=plt.Normalize(0, 4)),
                  cax=cbar_ax, ticks=range(5))
-    plt.savefig(f"segmentation_comparison_{axis_names[axis]}.png", dpi=300)
+    plt.savefig(output_filename, dpi=300)
 
 
-# --- Configuration ---
-model_paths = [
-    "tmp_borgne_data/results_segmentations/seg_Borgne_ses06.nii.gz",
-    "tmp_borgne_data/results_segmentations_diff/seg_Borgne_ses06.nii.gz",
-    "tmp_borgne_data/results_segmentations_nnunet_longi/Borgne_ses06.nii.gz"
-]
-raw_path = os.path.join(cfg.DATA_PATH, "Borgne", "ses06", "recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
-names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
+if __name__ == "__main__":
+    subjects = {
+        "Borgne": [
+            "ses06",
+            "ses07",
+            "ses08",
+            "ses09",
+            "ses10"
+        ]
+    }
 
-for a in [2, 1, 0]: # Axial, Coronal, Sagittal
-    plot_full_comparison(raw_path, model_paths, names, "Borgne 06", axis=a, pct_range=(0.30, 0.70))
+    for subject in subjects:
+        for session in subjects[subject]:
+            print(f"Processing subject {subject}, session {session}...")
+            model_paths = [
+                f"tmp_borgne_data/results_segmentations/seg_{subject}_{session}.nii.gz",
+                f"tmp_borgne_data/results_segmentations_diff/seg_{subject}_{session}.nii.gz",
+                f"tmp_borgne_data/results_segmentations_nnunet_longi/{subject}_{session}.nii.gz"
+            ]
+            raw_path = os.path.join(cfg.DATA_PATH, subject, session, "recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
+            names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
+
+            for a in [2, 1, 0]: # Axial, Coronal, Sagittal
+                print(f"\tProcessing axis {a}...")
+                plot_full_comparison(raw_path, model_paths, names, "Borgne 06", output="snapshots/model_comparison", axis=a, pct_range=(0.30, 0.70))
