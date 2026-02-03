@@ -6,6 +6,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from scipy import stats
+import re
 
 
 def load_nifti_labels(path):
@@ -22,6 +23,10 @@ def dice_per_label(mask, reference, label):
     if total == 0: return 1.0
     return (2. * intersection) / total
 
+def extract_id(filename):
+    match = re.search(r'\d+', filename)
+    return match.group() if match else filename
+
 
 # 1. Configuration
 folders = {
@@ -30,15 +35,25 @@ folders = {
     "nnUNetLongi": "tmp_borgne_data/results_segmentations_nnunet_longi"
 }
 
-# On définit nos labels (0=bg, 1, 2, 3, 4)
+database = {}
+for model_name, path in folders.items():
+    for f in os.listdir(path):
+        if f.endswith('.nii.gz'):
+            subject_id = extract_id(f)
+            if subject_id not in database:
+                database[subject_id] = {}
+            database[subject_id][model_name] = os.path.join(path, f)
+
 labels_interest = [1, 2, 3, 4]
 filenames = [f for f in os.listdir(list(folders.values())[0]) if f.endswith('.nii.gz')]
 model_names = list(folders.keys())
 
-# Data structure pour stocker les scores
-results_list = []
 
-# 2. Boucle de traitement
+common_ids = [sid for sid, paths in database.items() if len(paths) == len(folders)]
+print(f"Sujets trouvés dans tous les dossiers : {len(common_ids)} / {len(database)}")
+
+
+results_list = []
 for fname in tqdm(filenames, desc="Analyse Multi-classe (5 labels)"):
     try:
         # Chargement de tous les modèles pour cette image
@@ -57,11 +72,10 @@ for fname in tqdm(filenames, desc="Analyse Multi-classe (5 labels)"):
                 score = dice_per_label(masks_dict[name], consensus, l)
                 results_list.append({
                     "Image": fname,
-                    "Modèle": name,
+                    "Model": name,
                     "Label": f"Label {l}",
                     "Dice": score
                 })
-
     except Exception as e:
         print(f"\nErreur sur {fname}: {e}")
 
@@ -69,7 +83,7 @@ for fname in tqdm(filenames, desc="Analyse Multi-classe (5 labels)"):
 df = pd.DataFrame(results_list)
 
 # Affichage des moyennes par Label et par Modèle
-summary = df.groupby(['Modèle', 'Label'])['Dice'].agg(['mean', 'std']).reset_index()
+summary = df.groupby(['Model', 'Label'])['Dice'].agg(['mean', 'std']).reset_index()
 pivot_summary = summary.pivot(index='Modèle', columns='Label', values='mean')
 
 print("\n--- Score Dice Moyen par rapport au Consensus ---")
