@@ -50,7 +50,7 @@ def plot_nifti_comparison_percent(paths, model_names, file_id, pct_range=(0.30, 
     # Légende des classes
     cbar_ax = fig.add_axes([0.92, 0.2, 0.015, 0.6])
     cbar = fig.colorbar(im, cax=cbar_ax, ticks=range(5))
-    cbar.ax.set_yticklabels(['Fond (0)', 'Label 1', 'Label 2', 'Label 3', 'Label 4'])
+    cbar.ax.set_yticklabels(['Fond (0)', 'Label 1 (CSF)', 'Label 2 (WM)', 'Label 3 (GM)', 'Label 4 (Ventricules)'])
 
     plt.subplots_adjust(left=0.18, right=0.9, top=0.85, bottom=0.15, wspace=0.05, hspace=0.15)
     plt.savefig("segmentation_comparison_fixed.png")
