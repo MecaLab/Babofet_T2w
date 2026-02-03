@@ -25,7 +25,8 @@ def dice_coeff(mask1, mask2):
 # 1. Configuration
 folders = {
     "LongiSeg": "tmp_borgne_data/results_segmentations",
-    "LongiSegDiff": "tmp_borgne_data/results_segmentations_diff"
+    "LongiSegDiff": "tmp_borgne_data/results_segmentations_diff",
+    "nnUNetLongi": "tmp_borgne_data/results_segmentations_nnunet_longi"
 }
 
 # On récupère la liste des fichiers (on suppose qu'ils ont les mêmes noms partout)
