@@ -76,7 +76,7 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, axis=2, pc
     cbar_ax = fig.add_axes([0.92, 0.15, 0.015, 0.4])
     fig.colorbar(plt.cm.ScalarMappable(cmap=cmap_seg, norm=plt.Normalize(0, 4)),
                  cax=cbar_ax, ticks=range(5))
-    plt.savefig(f"segmentation_comparison_{axis_names}.png", dpi=300)
+    plt.savefig(f"segmentation_comparison_{axis_names[axis]}.png", dpi=300)
 
 
 # --- Configuration ---
