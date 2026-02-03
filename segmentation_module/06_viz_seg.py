@@ -14,7 +14,7 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, output, ax
     num_rows = 1 + num_models  # Source + Modèles
     if not os.path.exists(output):
         os.makedirs(output)
-    output_filename = os.path.join(output, f"segmentation_comparison_{axis_names[axis]}.png")
+    output_filename = os.path.join(output, f"segmentation_comparison_{axis_names[axis]}_{file_id}.png")
 
     # 1. Chargement et calcul des indices
     raw_img = nib.load(raw_path)
@@ -53,19 +53,15 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, output, ax
 
             slice_data = np.rot90(slice_data)
 
-            # Affichage
             im = ax.imshow(slice_data, cmap=current_cmap,
                            vmin=0 if row == 0 else 0,
                            vmax=None if row == 0 else 4,
                            interpolation='nearest')
 
-            # Titres des colonnes (seulement sur la première ligne)
             if row == 0:
                 ax.set_title(f"Coupe {idx}\n", fontsize=11, fontweight='bold')
 
-            # --- AFFICHAGE DU NOM DU MODÈLE (L'astuce est ici) ---
             if col == 0:
-                # On utilise annotate pour placer le texte précisément à gauche de l'axe
                 ax.annotate(all_row_names[row], xy=(0, 0.5), xycoords='axes fraction',
                             xytext=(-20, 0), textcoords='offset points',
                             ha='right', va='center', fontsize=14, fontweight='bold')
@@ -106,4 +102,4 @@ if __name__ == "__main__":
 
             for a in [2, 1, 0]: # Axial, Coronal, Sagittal
                 print(f"\tProcessing axis {a}...")
-                plot_full_comparison(raw_path, model_paths, names, "Borgne 06", output="snapshots/model_comparison", axis=a, pct_range=(0.30, 0.70))
+                plot_full_comparison(raw_path, model_paths, names, f"{subject}_{session}", output="snapshots/model_comparison", axis=a, pct_range=(0.30, 0.70))
