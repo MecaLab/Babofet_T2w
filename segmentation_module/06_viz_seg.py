@@ -21,7 +21,7 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=
     slice_indices = np.linspace(int(z_max * pct_range[0]), int(z_max * pct_range[1]), num_slices).astype(int)
 
     # On crée 4 lignes (1 Source + 3 Modèles)
-    fig, axes = plt.subplots(4, num_slices, figsize=(20, 15))
+    fig, axes = plt.subplots(4, num_slices, figsize=(22, 12))
     fig.suptitle(f"Comparaison Anatomique : {file_id}", fontsize=22, y=0.98)
 
     cmap_seg = plt.get_cmap('tab10', 5)
@@ -54,14 +54,16 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, pct_range=
             if col == 0:
                 ax.set_ylabel(model_names[row_idx], fontsize=14, fontweight='bold', rotation=0, labelpad=80,
                               va='center')
+            if col == 0:
+                ax.set_ylabel(model_names[row_idx], fontsize=14, fontweight='bold', rotation=0, labelpad=60, va='center')
             ax.axis('off')
 
-    # Ajustement et Légende
-    plt.subplots_adjust(left=0.2, right=0.9, top=0.9, bottom=0.1, wspace=0.05, hspace=0.15)
-
     # Barre de couleur uniquement pour les segmentations
-    cbar_ax = fig.add_axes([0.92, 0.12, 0.015, 0.5])
-    fig.colorbar(im, cax=cbar_ax, ticks=range(5))
+    cbar_ax = fig.add_axes([0.92, 0.2, 0.015, 0.6])
+    cbar = fig.colorbar(im, cax=cbar_ax, ticks=range(5))
+    cbar.ax.set_yticklabels(['Label 0 (BG)', 'Label 1 (CSF)', 'Label 2 (WM)', 'Label 3 (GM)', 'Label 4 (Ventricles)'])
+
+    plt.subplots_adjust(left=0.18, right=0.9, top=0.85, bottom=0.15, wspace=0.05, hspace=0.15)
     plt.savefig("segmentation_comparison_fixed.png")
 
 
