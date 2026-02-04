@@ -30,8 +30,6 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, output, ax
 
     # On prépare une liste de tous les noms pour les lignes
     all_row_names = ["IMAGE SOURCE"] + model_names
-    print(all_row_names)
-    exit()
 
     for row in range(num_rows):
         # On charge la donnée selon la ligne
@@ -101,7 +99,7 @@ if __name__ == "__main__":
                 f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
             ]
             raw_path = os.path.join(cfg.DATA_PATH, subject, session, "recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
-            names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
+            names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi", "BestnnUNet"]
 
             for a in [2, 1, 0]: # Axial, Coronal, Sagittal
                 print(f"\tProcessing axis {a}...")
