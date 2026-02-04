@@ -95,7 +95,8 @@ if __name__ == "__main__":
             model_paths = [
                 f"tmp_borgne_data/results_segmentations/seg_{subject}_{session}.nii.gz",
                 f"tmp_borgne_data/results_segmentations_diff/seg_{subject}_{session}.nii.gz",
-                f"tmp_borgne_data/results_segmentations_nnunet_longi/{subject}_{session}.nii.gz"
+                f"tmp_borgne_data/results_segmentations_nnunet_longi/{subject}_{session}.nii.gz",
+                f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
             ]
             raw_path = os.path.join(cfg.DATA_PATH, subject, session, "recons_rhesus/recon_template_space", "srr_template_debiased.nii.gz")
             names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
