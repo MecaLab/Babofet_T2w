@@ -30,6 +30,8 @@ def plot_full_comparison(raw_path, model_paths, model_names, file_id, output, ax
 
     # On prépare une liste de tous les noms pour les lignes
     all_row_names = ["IMAGE SOURCE"] + model_names
+    print(all_row_names)
+    exit()
 
     for row in range(num_rows):
         # On charge la donnée selon la ligne
