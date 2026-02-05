@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
     subject = "Filoutte"
     output_path = f"data_nnunet_longi/{subject}"
-    sessions = ["ses06", "ses07", "ses08", "ses09", "ses10"]
+    sessions = ["ses05", "ses06", "ses07", "ses08", "ses09", "ses10"]
     trainer = "nnUNetTrainerBias_1000epochs"
     dataset_id = 20
     dataset_name = f"Dataset{dataset_id:03d}_tmp_longi"
