@@ -98,12 +98,13 @@ def organize_files(subject, sessions, input_path, output_path):
 
 if __name__ == "__main__":
     input_path = cfg.DATA_PATH
-    output_path = "data_nnunet_longi/Borgne"
+
+    subject = "Filoutte"
+    output_path = f"data_nnunet_longi/{subject}"
     sessions = ["ses06", "ses07", "ses08", "ses09", "ses10"]
     trainer = "nnUNetTrainerBias_1000epochs"
     dataset_id = 20
     dataset_name = f"Dataset{dataset_id:03d}_tmp_longi"
-    subject = "Borgne"
     model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
     organize_files(subject, sessions, input_path, output_path)
