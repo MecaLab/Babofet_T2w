@@ -97,3 +97,4 @@ if __name__ == "__main__":
 
     target_filename = "slurm_files/longiseg_predict_all.slurm"
     write_slurm_file(subject, target_filename, output_dir)
+    subprocess.run(["sbatch", target_filename])
