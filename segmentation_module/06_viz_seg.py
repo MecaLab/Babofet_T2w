@@ -147,3 +147,26 @@ if __name__ == "__main__":
 
     df_stats = pd.DataFrame(all_dice_results)
     run_stats(df_stats)
+
+
+    """
+    Test de Friedman (Global): p-value = 3.2078e-03
+
+    Comparaisons détaillées (Wilcoxon) :
+                                                  Comparaison  p-value  Significatif
+    LongiSegDiff_vs_BestnnUNet vs LongiSegDiff_vs_nnUNetLongi   0.3125         False
+         LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_BestnnUNet   0.0625         False
+       LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff   0.0625         False
+        LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi   0.1250         False
+      LongiSegDiff_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet   0.1250         False
+        LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_BestnnUNet   0.6250         False
+      LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff   0.0625         False
+       LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi   0.0625         False
+     LongiSegDiff_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet   0.4375         False
+           LongiSeg_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff   0.0625         False
+            LongiSeg_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi   0.3125         False
+          LongiSeg_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet   0.0625         False
+          LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi   0.0625         False
+        LongiSeg_vs_LongiSegDiff vs nnUNetLongi_vs_BestnnUNet   0.0625         False
+         LongiSeg_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet   0.1875         False
+    """
