@@ -145,6 +145,6 @@ if __name__ == "__main__":
                 print(f"\tProcessing axis {a}...")
                 plot_full_comparison(raw_data, model_paths, names, f"{subject}_{session}",
                                      output="snapshots/model_comparison", axis=a, pct_range=(0.30, 0.70))
-                
-            df_stats = pd.DataFrame(all_dice_results)
-            run_stats(df_stats)
+
+    df_stats = pd.DataFrame(all_dice_results)
+    run_stats(df_stats)
