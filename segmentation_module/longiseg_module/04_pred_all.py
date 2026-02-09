@@ -14,13 +14,13 @@ def write_slurm_file(subject, filename, output_path):
 #SBATCH -e pred_longiseg_%j.err
 
 # --- CONFIGURATION ---
-INPUT_DIR="/scratch/lbaptiste/Babofet_T2w/tmp_{subject}_data"
+INPUT_DIR="/scratch/lbaptiste/Babofet_T2w/tmp_{subject.lower()}_data"
 OUTPUT_DIR={output_path}
 MODEL_FOLDER="/scratch/lbaptiste/data/LongiSeg_results/Dataset001_FirstTry/LongiSegTrainerDiffWeighting__nnUNetPlans__3d_fullres"
 
 PKL_FILE="${{MODEL_FOLDER}}/crossval_results_folds_0_1_2_3_4/postprocessing.pkl"
 PLANS_JSON="${{MODEL_FOLDER}}/crossval_results_folds_0_1_2_3_4/plans.json"
-PATIENT_JSON="/scratch/lbaptiste/Babofet_T2w/tmp_{subject}_data/patientsTr.json"
+PATIENT_JSON="/scratch/lbaptiste/Babofet_T2w/tmp_{subject.lower()}_data/patientsTr.json"
 
 mkdir -p "$OUTPUT_DIR"
 
