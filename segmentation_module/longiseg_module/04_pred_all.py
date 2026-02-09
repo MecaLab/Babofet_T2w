@@ -80,7 +80,7 @@ def write_patients_json(subject, sessions, filename):
     data = {
         subject: [f"{subject}_{s}" for s in sessions]
     }
-    with open('data.json', 'w', encoding='utf-8') as f:
+    with open(filename, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
