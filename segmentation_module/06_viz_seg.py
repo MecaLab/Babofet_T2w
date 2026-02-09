@@ -12,7 +12,7 @@ import configuration as cfg
 
 def plot_full_comparison(raw_data, model_paths, model_names, file_id, output, axis=2, pct_range=(0.2, 0.8)):
     axis_names = {0: "SAGITTAL", 1: "CORONAL", 2: "AXIAL"}
-    num_slices = 7
+    num_slices = 8
     num_models = len(model_paths)
     num_rows = 1 + num_models
 
@@ -20,7 +20,6 @@ def plot_full_comparison(raw_data, model_paths, model_names, file_id, output, ax
         os.makedirs(output)
     output_filename = os.path.join(output, f"segmentation_comparison_{axis_names[axis]}_{file_id}.png")
 
-    # FIX: z_max dépend maintenant de l'axe choisi
     z_max = raw_data.shape[axis]
     slice_indices = np.linspace(int(z_max * pct_range[0]), int(z_max * pct_range[1]), num_slices).astype(int)
 
@@ -144,7 +143,7 @@ if __name__ == "__main__":
             for a in [2, 1, 0]:
                 print(f"\tProcessing axis {a}...")
                 plot_full_comparison(raw_data, model_paths, names, f"{subject}_{session}",
-                                     output="snapshots/model_comparison", axis=a, pct_range=(0.30, 0.70))
+                                     output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))
 
     df_stats = pd.DataFrame(all_dice_results)
     run_stats(df_stats)
