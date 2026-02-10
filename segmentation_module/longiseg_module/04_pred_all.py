@@ -93,10 +93,7 @@ if __name__ == "__main__":
     raw_sessions = sys.argv[2]
     sessions = [f"ses{item.strip()}" for item in raw_sessions.split(',')]
 
-    # Affichage du résultat
-    print(f"Liste récupérée : {sessions}")
-
-    exit()
+    print(f"Computing predictions for subject {subject} and sessions: \n{sessions}")
 
     input_dir = "inference_all"
     output_dir = f"tmp_{subject.lower()}_data"
