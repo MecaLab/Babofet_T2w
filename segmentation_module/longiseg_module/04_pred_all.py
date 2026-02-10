@@ -1,5 +1,6 @@
 import subprocess
 import os
+import sys
 import json
 
 def write_slurm_file(subject, filename, output_path):
@@ -87,8 +88,16 @@ def write_patients_json(subject, sessions, filename):
 
 if __name__ == "__main__":
 
-    subject = "Formule"
-    sessions = ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09"]
+    subject = sys.argv[1]
+    # sessions = ["ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"]
+    raw_sessions = sys.argv[2]
+    sessions = [f"ses{item.strip()}" for item in raw_sessions.split(',')]
+
+    # Affichage du résultat
+    print(f"Liste récupérée : {sessions}")
+
+    exit()
+
     input_dir = "inference_all"
     output_dir = f"tmp_{subject.lower()}_data"
 
