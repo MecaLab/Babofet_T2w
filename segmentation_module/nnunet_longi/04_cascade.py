@@ -58,52 +58,55 @@ cp $BASE_DIR/pred_{session}/{subject}_{session}.nii.gz $BASE_DIR/pred_{next_sess
 
 def organize_files(subject, sessions, input_path, output_path):
     seg_dataset = "gt_dataset_2"
+    sorted_sessions = sorted(sessions)
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
-    for subject_ in os.listdir(input_path):
-        if subject_ != subject:
-            continue
+    subject_input_dir = os.path.join(input_path, subject)
+    for i, session in enumerate(sorted_sessions):
+        dir_sess = os.path.join(output_path, f"pred_{session}")
+        if not os.path.exists(dir_sess):
+            os.makedirs(dir_sess)
 
-        subject_input_dir = os.path.join(input_path, subject)
-        for session in os.listdir(subject_input_dir):
-            if session not in sessions:
-                continue
-            dir_sess = os.path.join(output_path, f"pred_{session}")
-            if not os.path.exists(dir_sess):
-                os.makedirs(dir_sess)
-
+        if i > 0:
+            prev_sess = sorted_sessions[i - 1]
+        else:
             prev_sess = f"ses{int(session[-2:]) - 1:02d}"
 
-            curr_vol = os.path.join(subject_input_dir, session,
-                                    "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
-            prev_vol = os.path.join(subject_input_dir, prev_sess,
-                                    "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
-            prev_seg = os.path.join(cfg.BASE_PATH, seg_dataset, "train_dataset", f"{subject}_{prev_sess}.nii.gz")
-            if not os.path.exists(prev_seg):
-                prev_seg = os.path.join(cfg.BASE_PATH, seg_dataset, "test_dataset", f"{subject}_{prev_sess}.nii.gz")
-            if not os.path.exists(prev_seg):
-                prev_seg = None
+        curr_vol = os.path.join(subject_input_dir, session,
+                                "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+        prev_vol = os.path.join(subject_input_dir, prev_sess,
+                                "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
+        prev_seg = os.path.join(cfg.BASE_PATH, seg_dataset, "train_dataset", f"{subject}_{prev_sess}.nii.gz")
+        if not os.path.exists(prev_seg):
+            prev_seg = os.path.join(cfg.BASE_PATH, seg_dataset, "test_dataset", f"{subject}_{prev_sess}.nii.gz")
+        if not os.path.exists(prev_seg):
+            prev_seg = None
 
-            output_curr_vol = os.path.join(dir_sess, f"{subject}_{session}_0000.nii.gz")
-            output_prev_vol = os.path.join(dir_sess, f"{subject}_{session}_0001.nii.gz")
+        output_curr_vol = os.path.join(dir_sess, f"{subject}_{session}_0000.nii.gz")
+        output_prev_vol = os.path.join(dir_sess, f"{subject}_{session}_0001.nii.gz")
 
-            os.system(f"cp {curr_vol} {output_curr_vol}")
-            os.system(f"cp {prev_vol} {output_prev_vol}")
-            if prev_seg:
-                output_prev_seg = os.path.join(dir_sess, f"{subject}_{session}_0002.nii.gz")
-                os.system(f"cp {prev_seg} {output_prev_seg}")
+        os.system(f"cp {curr_vol} {output_curr_vol}")
+        os.system(f"cp {prev_vol} {output_prev_vol}")
+        if prev_seg:
+            output_prev_seg = os.path.join(dir_sess, f"{subject}_{session}_0002.nii.gz")
+            os.system(f"cp {prev_seg} {output_prev_seg}")
+
+        print(f"Organized files for {subject} {session} in {dir_sess}")
 
 
 
 if __name__ == "__main__":
     input_path = cfg.DATA_PATH
 
-    subject = "Bibi"
-    output_path = f"data_nnunet_longi/{subject}"
-    sessions = ["ses05", "ses06", "ses07", "ses09"]
+    subject = sys.argv[1]
+    raw_sessions = sys.argv[2]
+
+    sessions = [f"ses{item.strip()}" for item in raw_sessions.split(',')]
     trainer = "nnUNetTrainerBias_1000epochs"
     dataset_id = 20
+
+    output_path = f"data_nnunet_longi/{subject}"
     dataset_name = f"Dataset{dataset_id:03d}_tmp_longi"
     model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
