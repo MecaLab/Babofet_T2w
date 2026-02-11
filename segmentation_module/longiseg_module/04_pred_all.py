@@ -24,7 +24,7 @@ source ~/.bashrc
 conda activate longiseg_new
 
 # --- CONFIGURATION ---
-INPUT_DIR="/scratch/lbaptiste/Babofet_T2w/tmp_{subject.lower()}_data"
+INPUT_DIR="/scratch/lbaptiste/Babofet_T2w/results_seg/{trainer}/{subject}"
 OUTPUT_DIR={output_path}
 PATIENT_JSON="${{OUTPUT_DIR}}/patientsTr.json"
 
@@ -101,16 +101,12 @@ if __name__ == "__main__":
 
     print(f"Computing predictions for subject {subject} and sessions: \n{sessions}")
     input_dir = "inference_all"
-    output_dir = os.path.join(cfg.CODE_PATH, "results_seg", f"{trainer.lower()}")
+    output_dir = os.path.join(cfg.CODE_PATH, "results_seg", f"{trainer.lower()}", subject)
     if not os.path.exists(input_dir):
         os.makedirs(input_dir)
 
-    output_dir = os.path.join(output_dir, f"{subject}")
-
     prepare_folder(subject, sessions, input_dir, output_dir)
     write_patients_json(subject, sessions, os.path.join(output_dir, "patientsTr.json"))
-
-    exit()
 
     target_filename = "slurm_files/longiseg_predict_all.slurm"
     write_slurm_file(subject, target_filename, output_dir)
