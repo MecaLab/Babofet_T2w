@@ -77,11 +77,22 @@ def organize_files(subject, sessions, input_path, output_path):
                                 "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
         prev_vol = os.path.join(subject_input_dir, prev_sess,
                                 "recons_rhesus/recon_template_space/srr_template_debiased.nii.gz")
-        prev_seg = os.path.join(cfg.BASE_PATH, seg_dataset, "train_dataset", f"{subject}_{prev_sess}.nii.gz")
-        if not os.path.exists(prev_seg):
-            prev_seg = os.path.join(cfg.BASE_PATH, seg_dataset, "test_dataset", f"{subject}_{prev_sess}.nii.gz")
-        if not os.path.exists(prev_seg):
-            prev_seg = None
+
+        search_dirs = [
+            os.path.join(cfg.BASE_PATH, seg_dataset, "train_dataset"),
+            os.path.join(cfg.BASE_PATH, seg_dataset, "test_dataset"),
+            os.path.join(cfg.CODE_PATH, "inference_all", "12_segmentations")
+
+        ]
+        prev_seg = None
+        filename_to_find = f"{subject}_{prev_sess}.nii.gz"
+
+        for folder in search_dirs:
+            potential_path = os.path.join(folder, filename_to_find)
+            if os.path.exists(potential_path):
+                prev_seg = potential_path
+                print(f"Segmentation found at {prev_seg}")
+                break  # On s'arrête au premier trouvé
 
         output_curr_vol = os.path.join(dir_sess, f"{subject}_{session}_0000.nii.gz")
         output_prev_vol = os.path.join(dir_sess, f"{subject}_{session}_0001.nii.gz")
