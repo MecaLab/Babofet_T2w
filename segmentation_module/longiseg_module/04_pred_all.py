@@ -17,8 +17,8 @@ def write_slurm_file(subject, filename, sessions, output_path, trainer):
 #SBATCH --gres=gpu:1
 #SBATCH --time=2:00:00
 #SBATCH -c 12
-#SBATCH -o pred_longiseg_%j.out
-#SBATCH -e pred_longiseg_%j.err
+#SBATCH -o logs/pred_{trainer}_{subject}_%j.out
+#SBATCH -e logs/pred_{trainer}_{subject}_%j.err
 
 source ~/.bashrc
 conda activate longiseg_new
@@ -43,7 +43,7 @@ do
     TMP_OUT="${{OUTPUT_DIR}}/tmp_out_$t"
     mkdir -p "$TMP_IN" "$TMP_OUT"
 
-    cp "${{INPUT_DIR}}/{subject}_ses${{t}}_0000.nii.gz" "${{TMP_IN}}/{subject}_ses${{t}}_0000.nii.gz"
+    cp "${{INPUT_DIR}}/{subject}_${{t}}_0000.nii.gz" "${{TMP_IN}}/{subject}_${{t}}_0000.nii.gz"
 
     LongiSeg_predict -i "$TMP_IN" \\
                      -o "$TMP_OUT" \\
@@ -60,7 +60,7 @@ do
                                   -np 8 \\
                                   -plans_json "$PLANS_JSON"
 
-    mv "${{TMP_OUT}}/{subject}_ses${{t}}.nii.gz" "${{OUTPUT_DIR}}/{subject}_ses${{t}}.nii.gz"
+    mv "${{TMP_OUT}}/{subject}_${{t}}.nii.gz" "${{OUTPUT_DIR}}/{subject}_${{t}}.nii.gz"
 
     rm -rf "$TMP_IN" "$TMP_OUT"
 done
@@ -109,6 +109,6 @@ if __name__ == "__main__":
     prepare_folder(subject, sessions, input_dir, output_dir)
     write_patients_json(subject, sessions, os.path.join(output_dir, "patientsTr.json"))
 
-    target_filename = "slurm_files/longiseg_predict_all.slurm"
+    target_filename = f"slurm_files/predict_{subject}_{trainer}.slurm"
     write_slurm_file(subject, target_filename, sessions, output_dir, trainer)
     subprocess.run(["sbatch", target_filename])
