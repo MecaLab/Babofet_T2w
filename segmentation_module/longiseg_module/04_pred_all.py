@@ -33,8 +33,9 @@ PKL_FILE="${{MODEL_FOLDER}}/crossval_results_folds_0_1_2_3_4/postprocessing.pkl"
 PLANS_JSON="${{MODEL_FOLDER}}/crossval_results_folds_0_1_2_3_4/plans.json"
 
 mkdir -p "$OUTPUT_DIR"
+SESSIONS=({sessions_str})
 
-for t in 06 07 08 09 10
+for t in "${{SESSIONS[@]}}"
 do
     echo "--- Processing Timepoint $t ---"
 
