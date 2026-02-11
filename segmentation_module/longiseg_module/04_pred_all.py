@@ -24,7 +24,7 @@ source ~/.bashrc
 conda activate longiseg_new
 
 # --- CONFIGURATION ---
-INPUT_DIR="/scratch/lbaptiste/Babofet_T2w/results_seg/{trainer}/{subject}"
+INPUT_DIR="/scratch/lbaptiste/Babofet_T2w/results_seg/{trainer.lower()}/{subject}"
 OUTPUT_DIR={output_path}
 PATIENT_JSON="${{OUTPUT_DIR}}/patientsTr.json"
 
