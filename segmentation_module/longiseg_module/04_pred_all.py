@@ -2,8 +2,14 @@ import subprocess
 import os
 import sys
 import json
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 
-def write_slurm_file(subject, filename, output_path):
+
+def write_slurm_file(subject, filename, sessions, output_path, trainer):
+    sorted_sessions = sorted(sessions)
+    sessions_str = " ".join(sorted_sessions)
+
     slurm_content = f"""#!/bin/bash
 
 #SBATCH --account='b391'
@@ -22,10 +28,9 @@ INPUT_DIR="/scratch/lbaptiste/Babofet_T2w/tmp_{subject.lower()}_data"
 OUTPUT_DIR={output_path}
 PATIENT_JSON="${{OUTPUT_DIR}}/patientsTr.json"
 
-MODEL_FOLDER="/scratch/lbaptiste/data/LongiSeg_results/Dataset001_FirstTry/LongiSegTrainerDiffWeighting__nnUNetPlans__3d_fullres"
+MODEL_FOLDER="/scratch/lbaptiste/data/LongiSeg_results/Dataset001_FirstTry/{trainer}__nnUNetPlans__3d_fullres"
 PKL_FILE="${{MODEL_FOLDER}}/crossval_results_folds_0_1_2_3_4/postprocessing.pkl"
 PLANS_JSON="${{MODEL_FOLDER}}/crossval_results_folds_0_1_2_3_4/plans.json"
-
 
 mkdir -p "$OUTPUT_DIR"
 
@@ -45,6 +50,7 @@ do
                      -c 3d_fullres \\
                      -f 0 1 2 3 4 \\
                      --save_probabilities \\
+                     -tr {trainer} \\
                      -pat "$PATIENT_JSON"
 
     LongiSeg_apply_postprocessing -i "$TMP_OUT" \\
@@ -64,7 +70,6 @@ echo "Toutes les segmentations ont été générées dans $OUTPUT_DIR"
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
     os.chmod(filename, 0o755)
-
 
 def prepare_folder(subject, sessions, input_dir, output_dir):
     if not os.path.exists(output_dir):
@@ -89,17 +94,23 @@ def write_patients_json(subject, sessions, filename):
 if __name__ == "__main__":
 
     subject = sys.argv[1]
-    # sessions = ["ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"]
     raw_sessions = sys.argv[2]
+    trainer = sys.argv[3]
+
     sessions = [f"ses{item.strip()}" for item in raw_sessions.split(',')]
 
     print(f"Computing predictions for subject {subject} and sessions: \n{sessions}")
-
     input_dir = "inference_all"
-    output_dir = f"tmp_{subject.lower()}_data"
+    output_dir = os.path.join(cfg.CODE_PATH, "results_seg", f"{trainer.lower()}")
+    if not os.path.exists(input_dir):
+        os.makedirs(input_dir)
+
+    output_dir = os.path.join(output_dir, f"{subject}")
 
     prepare_folder(subject, sessions, input_dir, output_dir)
     write_patients_json(subject, sessions, os.path.join(output_dir, "patientsTr.json"))
+
+    exit()
 
     target_filename = "slurm_files/longiseg_predict_all.slurm"
     write_slurm_file(subject, target_filename, output_dir)
