@@ -109,5 +109,5 @@ if __name__ == "__main__":
     write_patients_json(subject, sessions, os.path.join(output_dir, "patientsTr.json"))
 
     target_filename = "slurm_files/longiseg_predict_all.slurm"
-    write_slurm_file(subject, target_filename, output_dir)
+    write_slurm_file(subject, target_filename, sessions, output_dir, trainer)
     subprocess.run(["sbatch", target_filename])
