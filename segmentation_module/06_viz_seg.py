@@ -112,11 +112,31 @@ if __name__ == "__main__":
             "ses08",
             "ses09",
             "ses10"
-        ]
+        ],
+        "Bibi": [
+            "ses05",
+            "ses06",
+            "ses07",
+            "ses09"
+        ],
+        "Filoutte": [
+            "ses05",
+            "ses06",
+            "ses07",
+            "ses08",
+            "ses09",
+            "ses10"
+        ],
+        "Formule": [
+            "ses05",
+            "ses06",
+            "ses07",
+            "ses08",
+            "ses09",
+        ],
     }
 
-    subjects = {"Borgne": ["ses06", "ses07", "ses08", "ses09", "ses10"]}
-    names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi", "BestnnUNet"]
+    names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
     all_dice_results = []
 
     for subject in subjects:
@@ -128,10 +148,10 @@ if __name__ == "__main__":
             raw_data = nib.load(raw_path).get_fdata()
 
             model_paths = [
-                f"tmp_borgne_data/results_segmentations/seg_{subject}_{session}.nii.gz",
-                f"tmp_borgne_data/results_segmentations_diff/seg_{subject}_{session}.nii.gz",
-                f"tmp_borgne_data/results_segmentations_nnunet_longi/{subject}_{session}.nii.gz",
-                f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
+                f"results/longisegtrainer/{subject}/{subject}_{session}.nii.gz",
+                f"tmp_borgne_data/longisegtrainerdiffweighting/{subject}_{session}.nii.gz",
+                f"tmp_borgne_data/nnunetlongi/{subject}/pred_{session}/{subject}_{session}.nii.gz",
+                # f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
             ]
 
             model_data_list = [nib.load(p).get_fdata() for p in model_paths]
