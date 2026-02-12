@@ -107,7 +107,6 @@ def run_stats(df):
 if __name__ == "__main__":
     subjects = {
         "Aziza": [
-            "ses03",
             "ses04",
             "ses05",
             "ses06",
@@ -117,7 +116,6 @@ if __name__ == "__main__":
             "ses10"
         ],
         "Forme": [
-            "ses05",
             "ses06",
             "ses07",
             "ses08",
