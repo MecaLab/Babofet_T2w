@@ -149,7 +149,7 @@ if __name__ == "__main__":
 
             model_paths = [
                 f"results_seg/longisegtrainer/{subject}/{subject}_{session}.nii.gz",
-                f"results_seg/longisegtrainerdiffweighting/{subject}_{session}.nii.gz",
+                f"results_seg/longisegtrainerdiffweighting/{subject}/{subject}_{session}.nii.gz",
                 f"results_seg/nnunetlongi/{subject}/pred_{session}/{subject}_{session}.nii.gz",
                 # f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
             ]
