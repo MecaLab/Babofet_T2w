@@ -91,7 +91,7 @@ def run_stats(df):
     print("\n" + "=" * 30 + "\nRAPPORT STATISTIQUE\n" + "=" * 30)
 
     # On pivote pour avoir une colonne par paire de comparaison
-    pivot_df = df.pivot(index='Session', columns='Pair', values='Dice').dropna()
+    pivot_df = df.pivot(index=['Subject', 'Session'], columns='Pair', values='Dice').dropna()
 
     stat, p_f = friedmanchisquare(*(pivot_df[c] for c in pivot_df.columns))
     print(f"Test de Friedman (Global): p-value = {p_f:.4e}")
@@ -158,7 +158,12 @@ if __name__ == "__main__":
 
             for (idx1, n1), (idx2, n2) in itertools.combinations(enumerate(names), 2):
                 d_score = compute_dice(model_data_list[idx1], model_data_list[idx2])
-                all_dice_results.append({"Session": session, "Pair": f"{n1}_vs_{n2}", "Dice": d_score})
+                all_dice_results.append({
+                    "Subject": subject,
+                    "Session": session,
+                    "Pair": f"{n1}_vs_{n2}",
+                    "Dice": d_score
+                })
 
             for a in [2, 1, 0]:
                 print(f"\tProcessing axis {a}...")
