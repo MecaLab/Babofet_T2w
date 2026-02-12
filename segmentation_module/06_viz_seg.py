@@ -148,9 +148,9 @@ if __name__ == "__main__":
             raw_data = nib.load(raw_path).get_fdata()
 
             model_paths = [
-                f"results/longisegtrainer/{subject}/{subject}_{session}.nii.gz",
-                f"tmp_borgne_data/longisegtrainerdiffweighting/{subject}_{session}.nii.gz",
-                f"tmp_borgne_data/nnunetlongi/{subject}/pred_{session}/{subject}_{session}.nii.gz",
+                f"results_seg/longisegtrainer/{subject}/{subject}_{session}.nii.gz",
+                f"results_seg/longisegtrainerdiffweighting/{subject}_{session}.nii.gz",
+                f"results_seg/nnunetlongi/{subject}/pred_{session}/{subject}_{session}.nii.gz",
                 # f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
             ]
 
