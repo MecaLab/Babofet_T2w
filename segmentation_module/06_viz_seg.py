@@ -106,6 +106,22 @@ def run_stats(df):
 
 if __name__ == "__main__":
     subjects = {
+        "Aziza": [
+            "ses04",
+            "ses05",
+            "ses06",
+            "ses07",
+            "ses08",
+            "ses09",
+            "ses10"
+        ],
+        "Forme": [
+            "ses06",
+            "ses07",
+            "ses08",
+            "ses09",
+            "ses10"
+        ],
         "Borgne": [
             "ses06",
             "ses07",
@@ -175,6 +191,16 @@ if __name__ == "__main__":
 
 
     """
+    Sans FORME et AZIZA:
+    Test de Friedman (Global): p-value = 1.2469e-08
+
+    Comparaisons détaillées (Wilcoxon) :
+                                                Comparaison  p-value  Significatif
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 0.000002          True
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi  0.000010          True
+    LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi     0.000002          True
+    ----------------------------------------------------------------------------------
+    
     Sans FORME et AZIZA:
         Test de Friedman (Global): p-value = 3.1592e-12
     
