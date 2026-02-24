@@ -151,7 +151,6 @@ if __name__ == "__main__":
             "ses09",
         ],
     }
-
     names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
     all_dice_results = []
 
