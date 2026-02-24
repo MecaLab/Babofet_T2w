@@ -106,22 +106,6 @@ def run_stats(df):
 
 if __name__ == "__main__":
     subjects = {
-        "Aziza": [
-            "ses04",
-            "ses05",
-            "ses06",
-            "ses07",
-            "ses08",
-            "ses09",
-            "ses10"
-        ],
-        "Forme": [
-            "ses06",
-            "ses07",
-            "ses08",
-            "ses09",
-            "ses10"
-        ],
         "Borgne": [
             "ses06",
             "ses07",
@@ -152,7 +136,7 @@ if __name__ == "__main__":
         ],
     }
 
-    names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi", "BestnnUNet"]
+    names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
     all_dice_results = []
 
     for subject in subjects:
@@ -167,7 +151,7 @@ if __name__ == "__main__":
                 f"results_seg/longisegtrainer/{subject}/{subject}_{session}.nii.gz",
                 f"results_seg/longisegtrainerdiffweighting/{subject}/{subject}_{session}.nii.gz",
                 f"results_seg/nnunetlongi/{subject}/pred_{session}/{subject}_{session}.nii.gz",
-                f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
+                # f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
             ]
 
             model_data_list = [nib.load(p).get_fdata() for p in model_paths]
@@ -196,19 +180,40 @@ if __name__ == "__main__":
     
     Comparaisons détaillées (Wilcoxon) :
                                                   Comparaison  p-value  Significatif
-    LongiSegDiff_vs_BestnnUNet vs LongiSegDiff_vs_nnUNetLongi 0.647655         False
-         LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_BestnnUNet 0.000004          True
-       LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff 0.000002          True
-        LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi 0.348810         False
-      LongiSegDiff_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet 0.230513         False
-        LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_BestnnUNet 0.701181         False
-      LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 0.000002          True
-       LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi 0.000010          True
-     LongiSegDiff_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet 0.388376         False
-           LongiSeg_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff 0.000002          True
-            LongiSeg_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi 0.756166         False
-          LongiSeg_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet 0.000395          True
-          LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi 0.000002          True
-        LongiSeg_vs_LongiSegDiff vs nnUNetLongi_vs_BestnnUNet 0.000002          True
-         LongiSeg_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet 0.002712          True
+    LongiSegDiff_vs_BestnnUNet vs LongiSegDiff_vs_nnUNetLongi   0.647655         False
+    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_BestnnUNet    0.000004          True
+    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff  0.000002          True
+    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi   0.348810         False
+    LongiSegDiff_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet 0.230513         False
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_BestnnUNet   0.701181         False
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 0.000002          True
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi  0.000010          True
+    LongiSegDiff_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet0.388376         False
+    LongiSeg_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff      0.000002          True
+    LongiSeg_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi       0.756166         False
+    LongiSeg_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet     0.000395          True
+    LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi     0.000002          True
+    LongiSeg_vs_LongiSegDiff vs nnUNetLongi_vs_BestnnUNet   0.000002          True
+    LongiSeg_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet    0.002712          True
+         
+    Test de Friedman (Global): p-value = 1.4303e-15
+    Sans FORME et AZIZA:
+    Comparaisons détaillées (Wilcoxon) :
+                                                  Comparaison      p-value  Significatif
+    LongiSegDiff_vs_BestnnUNet vs LongiSegDiff_vs_nnUNetLongi 9.338708e-01         False
+         LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_BestnnUNet 9.313226e-10          True
+       LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff 9.313226e-10          True
+        LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi 7.796160e-03          True
+      LongiSegDiff_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet 7.468256e-01         False
+        LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_BestnnUNet 1.106481e-01         False
+      LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 4.656613e-10          True
+       LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi 4.656613e-09          True
+     LongiSegDiff_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet 7.891259e-01         False
+           LongiSeg_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff 3.615216e-03          True
+            LongiSeg_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi 8.464598e-01         False
+          LongiSeg_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet 2.947409e-03          True
+          LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi 9.061266e-04          True
+        LongiSeg_vs_LongiSegDiff vs nnUNetLongi_vs_BestnnUNet 4.718150e-04          True
+         LongiSeg_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet 9.909525e-03          True
+    
     """
