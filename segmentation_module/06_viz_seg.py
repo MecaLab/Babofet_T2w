@@ -243,7 +243,7 @@ if __name__ == "__main__":
     print(summary_df)
     run_stats(df_stats)
 
-    compare_methods_1v1(df_stats, ref_name="bestnnUNet")
+    # compare_methods_1v1(df_stats, ref_name="bestnnUNet")
 
 
     """
