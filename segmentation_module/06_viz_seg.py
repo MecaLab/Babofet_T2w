@@ -186,6 +186,9 @@ if __name__ == "__main__":
                 #                     output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))
 
     df_stats = pd.DataFrame(all_dice_results)
+    print("\n" + "=" * 30 + "\nMOYENNES DES SCORES DICE\n" + "=" * 30)
+    summary_df = df_stats.groupby('Pair')['Dice'].agg(['mean', 'std']).sort_values(by='mean', ascending=False)
+    print(summary_df)
     run_stats(df_stats)
 
 
