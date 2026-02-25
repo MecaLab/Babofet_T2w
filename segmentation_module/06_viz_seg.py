@@ -104,6 +104,58 @@ def run_stats(df):
 
     print(pd.DataFrame(results).to_string(index=False))
 
+
+def compare_methods_1v1(df, ref_name="bestnnUNet"):
+    print("\n" + "=" * 50)
+    print(f"COMPARAISON 1 À 1 DES MÉTHODES (Référence : {ref_name})")
+    print("=" * 50)
+
+    # 1. Ne garder que les paires qui incluent la référence
+    df_ref = df[df['Pair'].str.contains(ref_name)].copy()
+
+    if df_ref.empty:
+        print(f"Aucune donnée trouvée pour la référence '{ref_name}'.")
+        return
+
+    # 2. Extraire le nom de la méthode évaluée
+    # Ex: "LongiSeg_vs_bestnnUNet" devient "LongiSeg"
+    def extract_method_name(pair_name):
+        return pair_name.replace(f"_vs_{ref_name}", "").replace(f"{ref_name}_vs_", "")
+
+    df_ref['Method'] = df_ref['Pair'].apply(extract_method_name)
+
+    # 3. Pivoter pour avoir les méthodes en colonnes et les sessions en lignes
+    pivot_df = df_ref.pivot(index=['Subject', 'Session'], columns='Method', values='Dice').dropna()
+
+    # 4. Afficher les moyennes
+    print("\n--- Scores de Dice (vs référence) ---")
+    means = pivot_df.mean().sort_values(ascending=False)
+    stds = pivot_df.std()
+    for method in means.index:
+        print(f"{method:>15} : {means[method]:.4f} ± {stds[method]:.4f}")
+
+    # 5. Tests statistiques (Wilcoxon) 1 vs 1
+    print("\n--- Tests de Wilcoxon (1 vs 1) ---")
+    results = []
+
+    for m1, m2 in itertools.combinations(means.index, 2):  # Utilise means.index pour garder le tri
+        _, p_w = wilcoxon(pivot_df[m1], pivot_df[m2])
+
+        # Déterminer qui "gagne" si c'est significatif
+        if p_w < 0.05:
+            meilleur = m1 if means[m1] > means[m2] else m2
+        else:
+            meilleur = "Égalité stat."
+
+        results.append({
+            "Comparaison": f"{m1} vs {m2}",
+            "p-value": f"{p_w:.4e}",
+            "Signif. (p<0.05)": p_w < 0.05,
+            "Plus proche réf.": meilleur
+        })
+
+    print(pd.DataFrame(results).to_string(index=False))
+
 if __name__ == "__main__":
     subjects = {
         "Aziza": [
@@ -190,6 +242,8 @@ if __name__ == "__main__":
     summary_df = df_stats.groupby('Pair')['Dice'].agg(['mean', 'std']).sort_values(by='mean', ascending=False)
     print(summary_df)
     run_stats(df_stats)
+
+    compare_methods_1v1(df_stats, ref_name="bestnnUNet")
 
 
     """
