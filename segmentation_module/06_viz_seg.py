@@ -151,7 +151,7 @@ if __name__ == "__main__":
             "ses09",
         ],
     }
-    names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
+    names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi", "bestnnUNet"]
     all_dice_results = []
 
     for subject in subjects:
@@ -166,7 +166,7 @@ if __name__ == "__main__":
                 f"results_seg/longisegtrainer/{subject}/{subject}_{session}.nii.gz",
                 f"results_seg/longisegtrainerdiffweighting/{subject}/{subject}_{session}.nii.gz",
                 f"results_seg/nnunetlongi/{subject}/pred_{session}/{subject}_{session}.nii.gz",
-                # f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
+                f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
             ]
 
             model_data_list = [nib.load(p).get_fdata() for p in model_paths]
@@ -198,6 +198,16 @@ if __name__ == "__main__":
     LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 0.000002          True
     LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi  0.000010          True
     LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi     0.000002          True
+    
+    Avec FORME et AZIZA:
+    Test de Friedman (Global): p-value = 7.6697e-12
+
+    Comparaisons détaillées (Wilcoxon) :
+                                                Comparaison      p-value  Significatif
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 4.656613e-10          True
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi  4.656613e-09          True
+    LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi     9.061266e-04          True
+    
     ----------------------------------------------------------------------------------
     
     Sans FORME et AZIZA:
@@ -220,9 +230,10 @@ if __name__ == "__main__":
     LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi     0.000002          True
     LongiSeg_vs_LongiSegDiff vs nnUNetLongi_vs_BestnnUNet   0.000002          True
     LongiSeg_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet    0.002712          True
-         
+    
+    Avec FORME et AZIZA:   
     Test de Friedman (Global): p-value = 1.4303e-15
-    Sans FORME et AZIZA:
+    
     Comparaisons détaillées (Wilcoxon) :
                                                   Comparaison      p-value  Significatif
     LongiSegDiff_vs_BestnnUNet vs LongiSegDiff_vs_nnUNetLongi 9.338708e-01         False
