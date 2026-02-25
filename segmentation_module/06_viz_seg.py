@@ -203,7 +203,7 @@ if __name__ == "__main__":
             "ses09",
         ],
     }
-    names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi", "bestnnUNet"]
+    names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
     all_dice_results = []
 
     for subject in subjects:
@@ -218,7 +218,7 @@ if __name__ == "__main__":
                 f"results_seg/longisegtrainer/{subject}/{subject}_{session}.nii.gz",
                 f"results_seg/longisegtrainerdiffweighting/{subject}/{subject}_{session}.nii.gz",
                 f"results_seg/nnunetlongi/{subject}/pred_{session}/{subject}_{session}.nii.gz",
-                f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
+                # f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
             ]
 
             model_data_list = [nib.load(p).get_fdata() for p in model_paths]
