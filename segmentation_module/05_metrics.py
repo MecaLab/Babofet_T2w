@@ -44,17 +44,21 @@ def calculer_iou_score(mask1, mask2, labels):
     return iou_scores
 
 
-def calculer_hausdorff_distance(mask1, mask2, labels):
+def calculer_hausdorff_distance(mask1, mask2, labels, spacing=(0.5, 0.5, 0.5)):
     hausdorff_distances = []
+    voxel_size = np.mean(spacing)
+
     for label in labels:
         bin_mask1 = (mask1 == label).astype(int)
         bin_mask2 = (mask2 == label).astype(int)
+
         if np.any(bin_mask1) and np.any(bin_mask2):
-            # Calcul de la distance de Hausdorff
-            d1 = distance_transform_edt(bin_mask1 == 0, sampling=None)
-            d2 = distance_transform_edt(bin_mask2 == 0, sampling=None)
-            hd = max(np.max(d1[bin_mask2 > 0]), np.max(d2[bin_mask1 > 0]))
-            hausdorff_distances.append(hd)
+            # 1. Calcul de la distance réelle en mm
+            d1 = distance_transform_edt(bin_mask1 == 0, sampling=spacing)
+            d2 = distance_transform_edt(bin_mask2 == 0, sampling=spacing)
+            hd_mm = max(np.max(d1[bin_mask2 > 0]), np.max(d2[bin_mask1 > 0]))
+            hd_voxel = hd_mm / voxel_size
+            hausdorff_distances.append(hd_voxel)
         else:
             hausdorff_distances.append(0.0)
     return hausdorff_distances
@@ -254,6 +258,8 @@ if __name__ == "__main__":
     models = [int(x) for x in sys.argv[1].split(",")]
     results_seg_csv_path = os.path.join(cfg.CODE_PATH, "table_data", "resultats_segmentation.csv")
 
+    voxel_spacing = (0.5, 0.5, 0.5)
+
     if not os.path.exists(results_seg_csv_path):
         for model in models:
             dataset_id = int(model)
@@ -289,7 +295,7 @@ if __name__ == "__main__":
 
                     dice_scores = calculer_dice_score(pred_img, gt_img, labels)
                     iou_scores = calculer_iou_score(pred_img, gt_img, labels)
-                    hausdorff_scores = calculer_hausdorff_distance(pred_img, gt_img, labels)
+                    hausdorff_scores = calculer_hausdorff_distance(pred_img, gt_img, labels, spacing=voxel_spacing)
 
                     dice_scores_list.append(dice_scores)
                     iou_scores_list.append(iou_scores)

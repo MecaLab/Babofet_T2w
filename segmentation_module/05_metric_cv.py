@@ -54,8 +54,6 @@ def compute_metric_models(nb_folds=5):
                 dice_value = summary["mean"][cls]["Dice"]
                 dice_by_class[cls].append(dice_value)
 
-
-        print(model_name, model_name in dice_by_class_models)
         if model_name in dice_by_class_models:
             print(f"[WARNING] Duplicate model name detected: {model_name}. Renaming.")
             model_name = f"{model_name}_dup"
