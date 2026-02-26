@@ -19,7 +19,7 @@ def compute_volume(subject, label, resolution=0.5):
     for session in os.listdir(subject_path):
         session_path = os.path.join(subject_path, session)
 
-        hemi_split_path = os.path.join(session_path, f"{subject}_{session}_hemi_corrected.nii.gz")
+        hemi_split_path = os.path.join(session_path, f"{subject}_{session}_hemi.nii.gz")
 
         img = nib.load(hemi_split_path)
         data = img.get_fdata()
