@@ -64,37 +64,6 @@ def calculer_hausdorff_distance(mask1, mask2, labels, spacing=(0.5, 0.5, 0.5)):
     return hausdorff_distances
 
 
-def calculer_hausdorff_95(mask1, mask2, labels, spacing=(0.5, 0.5, 0.5)):
-    """
-    Calcule la distance de Hausdorff au 95ème percentile.
-    Retourne la valeur en 'unités voxels' (HD95_mm / voxel_size_moyen).
-    """
-    hd95_scores = []
-    voxel_size = np.mean(spacing)
-
-    for label in labels:
-        bin_mask1 = (mask1 == label).astype(bool)
-        bin_mask2 = (mask2 == label).astype(bool)
-
-        if np.any(bin_mask1) and np.any(bin_mask2):
-            # Distance transform (EDT) en mm
-            d1 = distance_transform_edt(~bin_mask1, sampling=spacing)
-            d2 = distance_transform_edt(~bin_mask2, sampling=spacing)
-
-            # Distances de la surface de l'un vers l'autre
-            dist_1to2 = d1[bin_mask2]
-            dist_2to1 = d2[bin_mask1]
-
-            # HD95 est le max des 95èmes percentiles des deux distances
-            hd95_mm = max(np.percentile(dist_1to2, 95), np.percentile(dist_2to1, 95))
-
-            # Conversion vers l'unité 'voxel' pour rester cohérent avec tes mesures
-            hd95_scores.append(hd95_mm / voxel_size)
-        else:
-            hd95_scores.append(0.0)
-    return hd95_scores
-
-
 def mean_std(scores_list):
     # scores_list est une liste de listes, chaque sous-liste contenant les scores pour un sujet
     moyennes = np.mean(scores_list, axis=0)
@@ -299,7 +268,6 @@ if __name__ == "__main__":
             dice_scores_list = []
             iou_scores_list = []
             hausdorff_scores_list = []
-            hausdorff_scores_list_95 = []
 
             labels = [1, 2, 3, 4]
             labels_map = {
@@ -329,30 +297,26 @@ if __name__ == "__main__":
                     dice_scores = calculer_dice_score(pred_img, gt_img, labels)
                     iou_scores = calculer_iou_score(pred_img, gt_img, labels)
                     hausdorff_scores = calculer_hausdorff_distance(pred_img, gt_img, labels, spacing=voxel_spacing)
-                    hausdorff_scores_95 = calculer_hausdorff_95(pred_img, gt_img, labels, spacing=voxel_spacing)
 
                     dice_scores_list.append(dice_scores)
                     iou_scores_list.append(iou_scores)
                     hausdorff_scores_list.append(hausdorff_scores)
-                    hausdorff_scores_list_95.append(hausdorff_scores_95)
 
-                    for label, dice, iou, hd, hd95 in zip(labels, dice_scores, iou_scores, hausdorff_scores, hausdorff_scores_95):
-                        print(f"\t{labels_map[label]}: Dice={dice:.4f}, IoU={iou:.4f}, Hausdorff={hd:.4f}, Haussdorff95={hd95:.4f}")
+                    for label, dice, iou, hd in zip(labels, dice_scores, iou_scores, hausdorff_scores):
+                        print(f"\t{labels_map[label]}: Dice={dice:.4f}, IoU={iou:.4f}, Hausdorff={hd:.4f}")
 
             mean_dice, stds_dice = mean_std(dice_scores_list)
             mean_iou, stds_iou = mean_std(iou_scores_list)
             mean_hausdorff, stds_hausdorff = mean_std(hausdorff_scores_list)
-            mean_haussdorff_95, stds_hausdorff_95 = mean_std(hausdorff_scores_list_95)
 
             # Affichage des résultats finaux
             print("\n--- Résultats finaux (moyenne ± std) ---")
-            for label, dice, std_dice, iou, std_iou, hd, std_hd, hd95, std_hd95 in zip(labels, mean_dice, stds_dice, mean_iou, stds_iou, mean_hausdorff, stds_hausdorff, mean_haussdorff_95, stds_hausdorff_95, stds_hausdorff_95):
+            for label, dice, std_dice, iou, std_iou, hd, std_hd in zip(labels, mean_dice, stds_dice, mean_iou, stds_iou, mean_hausdorff, stds_hausdorff):
                 print(
                     f"{labels_map[label]}: "
                     f"Dice={dice:.4f}±{std_dice:.4f}, "
                     f"IoU={iou:.4f}±{std_iou:.4f}, "
                     f"Hausdorff={hd:.4f}±{std_hd:.4f}",
-                    f"Hausdorff95={hd95:.4f}±{std_hd95:.4f}"
                 )
 
             save_results(dataset_id, mean_dice, stds_dice, mean_iou, stds_iou, mean_hausdorff,
