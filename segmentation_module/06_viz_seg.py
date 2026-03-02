@@ -105,56 +105,29 @@ def run_stats(df):
     print(pd.DataFrame(results).to_string(index=False))
 
 
-def compare_methods_1v1(df, ref_name="bestnnUNet"):
+def analyze_model_agreement(df):
     print("\n" + "=" * 50)
-    print(f"COMPARAISON 1 À 1 DES MÉTHODES (Référence : {ref_name})")
+    print("ACCORD INTER-MODÈLES (Méthode_A vs Méthode_B)")
     print("=" * 50)
 
-    # 1. Ne garder que les paires qui incluent la référence
-    df_ref = df[df['Pair'].str.contains(ref_name)].copy()
+    # On groupe par paire et on calcule les statistiques essentielles
+    summary = df.groupby('Pair')['Dice'].agg(
+        Moyenne='mean',
+        Médiane='median',
+        Ecart_Type='std',
+        Min='min',
+        Max='max'
+    ).reset_index()
 
-    if df_ref.empty:
-        print(f"Aucune donnée trouvée pour la référence '{ref_name}'.")
-        return
+    # On renomme la colonne pour que ce soit plus clair
+    summary.rename(columns={'Pair': 'Comparaison (A vs B)'}, inplace=True)
 
-    # 2. Extraire le nom de la méthode évaluée
-    # Ex: "LongiSeg_vs_bestnnUNet" devient "LongiSeg"
-    def extract_method_name(pair_name):
-        return pair_name.replace(f"_vs_{ref_name}", "").replace(f"{ref_name}_vs_", "")
+    # On trie du plus haut taux d'accord au plus bas
+    summary = summary.sort_values(by='Moyenne', ascending=False)
 
-    df_ref['Method'] = df_ref['Pair'].apply(extract_method_name)
+    # Affichage propre
+    print(summary.to_string(index=False, float_format="%.4f"))
 
-    # 3. Pivoter pour avoir les méthodes en colonnes et les sessions en lignes
-    pivot_df = df_ref.pivot(index=['Subject', 'Session'], columns='Method', values='Dice').dropna()
-
-    # 4. Afficher les moyennes
-    print("\n--- Scores de Dice (vs référence) ---")
-    means = pivot_df.mean().sort_values(ascending=False)
-    stds = pivot_df.std()
-    for method in means.index:
-        print(f"{method:>15} : {means[method]:.4f} ± {stds[method]:.4f}")
-
-    # 5. Tests statistiques (Wilcoxon) 1 vs 1
-    print("\n--- Tests de Wilcoxon (1 vs 1) ---")
-    results = []
-
-    for m1, m2 in itertools.combinations(means.index, 2):  # Utilise means.index pour garder le tri
-        _, p_w = wilcoxon(pivot_df[m1], pivot_df[m2])
-
-        # Déterminer qui "gagne" si c'est significatif
-        if p_w < 0.05:
-            meilleur = m1 if means[m1] > means[m2] else m2
-        else:
-            meilleur = "Égalité stat."
-
-        results.append({
-            "Comparaison": f"{m1} vs {m2}",
-            "p-value": f"{p_w:.4e}",
-            "Signif. (p<0.05)": p_w < 0.05,
-            "Plus proche réf.": meilleur
-        })
-
-    print(pd.DataFrame(results).to_string(index=False))
 
 if __name__ == "__main__":
     subjects = {
@@ -203,6 +176,7 @@ if __name__ == "__main__":
             "ses09",
         ],
     }
+
     names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
     all_dice_results = []
 
@@ -218,7 +192,6 @@ if __name__ == "__main__":
                 f"results_seg/longisegtrainer/{subject}/{subject}_{session}.nii.gz",
                 f"results_seg/longisegtrainerdiffweighting/{subject}/{subject}_{session}.nii.gz",
                 f"results_seg/nnunetlongi/{subject}/pred_{session}/{subject}_{session}.nii.gz",
-                # f"inference_all/12_segmentations/{subject}_{session}.nii.gz",
             ]
 
             model_data_list = [nib.load(p).get_fdata() for p in model_paths]
@@ -234,8 +207,8 @@ if __name__ == "__main__":
 
             for a in [2, 1, 0]:
                 print(f"\tProcessing axis {a}...")
-                # plot_full_comparison(raw_data, model_paths, names, f"{subject}_{session}",
-                #                     output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))
+                """plot_full_comparison(raw_data, model_paths, names, f"{subject}_{session}",
+                                     output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))"""
 
     df_stats = pd.DataFrame(all_dice_results)
     print("\n" + "=" * 30 + "\nMOYENNES DES SCORES DICE\n" + "=" * 30)
@@ -243,7 +216,7 @@ if __name__ == "__main__":
     print(summary_df)
     run_stats(df_stats)
 
-    # compare_methods_1v1(df_stats, ref_name="bestnnUNet")
+    analyze_model_agreement(df_stats)
 
 
     """
