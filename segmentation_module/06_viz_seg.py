@@ -167,10 +167,10 @@ if __name__ == "__main__":
                 })
 
             # Génération des images de comparaison
-            for a in [2, 1, 0]:
+            """for a in [2, 1, 0]:
                 print(f"\tProcessing axis {a}...")
                 plot_full_comparison(raw_data, model_paths, names, f"{subject}_{session}",
-                                     output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))
+                                     output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))"""
 
     # --- ANALYSE DES RESULTATS ---
     df_stats = pd.DataFrame(all_dice_results)
