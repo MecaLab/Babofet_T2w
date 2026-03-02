@@ -175,20 +175,80 @@ if __name__ == "__main__":
     # --- ANALYSE DES RESULTATS ---
     df_stats = pd.DataFrame(all_dice_results)
 
-    # 1. Affichage des scores Dice bruts
     print("\n" + "=" * 50)
     print("SCORES DICE BRUTS (Par sujet et par session)")
     print("=" * 50)
     print(df_stats.to_string(index=False))
 
-    # 2. Affichage des statistiques descriptives
     analyze_model_agreement(df_stats)
 
-    # 3. Affichage des tests statistiques
     run_stats(df_stats)
 
     """
     Avec AZIZA et FORME
+    
+    Subject Session                        Pair     Dice
+    Borgne   ses06    LongiSeg_vs_LongiSegDiff 0.999184
+    Borgne   ses06     LongiSeg_vs_nnUNetLongi 0.998816
+    Borgne   ses06 LongiSegDiff_vs_nnUNetLongi 0.998570
+    Borgne   ses07    LongiSeg_vs_LongiSegDiff 0.998887
+    Borgne   ses07     LongiSeg_vs_nnUNetLongi 0.998783
+    Borgne   ses07 LongiSegDiff_vs_nnUNetLongi 0.998371
+    Borgne   ses08    LongiSeg_vs_LongiSegDiff 0.998696
+    Borgne   ses08     LongiSeg_vs_nnUNetLongi 0.998080
+    Borgne   ses08 LongiSegDiff_vs_nnUNetLongi 0.997721
+    Borgne   ses09    LongiSeg_vs_LongiSegDiff 0.998833
+    Borgne   ses09     LongiSeg_vs_nnUNetLongi 0.997631
+    Borgne   ses09 LongiSegDiff_vs_nnUNetLongi 0.997110
+    Borgne   ses10    LongiSeg_vs_LongiSegDiff 0.998526
+    Borgne   ses10     LongiSeg_vs_nnUNetLongi 0.995049
+    Borgne   ses10 LongiSegDiff_vs_nnUNetLongi 0.994567
+    Bibi   ses05    LongiSeg_vs_LongiSegDiff 0.999006
+    Bibi   ses05     LongiSeg_vs_nnUNetLongi 0.998733
+    Bibi   ses05 LongiSegDiff_vs_nnUNetLongi 0.998270
+    Bibi   ses06    LongiSeg_vs_LongiSegDiff 0.999127
+    Bibi   ses06     LongiSeg_vs_nnUNetLongi 0.998547
+    Bibi   ses06 LongiSegDiff_vs_nnUNetLongi 0.998294
+    Bibi   ses07    LongiSeg_vs_LongiSegDiff 0.998889
+    Bibi   ses07     LongiSeg_vs_nnUNetLongi 0.998319
+    Bibi   ses07 LongiSegDiff_vs_nnUNetLongi 0.997962
+    Bibi   ses09    LongiSeg_vs_LongiSegDiff 0.998431
+    Bibi   ses09     LongiSeg_vs_nnUNetLongi 0.997212
+    Bibi   ses09 LongiSegDiff_vs_nnUNetLongi 0.996538
+    Filoutte   ses05    LongiSeg_vs_LongiSegDiff 0.999354
+    Filoutte   ses05     LongiSeg_vs_nnUNetLongi 0.998077
+    Filoutte   ses05 LongiSegDiff_vs_nnUNetLongi 0.998127
+    Filoutte   ses06    LongiSeg_vs_LongiSegDiff 0.998635
+    Filoutte   ses06     LongiSeg_vs_nnUNetLongi 0.997577
+    Filoutte   ses06 LongiSegDiff_vs_nnUNetLongi 0.997430
+    Filoutte   ses07    LongiSeg_vs_LongiSegDiff 0.999051
+    Filoutte   ses07     LongiSeg_vs_nnUNetLongi 0.998056
+    Filoutte   ses07 LongiSegDiff_vs_nnUNetLongi 0.997799
+    Filoutte   ses08    LongiSeg_vs_LongiSegDiff 0.998778
+    Filoutte   ses08     LongiSeg_vs_nnUNetLongi 0.997328
+    Filoutte   ses08 LongiSegDiff_vs_nnUNetLongi 0.997201
+    Filoutte   ses09    LongiSeg_vs_LongiSegDiff 0.998558
+    Filoutte   ses09     LongiSeg_vs_nnUNetLongi 0.995570
+    Filoutte   ses09 LongiSegDiff_vs_nnUNetLongi 0.995415
+    Filoutte   ses10    LongiSeg_vs_LongiSegDiff 0.997588
+    Filoutte   ses10     LongiSeg_vs_nnUNetLongi 0.994072
+    Filoutte   ses10 LongiSegDiff_vs_nnUNetLongi 0.993509
+    Formule   ses05    LongiSeg_vs_LongiSegDiff 0.998589
+    Formule   ses05     LongiSeg_vs_nnUNetLongi 0.996369
+    Formule   ses05 LongiSegDiff_vs_nnUNetLongi 0.996411
+    Formule   ses06    LongiSeg_vs_LongiSegDiff 0.997485
+    Formule   ses06     LongiSeg_vs_nnUNetLongi 0.995412
+    Formule   ses06 LongiSegDiff_vs_nnUNetLongi 0.994897
+    Formule   ses07    LongiSeg_vs_LongiSegDiff 0.995547
+    Formule   ses07     LongiSeg_vs_nnUNetLongi 0.975029
+    Formule   ses07 LongiSegDiff_vs_nnUNetLongi 0.972324
+    Formule   ses08    LongiSeg_vs_LongiSegDiff 0.993801
+    Formule   ses08     LongiSeg_vs_nnUNetLongi 0.986830
+    Formule   ses08 LongiSegDiff_vs_nnUNetLongi 0.985745
+    Formule   ses09    LongiSeg_vs_LongiSegDiff 0.989561
+    Formule   ses09     LongiSeg_vs_nnUNetLongi 0.979439
+    Formule   ses09 LongiSegDiff_vs_nnUNetLongi 0.973946
+    
     Comparaison (A vs B)        Moyenne  Médiane  Ecart_Type    Min     Max
     LongiSeg_vs_LongiSegDiff    0.9946   0.9986   0.0079        0.9716  0.9994
     LongiSeg_vs_nnUNetLongi     0.9925   0.9968   0.0096        0.9610  0.9988
