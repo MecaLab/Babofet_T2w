@@ -167,10 +167,10 @@ if __name__ == "__main__":
                 })
 
             # Génération des images de comparaison
-            """for a in [2, 1, 0]:
+            for a in [2, 1, 0]:
                 print(f"\tProcessing axis {a}...")
                 plot_full_comparison(raw_data, model_paths, names, f"{subject}_{session}",
-                                     output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))"""
+                                     output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))
 
     # --- ANALYSE DES RESULTATS ---
     df_stats = pd.DataFrame(all_dice_results)
@@ -189,18 +189,35 @@ if __name__ == "__main__":
 
     """
     Avec AZIZA et FORME
-           Comparaison (A vs B)  Moyenne  Médiane  Ecart_Type    Min    Max
-       LongiSeg_vs_LongiSegDiff   0.9946   0.9986      0.0079 0.9716 0.9994
-        LongiSeg_vs_nnUNetLongi   0.9925   0.9968      0.0096 0.9610 0.9988
-    LongiSegDiff_vs_nnUNetLongi   0.9888   0.9965      0.0163 0.9343 0.9986
+    Comparaison (A vs B)        Moyenne  Médiane  Ecart_Type    Min     Max
+    LongiSeg_vs_LongiSegDiff    0.9946   0.9986   0.0079        0.9716  0.9994
+    LongiSeg_vs_nnUNetLongi     0.9925   0.9968   0.0096        0.9610  0.9988
+    LongiSegDiff_vs_nnUNetLongi 0.9888   0.9965   0.0163        0.9343  0.9986
     
     Test de Friedman (Global): p-value = 7.6697e-12
     
     Comparaisons détaillées (Wilcoxon) entre les paires :
-                                    Comparaison des accords      p-value  Significatif
+    
+    Comparaison des accords                                     p-value               Significatif
     LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff     4.656613e-10          True
     LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi      4.656613e-09          True
     LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi         9.061266e-04          True
     
     ===================================================================================
+    Sans AZIZA et FORME
+    
+    Comparaison (A vs B)        Moyenne  Médiane    Ecart_Type  Min     Max
+    LongiSeg_vs_LongiSegDiff    0.9978   0.9987     0.0024      0.9896  0.9994
+    LongiSeg_vs_nnUNetLongi     0.9947   0.9975     0.0066      0.9750 0.9988
+    LongiSegDiff_vs_nnUNetLongi 0.9940   0.9972     0.0077      0.9723 0.9986
+    
+    Test de Friedman (Global): p-value = 1.2469e-08
+    
+    Comparaisons détaillées (Wilcoxon) entre les paires :
+    
+    Comparaison des accords                                 p-value           Significatif
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 0.000002          True
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi  0.000010          True
+    LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi     0.000002          True
+    
     """
