@@ -129,8 +129,8 @@ def run_stats(df):
 
 if __name__ == "__main__":
     subjects = {
-        "Aziza": ["ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
-        "Forme": ["ses06", "ses07", "ses08", "ses09", "ses10"],
+        # "Aziza": ["ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
+        # "Forme": ["ses06", "ses07", "ses08", "ses09", "ses10"],
         "Borgne": ["ses06", "ses07", "ses08", "ses09", "ses10"],
         "Bibi": ["ses05", "ses06", "ses07", "ses09"],
         "Filoutte": ["ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
@@ -187,77 +187,20 @@ if __name__ == "__main__":
     # 3. Affichage des tests statistiques
     run_stats(df_stats)
 
-
     """
-    Sans FORME et AZIZA:
-    Test de Friedman (Global): p-value = 1.2469e-08
-
-    Comparaisons détaillées (Wilcoxon) :
-                                                Comparaison  p-value  Significatif
-    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 0.000002          True
-    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi  0.000010          True
-    LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi     0.000002          True
-    
-    Avec FORME et AZIZA:
-    Test de Friedman (Global): p-value = 7.6697e-12
-
-    Comparaisons détaillées (Wilcoxon) :
-                                                Comparaison      p-value  Significatif
-    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 4.656613e-10          True
-    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi  4.656613e-09          True
-    LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi     9.061266e-04          True
-    
+    Avec AZIZA et FORME
            Comparaison (A vs B)  Moyenne  Médiane  Ecart_Type    Min    Max
-    LongiSeg_vs_LongiSegDiff    0.9978   0.9987      0.0024 0.9896 0.9994
-    LongiSeg_vs_nnUNetLongi     0.9947   0.9975      0.0066 0.9750 0.9988
-    LongiSegDiff_vs_nnUNetLongi 0.9940   0.9972      0.0077 0.9723 0.9986
-    ----------------------------------------------------------------------------------
+       LongiSeg_vs_LongiSegDiff   0.9946   0.9986      0.0079 0.9716 0.9994
+        LongiSeg_vs_nnUNetLongi   0.9925   0.9968      0.0096 0.9610 0.9988
+    LongiSegDiff_vs_nnUNetLongi   0.9888   0.9965      0.0163 0.9343 0.9986
     
-    Avec FORME et AZIZA:
-        Test de Friedman (Global): p-value = 3.1592e-12
+    Test de Friedman (Global): p-value = 7.6697e-12
     
-    Comparaisons détaillées (Wilcoxon) :
-                                                  Comparaison  p-value  Significatif
-    LongiSegDiff_vs_BestnnUNet vs LongiSegDiff_vs_nnUNetLongi   0.647655         False
-    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_BestnnUNet    0.000004          True
-    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff  0.000002          True
-    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi   0.348810         False
-    LongiSegDiff_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet 0.230513         False
-    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_BestnnUNet   0.701181         False
-    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 0.000002          True
-    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi  0.000010          True
-    LongiSegDiff_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet0.388376         False
-    LongiSeg_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff      0.000002          True
-    LongiSeg_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi       0.756166         False
-    LongiSeg_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet     0.000395          True
-    LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi     0.000002          True
-    LongiSeg_vs_LongiSegDiff vs nnUNetLongi_vs_BestnnUNet   0.000002          True
-    LongiSeg_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet    0.002712          True
-    
-    Avec FORME et AZIZA:   
-    Test de Friedman (Global): p-value = 1.4303e-15
-    
-    Comparaisons détaillées (Wilcoxon) :
-                                                  Comparaison      p-value  Significatif
-    LongiSegDiff_vs_BestnnUNet vs LongiSegDiff_vs_nnUNetLongi   9.338708e-01         False
-    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_BestnnUNet        9.313226e-10          True
-    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff      9.313226e-10          True
-    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi       7.796160e-03          True
-    LongiSegDiff_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet     7.468256e-01         False
-    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_BestnnUNet       1.106481e-01         False
+    Comparaisons détaillées (Wilcoxon) entre les paires :
+                                    Comparaison des accords      p-value  Significatif
     LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff     4.656613e-10          True
     LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi      4.656613e-09          True
-    LongiSegDiff_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet    7.891259e-01         False
-    LongiSeg_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff          3.615216e-03          True
-    LongiSeg_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi           8.464598e-01         False
-    LongiSeg_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet         2.947409e-03          True
     LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi         9.061266e-04          True
-    LongiSeg_vs_LongiSegDiff vs nnUNetLongi_vs_BestnnUNet       4.718150e-04          True
-    LongiSeg_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet        9.909525e-03          True
     
-    
-           Comparaison (A vs B)  Moyenne  Médiane  Ecart_Type    Min    Max
-    LongiSeg_vs_LongiSegDiff    0.9946   0.9986     0.0079 0.9716 0.9994
-    LongiSeg_vs_nnUNetLongi     0.9925   0.9968     0.0096 0.9610 0.9988
-    LongiSegDiff_vs_nnUNetLongi 0.9888   0.9965     0.0163 0.9343 0.9986
+    ===================================================================================
     """
