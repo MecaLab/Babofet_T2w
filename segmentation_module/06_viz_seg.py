@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 from scipy.stats import friedmanchisquare, wilcoxon
 import itertools
+
+# Assure-toi que configuration.py est bien dans ton dossier
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -33,9 +35,8 @@ def plot_full_comparison(raw_data, model_paths, model_names, file_id, output, ax
         if row == 0:
             data = raw_data
             current_cmap = 'gray'
-            vmax_val = np.percentile(raw_data, 99)  # Optionnel: meilleur contraste
+            vmax_val = np.percentile(raw_data, 99)
         else:
-            # On ne charge le modèle que si nécessaire
             data = nib.load(model_paths[row - 1]).get_fdata()
             current_cmap = cmap_seg
             vmax_val = 4
@@ -44,7 +45,6 @@ def plot_full_comparison(raw_data, model_paths, model_names, file_id, output, ax
             ax = axes[row, col]
             idx = slice_indices[col]
 
-            # Extraction de la coupe selon l'axe
             if axis == 0:
                 slice_data = data[idx, :, :]
             elif axis == 1:
@@ -87,27 +87,10 @@ def compute_dice(data1, data2):
     return (2. * intersection) / denominator
 
 
-def run_stats(df):
-    print("\n" + "=" * 30 + "\nRAPPORT STATISTIQUE\n" + "=" * 30)
-
-    # On pivote pour avoir une colonne par paire de comparaison
-    pivot_df = df.pivot(index=['Subject', 'Session'], columns='Pair', values='Dice').dropna()
-
-    stat, p_f = friedmanchisquare(*(pivot_df[c] for c in pivot_df.columns))
-    print(f"Test de Friedman (Global): p-value = {p_f:.4e}")
-
-    print("\nComparaisons détaillées (Wilcoxon) :")
-    results = []
-    for p1, p2 in itertools.combinations(pivot_df.columns, 2):
-        _, p_w = wilcoxon(pivot_df[p1], pivot_df[p2])
-        results.append({"Comparaison": f"{p1} vs {p2}", "p-value": p_w, "Significatif": p_w < 0.05})
-
-    print(pd.DataFrame(results).to_string(index=False))
-
-
 def analyze_model_agreement(df):
+    """Calcule et affiche les statistiques descriptives de l'accord inter-modèles."""
     print("\n" + "=" * 50)
-    print("ACCORD INTER-MODÈLES (Méthode_A vs Méthode_B)")
+    print("ACCORD INTER-MODÈLES (Statistiques Descriptives)")
     print("=" * 50)
 
     summary = df.groupby('Pair')['Dice'].agg(
@@ -119,42 +102,39 @@ def analyze_model_agreement(df):
     ).reset_index()
 
     summary.rename(columns={'Pair': 'Comparaison (A vs B)'}, inplace=True)
-
     summary = summary.sort_values(by='Moyenne', ascending=False)
 
     print(summary.to_string(index=False, float_format="%.4f"))
 
 
+def run_stats(df):
+    """Calcule et affiche les tests statistiques (Friedman et Wilcoxon)."""
+    print("\n" + "=" * 50)
+    print("RAPPORT STATISTIQUE (Tests de significativité)")
+    print("=" * 50)
+
+    pivot_df = df.pivot(index=['Subject', 'Session'], columns='Pair', values='Dice').dropna()
+
+    stat, p_f = friedmanchisquare(*(pivot_df[c] for c in pivot_df.columns))
+    print(f"Test de Friedman (Global): p-value = {p_f:.4e}")
+
+    print("\nComparaisons détaillées (Wilcoxon) entre les paires :")
+    results = []
+    for p1, p2 in itertools.combinations(pivot_df.columns, 2):
+        _, p_w = wilcoxon(pivot_df[p1], pivot_df[p2])
+        results.append({"Comparaison des accords": f"{p1} vs {p2}", "p-value": p_w, "Significatif": p_w < 0.05})
+
+    print(pd.DataFrame(results).to_string(index=False))
+
+
 if __name__ == "__main__":
     subjects = {
-        "Borgne": [
-            "ses06",
-            "ses07",
-            "ses08",
-            "ses09",
-            "ses10"
-        ],
-        "Bibi": [
-            "ses05",
-            "ses06",
-            "ses07",
-            "ses09"
-        ],
-        "Filoutte": [
-            "ses05",
-            "ses06",
-            "ses07",
-            "ses08",
-            "ses09",
-            "ses10"
-        ],
-        "Formule": [
-            "ses05",
-            "ses06",
-            "ses07",
-            "ses08",
-            "ses09",
-        ],
+        "Aziza": ["ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
+        "Forme": ["ses06", "ses07", "ses08", "ses09", "ses10"],
+        "Borgne": ["ses06", "ses07", "ses08", "ses09", "ses10"],
+        "Bibi": ["ses05", "ses06", "ses07", "ses09"],
+        "Filoutte": ["ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
+        "Formule": ["ses05", "ses06", "ses07", "ses08", "ses09"],
     }
 
     names = ["LongiSeg", "LongiSegDiff", "nnUNetLongi"]
@@ -176,6 +156,7 @@ if __name__ == "__main__":
 
             model_data_list = [nib.load(p).get_fdata() for p in model_paths]
 
+            # Calcul du Dice pour chaque paire de modèles
             for (idx1, n1), (idx2, n2) in itertools.combinations(enumerate(names), 2):
                 d_score = compute_dice(model_data_list[idx1], model_data_list[idx2])
                 all_dice_results.append({
@@ -185,18 +166,26 @@ if __name__ == "__main__":
                     "Dice": d_score
                 })
 
-            """for a in [2, 1, 0]:
+            # Génération des images de comparaison
+            for a in [2, 1, 0]:
                 print(f"\tProcessing axis {a}...")
                 plot_full_comparison(raw_data, model_paths, names, f"{subject}_{session}",
-                                     output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))"""
+                                     output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))
 
+    # --- ANALYSE DES RESULTATS ---
     df_stats = pd.DataFrame(all_dice_results)
-    print("\n" + "=" * 30 + "\nMOYENNES DES SCORES DICE\n" + "=" * 30)
-    summary_df = df_stats.groupby('Pair')['Dice'].agg(['mean', 'std']).sort_values(by='mean', ascending=False)
-    print(summary_df)
-    run_stats(df_stats)
 
+    # 1. Affichage des scores Dice bruts
+    print("\n" + "=" * 50)
+    print("SCORES DICE BRUTS (Par sujet et par session)")
+    print("=" * 50)
+    print(df_stats.to_string(index=False))
+
+    # 2. Affichage des statistiques descriptives
     analyze_model_agreement(df_stats)
+
+    # 3. Affichage des tests statistiques
+    run_stats(df_stats)
 
 
     """
@@ -218,6 +207,10 @@ if __name__ == "__main__":
     LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi  4.656613e-09          True
     LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi     9.061266e-04          True
     
+           Comparaison (A vs B)  Moyenne  Médiane  Ecart_Type    Min    Max
+    LongiSeg_vs_LongiSegDiff    0.9978   0.9987      0.0024 0.9896 0.9994
+    LongiSeg_vs_nnUNetLongi     0.9947   0.9975      0.0066 0.9750 0.9988
+    LongiSegDiff_vs_nnUNetLongi 0.9940   0.9972      0.0077 0.9723 0.9986
     ----------------------------------------------------------------------------------
     
     Avec FORME et AZIZA:
