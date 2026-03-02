@@ -110,7 +110,6 @@ def analyze_model_agreement(df):
     print("ACCORD INTER-MODÈLES (Méthode_A vs Méthode_B)")
     print("=" * 50)
 
-    # On groupe par paire et on calcule les statistiques essentielles
     summary = df.groupby('Pair')['Dice'].agg(
         Moyenne='mean',
         Médiane='median',
@@ -119,34 +118,15 @@ def analyze_model_agreement(df):
         Max='max'
     ).reset_index()
 
-    # On renomme la colonne pour que ce soit plus clair
     summary.rename(columns={'Pair': 'Comparaison (A vs B)'}, inplace=True)
 
-    # On trie du plus haut taux d'accord au plus bas
     summary = summary.sort_values(by='Moyenne', ascending=False)
 
-    # Affichage propre
     print(summary.to_string(index=False, float_format="%.4f"))
 
 
 if __name__ == "__main__":
     subjects = {
-        "Aziza": [
-            "ses04",
-            "ses05",
-            "ses06",
-            "ses07",
-            "ses08",
-            "ses09",
-            "ses10"
-        ],
-        "Forme": [
-            "ses06",
-            "ses07",
-            "ses08",
-            "ses09",
-            "ses10"
-        ],
         "Borgne": [
             "ses06",
             "ses07",
@@ -205,9 +185,9 @@ if __name__ == "__main__":
                     "Dice": d_score
                 })
 
-            for a in [2, 1, 0]:
+            """for a in [2, 1, 0]:
                 print(f"\tProcessing axis {a}...")
-                """plot_full_comparison(raw_data, model_paths, names, f"{subject}_{session}",
+                plot_full_comparison(raw_data, model_paths, names, f"{subject}_{session}",
                                      output="snapshots/model_comparison", axis=a, pct_range=(0.35, 0.70))"""
 
     df_stats = pd.DataFrame(all_dice_results)
@@ -240,7 +220,7 @@ if __name__ == "__main__":
     
     ----------------------------------------------------------------------------------
     
-    Sans FORME et AZIZA:
+    Avec FORME et AZIZA:
         Test de Friedman (Global): p-value = 3.1592e-12
     
     Comparaisons détaillées (Wilcoxon) :
@@ -266,20 +246,25 @@ if __name__ == "__main__":
     
     Comparaisons détaillées (Wilcoxon) :
                                                   Comparaison      p-value  Significatif
-    LongiSegDiff_vs_BestnnUNet vs LongiSegDiff_vs_nnUNetLongi 9.338708e-01         False
-         LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_BestnnUNet 9.313226e-10          True
-       LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff 9.313226e-10          True
-        LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi 7.796160e-03          True
-      LongiSegDiff_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet 7.468256e-01         False
-        LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_BestnnUNet 1.106481e-01         False
-      LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff 4.656613e-10          True
-       LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi 4.656613e-09          True
-     LongiSegDiff_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet 7.891259e-01         False
-           LongiSeg_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff 3.615216e-03          True
-            LongiSeg_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi 8.464598e-01         False
-          LongiSeg_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet 2.947409e-03          True
-          LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi 9.061266e-04          True
-        LongiSeg_vs_LongiSegDiff vs nnUNetLongi_vs_BestnnUNet 4.718150e-04          True
-         LongiSeg_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet 9.909525e-03          True
+    LongiSegDiff_vs_BestnnUNet vs LongiSegDiff_vs_nnUNetLongi   9.338708e-01         False
+    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_BestnnUNet        9.313226e-10          True
+    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff      9.313226e-10          True
+    LongiSegDiff_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi       7.796160e-03          True
+    LongiSegDiff_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet     7.468256e-01         False
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_BestnnUNet       1.106481e-01         False
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_LongiSegDiff     4.656613e-10          True
+    LongiSegDiff_vs_nnUNetLongi vs LongiSeg_vs_nnUNetLongi      4.656613e-09          True
+    LongiSegDiff_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet    7.891259e-01         False
+    LongiSeg_vs_BestnnUNet vs LongiSeg_vs_LongiSegDiff          3.615216e-03          True
+    LongiSeg_vs_BestnnUNet vs LongiSeg_vs_nnUNetLongi           8.464598e-01         False
+    LongiSeg_vs_BestnnUNet vs nnUNetLongi_vs_BestnnUNet         2.947409e-03          True
+    LongiSeg_vs_LongiSegDiff vs LongiSeg_vs_nnUNetLongi         9.061266e-04          True
+    LongiSeg_vs_LongiSegDiff vs nnUNetLongi_vs_BestnnUNet       4.718150e-04          True
+    LongiSeg_vs_nnUNetLongi vs nnUNetLongi_vs_BestnnUNet        9.909525e-03          True
     
+    
+           Comparaison (A vs B)  Moyenne  Médiane  Ecart_Type    Min    Max
+    LongiSeg_vs_LongiSegDiff    0.9946   0.9986     0.0079 0.9716 0.9994
+    LongiSeg_vs_nnUNetLongi     0.9925   0.9968     0.0096 0.9610 0.9988
+    LongiSegDiff_vs_nnUNetLongi 0.9888   0.9965     0.0163 0.9343 0.9986
     """
