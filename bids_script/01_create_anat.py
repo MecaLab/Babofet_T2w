@@ -56,7 +56,7 @@ if __name__ == "__main__":
                 if "HASTE" in folder:
                     print(folder)
                     if "bis" in folder:
-                        pass
+                        continue
                     suffix_scans = get_folder_scan_suffix(folder)
                     nii_path = os.path.join(input_subj_dir, folder, "resources", "NIFTI", "files")
                     for file in os.listdir(nii_path):
