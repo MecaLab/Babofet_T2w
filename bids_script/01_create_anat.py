@@ -1,6 +1,9 @@
 import os
 import sys
 import shutil
+
+from dill import extend
+
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -55,10 +58,14 @@ if __name__ == "__main__":
                 if "HASTE" in folder:
                     suffix_scans = get_folder_scan_suffix(folder)
                     nii_path = os.path.join(input_subj_dir, folder, "resources", "NIFTI", "files")
-                    nii_file = os.listdir(nii_path)[0]
-                    nii_full_path = os.path.join(nii_path, nii_file)
+                    for file in os.listdir(nii_path):
+                        if file.endswith(".nii.gz") or file.endswith(".json"):
 
-                    # sub-<sub>_ses-<ses>_acq-<haste|trufi>_run-<01..06>_T2w.nii.gz
-                    output_nii_filename = f"sub-{subject}_{session_formated}_acq-haste_run-{AX_MATCH[suffix_scans]}_T2w.nii.gz"
-                    print(f"\t\t{folder} -> {output_nii_filename}")
-                    shutil.copy(nii_full_path, os.path.join(anat_dir, output_nii_filename))
+                            extension = file.split(".")[-1]
+
+                            file_full_path = os.path.join(nii_path, file)
+
+                            # sub-<sub>_ses-<ses>_acq-<haste|trufi>_run-<01..06>_T2w.nii.gz
+                            output_filename = f"sub-{subject}_{session_formated}_acq-haste_run-{AX_MATCH[suffix_scans]}_T2w.{extension}"
+                            print(f"\t\t{folder} | {file} -> {output_filename}")
+                            shutil.copy(file_full_path, os.path.join(anat_dir, output_filename))
