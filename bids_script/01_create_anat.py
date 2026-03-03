@@ -19,7 +19,8 @@ AX_MATCH = {
 
 subjects_data = {
     # "Borgne": ["ses01", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
-    "Formule": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"]
+    # "Formule": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09"],
+    "Bibi": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses09", "ses10"]
 }
 
 def format_session_str(sess):
@@ -54,7 +55,6 @@ if __name__ == "__main__":
 
             for folder in os.listdir(input_subj_dir):
                 if "HASTE" in folder:
-                    print(folder)
                     if "bis" in folder:
                         continue
                     suffix_scans = get_folder_scan_suffix(folder)
