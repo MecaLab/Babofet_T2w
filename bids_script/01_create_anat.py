@@ -27,12 +27,14 @@ def format_session_str(sess):
 if __name__ == "__main__":
 
     for subject, sessions in subjects_data.items():
+        print(f"Processing {subject}")
         output_subj_dir = os.path.join(OUTPUT_PATH, f"sub-{subject}")
 
         if not os.path.exists(output_subj_dir):
             os.makedirs(output_subj_dir)
 
         for session in sessions:
+            print(f"\tProcessing {session}")
             session_formated = format_session_str(session)
             sub_session_dir = os.path.join(output_subj_dir, session_formated)
 
@@ -48,5 +50,4 @@ if __name__ == "__main__":
             for folder in os.listdir(input_subj_dir):
                 if "HASTE" in folder:
                     print(folder)
-
-
+            exit()
