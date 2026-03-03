@@ -6,7 +6,7 @@ import configuration as cfg
 
 
 INPUT_PATH = os.path.join(cfg.BASE_NIOLON_PATH, "subjects")
-OUTPUT_PATH = "/envau/work/meca/data/babofet_BIDS/sourcedata/raw"
+OUTPUT_PATH = "/envau/work/meca/data/BaboFet_BIDS/sourcedata/raw"
 
 AX_MATCH = {
     "AX": "01",
@@ -34,8 +34,6 @@ if __name__ == "__main__":
         print(f"Processing {subject}")
         output_subj_dir = os.path.join(OUTPUT_PATH, f"sub-{subject}")
 
-        print(output_subj_dir)
-
         if not os.path.exists(output_subj_dir):
             os.makedirs(output_subj_dir)
 
@@ -44,16 +42,12 @@ if __name__ == "__main__":
             session_formated = format_session_str(session)
             sub_session_dir = os.path.join(output_subj_dir, session_formated)
 
-            print(sub_session_dir)
-
             if not os.path.exists(sub_session_dir):
                 os.makedirs(sub_session_dir)
 
             anat_dir = os.path.join(sub_session_dir, "anat")
             if not os.path.exists(anat_dir):
                 os.makedirs(anat_dir)
-
-            print(anat_dir)
 
             input_subj_dir = os.path.join(INPUT_PATH, f"sub-{subject}_{session_formated}", "scans")
 
