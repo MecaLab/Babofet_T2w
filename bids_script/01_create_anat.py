@@ -59,9 +59,6 @@ if __name__ == "__main__":
                     nii_full_path = os.path.join(nii_path, nii_file)
 
                     # sub-<sub>_ses-<ses>_acq-<haste|trufi>_run-<01..06>_T2w.nii.gz
-
-                    output_nii_filename = f"sub-{subject}_{session_formated}_haste_run-{AX_MATCH[suffix_scans]}_T2w.nii.gz"
+                    output_nii_filename = f"sub-{subject}_{session_formated}_acq-haste_run-{AX_MATCH[suffix_scans]}_T2w.nii.gz"
                     print(f"\t\t{folder} -> {output_nii_filename}")
                     shutil.copy(nii_full_path, os.path.join(anat_dir, output_nii_filename))
-
-                    exit()
