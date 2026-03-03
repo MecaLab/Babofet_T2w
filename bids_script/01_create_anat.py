@@ -53,6 +53,8 @@ if __name__ == "__main__":
             input_subj_dir = os.path.join(INPUT_PATH, f"sub-{subject}_{session_formated}", "scans")
 
             for folder in os.listdir(input_subj_dir):
+                if "bis" in folder:
+                    pass
                 if "HASTE" in folder:
                     suffix_scans = get_folder_scan_suffix(folder)
                     nii_path = os.path.join(input_subj_dir, folder, "resources", "NIFTI", "files")
