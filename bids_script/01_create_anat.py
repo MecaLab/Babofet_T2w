@@ -45,7 +45,8 @@ if __name__ == "__main__":
 
             input_subj_dir = os.path.join(INPUT_PATH, f"sub-{subject}_{session_formated}", "scans")
 
-            print(input_subj_dir)
-            exit()
+            for folder in os.listdir(input_subj_dir):
+                if "HASTE" in folder:
+                    print(folder)
 
 
