@@ -1,9 +1,6 @@
 import os
 import sys
 import shutil
-
-from dill import extend
-
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
