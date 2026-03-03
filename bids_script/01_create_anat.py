@@ -54,5 +54,12 @@ if __name__ == "__main__":
                 if "HASTE" in folder:
                     suffix_scans = get_folder_scan_suffix(folder)
                     nii_path = os.path.join(input_subj_dir, folder, "resources", "NIFTI", "files")
-                    print(os.listdir(nii_path))
+                    nii_file = os.listdir(nii_path)[0]
+                    nii_full_path = os.path.join(nii_path, nii_file)
+
+                    # sub-<sub>_ses-<ses>_acq-<haste|trufi>_run-<01..06>_T2w.nii.gz
+
+                    output_nii_filename = f"sub-{subject}_{session_formated}_haste_run-{AX_MATCH[suffix_scans]}_T2w.nii.gz"
+                    print(f"\t\t{output_nii_filename}")
+
             exit()
