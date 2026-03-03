@@ -24,6 +24,9 @@ def format_session_str(sess):
     id_sess = sess[3:]
     return f"ses-{id_sess}"
 
+def get_folder_scan_suffix(folder_name):
+    return folder_name.split("_")[-1]
+
 if __name__ == "__main__":
 
     for subject, sessions in subjects_data.items():
@@ -49,5 +52,7 @@ if __name__ == "__main__":
 
             for folder in os.listdir(input_subj_dir):
                 if "HASTE" in folder:
-                    print(folder)
+                    suffix_scans = get_folder_scan_suffix(folder)
+                    nii_path = os.path.join(input_subj_dir, folder, "resources", "NIFTI", "files")
+                    print(os.listdir(nii_path))
             exit()
