@@ -54,6 +54,7 @@ if __name__ == "__main__":
 
             for folder in os.listdir(input_subj_dir):
                 if "HASTE" in folder:
+                    print(folder)
                     if "bis" in folder:
                         pass
                     suffix_scans = get_folder_scan_suffix(folder)
