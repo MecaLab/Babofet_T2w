@@ -52,7 +52,7 @@ if __name__ == "__main__":
         os.makedirs(OUTPUT_PATH)
 
     for folder in os.listdir(INPUT_PATH):
-        subject_input_path = os.path.join(INPUT_PATH, "denoising")
+        subject_input_path = os.path.join(INPUT_PATH, folder, "denoising")
 
         sub_subject, sub_sess = folder.split("_")  # sub-XXXX_ses-YY
         subject_name = sub_subject.split("-")[-1]
