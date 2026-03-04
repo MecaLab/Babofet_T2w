@@ -94,6 +94,8 @@ def denoising_data_bids_format(input_path, output_path):
 
                             output_filename = file.replace(".nii.gz", "_denoised.nii.gz")
                             output_file_path = os.path.join(output_session_path, output_filename)
+                            print(output_file_path)
+                            exit()
 
                             if not os.path.exists(output_file_path):
                                 cmd = [DENOISING_PATH_EXE, "-i", input_file_path, "-o", output_file_path]
