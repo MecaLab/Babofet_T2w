@@ -52,5 +52,16 @@ if __name__ == "__main__":
         os.makedirs(OUTPUT_PATH)
 
     for folder in os.listdir(INPUT_PATH):
-        print(folder)
+        sub_subject, sub_sess = folder.split("_")
+        subject_name = sub_subject.split("-")[-1]
+        session_name = sub_sess.split("-")[-1]
+
+        subject_output_path = os.path.join(OUTPUT_PATH, f"sub-{subject_name}", f"ses-{session_name}")
+        if not os.path.exists(subject_output_path):
+            os.makedirs(subject_output_path)
+        exit()
+
+
+
+
 
