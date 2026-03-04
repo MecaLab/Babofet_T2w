@@ -20,7 +20,8 @@ AX_MATCH = {
 subjects_data = {
     # "Borgne": ["ses01", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
     # "Formule": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09"],
-    "Bibi": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses09", "ses10"]
+    # "Bibi": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses09"],
+    "Filoutte": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"]
 }
 
 def format_session_str(sess):
@@ -55,8 +56,6 @@ if __name__ == "__main__":
 
             for folder in os.listdir(input_subj_dir):
                 if "HASTE" in folder:
-                    if "bis" in folder:
-                        continue
                     suffix_scans = get_folder_scan_suffix(folder)
                     nii_path = os.path.join(input_subj_dir, folder, "resources", "NIFTI", "files")
                     for file in os.listdir(nii_path):
@@ -67,6 +66,9 @@ if __name__ == "__main__":
                             file_full_path = os.path.join(nii_path, file)
 
                             # sub-<sub>_ses-<ses>_acq-<haste|trufi>_run-<01..06>_T2w.nii.gz
-                            output_filename = f"sub-{subject}_{session_formated}_acq-haste_run-{AX_MATCH[suffix_scans]}_T2w.{extension}"
-                            print(f"\t\t{folder} | {file} -> {output_filename}")
-                            shutil.copy(file_full_path, os.path.join(anat_dir, output_filename))
+                            try:
+                                output_filename = f"sub-{subject}_{session_formated}_acq-haste_run-{AX_MATCH[suffix_scans]}_T2w.{extension}"
+                                print(f"\t\t{folder} | {file} -> {output_filename}")
+                                shutil.copy(file_full_path, os.path.join(anat_dir, output_filename))
+                            except KeyError:
+                                print(f"\t\tKeyError with {suffix_scans}")
