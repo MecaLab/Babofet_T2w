@@ -79,10 +79,11 @@ def denoising_data_bids_format(input_path, output_path):
             for session in os.listdir(input_folder_path):
                 if session.startswith("ses"):
                     print(f"\t{session}")
-                    session_path = os.path.join(input_folder_path, session)
+                    session_path = os.path.join(input_folder_path, session, "anat")
 
                     for file in os.listdir(session_path):
-                        print(file)
+                        if file.endswith("nii.gz"):
+                            print(f"\t\t{file}")
 
                     exit()
 
