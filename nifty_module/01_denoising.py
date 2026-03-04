@@ -82,8 +82,7 @@ def denoising_data_bids_format(input_path, output_path):
 
                     input_session_path = os.path.join(input_folder_path, session, "anat")
                     output_session_path = os.path.join(output_path, folder, session)
-                    print(output_session_path)
-                    exit()
+
                     if not os.path.exists(output_session_path):
                         os.makedirs(output_session_path)
 
@@ -94,6 +93,11 @@ def denoising_data_bids_format(input_path, output_path):
                             input_file_path = os.path.join(input_session_path, file)
 
                             output_filename = file.replace(".nii.gz", "_denoised")
+                            output_file_path = os.path.join(output_session_path, output_filename)
+
+                            if not os.path.exists(output_file_path):
+                                cmd = [DENOISING_PATH_EXE, "-i", input_file_path, "-o", output_file_path]
+                                subprocess.run(cmd)
 
                     exit()
 
