@@ -95,5 +95,3 @@ if __name__ == "__main__":
                                 shutil.copy(file_full_path, os.path.join(anat_dir, output_filename))
                             except KeyError:
                                 print(f"\t\tKeyError with {suffix_scans}")
-
-                    exit()
