@@ -99,7 +99,7 @@ def denoising_data_bids_format(input_path, output_path):
                                 cmd = [DENOISING_PATH_EXE, "-i", input_file_path, "-o", output_file_path]
                                 subprocess.run(cmd)
 
-                            exit()
+                    exit()
 
 
 
