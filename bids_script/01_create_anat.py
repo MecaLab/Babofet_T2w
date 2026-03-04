@@ -50,7 +50,6 @@ def remove_anat_directories(base_directory_path):
             try:
                 shutil.rmtree(anat_dir)
                 print(f"Successfully deleted: {anat_dir}")
-                exit()
             except OSError as error:
                 print(f"Error deleting {anat_dir}: {error}")
 
