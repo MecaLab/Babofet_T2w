@@ -1,6 +1,7 @@
 import os
 import sys
 import shutil
+from pathlib import Path
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -18,11 +19,11 @@ AX_MATCH = {
 }
 
 subjects_data = {
-    # "Borgne": ["ses01", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
-    # "Formule": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09"],
-    # "Bibi": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses09"],
-    # "Filoutte": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
-    # "Forme": ["ses01", "ses02", "ses03", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
+    "Borgne": ["ses01", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
+    "Formule": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09"],
+    "Bibi": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses09"],
+    "Filoutte": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
+    "Forme": ["ses01", "ses02", "ses03", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
     "Aziza": ["ses01", "ses02", "ses03", "ses04", "ses05", "ses06", "ses07", "ses08", "ses09", "ses10"],
 }
 
@@ -33,8 +34,30 @@ def format_session_str(sess):
 def get_folder_scan_suffix(folder_name):
     return folder_name.split("_")[-1]
 
-if __name__ == "__main__":
 
+def remove_anat_directories(base_directory_path):
+    """
+    Finds and removes all 'anat' directories matching the pattern: subject/ses-XX/anat
+    """
+    base_dir = Path(base_directory_path)
+
+    # Pattern to match the specific folder structure
+    # Assumes base_dir contains the subject folders
+    target_pattern = "*/ses-*/anat"
+
+    for anat_dir in base_dir.glob(target_pattern):
+        if anat_dir.is_dir():
+            print(anat_dir)
+            exit()
+            try:
+                shutil.rmtree(anat_dir)
+                print(f"Successfully deleted: {anat_dir}")
+            except OSError as error:
+                print(f"Error deleting {anat_dir}: {error}")
+
+if __name__ == "__main__":
+    remove_anat_directories(OUTPUT_PATH)
+    exit()
     for subject, sessions in subjects_data.items():
         print(f"Processing {subject}")
         output_subj_dir = os.path.join(OUTPUT_PATH, f"sub-{subject}")
@@ -64,7 +87,8 @@ if __name__ == "__main__":
                         if file.endswith(".nii.gz") or file.endswith(".json"):
 
                             extension = file.split(".")[-1]
-                            print(extension)
+                            if extension == "gz":
+                                extension = "nii.gz"
 
                             file_full_path = os.path.join(nii_path, file)
 
@@ -75,4 +99,3 @@ if __name__ == "__main__":
                                 shutil.copy(file_full_path, os.path.join(anat_dir, output_filename))
                             except KeyError:
                                 print(f"\t\tKeyError with {suffix_scans}")
-                    exit()
