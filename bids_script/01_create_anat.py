@@ -64,6 +64,8 @@ if __name__ == "__main__":
                         if file.endswith(".nii.gz") or file.endswith(".json"):
 
                             extension = file.split(".")[-1]
+                            print(extension)
+                            exit()
 
                             file_full_path = os.path.join(nii_path, file)
 
