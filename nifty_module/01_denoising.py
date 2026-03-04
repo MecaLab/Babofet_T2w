@@ -73,7 +73,13 @@ def denoising_data_bids_format(input_path, output_path):
 
     for folder in os.listdir(input_path):
         if folder.startswith("sub"):
-            print(folder)
+            print(f"Processing {folder}")
+
+            input_folder_path = os.path.join(input_path, folder)
+            print(input_folder_path)
+            exit()
+
+
 
 
 if __name__ == "__main__":
