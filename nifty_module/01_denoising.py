@@ -53,7 +53,7 @@ def denoising_data(input_path, output_path):
                     print("\t\t\tNo nifti found for {}".format(f))
                     continue
                 s_nifti_filename = nifti_filename.split(".")
-                bm_nifti_filename = s_nifti_filename[0] + "_denoised.nii"
+                bm_nifti_filename = s_nifti_filename[0] + "_denoised.nii.gz"
                 bm_full_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
 
                 input_full_path = os.path.join(nifti_full_path, nifti_filename)
@@ -79,11 +79,21 @@ def denoising_data_bids_format(input_path, output_path):
             for session in os.listdir(input_folder_path):
                 if session.startswith("ses"):
                     print(f"\t{session}")
-                    session_path = os.path.join(input_folder_path, session, "anat")
 
-                    for file in os.listdir(session_path):
+                    input_session_path = os.path.join(input_folder_path, session, "anat")
+                    output_session_path = os.path.join(output_path, folder, session)
+                    print(output_session_path)
+                    exit()
+                    if not os.path.exists(output_session_path):
+                        os.makedirs(output_session_path)
+
+                    for file in os.listdir(input_session_path):
                         if file.endswith("nii.gz"):
                             print(f"\t\t{file}")
+
+                            input_file_path = os.path.join(input_session_path, file)
+
+                            output_filename = file.replace(".nii.gz", "_denoised")
 
                     exit()
 
