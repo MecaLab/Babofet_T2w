@@ -39,7 +39,7 @@ if __name__ == "__main__":
         print(f"Processing {subject}")
         for session in sessions:
             print(f"\tProcessing {session}")
-            subject_sess = f"sub-{subject}_ses-{format_session_str(session)}"
+            subject_sess = f"sub-{subject}_{format_session_str(session)}"
             get_denoised_from_meso(subject_sess, OUTPUT_PATH)
             print(f"\tDone")
             exit()
