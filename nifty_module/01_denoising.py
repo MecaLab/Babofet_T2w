@@ -82,8 +82,7 @@ def denoising_data_bids_format(input_path, output_path):
                     session_path = os.path.join(input_folder_path, session)
 
                     for file in os.listdir(session_path):
-                        if file.endswith("nii.gz"):
-                            print(file)
+                        print(file)
 
                     exit()
 
