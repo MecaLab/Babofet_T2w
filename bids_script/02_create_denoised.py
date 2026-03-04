@@ -20,7 +20,7 @@ def get_denoised_from_meso(subject_sess, output_path):
     if not os.path.exists(full_output_path):
         os.makedirs(full_output_path)
 
-    command = f"scp -P 8822 -r lbaptiste@login.mesocentre.univ-amu.fr:{input_path} {full_output_path}"
+    command = f"rsync -avz -e 'ssh -p 8822' lbaptiste@login.mesocentre.univ-amu.fr:{input_path} {full_output_path}"
     subprocess.run(command, shell=True)
 
 
