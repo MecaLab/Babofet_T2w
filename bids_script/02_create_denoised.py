@@ -52,6 +52,7 @@ if __name__ == "__main__":
         os.makedirs(OUTPUT_PATH)
 
     for folder in os.listdir(INPUT_PATH):
+        print(f"Processing {folder}")
         subject_input_path = os.path.join(INPUT_PATH, folder, "denoising")
 
         sub_subject, sub_sess = folder.split("_")  # sub-XXXX_ses-YY
@@ -65,9 +66,7 @@ if __name__ == "__main__":
         for file in os.listdir(subject_input_path):
             input_file = os.path.join(subject_input_path, file)
             output_file = os.path.join(subject_output_path, file)
-
             shutil.copy(input_file, output_file)
-        exit()
 
 
 
