@@ -7,6 +7,10 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
+def format_session_str(sess):
+    id_sess = sess[3:]
+    return f"ses-{id_sess}"
+
 def get_denoised_from_meso(subject_sess, output_path):
     main_path = "/scratch/lbaptiste/data/dataset/babofet/derivatives/"
 
@@ -35,7 +39,7 @@ if __name__ == "__main__":
         print(f"Processing {subject}")
         for session in sessions:
             print(f"\tProcessing {session}")
-            subject_sess = f"sub-{subject}_ses-{session}"
+            subject_sess = f"sub-{subject}_ses-{format_session_str(session)}"
             get_denoised_from_meso(subject_sess, OUTPUT_PATH)
             print(f"\tDone")
             exit()
