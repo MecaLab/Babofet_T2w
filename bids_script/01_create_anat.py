@@ -54,8 +54,6 @@ def remove_anat_directories(base_directory_path):
                 print(f"Error deleting {anat_dir}: {error}")
 
 if __name__ == "__main__":
-    remove_anat_directories(OUTPUT_PATH)
-    exit()
     for subject, sessions in subjects_data.items():
         print(f"Processing {subject}")
         output_subj_dir = os.path.join(OUTPUT_PATH, f"sub-{subject}")
@@ -97,3 +95,5 @@ if __name__ == "__main__":
                                 shutil.copy(file_full_path, os.path.join(anat_dir, output_filename))
                             except KeyError:
                                 print(f"\t\tKeyError with {suffix_scans}")
+
+                    exit()
