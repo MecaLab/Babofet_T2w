@@ -47,11 +47,10 @@ def remove_anat_directories(base_directory_path):
 
     for anat_dir in base_dir.glob(target_pattern):
         if anat_dir.is_dir():
-            print(anat_dir)
-            exit()
             try:
                 shutil.rmtree(anat_dir)
                 print(f"Successfully deleted: {anat_dir}")
+                exit()
             except OSError as error:
                 print(f"Error deleting {anat_dir}: {error}")
 
