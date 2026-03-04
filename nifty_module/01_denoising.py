@@ -72,7 +72,8 @@ def denoising_data_bids_format(input_path, output_path):
     DENOISING_PATH_EXE = os.path.join(cfg.SOFTS_PATH, "DenoiseImage")
 
     for folder in os.listdir(input_path):
-        print(folder, os.path.isfile(folder))
+        if folder.startswith("sub"):
+            print(folder)
 
 
 if __name__ == "__main__":
