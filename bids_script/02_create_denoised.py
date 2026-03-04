@@ -52,14 +52,20 @@ if __name__ == "__main__":
         os.makedirs(OUTPUT_PATH)
 
     for folder in os.listdir(INPUT_PATH):
-        sub_subject, sub_sess = folder.split("_")
+        subject_input_path = os.path.join(INPUT_PATH, "denoising")
+
+        sub_subject, sub_sess = folder.split("_")  # sub-XXXX_ses-YY
         subject_name = sub_subject.split("-")[-1]
         session_name = sub_sess.split("-")[-1]
 
         subject_output_path = os.path.join(OUTPUT_PATH, f"sub-{subject_name}", f"ses-{session_name}")
         if not os.path.exists(subject_output_path):
             os.makedirs(subject_output_path)
+
+        for file in os.listdir(subject_input_path):
+            print(file)
         exit()
+
 
 
 
