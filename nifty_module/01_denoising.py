@@ -77,7 +77,8 @@ def denoising_data_bids_format(input_path, output_path):
 
             input_folder_path = os.path.join(input_path, folder)
             for session in os.listdir(input_folder_path):
-                print(f"\t{session}")
+                if session.startswith("ses"):
+                    print(f"\t{session}")
             exit()
 
 
