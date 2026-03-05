@@ -179,9 +179,8 @@ if __name__ == "__main__":
 
     list_t2w, list_masks = pair_data_from_separate_dirs(stacks_path, brainmask_path)
 
-    print(list_t2w)
-    print(list_masks)
-
+    for e1, e2 in zip(list_t2w, list_masks):
+        print(e1, e2)
     exit()
     fullname_subj = f"{subject}_{session}"
     slurm_dir = "slurm_files"
