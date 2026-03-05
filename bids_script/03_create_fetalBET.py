@@ -11,7 +11,7 @@ def extract_orientation(filename):
     mapping = {
         "axial": "AX",
         "coronal": "COR",
-        "sagittal": "SAG",
+        "sagital": "SAG",
         "ax": "AX",
         "cor": "COR",
         "sag": "SAG"
