@@ -36,6 +36,9 @@ if __name__ == "__main__":
         print(f"Processing {folder}")
         folder_path = os.path.join(INPUT_PATH, folder)
         for file in os.listdir(folder_path):
+            if "Fabienne" in file:
+                print(f"\tSkipping Fabienne")
+                continue
             if "HASTE" in file:
                 orientation = extract_orientation(file)
                 if orientation is None:
