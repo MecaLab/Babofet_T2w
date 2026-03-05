@@ -179,16 +179,13 @@ if __name__ == "__main__":
 
     list_t2w, list_masks = pair_data_from_separate_dirs(stacks_path, brainmask_path)
 
-    for e1, e2 in zip(list_t2w, list_masks):
-        print(e1, e2)
-    exit()
     fullname_subj = f"{subject}_{session}"
     slurm_dir = "slurm_files"
     if not os.path.exists(slurm_dir):
         os.makedirs(slurm_dir)
     slurm_filename = f"{slurm_dir}/reconstruction_niftymic_{fullname_subj}.slurm"
 
-    # write_slurm(slurm_filename, fullname_subj, stacks_path, brainmask_path, "", atlas_path, atlas)
+    write_slurm(slurm_filename, fullname_subj, list_t2w, list_masks, "", atlas_path, atlas)
 
     exit()
 
