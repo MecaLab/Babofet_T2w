@@ -54,12 +54,14 @@ if __name__ == "__main__":
         "sub-Formule_ses-08_T2_HASTE_AX2_10_denoised_mask.nii.gz",
         "sub-Bibi_ses-07_acq-haste_label-axial_run-02_T2w_denoised_mask.nii",
         "sub-Bibi_ses-07_acq-haste_label-coronal_run-01_T2w.nii",
-        "sub-Formule_ses-08_T2_HASTE_SAG_8_denoised_mask.nii.gz"
+        "sub-Formule_ses-08_T2_HASTE_SAG_8_denoised_mask.nii.gz",
+        "sub-Borgne_ses-01_acq-haste_label-sagital_T2w_denoised_mask.nii.gz",
+        "sub-Borgne_ses-01_acq-haste_label-sagital_run-02_T2w_denoised_mask.nii.gz",
     ]
 
     for name in filenames:
         print(f"{name} -> {extract_orientation(name)}")
-    
+
     exit()
 
     for folder in os.listdir(INPUT_PATH):
