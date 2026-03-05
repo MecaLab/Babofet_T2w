@@ -1,5 +1,6 @@
 import os
 import sys
+import pandas as pd
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
@@ -10,7 +11,7 @@ def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files,
     slurm_content = f"""#!/bin/sh
     
 #SBATCH --account='b219'
-#SBATCH --partition=skylake
+#SBATCH --partition=skylake  # batch 
 #SBATCH --time=24:00:00
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=48G
@@ -64,8 +65,63 @@ singularity exec \\
     os.chmod(filename, 0o700)
 
 
+def get_gestational_info(female_name, session_id, tsv_file):
+    """
+    Retrieves the gestational age for a specific female and session from a TSV file,
+    and identifies the closest atlas timepoint.
+
+    Parameters:
+    female_name (str): Name of the female (used to find the .tsv file).
+    session_id (str): The session identifier (e.g., 'ses-01').
+
+    Returns:
+    tuple: (gestational_age, atlas_timepoint)
+    """
+    # Atlas available timepoints
+    atlas_timepoints = [85, 110, 135]
+
+    df = pd.read_csv(tsv_file, sep='\t')
+
+    session_data = df[df['session_id'].str.strip() == session_id]
+
+    if session_data.empty:
+        print(f"Error: Session {session_id} not found for {female_name}.")
+        return None
+
+    gestational_age = session_data['gestational_age'].values[0]
+
+    adequate_atlas = min(atlas_timepoints, key=lambda x: abs(x - gestational_age))
+
+    return gestational_age, adequate_atlas
+
+
 if __name__ == "__main__":
-    base_path = cfg.MESO_DATA_PATH
+    raw_path = cfg.SOURCEDATA_BIDS_PATH
+    derivative_path = cfg.DERIVATIVES_BIDS_PATH
+    subject = "sub-Aziza"
+    session = "ses-01"
+
+    tsv_file = os.path.join(raw_path, "raw", subject, f"{subject}_sessions.tsv")
+    if not os.path.exists(tsv_file):
+        print(f"ERROR: tsv file does not exist at {tsv_file}")
+        exit()
+
+    stacks_path = os.path.join(derivative_path, "intermediate", "niftymic", subject, session)
+    if not os.path.exists(stacks_path):
+        print(f"ERROR: stacks path does not exist at {stacks_path}")
+        exit()
+
+    brainmask_path = os.path.join(derivative_path, "niftymic", subject, session, "anat")
+    if not os.path.exists(brainmask_path):
+        print(f"ERROR: brainmask path does not exist at {brainmask_path}")
+        exit()
+
+    ga, atlas = get_gestational_info(subject, session, tsv_file)
+
+    print(ga, atlas)
+    exit()
+
+    """base_path = cfg.MESO_DATA_PATH
 
     subject_IDs = os.listdir(base_path)
 
@@ -176,4 +232,4 @@ if __name__ == "__main__":
             )
 
             print(f"\t\tComputing reconstruction for {subject}")
-            subprocess.run(["sbatch", "slurm_files/nifty_reconstruction.slurm"])
+            subprocess.run(["sbatch", "slurm_files/nifty_reconstruction.slurm"])"""
