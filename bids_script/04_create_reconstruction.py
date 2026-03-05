@@ -9,9 +9,26 @@ def format_session_str(sess):
     id_sess = sess[3:]
     return f"ses-{id_sess}"
 
+def clean_file(input_dir):
+    for subject in os.listdir(input_dir):
+        subject_path = os.path.join(input_dir, subject)
+        for session in os.listdir(subject_path):
+            session_path = os.path.join(subject_path, session, "anat")
+
+            print(session_path)
+            exit()
+
+            # sub-Filoutte_ses02_rec-niftymic_desc-brainbg_T2w
+            file_2_delted = f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
+
+
 if __name__ == "__main__":
     INPUT_PATH = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder")
     OUTPUT_PATH = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
+
+    clean_file(OUTPUT_PATH)
+
+    exit()
 
     for subject in os.listdir(INPUT_PATH):
         subject_path = os.path.join(INPUT_PATH, subject)
@@ -26,9 +43,11 @@ if __name__ == "__main__":
 
             reconstruction_t2w = os.path.join(session_path, "srr_template_debiased.nii.gz")
 
+            formated_sess = format_session_str(session)
+
             # sub-<sub>_ses-<ses>_rec-niftymic_desc-brain_T2w.nii.gz
-            output_filename = f"sub-{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
-            output_folder = os.path.join(OUTPUT_PATH, f"sub-{subject}", format_session_str(session), "anat")
+            output_filename = f"sub-{subject}_{formated_sess}_rec-niftymic_desc-brainbg_T2w.nii.gz"
+            output_folder = os.path.join(OUTPUT_PATH, f"sub-{subject}", formated_sess, "anat")
             output_full_path = os.path.join(output_folder, output_filename)
 
             if not os.path.exists(output_folder):
