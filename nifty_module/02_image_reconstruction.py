@@ -114,7 +114,7 @@ if __name__ == "__main__":
     derivative_path = cfg.DERIVATIVES_BIDS_PATH
     atlas_path = cfg.FETAL_RESUS_ATLAS
     niftymic_soft = os.path.join(cfg.SOFTS_PATH, "niftymic.multifact_latest.sif")
-    
+
     slurm_dir = "slurm_files"
     if not os.path.exists(slurm_dir):
         os.makedirs(slurm_dir)
@@ -147,11 +147,6 @@ if __name__ == "__main__":
 
     list_t2w, list_masks = pair_data(stacks_path, brainmask_path)
 
-    """
-    OUTPUT_PATH="${{INPUT_PATH}}/reconstruction_niftymic"
-    MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
-    OUTPUT_FILE="{output_file}"
-    """
     reconstruction_folder = os.path.join(stacks_path, "reconstruction_niftymic")
     if not os.path.exists(reconstruction_folder):
         os.makedirs(reconstruction_folder)
@@ -174,117 +169,3 @@ if __name__ == "__main__":
 
     print(f"\t\tComputing reconstruction for {fullname_subj}")
     subprocess.run(["sbatch", slurm_filename])
-    exit()
-
-    """base_path = cfg.MESO_DATA_PATH
-
-    subject_IDs = os.listdir(base_path)
-
-    # /!\ When changing this value, make sur to update the 2nd parameter of mv_recons.sh file within the slurm file
-    mask_model = "fetalbet"  # could be 'nifty' or 'mattia' or 'manual'
-
-    if mask_model == "manual":
-        bm_folder = "manual_masks"
-    elif mask_model == "nifty":
-        bm_folder = "brainmask_niftymic"
-    elif mask_model == "mattia":
-        bm_folder = "mattia_masks"
-    elif mask_model == "fetalbet":
-        bm_folder = "fetalbet_masks_v2"
-
-    denoising_folder = "denoising"
-
-    ga = "135"  # gestational age in days, used for the template. Should be 85, 110 or 135
-
-    list_subjs = [
-        # "sub-Aziza_ses-01",  "sub-Aziza_ses-09", # "sub-Aziza_ses-05",
-        # "sub-Borgne_ses-08", "sub-Borgne_ses-10", "sub-Borgne_ses-09",
-        # "sub-Bibi_ses-06", "sub-Bibi_ses-07", "sub-Bibi_ses-09",
-        # "sub-Filoutte_ses-07", "sub-Filoutte_ses-08", "sub-Filoutte_ses-09", "sub-Filoutte_ses-10",
-        "sub-Formule_ses-07", "sub-Formule_ses-09",
-        # "sub-Borgne_ses-01", "sub-Borgne_ses-03", "sub-Borgne_ses-04", "sub-Borgne_ses-05", "sub-Borgne_ses-06", "sub-Borgne_ses-07"
-    ]
-
-    for subject in list_subjs:
-
-        subj_output_dir = os.path.join(cfg.MESO_OUTPUT_PATH, subject)
-
-        if not os.path.exists(subj_output_dir):
-            os.makedirs(subj_output_dir)
-
-        output_dir = os.path.join(subj_output_dir, "haste", "reconstruction_niftymic_full_pipeline_rhesus_macaque")
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-
-        print(f"Starting {subject}")
-
-        dir_list = os.listdir(os.path.join(subj_output_dir, denoising_folder))
-        haste_files = list()
-        truefisp_files = list()
-
-        for d in dir_list:
-            d_lower = d.lower()
-            if "haste" in d_lower:
-                haste_files.append(d)
-            if "trufi" in d_lower:
-                truefisp_files.append(d)
-
-        if len(haste_files) > 0:
-            print("\tStarting HASTE {}".format(subject))
-            haste_subj_output_dir = os.path.join(subj_output_dir, "haste")
-            bm_haste_subj_output_dir = os.path.join(subj_output_dir, bm_folder)
-
-            denoised_subj_output_dir = os.path.join(subj_output_dir, denoising_folder)
-            recons_haste_subj_output_dir = os.path.join(haste_subj_output_dir, 'reconstruction_niftymic')
-
-            if not os.path.exists(recons_haste_subj_output_dir):
-                os.mkdir(recons_haste_subj_output_dir)
-
-            anat_img = list()
-            bm_img = list()
-            for f in haste_files:
-                filename = f.split(".")
-                anat_path_subj_path = os.path.join(denoised_subj_output_dir, f)
-                if mask_model == "nifty":  # for brainmask_niftymic folder
-                    bm_nifti_filename = filename[0] + "_seg.nii.gz"
-                    bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, filename[0], bm_nifti_filename)
-
-                elif mask_model == "manual":  # with manual brainmask
-                    bm_nifti_filename = filename[0] + "_mask.nii"
-                    bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
-                    if not os.path.exists(bm_path_subj_path):
-                        bm_nifti_filename = filename[0] + "_mask.nii.gz"
-                        bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
-
-                elif mask_model == "mattia":  # with mattia brainmask
-                    bm_nifti_filename = filename[0] + "_mask.nii.gz"
-                    bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
-
-                elif mask_model == "fetalbet":  # with fetalbet brainmask
-                    bm_nifti_filename = filename[0] + "_mask.nii.gz"
-                    bm_path_subj_path = os.path.join(bm_haste_subj_output_dir, bm_nifti_filename)
-
-                if os.path.exists(anat_path_subj_path) and os.path.exists(bm_path_subj_path):
-                    anat_img.append(f)
-                    bm_img.append(bm_nifti_filename)
-
-            motion_subfolder = os.path.join(recons_haste_subj_output_dir, 'motion_correction')
-
-            if not os.path.exists(motion_subfolder):
-                os.mkdir(motion_subfolder)
-
-            recons_haste_subj_output = subject + f"_haste_3DHR_{mask_model}_bm_pipeline.nii.gz"
-
-            write_slurm_file_nifty(
-                subj=subject,
-                main_path=subj_output_dir,
-                denoised_files=anat_img,
-                bm_folder=bm_folder,
-                bm_files=bm_img,
-                output_file=recons_haste_subj_output,
-                ga=ga,
-                denoising_folder=denoising_folder
-            )
-
-            print(f"\t\tComputing reconstruction for {subject}")
-            subprocess.run(["sbatch", "slurm_files/nifty_reconstruction.slurm"])"""
