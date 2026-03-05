@@ -22,7 +22,7 @@ def clean_file(input_dir):
 
             # sub-Filoutte_ses02_rec-niftymic_desc-brainbg_T2w
             session_corr = session.replace("-", "")
-            file_2_del = f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
+            file_2_del = f"{subject}_{session_corr}_rec-niftymic_desc-brainbg_T2w.nii.gz"
             print(file_2_del)
             exit()
 
