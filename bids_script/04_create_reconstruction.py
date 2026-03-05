@@ -20,7 +20,7 @@ if __name__ == "__main__":
                 print(f"\t\tSkipping {subject} {session} because input folder is missing")
                 continue
 
-            reconstruction_t2w = os.path.join(session_path, "srr_template_debiased.nii")
+            reconstruction_t2w = os.path.join(session_path, "srr_template_debiased.nii.gz")
 
             # sub-<sub>_ses-<ses>_rec-niftymic_desc-brain_T2w.nii.gz
             output_filename = f"sub-{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
