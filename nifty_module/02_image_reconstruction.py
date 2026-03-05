@@ -229,7 +229,7 @@ if __name__ == "__main__":
         bm_files=list_masks,
         template_path=atlas_path,
         ga=ga,
-        soft_path=cfg.SOFTS_PATH
+        soft_path=niftymic_soft
     )
 
     print(f"\t\tComputing reconstruction for {fullname_subj}")
