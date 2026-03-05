@@ -29,11 +29,11 @@ if __name__ == "__main__":
             # sub-<sub>_ses-<ses>_rec-niftymic_desc-brain_T2w.nii.gz
             output_filename = f"sub-{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
             output_folder = os.path.join(OUTPUT_PATH, f"sub-{subject}", format_session_str(session), "anat")
-            print(output_folder)
-            exit()
+            output_full_path = os.path.join(output_folder, output_filename)
+
             if not os.path.exists(output_folder):
                 os.makedirs(output_folder)
 
-            output_full_path = os.path.join(output_folder, output_filename)
             shutil.copy(reconstruction_t2w, output_full_path)
+            exit()
         exit()
