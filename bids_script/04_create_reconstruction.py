@@ -27,8 +27,7 @@ if __name__ == "__main__":
             output_folder = os.path.join(OUTPUT_PATH, f"sub-{subject}", session, "anat")
             if not os.path.exists(output_folder):
                 os.makedirs(output_folder)
-            
+
             output_full_path = os.path.join(output_folder, output_filename)
             shutil.copy(reconstruction_t2w, output_full_path)
-            exit()
         exit()
