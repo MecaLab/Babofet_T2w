@@ -35,5 +35,6 @@ if __name__ == "__main__":
     for folder in os.listdir(INPUT_PATH):
         folder_path = os.path.join(INPUT_PATH, folder)
         for file in os.listdir(folder_path):
-            print(file)
+            if "HASTE" in file:
+                print(file)
         exit()
