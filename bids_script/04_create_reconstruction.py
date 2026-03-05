@@ -14,4 +14,17 @@ if __name__ == "__main__":
         print(f"Processing {subject}")
         for session in os.listdir(subject_path):
             print(f"\t{session}")
+
+            session_path = os.path.join(subject_path, session, "recons_rhesus", "recon_template_space")
+            if not os.path.exists(session_path):
+                print(f"\t\tSkipping {subject} {session} because input folder is missing")
+                continue
+
+            reconstruction_t2w = os.path.join(session_path, "srr_template_debiased.nii")
+
+            # sub-<sub>_ses-<ses>_rec-niftymic_desc-brain_T2w.nii.gz
+            output_filename = f"sub-{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
+            output_folder = os.path.join(OUTPUT_PATH, f"sub-{subject}", f"ses-{session}", "anat")
+            output_full_path = os.path.join(output_folder, output_filename)
+            exit()
         exit()
