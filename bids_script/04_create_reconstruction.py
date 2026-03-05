@@ -9,17 +9,22 @@ def format_session_str(sess):
     id_sess = sess[3:]
     return f"ses-{id_sess}"
 
+def unformat_session_str(sess):
+    id_sess = sess[3:]
+    return f"ses0{id_sess}"
+
+
 def clean_file(input_dir):
     for subject in os.listdir(input_dir):
         subject_path = os.path.join(input_dir, subject)
         for session in os.listdir(subject_path):
             session_path = os.path.join(subject_path, session, "anat")
 
-            print(session_path)
-            exit()
-
             # sub-Filoutte_ses02_rec-niftymic_desc-brainbg_T2w
-            file_2_delted = f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
+            session_corr = session.replace("-", "")
+            file_2_del = f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
+            print(file_2_del)
+            exit()
 
 
 if __name__ == "__main__":
