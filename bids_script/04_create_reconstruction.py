@@ -24,8 +24,11 @@ def clean_file(input_dir):
             session_corr = session.replace("-", "")
             t2w_2_del = f"{subject}_{session_corr}_rec-niftymic_desc-brainbg_T2w.nii.gz"
             json_2_del = f"{subject}_{session_corr}_rec-niftymic_desc-brainbg_T2w.json"
-            os.remove(os.path.join(session_path, t2w_2_del))
-            os.remove(os.path.join(session_path, json_2_del))
+            try:
+                os.remove(os.path.join(session_path, t2w_2_del))
+                os.remove(os.path.join(session_path, json_2_del))
+            except FileNotFoundError:
+                pass
 
 
 if __name__ == "__main__":
