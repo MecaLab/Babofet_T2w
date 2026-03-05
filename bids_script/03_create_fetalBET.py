@@ -44,6 +44,6 @@ if __name__ == "__main__":
 
                 sub_subject, sub_session = folder.split("_")
                 filename_output = f"{sub_subject}_{sub_session}_acq-haste_run-{VIEW_MATCH[orientation]}_desc-brain_mask.nii.gz"
-                output_file_path = os.path.join(OUTPUT_PATH, sub_subject, sub_session, filename_output)
+                output_file_path = os.path.join(OUTPUT_PATH, sub_subject, sub_session, "anat", filename_output)
                 shutil.copy(input_file_path, output_file_path)
         exit()
