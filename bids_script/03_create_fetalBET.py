@@ -50,6 +50,18 @@ if __name__ == "__main__":
 
     # sub-<sub>_ses-<ses>_acq-haste_run-<01..06>_desc-brain_mask.nii.gz
 
+    filenames = [
+        "sub-Formule_ses-08_T2_HASTE_AX2_10_denoised_mask.nii.gz",
+        "sub-Bibi_ses-07_acq-haste_label-axial_run-02_T2w_denoised_mask.nii",
+        "sub-Bibi_ses-07_acq-haste_label-coronal_run-01_T2w.nii",
+        "sub-Formule_ses-08_T2_HASTE_SAG_8_denoised_mask.nii.gz"
+    ]
+
+    for name in filenames:
+        print(f"{name} -> {extract_orientation(name)}")
+    
+    exit()
+
     for folder in os.listdir(INPUT_PATH):
         print(f"Processing {folder}")
         folder_path = os.path.join(INPUT_PATH, folder)
