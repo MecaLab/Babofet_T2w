@@ -1,12 +1,19 @@
 import os
 import sys
+import re
 import shutil
 from pathlib import Path
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
+def extract_orientation(filename):
+    pattern = r"\b(AX|COR|SAG)2?\b"
 
+    match = re.search(pattern, filename)
 
+    if match:
+        return match.group(0)
+    return None
 
 
 if __name__ == "__main__":
@@ -27,5 +34,6 @@ if __name__ == "__main__":
 
     for folder in os.listdir(INPUT_PATH):
         folder_path = os.path.join(INPUT_PATH, folder)
-        print(folder_path)
+        for file in os.listdir(folder_path):
+            print(file)
         exit()
