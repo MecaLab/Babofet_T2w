@@ -17,7 +17,7 @@ def extract_orientation(filename):
         "sag": "SAG"
     }
 
-    pattern = r"_(?:label-)?(axial|coronal|sagittal|AX|COR|SAG)(?:_run-0?(\d+)|(2))?_"
+    pattern = r"_(?:label-)?(axial|coronal|sagital|AX|COR|SAG)(?:_run-0?(\d+)|(2))?_"
 
     match = re.search(pattern, filename, re.IGNORECASE)
 
