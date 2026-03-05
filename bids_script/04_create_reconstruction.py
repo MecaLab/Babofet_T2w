@@ -35,5 +35,3 @@ if __name__ == "__main__":
                 os.makedirs(output_folder)
 
             shutil.copy(reconstruction_t2w, output_full_path)
-            exit()
-        exit()
