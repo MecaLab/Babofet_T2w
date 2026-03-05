@@ -157,9 +157,12 @@ if __name__ == "__main__":
     ga, atlas = get_gestational_info(subject, session, tsv_file)
 
     fullname_subj = f"{subject}_{session}"
-    slurm_filename = f"slurm_files/reconstruction_niftymic_{fullname_subj}.slurm"
-    if not os.path.exists(slurm_filename):
-        os.makedirs(slurm_filename)
+    slurm_dir = "slurm_files"
+    if not os.path.exists(slurm_dir):
+        os.makedirs(slurm_dir)
+    slurm_filename = f"{slurm_dir}/reconstruction_niftymic_{fullname_subj}.slurm"
+
+    write_slurm(slurm_filename, fullname_subj, stacks_path, brainmask_path, "", atlas_path, atlas)
 
     exit()
 
