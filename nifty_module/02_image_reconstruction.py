@@ -184,7 +184,7 @@ if __name__ == "__main__":
         os.makedirs(logs_dir)
 
     subject = "sub-Aziza"
-    session = "ses-01"
+    session = "ses-02"
     fullname_subj = f"{subject}_{session}"
     slurm_filename = f"{slurm_dir}/reconstruction_niftymic_{fullname_subj}.slurm"
 
