@@ -33,9 +33,15 @@ if __name__ == "__main__":
     # sub-<sub>_ses-<ses>_acq-haste_run-<01..06>_desc-brain_mask.nii.gz
 
     for folder in os.listdir(INPUT_PATH):
+        print(f"Processing {folder}")
         folder_path = os.path.join(INPUT_PATH, folder)
         for file in os.listdir(folder_path):
             if "HASTE" in file:
                 orientation = extract_orientation(file)
-                print(file, orientation)
+                if orientation is None:
+                    print(f"\tAn error has occured with {file}")
+                full_file_path = os.path.join(folder_path, file)
+
+                sub_subject, sub_session = folder.split("_")
+                print(sub_subject, sub_session)
         exit()
