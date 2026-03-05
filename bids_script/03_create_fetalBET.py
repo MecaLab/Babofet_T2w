@@ -6,13 +6,13 @@ from pathlib import Path
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
+
 def extract_orientation(filename):
-    pattern = r"\b(AX|COR|SAG)2?\b"
+    pattern = r"_(AX2?|COR2?|SAG2?)_"
 
     match = re.search(pattern, filename)
-
     if match:
-        return match.group(0)
+        return match.group(1)
     return None
 
 
