@@ -27,8 +27,6 @@ def clean_file(input_dir):
             os.remove(os.path.join(session_path, t2w_2_del))
             os.remove(os.path.join(session_path, json_2_del))
 
-            exit()
-
 
 if __name__ == "__main__":
     INPUT_PATH = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder")
