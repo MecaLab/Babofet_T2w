@@ -5,6 +5,10 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
+def format_session_str(sess):
+    id_sess = sess[3:]
+    return f"ses-{id_sess}"
+
 if __name__ == "__main__":
     INPUT_PATH = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder")
     OUTPUT_PATH = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
@@ -24,7 +28,9 @@ if __name__ == "__main__":
 
             # sub-<sub>_ses-<ses>_rec-niftymic_desc-brain_T2w.nii.gz
             output_filename = f"sub-{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
-            output_folder = os.path.join(OUTPUT_PATH, f"sub-{subject}", session, "anat")
+            output_folder = os.path.join(OUTPUT_PATH, f"sub-{subject}", format_session_str(session), "anat")
+            print(output_folder)
+            exit()
             if not os.path.exists(output_folder):
                 os.makedirs(output_folder)
 
