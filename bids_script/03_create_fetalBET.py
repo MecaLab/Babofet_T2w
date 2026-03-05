@@ -36,5 +36,5 @@ if __name__ == "__main__":
         folder_path = os.path.join(INPUT_PATH, folder)
         for file in os.listdir(folder_path):
             if "HASTE" in file:
-                print(file)
+                print(extract_orientation(file))
         exit()
