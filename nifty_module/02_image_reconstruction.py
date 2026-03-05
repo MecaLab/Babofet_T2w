@@ -84,7 +84,28 @@ def get_gestational_info(female_name, session_id, tsv_file):
     return gestational_age, adequate_atlas
 
 
-def write_slurm(slurm_filename, fullname_subj, stacks_path, bm_path, output_path, template_path, ga):
+def pair_data_from_separate_dirs(t2w_dir, mask_dir):
+    list_t2w = []
+    list_masks = []
+
+    t2w_files = [f for f in os.listdir(t2w_dir) if f.endswith("T2w_denoised.nii")]
+
+    for t2w_name in t2w_files:
+        prefix = t2w_name.split("_T2w")[0]
+
+        expected_mask_name = f"{prefix}_desc-brain_mask.nii"
+        mask_full_path = os.path.join(mask_dir, expected_mask_name)
+
+        if os.path.exists(mask_full_path):
+            list_t2w.append(os.path.join(t2w_dir, t2w_name))
+            list_masks.append(mask_full_path)
+        else:
+            print(f"Warning: No matching mask found for {t2w_name} in {mask_dir}")
+
+    return list_t2w, list_masks
+
+
+def write_slurm(slurm_filename, fullname_subj, denoised_files, bm_files, output_path, template_path, ga):
     slurm_content = f"""#!/bin/sh
     
 #SBATCH -J babofet
@@ -97,12 +118,12 @@ def write_slurm(slurm_filename, fullname_subj, stacks_path, bm_path, output_path
 #SBATCH -e logs/recon_pipeline_niftymic_{fullname_subj}.err
 """
     slurm_content += "\n"
-    for i, file in enumerate(stacks_path, start=1):
+    for i, file in enumerate(denoised_files, start=1):
         slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
 
     slurm_content += "\n"
 
-    for i, file in enumerate(bm_path, start=1):
+    for i, file in enumerate(bm_files, start=1):
         slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
 
     input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
@@ -156,13 +177,19 @@ if __name__ == "__main__":
 
     ga, atlas = get_gestational_info(subject, session, tsv_file)
 
+    list_t2w, list_masks = pair_data_from_separate_dirs(stacks_path, brainmask_path)
+
+    print(list_t2w)
+    print(list_masks)
+
+    exit()
     fullname_subj = f"{subject}_{session}"
     slurm_dir = "slurm_files"
     if not os.path.exists(slurm_dir):
         os.makedirs(slurm_dir)
     slurm_filename = f"{slurm_dir}/reconstruction_niftymic_{fullname_subj}.slurm"
 
-    write_slurm(slurm_filename, fullname_subj, stacks_path, brainmask_path, "", atlas_path, atlas)
+    # write_slurm(slurm_filename, fullname_subj, stacks_path, brainmask_path, "", atlas_path, atlas)
 
     exit()
 
