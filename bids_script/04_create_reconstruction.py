@@ -24,8 +24,9 @@ def clean_file(input_dir):
             session_corr = session.replace("-", "")
             t2w_2_del = f"{subject}_{session_corr}_rec-niftymic_desc-brainbg_T2w.nii.gz"
             json_2_del = f"{subject}_{session_corr}_rec-niftymic_desc-brainbg_T2w.json"
-            print(t2w_2_del)
-            print(json_2_del)
+            os.remove(t2w_2_del)
+            os.remove(json_2_del)
+
             exit()
 
 
