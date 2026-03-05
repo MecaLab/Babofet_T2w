@@ -36,7 +36,8 @@ if __name__ == "__main__":
         print(f"Processing {folder}")
         folder_path = os.path.join(INPUT_PATH, folder)
         for file in os.listdir(folder_path):
-            if "Fabienne" in file:
+            print(file)
+            """if "Fabienne" in file:
                 print(f"\tSkipping Fabienne")
                 continue
 
@@ -54,4 +55,4 @@ if __name__ == "__main__":
                 if not os.path.exists(output_file_path):
                     os.makedirs(output_file_path)
                 output_file_path = os.path.join(output_file_path, filename_output)
-                shutil.copy(input_file_path, output_file_path)
+                shutil.copy(input_file_path, output_file_path)"""
