@@ -84,7 +84,7 @@ def get_gestational_info(female_name, session_id, tsv_file):
     return gestational_age, adequate_atlas
 
 
-def pair_data_from_separate_dirs(t2w_dir, mask_dir):
+def pair_data(t2w_dir, mask_dir):
     list_t2w = []
     list_masks = []
 
@@ -105,7 +105,16 @@ def pair_data_from_separate_dirs(t2w_dir, mask_dir):
     return list_t2w, list_masks
 
 
-def write_slurm(slurm_filename, fullname_subj, denoised_files, bm_files, output_path, template_path, ga):
+def write_slurm(
+        slurm_filename,
+        fullname_subj,
+        stack_path,
+        denoised_files,
+        bm_path,
+        bm_files,
+        output_path,
+        template_path,
+        ga):
     slurm_content = f"""#!/bin/sh
     
 #SBATCH -J babofet
@@ -116,6 +125,10 @@ def write_slurm(slurm_filename, fullname_subj, denoised_files, bm_files, output_
 #SBATCH -N 1
 #SBATCH -o logs/recon_pipeline_niftymic_{fullname_subj}.out
 #SBATCH -e logs/recon_pipeline_niftymic_{fullname_subj}.err
+
+INPUT_PATH="${{MAIN_PATH}}/{stack_path}"
+MASK_PATH="${{MAIN_PATH}}/{bm_path}"
+
 """
     slurm_content += "\n"
     for i, file in enumerate(denoised_files, start=1):
@@ -155,10 +168,20 @@ def write_slurm(slurm_filename, fullname_subj, denoised_files, bm_files, output_
 if __name__ == "__main__":
     raw_path = cfg.SOURCEDATA_BIDS_PATH
     derivative_path = cfg.DERIVATIVES_BIDS_PATH
+    atlas_path = cfg.FETAL_RESUS_ATLAS
+
+    slurm_dir = "slurm_files"
+    if not os.path.exists(slurm_dir):
+        os.makedirs(slurm_dir)
+
+    logs_dir = "logs"
+    if not os.path.exists(logs_dir):
+        os.makedirs(logs_dir)
+
     subject = "sub-Aziza"
     session = "ses-01"
-
-    atlas_path = cfg.FETAL_RESUS_ATLAS
+    fullname_subj = f"{subject}_{session}"
+    slurm_filename = f"{slurm_dir}/reconstruction_niftymic_{fullname_subj}.slurm"
 
     tsv_file = os.path.join(raw_path, "raw", subject, f"{subject}_sessions.tsv")
     if not os.path.exists(tsv_file):
@@ -177,15 +200,19 @@ if __name__ == "__main__":
 
     ga, atlas = get_gestational_info(subject, session, tsv_file)
 
-    list_t2w, list_masks = pair_data_from_separate_dirs(stacks_path, brainmask_path)
+    list_t2w, list_masks = pair_data(stacks_path, brainmask_path)
 
-    fullname_subj = f"{subject}_{session}"
-    slurm_dir = "slurm_files"
-    if not os.path.exists(slurm_dir):
-        os.makedirs(slurm_dir)
-    slurm_filename = f"{slurm_dir}/reconstruction_niftymic_{fullname_subj}.slurm"
-
-    write_slurm(slurm_filename, fullname_subj, list_t2w, list_masks, "", atlas_path, atlas)
+    write_slurm(
+        slurm_filename=slurm_filename,
+        fullname_subj=fullname_subj,
+        stack_path=stacks_path,
+        denoised_files=list_t2w,
+        bm_path=brainmask_path,
+        bm_files=list_masks,
+        output_path="",
+        template_path=atlas_path,
+        ga=ga,
+    )
 
     exit()
 
