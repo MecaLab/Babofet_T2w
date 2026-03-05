@@ -16,8 +16,12 @@ def unformat_session_str(sess):
 
 def clean_file(input_dir):
     for subject in os.listdir(input_dir):
+        if subject.endswith(".json"):
+            continue
+        print(f"{subject}")
         subject_path = os.path.join(input_dir, subject)
         for session in os.listdir(subject_path):
+            print(f"\t{session}")
             session_path = os.path.join(subject_path, session, "anat")
 
             # sub-Filoutte_ses02_rec-niftymic_desc-brainbg_T2w
