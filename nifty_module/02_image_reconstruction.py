@@ -232,6 +232,8 @@ if __name__ == "__main__":
         soft_path=cfg.SOFTS_PATH
     )
 
+    print(f"\t\tComputing reconstruction for {fullname_subj}")
+    subprocess.run(["sbatch", slurm_filename])
     exit()
 
     """base_path = cfg.MESO_DATA_PATH
