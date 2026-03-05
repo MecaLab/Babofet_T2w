@@ -112,9 +112,9 @@ def write_slurm(
         denoised_files,
         bm_path,
         bm_files,
-        output_path,
         template_path,
-        ga):
+        ga,
+        soft_path):
     slurm_content = f"""#!/bin/sh
     
 #SBATCH -J babofet
@@ -128,6 +128,11 @@ def write_slurm(
 
 INPUT_PATH="{stack_path}"
 MASK_PATH="{bm_path}"
+
+OUTPUT_PATH="${{INPUT_PATH}}/reconstruction_niftymic"
+MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
+
+TEMPLATE_PATH="{template_path}"
 
 """
     slurm_content += "\n"
@@ -148,7 +153,7 @@ MASK_PATH="{bm_path}"
         -B "$MASK_PATH":/masks \\
         -B "$OUTPUT_PATH":/output \\
         -B "$TEMPLATE_PATH":/template \\
-        /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
+        {soft_path} \\
         niftymic_run_reconstruction_pipeline \\
             --filenames {input_stacks} \\
             --filenames-masks {mask_stacks} \\
@@ -157,7 +162,6 @@ MASK_PATH="{bm_path}"
             --bias-field-correction 0 \\
             --template /template/Template_G{ga}_T2W.nii.gz \\
             --template-mask /template/Template_G{ga}_T2W_mask.nii.gz \\
-
     """
 
     with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
@@ -169,6 +173,7 @@ if __name__ == "__main__":
     raw_path = cfg.SOURCEDATA_BIDS_PATH
     derivative_path = cfg.DERIVATIVES_BIDS_PATH
     atlas_path = cfg.FETAL_RESUS_ATLAS
+    niftymic_soft = os.path.join(cfg.SOFTS_PATH, "niftymic.multifact_latest.sif")
 
     slurm_dir = "slurm_files"
     if not os.path.exists(slurm_dir):
@@ -202,6 +207,19 @@ if __name__ == "__main__":
 
     list_t2w, list_masks = pair_data(stacks_path, brainmask_path)
 
+    """
+    OUTPUT_PATH="${{INPUT_PATH}}/reconstruction_niftymic"
+    MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
+    OUTPUT_FILE="{output_file}"
+    """
+    reconstruction_folder = os.path.join(stacks_path, "reconstruction_niftymic")
+    if not os.path.exists(reconstruction_folder):
+        os.makedirs(reconstruction_folder)
+
+    motion_correction_folder = os.path.join(reconstruction_folder, "motion_correction")
+    if not os.path.exists(motion_correction_folder):
+        os.makedirs(motion_correction_folder)
+
     write_slurm(
         slurm_filename=slurm_filename,
         fullname_subj=fullname_subj,
@@ -209,9 +227,9 @@ if __name__ == "__main__":
         denoised_files=list_t2w,
         bm_path=brainmask_path,
         bm_files=list_masks,
-        output_path="",
         template_path=atlas_path,
         ga=ga,
+        soft_path=cfg.SOFTS_PATH
     )
 
     exit()
