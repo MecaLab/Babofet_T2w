@@ -126,8 +126,8 @@ def write_slurm(
 #SBATCH -o logs/recon_pipeline_niftymic_{fullname_subj}.out
 #SBATCH -e logs/recon_pipeline_niftymic_{fullname_subj}.err
 
-INPUT_PATH="${{MAIN_PATH}}/{stack_path}"
-MASK_PATH="${{MAIN_PATH}}/{bm_path}"
+INPUT_PATH="{stack_path}"
+MASK_PATH="{bm_path}"
 
 """
     slurm_content += "\n"
