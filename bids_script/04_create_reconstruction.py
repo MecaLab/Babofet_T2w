@@ -39,9 +39,7 @@ if __name__ == "__main__":
     INPUT_PATH = os.path.join(cfg.BASE_NIOLON_PATH, "recons_folder")
     OUTPUT_PATH = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
 
-    clean_file(OUTPUT_PATH)
-
-    exit()
+    # clean_file(OUTPUT_PATH)
 
     for subject in os.listdir(INPUT_PATH):
         subject_path = os.path.join(INPUT_PATH, subject)
@@ -62,6 +60,8 @@ if __name__ == "__main__":
             output_filename = f"sub-{subject}_{formated_sess}_rec-niftymic_desc-brainbg_T2w.nii.gz"
             output_folder = os.path.join(OUTPUT_PATH, f"sub-{subject}", formated_sess, "anat")
             output_full_path = os.path.join(output_folder, output_filename)
+            print(output_full_path)
+            exit()
 
             if not os.path.exists(output_folder):
                 os.makedirs(output_folder)
