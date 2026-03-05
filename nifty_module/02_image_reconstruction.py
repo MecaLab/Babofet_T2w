@@ -5,66 +5,6 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
 
-
-def write_slurm_file_nifty(subj, main_path, denoised_files, bm_folder, bm_files, output_file, ga, denoising_folder="denoising"):
-    filename = "slurm_files/nifty_reconstruction.slurm"
-    slurm_content = f"""#!/bin/sh
-    
-#SBATCH --account='b219'
-#SBATCH --partition=skylake  # batch 
-#SBATCH --time=24:00:00
-#SBATCH -c 1
-#SBATCH --mem-per-cpu=48G
-#SBATCH -o recon_pipeline_niftymic_{subj}.out
-#SBATCH -e recon_pipeline_niftymic_{subj}.err
-
-MAIN_PATH="{main_path}"
-
-INPUT_PATH="${{MAIN_PATH}}/{denoising_folder}"
-MASK_PATH="${{MAIN_PATH}}/{bm_folder}"
-
-OUTPUT_PATH="${{MAIN_PATH}}/haste/reconstruction_niftymic_full_pipeline_rhesus_macaque"
-MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
-OUTPUT_FILE="{output_file}"
-
-TEMPLATE_PATH="/scratch/lbaptiste/data/atlas_fetal_rhesus/"
-"""
-
-    slurm_content += "\n"
-    for i, file in enumerate(denoised_files, start=1):
-        slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
-
-    slurm_content += "\n"
-
-    for i, file in enumerate(bm_files, start=1):
-        slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
-
-    input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
-    mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(bm_files) + 1)])
-
-    slurm_content += f"""
-singularity exec \\
-    -B "$INPUT_PATH":/data \\
-    -B "$MASK_PATH":/masks \\
-    -B "$OUTPUT_PATH":/output \\
-    -B "$TEMPLATE_PATH":/template \\
-    /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
-    niftymic_run_reconstruction_pipeline \\
-        --filenames {input_stacks} \\
-        --filenames-masks {mask_stacks} \\
-        --dir-output /output/ \\
-        --isotropic-resolution 0.5 \\
-        --bias-field-correction 0 \\
-        --template /template/Template_G{ga}_T2W.nii.gz \\
-        --template-mask /template/Template_G{ga}_T2W_mask.nii.gz \\
-        
-"""
-    with open(filename, "w", encoding="utf-8") as slurm_file:
-        slurm_file.write(slurm_content)
-
-    os.chmod(filename, 0o700)
-
-
 def get_gestational_info(female_name, session_id, tsv_file):
     # Atlas available timepoints
     atlas_timepoints = [85, 110, 135]
@@ -174,7 +114,7 @@ if __name__ == "__main__":
     derivative_path = cfg.DERIVATIVES_BIDS_PATH
     atlas_path = cfg.FETAL_RESUS_ATLAS
     niftymic_soft = os.path.join(cfg.SOFTS_PATH, "niftymic.multifact_latest.sif")
-
+    
     slurm_dir = "slurm_files"
     if not os.path.exists(slurm_dir):
         os.makedirs(slurm_dir)
