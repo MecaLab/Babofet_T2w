@@ -54,8 +54,10 @@ if __name__ == "__main__":
         print(f"Processing {folder}")
         folder_path = os.path.join(INPUT_PATH, folder)
         for file in os.listdir(folder_path):
-            if file in ["Fabienne", "Aziza"]:
-                print(f"\tSkipping Fabienne")
+            if not file.startswith("sub-Borgne"):
+                continue
+            if "Fabienne" in file:
+                print(f"\tSkipping")
                 continue
 
             if "HASTE" in file or "haste" in file:
