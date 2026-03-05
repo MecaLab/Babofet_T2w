@@ -54,12 +54,13 @@ if __name__ == "__main__":
         print(f"Processing {folder}")
         folder_path = os.path.join(INPUT_PATH, folder)
         for file in os.listdir(folder_path):
-            if "Fabienne" in file:
+            if file in ["Fabienne", "Aziza"]:
                 print(f"\tSkipping Fabienne")
                 continue
 
             if "HASTE" in file or "haste" in file:
                 orientation = extract_orientation(file)
+                print(orientation)
                 if orientation is None:
                     print(f"\tAn error has occured with {file}")
 
