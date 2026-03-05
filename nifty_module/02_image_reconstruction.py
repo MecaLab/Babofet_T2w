@@ -88,12 +88,12 @@ def pair_data_from_separate_dirs(t2w_dir, mask_dir):
     list_t2w = []
     list_masks = []
 
-    t2w_files = [f for f in os.listdir(t2w_dir) if f.endswith("T2w_denoised.nii")]
+    t2w_files = [f for f in os.listdir(t2w_dir) if f.endswith("T2w_denoised.nii.gz")]
 
     for t2w_name in t2w_files:
         prefix = t2w_name.split("_T2w")[0]
 
-        expected_mask_name = f"{prefix}_desc-brain_mask.nii"
+        expected_mask_name = f"{prefix}_desc-brain_mask.nii.gz"
         mask_full_path = os.path.join(mask_dir, expected_mask_name)
 
         if os.path.exists(mask_full_path):
