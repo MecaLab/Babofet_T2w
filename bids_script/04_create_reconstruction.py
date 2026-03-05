@@ -26,5 +26,6 @@ if __name__ == "__main__":
             output_filename = f"sub-{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
             output_folder = os.path.join(OUTPUT_PATH, f"sub-{subject}", f"ses-{session}", "anat")
             output_full_path = os.path.join(output_folder, output_filename)
+            shutil.copy(reconstruction_t2w, output_full_path)
             exit()
         exit()
