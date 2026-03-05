@@ -97,8 +97,8 @@ def pair_data_from_separate_dirs(t2w_dir, mask_dir):
         mask_full_path = os.path.join(mask_dir, expected_mask_name)
 
         if os.path.exists(mask_full_path):
-            list_t2w.append(os.path.join(t2w_dir, t2w_name))
-            list_masks.append(mask_full_path)
+            list_t2w.append(t2w_name)
+            list_masks.append(expected_mask_name)
         else:
             print(f"Warning: No matching mask found for {t2w_name} in {mask_dir}")
 
