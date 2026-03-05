@@ -66,17 +66,6 @@ singularity exec \\
 
 
 def get_gestational_info(female_name, session_id, tsv_file):
-    """
-    Retrieves the gestational age for a specific female and session from a TSV file,
-    and identifies the closest atlas timepoint.
-
-    Parameters:
-    female_name (str): Name of the female (used to find the .tsv file).
-    session_id (str): The session identifier (e.g., 'ses-01').
-
-    Returns:
-    tuple: (gestational_age, atlas_timepoint)
-    """
     # Atlas available timepoints
     atlas_timepoints = [85, 110, 135]
 
@@ -95,11 +84,60 @@ def get_gestational_info(female_name, session_id, tsv_file):
     return gestational_age, adequate_atlas
 
 
+def write_slurm(slurm_filename, fullname_subj, stacks_path, bm_path, output_path, template_path, ga):
+    slurm_content = f"""#!/bin/sh
+    
+#SBATCH -J babofet
+#SBATCH -p batch
+#SBATCH -w niolon13
+#SBATCH --mem-per-cpu=48G
+#SBATCH --time=24:00:00
+#SBATCH -N 1
+#SBATCH -o logs/recon_pipeline_niftymic_{fullname_subj}.out
+#SBATCH -e logs/recon_pipeline_niftymic_{fullname_subj}.err
+"""
+    slurm_content += "\n"
+    for i, file in enumerate(stacks_path, start=1):
+        slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
+
+    slurm_content += "\n"
+
+    for i, file in enumerate(bm_path, start=1):
+        slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
+
+    input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
+    mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(bm_files) + 1)])
+
+    slurm_content += f"""
+    singularity exec \\
+        -B "$INPUT_PATH":/data \\
+        -B "$MASK_PATH":/masks \\
+        -B "$OUTPUT_PATH":/output \\
+        -B "$TEMPLATE_PATH":/template \\
+        /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
+        niftymic_run_reconstruction_pipeline \\
+            --filenames {input_stacks} \\
+            --filenames-masks {mask_stacks} \\
+            --dir-output /output/ \\
+            --isotropic-resolution 0.5 \\
+            --bias-field-correction 0 \\
+            --template /template/Template_G{ga}_T2W.nii.gz \\
+            --template-mask /template/Template_G{ga}_T2W_mask.nii.gz \\
+
+    """
+
+    with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
+        slurm_file.write(slurm_content)
+
+    os.chmod(slurm_filename, 0o700)
+
 if __name__ == "__main__":
     raw_path = cfg.SOURCEDATA_BIDS_PATH
     derivative_path = cfg.DERIVATIVES_BIDS_PATH
     subject = "sub-Aziza"
     session = "ses-01"
+
+    atlas_path = cfg.FETAL_RESUS_ATLAS
 
     tsv_file = os.path.join(raw_path, "raw", subject, f"{subject}_sessions.tsv")
     if not os.path.exists(tsv_file):
@@ -118,7 +156,11 @@ if __name__ == "__main__":
 
     ga, atlas = get_gestational_info(subject, session, tsv_file)
 
-    print(ga, atlas)
+    fullname_subj = f"{subject}_{session}"
+    slurm_filename = f"slurm_files/reconstruction_niftymic_{fullname_subj}.slurm"
+    if not os.path.exists(slurm_filename):
+        os.makedirs(slurm_filename)
+
     exit()
 
     """base_path = cfg.MESO_DATA_PATH
