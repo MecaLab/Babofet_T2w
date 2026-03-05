@@ -10,4 +10,8 @@ if __name__ == "__main__":
     OUTPUT_PATH = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
 
     for subject in os.listdir(INPUT_PATH):
-        print(subject)
+        subject_path = os.path.join(INPUT_PATH, subject)
+        print(f"Processing {subject}")
+        for session in os.listdir(subject_path):
+            print(f"\t{session}")
+        exit()
