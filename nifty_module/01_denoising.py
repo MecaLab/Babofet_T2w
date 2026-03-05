@@ -18,6 +18,9 @@ def denoising_data_bids_format(input_path, output_path):
                     print(f"\t{session}")
 
                     input_session_path = os.path.join(input_folder_path, session, "anat")
+                    if not os.path.exists(input_session_path):
+                        print(f"\t\tNo anat folder for {folder} {session}, skipping.")
+                        continue
                     output_session_path = os.path.join(output_path, folder, session)
 
                     if not os.path.exists(output_session_path):
@@ -25,7 +28,6 @@ def denoising_data_bids_format(input_path, output_path):
 
                     for file in os.listdir(input_session_path):
                         if file.endswith("nii.gz"):
-
 
                             input_file_path = os.path.join(input_session_path, file)
 
