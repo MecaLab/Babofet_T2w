@@ -8,11 +8,29 @@ import configuration as cfg
 
 
 def extract_orientation(filename):
-    pattern = r"_(AX2?|COR2?|SAG2?)_"
+    mapping = {
+        "axial": "AX",
+        "coronal": "COR",
+        "sagittal": "SAG",
+        "ax": "AX",
+        "cor": "COR",
+        "sag": "SAG"
+    }
 
-    match = re.search(pattern, filename)
+    pattern = r"_(?:label-)?(axial|coronal|sagittal|AX|COR|SAG)(?:_run-0?(\d+)|(2))?_"
+
+    match = re.search(pattern, filename, re.IGNORECASE)
+
     if match:
-        return match.group(1)
+        base = match.group(1).lower()
+        run_number = match.group(2) or match.group(3)
+
+        normalized = mapping.get(base, base.upper())
+
+        if run_number == "2" or run_number == "02":
+            return f"{normalized}2"
+        return normalized
+
     return None
 
 
@@ -36,12 +54,11 @@ if __name__ == "__main__":
         print(f"Processing {folder}")
         folder_path = os.path.join(INPUT_PATH, folder)
         for file in os.listdir(folder_path):
-            print(file)
-            """if "Fabienne" in file:
+            if "Fabienne" in file:
                 print(f"\tSkipping Fabienne")
                 continue
 
-            if "HASTE" in file:
+            if "HASTE" in file or "haste" in file:
                 orientation = extract_orientation(file)
                 if orientation is None:
                     print(f"\tAn error has occured with {file}")
@@ -55,4 +72,4 @@ if __name__ == "__main__":
                 if not os.path.exists(output_file_path):
                     os.makedirs(output_file_path)
                 output_file_path = os.path.join(output_file_path, filename_output)
-                shutil.copy(input_file_path, output_file_path)"""
+                shutil.copy(input_file_path, output_file_path)
