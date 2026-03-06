@@ -92,8 +92,10 @@ MASK_PATH="{bm_path}"
 OUTPUT_PATH="${{INPUT_PATH}}/reconstruction_niftymic"
 MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
 
-TEMPLATE_PATH="{template_path}"
+mkdir -p $OUTPUT_PATH
+mkdir -p $MOTION_CORRECTION
 
+TEMPLATE_PATH="{template_path}"
 """
     slurm_content += "\n"
     for i, file in enumerate(denoised_files, start=1):
@@ -164,16 +166,10 @@ if __name__ == "__main__":
         exit()
 
     ga, atlas = get_gestational_info(subject, session, tsv_file)
+    print(ga, atlas)
+    exit()
 
     list_t2w, list_masks = pair_data(stacks_path, brainmask_path)
-
-    reconstruction_folder = os.path.join(stacks_path, "reconstruction_niftymic")
-    if not os.path.exists(reconstruction_folder):
-        os.makedirs(reconstruction_folder)
-
-    motion_correction_folder = os.path.join(reconstruction_folder, "motion_correction")
-    if not os.path.exists(motion_correction_folder):
-        os.makedirs(motion_correction_folder)
 
     write_slurm(
         slurm_filename=slurm_filename,
