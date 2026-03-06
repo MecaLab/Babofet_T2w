@@ -10,8 +10,8 @@ import configuration as cfg
 def write_slurm_file(
         slurm_filename,
         fullname_subj,
-        base_path,
-        masks,
+        mask_path,
+        masks_stacks,
         dir_output_recon_template_space,
         soft_path):
 
@@ -26,15 +26,15 @@ def write_slurm_file(
 #SBATCH -o logs/gen_bm_{fullname_subj}.out
 #SBATCH -e logs/gen_bm_{fullname_subj}.err
 
-MASK_PATH="{base_path}"
+MASK_PATH="{mask_path}"
 
 OUTPUT_PATH="{dir_output_recon_template_space}"
 """
     slurm_content += "\n"
-    for i, file in enumerate(masks, start=1):
+    for i, file in enumerate(masks_stacks, start=1):
         slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
 
-    mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(masks) + 1)])
+    mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(masks_stacks) + 1)])
 
     slurm_content += f"""
 singularity exec \\
@@ -112,8 +112,8 @@ if __name__ == "__main__":
     write_slurm_file(
         slurm_filename=slurm_filename,
         fullname_subj=fullname_subj,
-        base_path=base_path,
-        masks=masks_stacks,
+        mask_path=masks_path,
+        masks_stacks=masks_stacks,
         dir_output_recon_template_space=recon_template_space_dir,
         soft_path=niftymic_soft)
 
