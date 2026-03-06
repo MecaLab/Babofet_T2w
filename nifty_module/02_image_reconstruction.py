@@ -129,7 +129,7 @@ singularity exec \\
     # write mv part
 
     slurm_content += "\n"
-    
+
     with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
@@ -186,4 +186,4 @@ if __name__ == "__main__":
     )
 
     print(f"\t\tComputing reconstruction for {fullname_subj}")
-    subprocess.run(["sbatch", slurm_filename])
+    # subprocess.run(["sbatch", slurm_filename])
