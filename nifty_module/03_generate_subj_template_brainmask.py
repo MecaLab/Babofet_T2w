@@ -60,15 +60,10 @@ singularity exec \\
 def get_bids_brain_masks(folder_path, subject, session):
     directory = Path(folder_path)
 
-    # Regex pattern to match the dynamic parts
-    # \d+ matches one or more digits for the run number (the 'XX')
-    # \.nii\.gz matches the specific file extension
     regex_pattern = rf"{subject}_{session}_acq-haste_run-\d+_desc-brain_mask\.nii\.gz"
 
-    # Compile the pattern for efficient matching
     pattern = re.compile(regex_pattern)
 
-    # List and filter files in the specified directory
     matching_files = [
         file.name for file in directory.iterdir()
         if file.is_file() and pattern.match(file.name)
@@ -121,4 +116,4 @@ if __name__ == "__main__":
         masks_stacks,
         recon_template_space_dir)
 
-    # subprocess.run(["sbatch", "slurm_files/niftymic_reconstruct_3D_mask.slurm"])
+    subprocess.run(["sbatch", slurm_filename])
