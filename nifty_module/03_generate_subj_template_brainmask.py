@@ -63,7 +63,7 @@ def get_bids_brain_masks(folder_path, subject, session):
     # Regex pattern to match the dynamic parts
     # \d+ matches one or more digits for the run number (the 'XX')
     # \.nii\.gz matches the specific file extension
-    regex_pattern = rf"sub-{subject}_ses-{session}_acq-haste_run-\d+_desc-brain_mask\.nii\.gz"
+    regex_pattern = rf"{subject}_{session}_acq-haste_run-\d+_desc-brain_mask\.nii\.gz"
 
     # Compile the pattern for efficient matching
     pattern = re.compile(regex_pattern)
@@ -109,6 +109,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     masks_stacks = get_bids_brain_masks(masks_path, subject, session)
+    print(masks_stacks)
     if not masks_stacks:
         print(f"No brain mask files found in {masks_path} for subject {subject} and session {session}")
         sys.exit(1)
