@@ -93,7 +93,7 @@ if __name__ == "__main__":
     fullname_subj = f"{subject}_{session}"
     slurm_filename = f"{slurm_dir}/gen_brainmask_{fullname_subj}.slurm"
 
-    subj_recons_path = os.path.join(base_path, "niftymic", subject, session, "reconstruction_niftymic")
+    subj_recons_path = os.path.join(base_path, "intermediate", "niftymic", subject, session, "reconstruction_niftymic")
     if not os.path.exists(subj_recons_path):
         print(f"Subject reconstruction path does not exist: {subj_recons_path}")
         sys.exit(1)
