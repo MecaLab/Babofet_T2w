@@ -121,7 +121,7 @@ TEMPLATE_PATH="{template_path}"
             --isotropic-resolution 0.5 \\
             --bias-field-correction 0 \\
             --template /template/Template_G{ga}_T2W.nii.gz \\
-            --template-mask /template/Template_G{ga}_T2W_mask.nii.gz \\
+            --template-mask /template/Template_G{ga}_T2W_brainmask.nii.gz \\
     """
 
     with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
@@ -141,7 +141,6 @@ if __name__ == "__main__":
         outfile = f"Template_G{ga}_T2w_brainmask.nii.gz"
         outpath = os.path.join(atlas_path, outfile)
         combine_brain_labels(seg_path, outpath)
-        exit()
 
     exit()
     raw_path = cfg.SOURCEDATA_BIDS_PATH
