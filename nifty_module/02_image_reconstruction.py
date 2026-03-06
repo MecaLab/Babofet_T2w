@@ -126,6 +126,10 @@ singularity exec \\
         --template-mask /template/Template_G{ga}_T2W_brainmask.nii.gz \
     """
 
+    # write mv part
+
+    slurm_content += "\n"
+    
     with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
