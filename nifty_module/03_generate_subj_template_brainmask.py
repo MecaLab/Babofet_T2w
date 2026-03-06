@@ -1,5 +1,5 @@
 import os
-from Pathlib import Path
+from pathlib import Path
 import re
 import sys
 import subprocess
