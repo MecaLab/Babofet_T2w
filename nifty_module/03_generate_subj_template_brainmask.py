@@ -12,7 +12,8 @@ def write_slurm_file(
         fullname_subj,
         base_path,
         masks,
-        dir_output_recon_template_space):
+        dir_output_recon_template_space,
+        soft_path):
 
     slurm_content = f"""#!/bin/sh
 
@@ -23,7 +24,7 @@ def write_slurm_file(
 #SBATCH --time=20:00
 #SBATCH -N 1
 #SBATCH -o logs/gen_bm_{fullname_subj}.out
-#SBATCH -e logs/gen_bm{fullname_subj}.err
+#SBATCH -e logs/gen_bm_{fullname_subj}.err
 
 MASK_PATH="{base_path}"
 
@@ -39,7 +40,7 @@ OUTPUT_PATH="{dir_output_recon_template_space}"
 singularity exec \\
     -B "$MASK_PATH":/data \\
     -B "$OUTPUT_PATH":/output \\
-    /scratch/lbaptiste/softs/niftymic.multifact_latest.sif \\
+    {soft_path} \\
     niftymic_reconstruct_volume_from_slices \\
         --filenames {mask_stacks} \\
         --dir-input-mc /output/motion_correction \\
@@ -72,8 +73,8 @@ def get_bids_brain_masks(folder_path, subject, session):
     return sorted(matching_files)
 
 if __name__ == "__main__":
-
     base_path = cfg.DERIVATIVES_BIDS_PATH
+    niftymic_soft = os.path.join(cfg.SOFTS_PATH, "niftymic.multifact_latest.sif")
 
     slurm_dir = "slurm_files"
     if not os.path.exists(slurm_dir):
@@ -104,16 +105,16 @@ if __name__ == "__main__":
         sys.exit(1)
 
     masks_stacks = get_bids_brain_masks(masks_path, subject, session)
-    print(masks_stacks)
     if not masks_stacks:
         print(f"No brain mask files found in {masks_path} for subject {subject} and session {session}")
         sys.exit(1)
 
     write_slurm_file(
-        slurm_filename,
-        fullname_subj,
-        base_path,
-        masks_stacks,
-        recon_template_space_dir)
+        slurm_filename=slurm_filename,
+        fullname_subj=fullname_subj,
+        base_path=base_path,
+        masks=masks_stacks,
+        dir_output_recon_template_space=recon_template_space_dir,
+        soft_path=niftymic_soft)
 
     subprocess.run(["sbatch", slurm_filename])
