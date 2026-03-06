@@ -110,20 +110,20 @@ TEMPLATE_PATH="{template_path}"
     mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(bm_files) + 1)])
 
     slurm_content += f"""
-    singularity exec \\
-        -B "$INPUT_PATH":/data \\
-        -B "$MASK_PATH":/masks \\
-        -B "$OUTPUT_PATH":/output \\
-        -B "$TEMPLATE_PATH":/template \\
-        {soft_path} \\
-        niftymic_run_reconstruction_pipeline \\
-            --filenames {input_stacks} \\
-            --filenames-masks {mask_stacks} \\
-            --dir-output /output/ \\
-            --isotropic-resolution 0.5 \\
-            --bias-field-correction 0 \\
-            --template /template/Template_G{ga}_T2W.nii.gz \\
-            --template-mask /template/Template_G{ga}_T2W_brainmask.nii.gz \\
+singularity exec \\
+    -B "$INPUT_PATH":/data \\
+    -B "$MASK_PATH":/masks \\
+    -B "$OUTPUT_PATH":/output \\
+    -B "$TEMPLATE_PATH":/template \\
+    {soft_path} \\
+    niftymic_run_reconstruction_pipeline \\
+        --filenames {input_stacks} \\
+        --filenames-masks {mask_stacks} \\
+        --dir-output /output/ \\
+        --isotropic-resolution 0.5 \\
+        --bias-field-correction 0 \\
+        --template /template/Template_G{ga}_T2W.nii.gz \\
+        --template-mask /template/Template_G{ga}_T2W_brainmask.nii.gz \
     """
 
     with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
