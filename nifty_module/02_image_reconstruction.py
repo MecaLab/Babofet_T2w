@@ -79,7 +79,7 @@ def write_slurm(
         soft_path):
     slurm_content = f"""#!/bin/sh
     
-#SBATCH -J babofet
+#SBATCH -J babofet_recons
 #SBATCH -p batch
 #SBATCH -w niolon13
 #SBATCH --mem-per-cpu=48G
@@ -126,6 +126,8 @@ singularity exec \\
         --bias-field-correction 0 \\
         --template /template/Template_G{ga}_T2W.nii.gz \\
         --template-mask /template/Template_G{ga}_T2w_brainmask.nii.gz \
+        
+
     """
 
     # write mv part

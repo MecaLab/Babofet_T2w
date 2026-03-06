@@ -1,5 +1,6 @@
 import os
-import glob
+from Pathlib import Path
+import re
 import sys
 import subprocess
 sys.path.insert(0, os.path.abspath(os.curdir))
@@ -15,7 +16,7 @@ def write_slurm_file(
 
     slurm_content = f"""#!/bin/sh
 
-#SBATCH -J babofet
+#SBATCH -J babofet_gen_bm
 #SBATCH -p batch
 #SBATCH -w niolon13
 #SBATCH --mem-per-cpu=48G
@@ -56,53 +57,67 @@ singularity exec \\
     os.chmod(slurm_filename, 0o700)
 
 
-def get_all_masks(path):
-    masks = []
-    for file in os.listdir(path):
-        if "ND" not in file:
-            if file.endswith(".nii.gz"):
-                masks.append(file)
-    return masks
+def get_bids_brain_masks(folder_path, subject, session):
+    directory = Path(folder_path)
 
+    # Regex pattern to match the dynamic parts
+    # \d+ matches one or more digits for the run number (the 'XX')
+    # \.nii\.gz matches the specific file extension
+    regex_pattern = rf"sub-{subject}_ses-{session}_acq-haste_run-\d+_desc-brain_mask\.nii\.gz"
+
+    # Compile the pattern for efficient matching
+    pattern = re.compile(regex_pattern)
+
+    # List and filter files in the specified directory
+    matching_files = [
+        file.name for file in directory.iterdir()
+        if file.is_file() and pattern.match(file.name)
+    ]
+
+    return sorted(matching_files)
 
 if __name__ == "__main__":
 
-    base_path = cfg.MESO_OUTPUT_PATH
+    base_path = cfg.DERIVATIVES_BIDS_PATH
 
-    subject = sys.argv[1]
+    slurm_dir = "slurm_files"
+    if not os.path.exists(slurm_dir):
+        os.makedirs(slurm_dir)
 
-    input_dir = os.path.join(cfg.DATA_PATH, subject)
+    logs_dir = "logs"
+    if not os.path.exists(logs_dir):
+        os.makedirs(logs_dir)
 
-    for session in os.listdir(input_dir):
-        subject_session_path = os.path.join(input_dir, session)
+    subject = "sub-Aziza"
+    session = "ses-02"
+    fullname_subj = f"{subject}_{session}"
+    slurm_filename = f"{slurm_dir}/gen_brainmask_{fullname_subj}.slurm"
 
-        if not "recons_rhesus" in os.listdir(subject_session_path):
-            print(f"\tSkipping {subject} {session}, no recons_rhesus directory found.")
-            continue
+    subj_recons_path = os.path.join(base_path, "niftymic", subject, session, "reconstruction_niftymic")
+    if not os.path.exists(subj_recons_path):
+        print(f"Subject reconstruction path does not exist: {subj_recons_path}")
+        sys.exit(1)
 
-        recon_template_space_dir = os.path.join(subject_session_path, "recons_rhesus", "recon_template_space")
+    recon_template_space_dir = os.path.join(subj_recons_path, "recon_template_space")
+    if not os.path.exists(recon_template_space_dir):
+        print(f"Reconstruction template space directory does not exist: {recon_template_space_dir}")
+        sys.exit(1)
 
-        if not os.path.exists(recon_template_space_dir):
-            print(f"\tSkipping {subject} {session}, no recon_template_space directory found.")
-            continue
+    masks_path = os.path.join(base_path, "niftymic", subject, session, "anat")
+    if not os.path.exists(masks_path):
+        print(f"Brain masks path does not exist: {masks_path}")
+        sys.exit(1)
 
-        if os.path.exists(os.path.join(recon_template_space_dir, "srr_template_mask.nii.gz")):
-            print(f"\tSkipping {subject} {session}, srr_template_mask.nii.gz already exists.")
-            continue
+    masks_stacks = get_bids_brain_masks(masks_path, subject, session)
+    if not masks_stacks:
+        print(f"No brain mask files found in {masks_path} for subject {subject} and session {session}")
+        sys.exit(1)
 
-        print(f"Processing {subject} {session}...")
-        subj_session_path = f"sub-{subject}_ses-{session[3:]}"
-        subj_derivatives_path = os.path.join(base_path, subj_session_path, "fetalbet_masks_v2")
-        masks = get_all_masks(subj_derivatives_path)
+    write_slurm_file(
+        slurm_filename,
+        fullname_subj,
+        base_path,
+        masks_stacks,
+        recon_template_space_dir)
 
-        dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
-        files_dir_motion_correction = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
-
-        for dn_f in files_dir_motion_correction:
-            if "_denoised" in dn_f:
-                bm_file = dn_f.replace("_denoised", "")
-                os.system("cp " + dn_f + " " + bm_file)
-
-        write_slurm_file(subj_derivatives_path, masks, recon_template_space_dir)
-
-        subprocess.run(["sbatch", "slurm_files/niftymic_reconstruct_3D_mask.slurm"])
+    # subprocess.run(["sbatch", "slurm_files/niftymic_reconstruct_3D_mask.slurm"])
