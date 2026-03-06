@@ -4,6 +4,8 @@ import pandas as pd
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 import subprocess
+import nibabel as nib
+import numpy as np
 
 def get_gestational_info(female_name, session_id, tsv_file):
     # Atlas available timepoints
@@ -43,6 +45,24 @@ def pair_data(t2w_dir, mask_dir):
             print(f"Warning: No matching mask found for {t2w_name} in {mask_dir}")
 
     return list_t2w, list_masks
+
+
+def combine_brain_labels(input_path, output_path):
+    # Load the segmentation mask
+    img = nib.load(input_path)
+    data = img.get_fdata()
+
+    # Option 1: Combine ALL labels > 0 into 1
+    # This assumes 0 is background and everything else is brain tissue
+    brain_mask = np.where(data > 0, 1, 0).astype(np.uint8)
+
+    # Option 2: Combine only SPECIFIC labels
+    # labels_to_include = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    # brain_mask = np.isin(data, labels_to_include).astype(np.uint8)
+
+    # Save the new binary mask
+    new_img = nib.Nifti1Image(brain_mask, img.affine, img.header)
+    nib.save(new_img, output_path)
 
 
 def write_slurm(
@@ -110,9 +130,22 @@ TEMPLATE_PATH="{template_path}"
     os.chmod(slurm_filename, 0o700)
 
 if __name__ == "__main__":
+
+
+    atlas_path = cfg.FETAL_RESUS_ATLAS
+    gas = [85, 110, 135]
+
+    for ga in gas:
+        seg_file = f"Template_G{ga}_T2W_Labels_2019.nii.gz"
+        seg_path = os.path.join(atlas_path, seg_file)
+        outfile = f"Template_G{ga}_T2w_brainmask.nii.gz"
+        outpath = os.path.join(atlas_path, outfile)
+        combine_brain_labels(seg_path, outpath)
+        exit()
+
+    exit()
     raw_path = cfg.SOURCEDATA_BIDS_PATH
     derivative_path = cfg.DERIVATIVES_BIDS_PATH
-    atlas_path = cfg.FETAL_RESUS_ATLAS
     niftymic_soft = os.path.join(cfg.SOFTS_PATH, "niftymic.multifact_latest.sif")
 
     slurm_dir = "slurm_files"
