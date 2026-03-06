@@ -2,7 +2,6 @@ import os
 import sys
 import re
 import shutil
-from pathlib import Path
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -60,7 +59,6 @@ if __name__ == "__main__":
 
             if "HASTE" in file or "haste" in file:
                 orientation = extract_orientation(file)
-                print(orientation)
                 if orientation is None:
                     print(f"\tAn error has occured with {file}")
 

@@ -6,18 +6,23 @@ sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def write_slurm_file(base_path, masks, dir_output_recon_template_space):
-    filename = "slurm_files/niftymic_reconstruct_3D_mask.slurm"
+def write_slurm_file(
+        slurm_filename,
+        fullname_subj,
+        base_path,
+        masks,
+        dir_output_recon_template_space):
 
     slurm_content = f"""#!/bin/sh
 
-#SBATCH --account='b219'
-#SBATCH --partition=skylake
-#SBATCH --time=20:00
-#SBATCH -c 1
+#SBATCH -J babofet
+#SBATCH -p batch
+#SBATCH -w niolon13
 #SBATCH --mem-per-cpu=48G
-#SBATCH -e %x_%j.err
-#SBATCH -o %x_%j.out
+#SBATCH --time=20:00
+#SBATCH -N 1
+#SBATCH -o logs/gen_bm_{fullname_subj}.out
+#SBATCH -e logs/gen_bm{fullname_subj}.err
 
 MASK_PATH="{base_path}"
 
@@ -45,10 +50,10 @@ singularity exec \\
         --sda \\
 """
 
-    with open(filename, "w", encoding="utf-8") as slurm_file:
+    with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
 
-    os.chmod(filename, 0o700)
+    os.chmod(slurm_filename, 0o700)
 
 
 def get_all_masks(path):

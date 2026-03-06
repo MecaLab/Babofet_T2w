@@ -47,7 +47,7 @@ if __name__ == "__main__":
     if not os.path.exists(INPUT_PATH):
         get_denoised_from_meso(subjects_data, output_path=INPUT_PATH)
 
-    OUTPUT_PATH = "/envau/work/meca/data/BaboFet_BIDS/derivatives/intermediate/denoised"
+    OUTPUT_PATH = "/envau/work/meca/data/BaboFet_BIDS/derivatives/intermediate/niftymic"
     if not os.path.exists(OUTPUT_PATH):
         os.makedirs(OUTPUT_PATH)
 
