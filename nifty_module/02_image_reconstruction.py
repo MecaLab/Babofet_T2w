@@ -165,9 +165,7 @@ if __name__ == "__main__":
         print(f"ERROR: brainmask path does not exist at {brainmask_path}")
         exit()
 
-    ga, atlas = get_gestational_info(subject, session, tsv_file)
-    print(ga, atlas)
-    exit()
+    subject_ga, atlas_ga = get_gestational_info(subject, session, tsv_file)
 
     list_t2w, list_masks = pair_data(stacks_path, brainmask_path)
 
@@ -179,7 +177,7 @@ if __name__ == "__main__":
         bm_path=brainmask_path,
         bm_files=list_masks,
         template_path=atlas_path,
-        ga=ga,
+        ga=atlas_ga,
         soft_path=niftymic_soft
     )
 
