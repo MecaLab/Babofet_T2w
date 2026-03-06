@@ -123,7 +123,7 @@ singularity exec \\
         --isotropic-resolution 0.5 \\
         --bias-field-correction 0 \\
         --template /template/Template_G{ga}_T2W.nii.gz \\
-        --template-mask /template/Template_G{ga}_T2W_brainmask.nii.gz \
+        --template-mask /template/Template_G{ga}_T2w_brainmask.nii.gz \
     """
 
     # write mv part
