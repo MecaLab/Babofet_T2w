@@ -130,19 +130,7 @@ TEMPLATE_PATH="{template_path}"
     os.chmod(slurm_filename, 0o700)
 
 if __name__ == "__main__":
-
-
     atlas_path = cfg.FETAL_RESUS_ATLAS
-    gas = [85, 110, 135]
-
-    for ga in gas:
-        seg_file = f"Template_G{ga}_T2W_Labels_2019.nii.gz"
-        seg_path = os.path.join(atlas_path, seg_file)
-        outfile = f"Template_G{ga}_T2w_brainmask.nii.gz"
-        outpath = os.path.join(atlas_path, outfile)
-        combine_brain_labels(seg_path, outpath)
-
-    exit()
     raw_path = cfg.SOURCEDATA_BIDS_PATH
     derivative_path = cfg.DERIVATIVES_BIDS_PATH
     niftymic_soft = os.path.join(cfg.SOFTS_PATH, "niftymic.multifact_latest.sif")
