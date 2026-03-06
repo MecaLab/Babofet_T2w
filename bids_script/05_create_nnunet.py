@@ -47,7 +47,7 @@ if __name__ == "__main__":
             input_full_path = os.path.join(input_path, file)
 
             # sub-<sub>_ses-<ses>_seg-braintissues_dseg.nii.gz
-            output_file = f"sub-{subj}_{sess_formated}_seg-braintissues_dseg.nii.gz"
+            output_file = f"sub-{subj}_{sess_formated}_desc-nnunet_dseg.nii.gz"
             output_path = os.path.join(output_base_path, f"sub-{subj}", sess_formated, "anat")
             if not os.path.exists(output_path):
                 os.makedirs(output_path)
