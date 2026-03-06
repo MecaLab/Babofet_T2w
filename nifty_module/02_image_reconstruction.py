@@ -64,6 +64,8 @@ def combine_brain_labels(input_path, output_path):
     new_img = nib.Nifti1Image(brain_mask, img.affine, img.header)
     nib.save(new_img, output_path)
 
+    # see 'write_slurm' function to name the template mask
+
 
 def write_slurm(
         slurm_filename,
@@ -186,4 +188,4 @@ if __name__ == "__main__":
     )
 
     print(f"\t\tComputing reconstruction for {fullname_subj}")
-    # subprocess.run(["sbatch", slurm_filename])
+    subprocess.run(["sbatch", slurm_filename])
