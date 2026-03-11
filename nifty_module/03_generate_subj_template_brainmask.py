@@ -51,7 +51,6 @@ singularity exec \\
         --isotropic-resolution 0.5 \\
         --mask \\
         --sda \
-        --verbose 1 \\
 """
 
     with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
@@ -73,6 +72,47 @@ def get_bids_brain_masks(folder_path, subject, session):
     ]
 
     return sorted(matching_files)
+
+
+def map_transformation_files(motion_correction_dir, mask_files):
+    """
+    Maps denoised volume and slice TFM files to match the naming
+    convention of the input mask stacks.
+    """
+    available_tfms = glob.glob(os.path.join(motion_correction_dir, "*.tfm"))
+
+    print(f"Mapping transformations in: {motion_correction_dir}")
+
+    for mask_file in mask_files:
+        # stack_base represents the name NiftyMIC expects (e.g., ..._desc-brain)
+        stack_base = mask_file.replace("_mask.nii.gz", "")
+
+        # Extract run identifier (e.g., 'run-01')
+        run_match = re.search(r"run-(\d+)", stack_base)
+        if not run_match:
+            continue
+        run_id = run_match.group(0)
+
+        # Identify all source files for this run containing '_denoised'
+        run_source_tfms = [f for f in available_tfms if run_id in f and "_denoised" in f]
+
+        for src_path in run_source_tfms:
+            src_name = os.path.basename(src_path)
+
+            # Check for slice files or main volume files
+            slice_match = re.search(r"_slice(\d+)\.tfm", src_name)
+
+            if slice_match:
+                slice_num = slice_match.group(1)
+                dest_name = f"{stack_base}_slice{slice_num}.tfm"
+            else:
+                dest_name = f"{stack_base}.tfm"
+
+            dest_path = os.path.join(motion_correction_dir, dest_name)
+
+            if not os.path.exists(dest_path):
+                shutil.copy(src_path, dest_path)
+
 
 if __name__ == "__main__":
     base_path = cfg.DERIVATIVES_BIDS_PATH
@@ -112,41 +152,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
-    available_tfms = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
 
-    print("Mapping volume and slice transformation files...")
-    for mask_file in masks_stacks:
-        # stack_base = sub-Aziza_ses-02_acq-haste_run-01_desc-brain
-        stack_base = mask_file.replace("_mask.nii.gz", "")
-
-        run_match = re.search(r"run-(\d+)", stack_base)
-        if not run_match:
-            continue
-        run_id = run_match.group(0) # e.g., 'run-01'
-
-        # 1. Identify all source files for this run that contain '_denoised'
-        # These are our "master" transforms from the previous step
-        run_source_tfms = [f for f in available_tfms if run_id in f and "_denoised" in f]
-
-        for src_path in run_source_tfms:
-            src_name = os.path.basename(src_path)
-
-            # Check if it's a slice file (e.g., ..._slice10.tfm) or volume file (..._denoised.tfm)
-            slice_match = re.search(r"_slice(\d+)\.tfm", src_name)
-
-            if slice_match:
-                slice_num = slice_match.group(1)
-                dest_name = f"{stack_base}_slice{slice_num}.tfm"
-            else:
-                # It's the main volume transform
-                dest_name = f"{stack_base}.tfm"
-
-            dest_path = os.path.join(dir_motion_correction, dest_name)
-
-            if not os.path.exists(dest_path):
-                shutil.copy(src_path, dest_path)
-
-    print("Transformation mapping complete.")
+    map_transformation_files(dir_motion_correction, masks_stacks)
 
     write_slurm_file(
         slurm_filename=slurm_filename,
