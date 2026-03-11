@@ -32,31 +32,27 @@ echo "Log file: $LOG_FILE"
 echo "=================================================================="
 
 # Load singularity if necessary
-module load singularity 2>/dev/null || echo "Singularity already loaded or module not found"
-
-# Enter working directory if needed
-if [ -d "nifty_module" ]; then
-    cd nifty_module
-fi
+module load singularity
+module load ANTS
 
 # Step 1: Denoising
 echo "Running Step 1: Denoising"
-python 01_denoising.py --subject "$SUBJECT" --session "$SESSION"
+python nifty_module/01_denoising.py --subject "$SUBJECT" --session "$SESSION"
 if [ $? -ne 0 ]; then echo "Error in Step 1"; exit 1; fi
 
 # Step 2: Image Reconstruction (Blocking call)
 echo "Running Step 2: Image Reconstruction"
-python 02_image_reconstruction.py --subject "$SUBJECT" --session "$SESSION"
+python nifty_module/02_image_reconstruction.py --subject "$SUBJECT" --session "$SESSION"
 if [ $? -ne 0 ]; then echo "Error in Step 2"; exit 1; fi
 
 # Step 3: Generate Subject Template Brainmask
 echo "Running Step 3: Generate Subject Template Brainmask"
-python 03_generate_subj_template_brainmask.py --subject "$SUBJECT" --session "$SESSION"
+python nifty_module/03_generate_subj_template_brainmask.py --subject "$SUBJECT" --session "$SESSION"
 if [ $? -ne 0 ]; then echo "Error in Step 3"; exit 1; fi
 
 # Step 4: Debias
 echo "Running Step 4: Debias"
-python 04_debias.py --subject "$SUBJECT" --session "$SESSION"
+python nifty_module/04_debias.py --subject "$SUBJECT" --session "$SESSION"
 if [ $? -ne 0 ]; then echo "Error in Step 4"; exit 1; fi
 
 echo "=================================================================="
