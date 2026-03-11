@@ -112,14 +112,10 @@ if __name__ == "__main__":
     dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
     files_dir_motion_correction = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
 
-    print(dir_motion_correction)
-    
     for dn_f in files_dir_motion_correction:
         if "_denoised" in dn_f:
             bm_file = dn_f.replace("_denoised", "")
             os.system("cp " + dn_f + " " + bm_file)
-
-    exit()
 
     write_slurm_file(
         slurm_filename=slurm_filename,
