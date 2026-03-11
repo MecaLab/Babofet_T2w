@@ -3,6 +3,7 @@ from pathlib import Path
 import glob
 import re
 import sys
+import shutil
 import subprocess
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
@@ -111,12 +112,27 @@ if __name__ == "__main__":
         sys.exit(1)
 
     dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
-    files_dir_motion_correction = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
+    available_tfms = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
 
-    for dn_f in files_dir_motion_correction:
-        if "_denoised" in dn_f:
-            bm_file = dn_f.replace("_denoised", "")
-            os.system("cp " + dn_f + " " + bm_file)
+    for mask_file in masks_stacks:
+        stack_name = mask_file.replace("_mask.nii.gz", "")
+
+        # Extract run identifier to find the source denoised TFM
+        run_match = re.search(r"run-\d+", stack_name)
+        if not run_match:
+            continue
+        run_id = run_match.group(0)
+
+        # Look for the denoised TFM corresponding to this specific run
+        source_tfm = next((f for f in available_tfms if run_id in f and "_denoised" in f), None)
+
+        if source_tfm:
+            dest_tfm = os.path.join(dir_motion_correction, f"{stack_name}.tfm")
+            if not os.path.exists(dest_tfm):
+                print(f"Copying {os.path.basename(source_tfm)} to {os.path.basename(dest_tfm)}")
+                shutil.copy(source_tfm, dest_tfm)
+        else:
+            print(f"Warning: No source TFM found for {run_id}")
 
     write_slurm_file(
         slurm_filename=slurm_filename,
