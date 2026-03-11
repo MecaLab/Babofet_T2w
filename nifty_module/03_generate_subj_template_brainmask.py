@@ -35,7 +35,7 @@ OUTPUT_PATH="{dir_output_recon_template_space}"
         slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
 
     mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(masks_stacks) + 1)])
-
+    # --dir-input-mc /output/motion_correction \\
     slurm_content += f"""
 singularity exec \\
     -B "$MASK_PATH":/data \\
@@ -43,7 +43,6 @@ singularity exec \\
     {soft_path} \\
     niftymic_reconstruct_volume_from_slices \\
         --filenames {mask_stacks} \\
-        --dir-input-mc /output/motion_correction \\
         --output /output/srr_template_mask.nii.gz \\
         --reconstruction-space /output/srr_template.nii.gz \\
         --alpha 1 \\
