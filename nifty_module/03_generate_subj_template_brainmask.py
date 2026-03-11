@@ -116,7 +116,6 @@ if __name__ == "__main__":
     for dn_f in files_dir_motion_correction:
         if "_denoised" in dn_f:
             bm_file = dn_f.replace("_denoised", "")
-            print(dn_f, bm_file)
             os.system("cp " + dn_f + " " + bm_file)
 
     write_slurm_file(
