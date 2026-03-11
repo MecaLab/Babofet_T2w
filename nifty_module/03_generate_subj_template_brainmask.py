@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import glob
 import re
 import sys
 import subprocess
@@ -35,7 +36,6 @@ OUTPUT_PATH="{dir_output_recon_template_space}"
         slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
 
     mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(masks_stacks) + 1)])
-    # --dir-input-mc /output/motion_correction \\
     slurm_content += f"""
 singularity exec \\
     -B "$MASK_PATH":/data \\
@@ -108,6 +108,18 @@ if __name__ == "__main__":
     if not masks_stacks:
         print(f"No brain mask files found in {masks_path} for subject {subject} and session {session}")
         sys.exit(1)
+
+    dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
+    files_dir_motion_correction = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
+
+    print(dir_motion_correction)
+    
+    for dn_f in files_dir_motion_correction:
+        if "_denoised" in dn_f:
+            bm_file = dn_f.replace("_denoised", "")
+            os.system("cp " + dn_f + " " + bm_file)
+
+    exit()
 
     write_slurm_file(
         slurm_filename=slurm_filename,
