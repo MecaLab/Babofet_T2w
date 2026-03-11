@@ -114,25 +114,39 @@ if __name__ == "__main__":
     dir_motion_correction = os.path.join(recon_template_space_dir, "motion_correction")
     available_tfms = glob.glob(os.path.join(dir_motion_correction, "*.tfm"))
 
+    print("Mapping volume and slice transformation files...")
     for mask_file in masks_stacks:
-        stack_name = mask_file.replace("_mask.nii.gz", "")
+        # stack_base = sub-Aziza_ses-02_acq-haste_run-01_desc-brain
+        stack_base = mask_file.replace("_mask.nii.gz", "")
 
-        # Extract run identifier to find the source denoised TFM
-        run_match = re.search(r"run-\d+", stack_name)
+        run_match = re.search(r"run-(\d+)", stack_base)
         if not run_match:
             continue
-        run_id = run_match.group(0)
+        run_id = run_match.group(0) # e.g., 'run-01'
 
-        # Look for the denoised TFM corresponding to this specific run
-        source_tfm = next((f for f in available_tfms if run_id in f and "_denoised" in f), None)
+        # 1. Identify all source files for this run that contain '_denoised'
+        # These are our "master" transforms from the previous step
+        run_source_tfms = [f for f in available_tfms if run_id in f and "_denoised" in f]
 
-        if source_tfm:
-            dest_tfm = os.path.join(dir_motion_correction, f"{stack_name}.tfm")
-            if not os.path.exists(dest_tfm):
-                print(f"Copying {os.path.basename(source_tfm)} to {os.path.basename(dest_tfm)}")
-                shutil.copy(source_tfm, dest_tfm)
-        else:
-            print(f"Warning: No source TFM found for {run_id}")
+        for src_path in run_source_tfms:
+            src_name = os.path.basename(src_path)
+
+            # Check if it's a slice file (e.g., ..._slice10.tfm) or volume file (..._denoised.tfm)
+            slice_match = re.search(r"_slice(\d+)\.tfm", src_name)
+
+            if slice_match:
+                slice_num = slice_match.group(1)
+                dest_name = f"{stack_base}_slice{slice_num}.tfm"
+            else:
+                # It's the main volume transform
+                dest_name = f"{stack_base}.tfm"
+
+            dest_path = os.path.join(dir_motion_correction, dest_name)
+
+            if not os.path.exists(dest_path):
+                shutil.copy(src_path, dest_path)
+
+    print("Transformation mapping complete.")
 
     write_slurm_file(
         slurm_filename=slurm_filename,
