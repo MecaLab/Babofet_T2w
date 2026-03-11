@@ -43,6 +43,7 @@ singularity exec \\
     {soft_path} \\
     niftymic_reconstruct_volume_from_slices \\
         --filenames {mask_stacks} \\
+        --dir-input-mc /output/motion_correction \\
         --output /output/srr_template_mask.nii.gz \\
         --reconstruction-space /output/srr_template.nii.gz \\
         --alpha 1 \\
