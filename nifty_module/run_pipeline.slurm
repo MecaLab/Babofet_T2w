@@ -1,0 +1,64 @@
+#!/bin/bash
+#SBATCH -J niftymic_pipeline
+#SBATCH -p batch
+#SBATCH -w niolon13
+#SBATCH --mem-per-cpu=48G
+#SBATCH --time=48:00:00
+#SBATCH -N 1
+#SBATCH -o logs/init_%j.out
+#SBATCH -e logs/init_%j.err
+
+# Check arguments
+if [ "$#" -ne 2 ]; then
+    echo "Usage: sbatch run_pipeline.slurm <subject> <session>"
+    exit 1
+fi
+
+SUBJECT=$1
+SESSION=$2
+
+# Redirection dynamique vers le fichier spécifié par l'utilisateur
+# Cela remplace fonctionnellement l'usage de %x (job name) et %j (job id)
+# par vos variables subject et session.
+LOG_FILE="logs/pipeline_niftymic_${SUBJECT}_${SESSION}.out"
+mkdir -p logs
+exec > >(tee -a "$LOG_FILE") 2>&1
+
+echo "=================================================================="
+echo "Starting pipeline for Subject: $SUBJECT, Session: $SESSION"
+echo "Job ID: $SLURM_JOB_ID"
+echo "Node: $SLURM_NODELIST"
+echo "Log file: $LOG_FILE"
+echo "=================================================================="
+
+# Load singularity if necessary
+module load singularity 2>/dev/null || echo "Singularity already loaded or module not found"
+
+# Enter working directory if needed
+if [ -d "nifty_module" ]; then
+    cd nifty_module
+fi
+
+# Step 1: Denoising
+echo "Running Step 1: Denoising"
+python 01_denoising.py --subject "$SUBJECT" --session "$SESSION"
+if [ $? -ne 0 ]; then echo "Error in Step 1"; exit 1; fi
+
+# Step 2: Image Reconstruction (Blocking call)
+echo "Running Step 2: Image Reconstruction"
+python 02_image_reconstruction.py --subject "$SUBJECT" --session "$SESSION"
+if [ $? -ne 0 ]; then echo "Error in Step 2"; exit 1; fi
+
+# Step 3: Generate Subject Template Brainmask
+echo "Running Step 3: Generate Subject Template Brainmask"
+python 03_generate_subj_template_brainmask.py --subject "$SUBJECT" --session "$SESSION"
+if [ $? -ne 0 ]; then echo "Error in Step 3"; exit 1; fi
+
+# Step 4: Debias
+echo "Running Step 4: Debias"
+python 04_debias.py --subject "$SUBJECT" --session "$SESSION"
+if [ $? -ne 0 ]; then echo "Error in Step 4"; exit 1; fi
+
+echo "=================================================================="
+echo "Pipeline completed successfully for $SUBJECT $SESSION"
+echo "=================================================================="

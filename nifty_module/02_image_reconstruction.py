@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
+import argparse
 import subprocess
 import nibabel as nib
 import numpy as np
@@ -64,99 +65,50 @@ def combine_brain_labels(input_path, output_path):
     new_img = nib.Nifti1Image(brain_mask, img.affine, img.header)
     nib.save(new_img, output_path)
 
-    # see 'write_slurm' function to name the template mask
 
+def run_niftymic_reconstruction(fullname_subj, stack_path, denoised_files, bm_path, bm_files, template_path, ga, soft_path):
+    output_path = os.path.join(stack_path, "reconstruction_niftymic")
+    os.makedirs(output_path, exist_ok=True)
 
-def write_slurm(
-        slurm_filename,
-        fullname_subj,
-        stack_path,
-        denoised_files,
-        bm_path,
-        bm_files,
-        template_path,
-        ga,
-        soft_path):
-    slurm_content = f"""#!/bin/sh
-    
-#SBATCH -J babofet_recons
-#SBATCH -p batch
-#SBATCH -w niolon13
-#SBATCH --mem-per-cpu=48G
-#SBATCH --time=24:00:00
-#SBATCH -N 1
-#SBATCH -o logs/recon_pipeline_niftymic_{fullname_subj}.out
-#SBATCH -e logs/recon_pipeline_niftymic_{fullname_subj}.err
+    input_stacks = ["/data/" + f for f in denoised_files]
+    mask_stacks = ["/masks/" + f for f in bm_files]
 
-INPUT_PATH="{stack_path}"
-MASK_PATH="{bm_path}"
+    # Build the command
+    cmd = [
+        "singularity", "exec",
+        "-B", f"{stack_path}:/data",
+        "-B", f"{bm_path}:/masks",
+        "-B", f"{output_path}:/output",
+        "-B", f"{template_path}:/template",
+        soft_path,
+        "niftymic_run_reconstruction_pipeline",
+        "--filenames"] + input_stacks + [
+        "--filenames-masks"] + mask_stacks + [
+        "--dir-output", "/output/",
+        "--isotropic-resolution", "0.5",
+        "--bias-field-correction", "0",
+        "--template", f"/template/Template_G{ga}_T2W.nii.gz",
+        "--template-mask", f"/template/Template_G{ga}_T2w_brainmask.nii.gz"
+    ]
 
-OUTPUT_PATH="${{INPUT_PATH}}/reconstruction_niftymic"
-MOTION_CORRECTION="${{OUTPUT_PATH}}/motion_correction"
-
-mkdir -p $OUTPUT_PATH
-mkdir -p $MOTION_CORRECTION
-
-TEMPLATE_PATH="{template_path}"
-"""
-    slurm_content += "\n"
-    for i, file in enumerate(denoised_files, start=1):
-        slurm_content += f"INPUT_FILE{i}=\"{file}\"\n"
-
-    slurm_content += "\n"
-
-    for i, file in enumerate(bm_files, start=1):
-        slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
-
-    input_stacks = " ".join(["/data/$INPUT_FILE{}".format(i) for i in range(1, len(denoised_files) + 1)])
-    mask_stacks = " ".join(["/masks/$MASK_FILE{}".format(i) for i in range(1, len(bm_files) + 1)])
-
-    slurm_content += f"""
-singularity exec \\
-    -B "$INPUT_PATH":/data \\
-    -B "$MASK_PATH":/masks \\
-    -B "$OUTPUT_PATH":/output \\
-    -B "$TEMPLATE_PATH":/template \\
-    {soft_path} \\
-    niftymic_run_reconstruction_pipeline \\
-        --filenames {input_stacks} \\
-        --filenames-masks {mask_stacks} \\
-        --dir-output /output/ \\
-        --isotropic-resolution 0.5 \\
-        --bias-field-correction 0 \\
-        --template /template/Template_G{ga}_T2W.nii.gz \\
-        --template-mask /template/Template_G{ga}_T2w_brainmask.nii.gz \
-        
-
-    """
-
-    # write mv part
-
-    slurm_content += "\n"
-
-    with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
-        slurm_file.write(slurm_content)
-
-    os.chmod(slurm_filename, 0o700)
+    print(f"Running NiftyMIC for {fullname_subj}...")
+    subprocess.run(cmd, check=True) # This waits until NiftyMIC is finished
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Denoise data for a specific subject and session.")
+    parser.add_argument("--subject", required=True, help="Subject ID (e.g., sub-Aziza)")
+    parser.add_argument("--session", required=True, help="Session ID (e.g., ses-01)")
+    args = parser.parse_args()
+
+    subject = args.subject
+    session = args.session
+
     atlas_path = cfg.FETAL_RESUS_ATLAS
     raw_path = cfg.SOURCEDATA_BIDS_PATH
     derivative_path = cfg.DERIVATIVES_BIDS_PATH
     niftymic_soft = os.path.join(cfg.SOFTS_PATH, "niftymic.multifact_latest.sif")
 
-    slurm_dir = "slurm_files"
-    if not os.path.exists(slurm_dir):
-        os.makedirs(slurm_dir)
-
-    logs_dir = "logs"
-    if not os.path.exists(logs_dir):
-        os.makedirs(logs_dir)
-
-    subject = "sub-Aziza"
-    session = "ses-02"
     fullname_subj = f"{subject}_{session}"
-    slurm_filename = f"{slurm_dir}/reconstruction_niftymic_{fullname_subj}.slurm"
 
     tsv_file = os.path.join(raw_path, "raw", subject, f"{subject}_sessions.tsv")
     if not os.path.exists(tsv_file):
@@ -177,8 +129,7 @@ if __name__ == "__main__":
 
     list_t2w, list_masks = pair_data(stacks_path, brainmask_path)
 
-    write_slurm(
-        slurm_filename=slurm_filename,
+    run_niftymic_reconstruction(
         fullname_subj=fullname_subj,
         stack_path=stacks_path,
         denoised_files=list_t2w,
@@ -188,6 +139,3 @@ if __name__ == "__main__":
         ga=atlas_ga,
         soft_path=niftymic_soft
     )
-
-    print(f"\t\tComputing reconstruction for {fullname_subj}")
-    subprocess.run(["sbatch", slurm_filename])

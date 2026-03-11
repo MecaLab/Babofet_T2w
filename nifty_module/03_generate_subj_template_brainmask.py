@@ -4,59 +4,33 @@ import glob
 import re
 import sys
 import shutil
+import argparse
 import subprocess
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def write_slurm_file(
-        slurm_filename,
-        fullname_subj,
-        mask_path,
-        masks_stacks,
-        dir_output_recon_template_space,
-        soft_path):
+def run_niftymic_mask_generation(mask_path, masks_stacks, output_dir, soft_path):
+    mask_stacks_mapped = ["/data/" + f for f in masks_stacks]
 
-    slurm_content = f"""#!/bin/sh
+    cmd = [
+              "singularity", "exec",
+              "-B", f"{mask_path}:/data",
+              "-B", f"{output_dir}:/output",
+              soft_path,
+              "niftymic_reconstruct_volume_from_slices",
+              "--filenames"] + mask_stacks_mapped + [
+              "--dir-input-mc", "/output/motion_correction",
+              "--output", "/output/srr_template_mask.nii.gz",
+              "--reconstruction-space", "/output/srr_template.nii.gz",
+              "--alpha", "1",
+              "--isotropic-resolution", "0.5",
+              "--mask",
+              "--sda"
+          ]
 
-#SBATCH -J babofet_gen_bm
-#SBATCH -p batch
-#SBATCH -w niolon13
-#SBATCH --mem-per-cpu=48G
-#SBATCH --time=20:00
-#SBATCH -N 1
-#SBATCH -o logs/gen_bm_{fullname_subj}.out
-#SBATCH -e logs/gen_bm_{fullname_subj}.err
-
-MASK_PATH="{mask_path}"
-
-OUTPUT_PATH="{dir_output_recon_template_space}"
-"""
-    slurm_content += "\n"
-    for i, file in enumerate(masks_stacks, start=1):
-        slurm_content += f"MASK_FILE{i}=\"{file}\"\n"
-
-    mask_stacks = " ".join(["/data/$MASK_FILE{}".format(i) for i in range(1, len(masks_stacks) + 1)])
-    slurm_content += f"""
-singularity exec \\
-    -B "$MASK_PATH":/data \\
-    -B "$OUTPUT_PATH":/output \\
-    {soft_path} \\
-    niftymic_reconstruct_volume_from_slices \\
-        --filenames {mask_stacks} \\
-        --dir-input-mc /output/motion_correction \\
-        --output /output/srr_template_mask.nii.gz \\
-        --reconstruction-space /output/srr_template.nii.gz \\
-        --alpha 1 \\
-        --isotropic-resolution 0.5 \\
-        --mask \\
-        --sda \
-"""
-
-    with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
-        slurm_file.write(slurm_content)
-
-    os.chmod(slurm_filename, 0o700)
+    print("Generating subject template brainmask...")
+    subprocess.run(cmd, check=True)  # This waits until finished
 
 
 def get_bids_brain_masks(folder_path, subject, session):
@@ -115,21 +89,16 @@ def map_transformation_files(motion_correction_dir, mask_files):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Denoise data for a specific subject and session.")
+    parser.add_argument("--subject", required=True, help="Subject ID (e.g., sub-Aziza)")
+    parser.add_argument("--session", required=True, help="Session ID (e.g., ses-01)")
+    args = parser.parse_args()
+
+    subject = args.subject
+    session = args.session
+
     base_path = cfg.DERIVATIVES_BIDS_PATH
     niftymic_soft = os.path.join(cfg.SOFTS_PATH, "niftymic.multifact_latest.sif")
-
-    slurm_dir = "slurm_files"
-    if not os.path.exists(slurm_dir):
-        os.makedirs(slurm_dir)
-
-    logs_dir = "logs"
-    if not os.path.exists(logs_dir):
-        os.makedirs(logs_dir)
-
-    subject = "sub-Aziza"
-    session = "ses-02"
-    fullname_subj = f"{subject}_{session}"
-    slurm_filename = f"{slurm_dir}/gen_brainmask_{fullname_subj}.slurm"
 
     subj_recons_path = os.path.join(base_path, "intermediate", "niftymic", subject, session, "reconstruction_niftymic")
     if not os.path.exists(subj_recons_path):
@@ -155,12 +124,8 @@ if __name__ == "__main__":
 
     map_transformation_files(dir_motion_correction, masks_stacks)
 
-    write_slurm_file(
-        slurm_filename=slurm_filename,
-        fullname_subj=fullname_subj,
+    run_niftymic_mask_generation(
         mask_path=masks_path,
         masks_stacks=masks_stacks,
-        dir_output_recon_template_space=recon_template_space_dir,
+        output_dir=recon_template_space_dir,
         soft_path=niftymic_soft)
-
-    subprocess.run(["sbatch", slurm_filename])

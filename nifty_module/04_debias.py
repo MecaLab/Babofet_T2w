@@ -1,6 +1,8 @@
 import os
+import shutil
 import sys
 import subprocess
+import argparse
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -9,10 +11,15 @@ if __name__ == "__main__":
     """
     N4BiasFieldCorrection -d 3 -i STACK_PATH -x MASK_PATH -o OUTPUT_PATH
     """
+    parser = argparse.ArgumentParser(description="Denoise data for a specific subject and session.")
+    parser.add_argument("--subject", required=True, help="Subject ID (e.g., sub-Aziza)")
+    parser.add_argument("--session", required=True, help="Session ID (e.g., ses-01)")
+    args = parser.parse_args()
+    subject = args.subject
+    session = args.session
+
     bias_field_correction_path = "/hpc/shared/apps/x86_64/softs/ANTS/2.3.4/bin/N4BiasFieldCorrection"  # path on niolon
     base_path = cfg.DERIVATIVES_BIDS_PATH
-    subject = "sub-Aziza"
-    session = "ses-02"
 
     print(f"Processing {subject} {session}...")
 
@@ -40,6 +47,12 @@ if __name__ == "__main__":
 
     subprocess.run([bias_field_correction_path, "-d", "3", "-i", stack_path, "-x", mask_path, "-o", output_filename])
     print(f"N4BiasFieldCorrection done !")
+
+    # sub-Aziza_ses-02_rec-niftymic_desc-brainbg_T2w.nii.gz
+    out_filename = f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
+    output_path = os.path.join(base_path, "niftymic", subject, session, "anat", out_filename)
+    shutil.copy(output_filename, output_path)
+    print(f"Copied debiased image to {output_path}")
 
 
 
