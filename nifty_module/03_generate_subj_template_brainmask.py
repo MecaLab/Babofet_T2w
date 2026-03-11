@@ -50,6 +50,7 @@ singularity exec \\
         --isotropic-resolution 0.5 \\
         --mask \\
         --sda \
+        --verbose 1 \\
 """
 
     with open(slurm_filename, "w", encoding="utf-8") as slurm_file:
