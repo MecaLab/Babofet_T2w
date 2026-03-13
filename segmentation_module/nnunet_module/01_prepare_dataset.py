@@ -46,12 +46,7 @@ if __name__ == "__main__":
     name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
     use_debias = sys.argv[3].lower() == 'true'  # whether to use debiasing or not
 
-    if id_dataset < 10:
-        dataset_name = f"Dataset00{id_dataset}_{name}"
-    elif id_dataset < 100:
-        dataset_name = f"Dataset0{id_dataset}_{name}"
-    else:
-        dataset_name = f"Dataset{id_dataset}_{name}"
+    dataset_name = f"Dataset{id_dataset:03d}_{name}"
 
     output_path = os.path.join(cfg.NNUNET_RAW_PATH, dataset_name)
 
