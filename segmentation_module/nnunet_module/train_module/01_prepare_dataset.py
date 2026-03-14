@@ -38,6 +38,11 @@ def write_json_file(path, num_training, dataset_name, use_debias=False):
 
 
 if __name__ == "__main__":
+    """
+    Je viens de me rendre compte que preparer le dataset n'est utile que pour l'entrainement
+    Ce scritp a été modifé pour être adapté sur niolon, mais ça ne sert à rien car l'entrainement se fait sur le meso
+    A revenir ici plus tard
+    """
 
     base_path = cfg.DERIVATIVES_BIDS_PATH
     input_base_path = os.path.join(base_path, "intermediate", "niftymic")

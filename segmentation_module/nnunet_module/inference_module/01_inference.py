@@ -34,7 +34,11 @@ nnUNetv2_apply_postprocessing -i {output_folder} -o {output_folder} -pp_pkl_file
     os.chmod(filename, 0o700)
 
 if __name__ == "__main__":
-    dataset_id = int(sys.argv[1])
+    id_dataset = int(sys.argv[1])
     name = sys.argv[2]
     trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs"
+
+    dataset_name = f"Dataset{id_dataset:03d}_{name}"
+
+    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path)
 
