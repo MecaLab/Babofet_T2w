@@ -10,7 +10,7 @@ def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer,
     plans_json = os.path.join(cross_val_path, "plans.json")
     slurm_content = f"""#!/bin/bash
 
-#SBATCH -J niftymic_pipeline
+#SBATCH -J nnunet_predict
 #SBATCH -p batch
 #SBATCH -w niolon13
 #SBATCH --mem-per-cpu=48G
@@ -40,5 +40,10 @@ if __name__ == "__main__":
 
     dataset_name = f"Dataset{id_dataset:03d}_{name}"
 
-    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path)
+    input_folder = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "nnunet", "inference_dataset")
+    output_folder = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "nnunet", "inference_predictions", dataset_name)
+    model_path = cfg.NNUNET_RESULTS_PATH
+    slurm_filename = "nnunet_predict.slurm"
+
+    write_slurm_file(input_folder, output_folder, slurm_filename, id_dataset, trainer, model_path)
 
