@@ -45,9 +45,9 @@ NNUNET_PYTHON_PATH = "~/miniconda3/envs/nnunet/lib/python3.9/site-packages/nnune
 LONGISEG_PYTHON_PATH = os.path.join(CODE_PATH, "LongiSeg")
 
 # nnUNet path
-NNUNET_RAW_PATH = os.path.join(BASE_PATH, "nnUNet_raw")
-NNUNET_RESULTS_PATH = os.path.join(BASE_PATH, "nnUNet_trained_models")
-NNUNET_PREPROCESSED_PATH = os.path.join(BASE_PATH, "nnUNet_preprocessed")
+NNUNET_RAW_PATH_MESO = os.path.join(BASE_PATH, "nnUNet_raw")
+NNUNET_RESULTS_PATH_MESO = os.path.join(BASE_PATH, "nnUNet_trained_models")
+NNUNET_PREPROCESSED_PATH_MESO = os.path.join(BASE_PATH, "nnUNet_preprocessed")
 
 # LongiSeg path
 LONGISEG_RAW_PATH = os.path.join(BASE_PATH, "LongiSeg_raw")

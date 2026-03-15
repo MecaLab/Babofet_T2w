@@ -10,5 +10,10 @@
     "sub-Borgne": ["ses09"],
     "sub-Fabienne": ["ses04", "ses05"],
     "sub-Filoutte": ["ses03", "ses08"]
+  },
+  "inference_subject_sessions": {
+    "sub-Borgne": ["ses09"],
+    "sub-Fabienne": ["ses04", "ses05"],
+    "sub-Filoutte": ["ses03", "ses08"]
   }
 }
