@@ -45,6 +45,8 @@ if __name__ == "__main__":
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
     model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
+    print(model_path)
+    exit()
     slurm_filename = "nnunet_predict.slurm"
 
     write_slurm_file(input_folder, output_folder, slurm_filename, id_dataset, trainer, model_path)
