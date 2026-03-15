@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     inference_data = data["inference_subject_sessions"]
 
-    input_base_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
+    input_base_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "niftymic")
     output_base_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "nnunet", "inference_dataset")
 
     if not os.path.exists(output_base_path):
