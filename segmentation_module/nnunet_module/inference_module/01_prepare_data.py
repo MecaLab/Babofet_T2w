@@ -16,6 +16,7 @@ if __name__ == "__main__":
         data = json.load(file)
 
     inference_data = data["inference_subject_sessions"]
+    use_debias = True
 
     input_base_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "niftymic")
     output_base_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "nnunet", "inference_dataset")
@@ -31,9 +32,15 @@ if __name__ == "__main__":
             session_formatted = format_session_str(session)
             print(f"\tProcessing session: {session_formatted}")
 
-            input_path_3d_stack = os.path.join(input_path_3d_stacks, session_formatted, "reconstruction_niftymic",
-                                               "recon_template_space", "srr_template.nii.gz")
+            input_base_3d_stack = os.path.join(input_path_3d_stacks, session_formatted, "reconstruction_niftymic", "recon_template_space")
+
+            input_path_3d_stack = os.path.join(input_base_3d_stack, "srr_template.nii.gz")
             output_path_3d_stack = os.path.join(output_base_path, f"{subject}_{session}_0000.nii.gz")
             shutil.copy(input_path_3d_stack, output_path_3d_stack)
+
+            if use_debias:
+                input_path_debias = os.path.join(input_base_3d_stack, "srr_template_debiased.nii.gz")
+                output_path_debias = os.path.join(output_base_path, f"{subject}_{session}_0001.nii.gz")
+                shutil.copy(input_path_debias, output_path_debias)
 
 
