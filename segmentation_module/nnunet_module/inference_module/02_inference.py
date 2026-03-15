@@ -42,8 +42,11 @@ if __name__ == "__main__":
 
     input_folder = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "nnunet", "inference_dataset")
     output_folder = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "nnunet", "inference_predictions", dataset_name)
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
     model_path = cfg.NNUNET_RESULTS_PATH
     slurm_filename = "nnunet_predict.slurm"
 
     write_slurm_file(input_folder, output_folder, slurm_filename, id_dataset, trainer, model_path)
+    subprocess.run(["sbatch", slurm_filename])
 
