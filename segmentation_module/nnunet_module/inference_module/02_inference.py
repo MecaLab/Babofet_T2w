@@ -6,8 +6,8 @@ import configuration as cfg
 
 def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path):
     cross_val_path = os.path.join(model_path, f"crossval_results_folds_0_1_2_3_4")
-    pkl_file = os.path.join(model_path, "postprocessing.pkl")
-    plans_json = os.path.join(model_path, "plans.json")
+    pkl_file = os.path.join(cross_val_path, "postprocessing.pkl")
+    plans_json = os.path.join(cross_val_path, "plans.json")
     slurm_content = f"""#!/bin/bash
 
 #SBATCH -J nnunet_predict
@@ -21,8 +21,6 @@ def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer,
 
 source ~/.bashrc
 conda activate nnunet
-
-nnUNetv2_find_best_configuration {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4
 
 nnUNetv2_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4 -p nnUNetPlans
 
@@ -45,8 +43,6 @@ if __name__ == "__main__":
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
     model_path = os.path.join(cfg.NNUNET_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
-    print(model_path)
-    exit()
     slurm_filename = "nnunet_predict.slurm"
 
     write_slurm_file(input_folder, output_folder, slurm_filename, id_dataset, trainer, model_path)
