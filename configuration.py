@@ -21,6 +21,7 @@ SOFTS_PATH = os.path.join(BASE_NIOLON_PATH, "softs")
 RECONS_FOLDER = os.path.join(BASE_NIOLON_PATH, "recons_folder")
 FETAL_RESUS_ATLAS = os.path.join(BASE_NIOLON_PATH, "atlas_fetal_rhesus")
 ATLAS_GHOLIPOUR_PATH_NIOLON = os.path.join(BASE_NIOLON_PATH, "STA_atlas")
+NNUNET_PYTHON_PATH = "~/.conda/envs/nnunet/lib/python3.9/site-packages/nnunetv2/training/nnUNetTrainer/"
 ## BOUNTI PATH
 BOUNTI_NIOLON_PATH = os.path.join(BASE_NIOLON_PATH, "bounti", "svrtk_BOUNTI")
 SEG_INPUT_PATH_NIOLON = os.path.join(BOUNTI_NIOLON_PATH, "input_SRR_niftymic", "haste")
@@ -41,7 +42,7 @@ MESO_OUTPUT_PATH = os.path.join(BASE_PATH, "dataset/babofet/derivatives")
 DATA_PATH = os.path.join(BASE_PATH, "recons_folder")
 ATLAS_GHOLIPOUR_PATH = os.path.join(BASE_PATH, "STA_atlas_hemi_split")
 
-NNUNET_PYTHON_PATH = "~/miniconda3/envs/nnunet/lib/python3.9/site-packages/nnunetv2/training/nnUNetTrainer/"
+
 LONGISEG_PYTHON_PATH = os.path.join(CODE_PATH, "LongiSeg")
 
 # nnUNet path
