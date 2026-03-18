@@ -12,5 +12,8 @@
     "Fabienne": ["ses03"],
     "Filoutte": ["ses04"],
     "Formule": ["ses01"]
+  },
+  "inference_subject_sessions": {
+    "Aziza": ["ses03"]
   }
 }
