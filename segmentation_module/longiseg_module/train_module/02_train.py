@@ -11,7 +11,7 @@ def write_slurm_file(dataset_id, trainer, filename):
 #SBATCH --gres=gpu:1
 #SBATCH --time=120:00:00
 #SBATCH -c 12
-#SBATCH --array=0-4   # Lance 5 jobs : fold 0 à 4
+#SBATCH --array=0-2   # Lance 3 jobs : fold 0 à 2
 #SBATCH -o training_longiseg_%j.out
 #SBATCH -e training_longiseg_%j.err
 
