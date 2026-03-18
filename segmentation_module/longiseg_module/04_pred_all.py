@@ -60,7 +60,7 @@ do
                                   -np 8 \\
                                   -plans_json "$PLANS_JSON"
 
-    mv "${{TMP_OUT}}/{subject}_${{t}}.nii.gz" "${{OUTPUT_DIR}}/{subject}_${{t}}.nii.gz"
+    mv "${{TMP_OUT}}/*" "${{OUTPUT_DIR}}/"
 
     rm -rf "$TMP_IN" "$TMP_OUT"
 done
