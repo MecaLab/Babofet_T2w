@@ -30,6 +30,10 @@ SEG_OUTPUT_PATH_NIOLON = os.path.join(BOUNTI_NIOLON_PATH, "output_BOUNTI_seg", "
 NNUNET_RAW_PATH = os.path.join(BASE_NIOLON_PATH, "nnUNet_raw")
 NNUNET_RESULTS_PATH = os.path.join(BASE_NIOLON_PATH, "nnUNet_trained_models")
 NNUNET_PREPROCESSED_PATH = os.path.join(BASE_NIOLON_PATH, "nnUNet_preprocessed")
+## LONGISEG PATH
+LONGISEG_RAW_PATH = os.path.join(BASE_NIOLON_PATH, "LongiSeg_raw")
+LONGISEG_RESULTS_PATH = os.path.join(BASE_NIOLON_PATH, "LongiSeg_results")
+LONGISEG_PREPROCESSED_PATH = os.path.join(BASE_NIOLON_PATH, "LongiSeg_preprocessed")
 
 
 
@@ -51,9 +55,9 @@ NNUNET_RESULTS_PATH_MESO = os.path.join(BASE_PATH, "nnUNet_trained_models")
 NNUNET_PREPROCESSED_PATH_MESO = os.path.join(BASE_PATH, "nnUNet_preprocessed")
 
 # LongiSeg path
-LONGISEG_RAW_PATH = os.path.join(BASE_PATH, "LongiSeg_raw")
-LONGISEG_RESULTS_PATH = os.path.join(BASE_PATH, "LongiSeg_results")
-LONGISEG_PREPROCESSED_PATH = os.path.join(BASE_PATH, "LongiSeg_preprocessed")
+LONGISEG_RAW_PATH_MESO = os.path.join(BASE_PATH, "LongiSeg_raw")
+LONGISEG_RESULTS_PATH_MESO = os.path.join(BASE_PATH, "LongiSeg_results")
+LONGISEG_PREPROCESSED_PATH_MESO = os.path.join(BASE_PATH, "LongiSeg_preprocessed")
 
 # Segmentation path bounti
 BOUNTI_PATH = os.path.join(BASE_PATH, "bounti", "svrtk_BOUNTI")
