@@ -44,17 +44,16 @@ LongiSeg_apply_postprocessing -i {output_folder} -o {output_folder} -pp_pkl_file
 if __name__ == "__main__":
     dataset_id = int(sys.argv[1])
     name = sys.argv[2]
-    trainer = sys.argv[3]  # "nnUNetTrainerBias_Xepochs"
+    trainer = sys.argv[3]  # LongiSegTrainerDiffWeighting  => 1000 epochs default
     partition = sys.argv[4] if len(sys.argv) > 4 else "volta"
 
     dataset_name = f"Dataset{dataset_id:03d}_{name}"
 
-    model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
+    model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH_MESO, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
-    input_folder = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name, "imagesTs")
-    patients_json = os.path.join(cfg.LONGISEG_RAW_PATH, dataset_name, "patientsTr.json")
-    # input_folder = os.path.join(cfg.CODE_PATH, "tmp_seg_input")
-    output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
+    input_folder = os.path.join(cfg.LONGISEG_RAW_PATH_MESO, dataset_name, "imagesTs")
+    patients_json = os.path.join(cfg.LONGISEG_RAW_PATH_MESO, dataset_name, "patientsTr.json")
+    output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/longiseg_res/pred_dataset_{dataset_id}")
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
