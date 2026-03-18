@@ -61,8 +61,6 @@ do
                                   -plans_json "$PLANS_JSON"
 
     mv "${{TMP_OUT}}/*" "${{OUTPUT_DIR}}/"
-
-    rm -rf "$TMP_IN" "$TMP_OUT"
 done
 
 echo "Toutes les segmentations ont été générées dans $OUTPUT_DIR"
