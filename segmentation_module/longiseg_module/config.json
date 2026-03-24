@@ -1,19 +1,14 @@
 {
   "train_subject_sessions": {
-    "Borgne": ["ses01", "ses03","ses05"],
-    "Bibi": ["ses01", "ses02", "ses04"],
-    "Fabienne": ["ses01", "ses02", "ses04"],
-    "Filoutte": ["ses01", "ses02", "ses03"],
-    "Formule": ["ses02", "ses03", "ses04"]
+    "Borgne": ["ses07", "ses08"],
+    "Bibi": ["ses05", "ses06", "ses07"],
+    "Fabienne": ["ses05", "ses07"],
+    "Filoutte": ["ses07", "ses08", "ses09"],
+    "Formule": ["ses05", "ses06"]
   },
   "test_subject_sessions": {
-    "Borgne": ["ses04"],
-    "Bibi": ["ses03"],
-    "Fabienne": ["ses03"],
-    "Filoutte": ["ses04"],
-    "Formule": ["ses01"]
-  },
-  "inference_subject_sessions": {
-    "Aziza": ["ses03"]
+    "Borgne": ["ses05", "ses06"],
+    "Fabienne": ["ses08"],
+    "Filoutte": ["ses05", "ses06"]
   }
 }
