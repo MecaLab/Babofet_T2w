@@ -6,7 +6,7 @@ import configuration as cfg
 
 
 def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path, patients_json_path, partition="volta"):
-    cross_val_path = os.path.join(model_path, f"crossval_results_folds_0_1_2_3_4")
+    cross_val_path = os.path.join(model_path, f"crossval_results_folds_0_1_2")
     pkl_file = os.path.join(cross_val_path, "postprocessing.pkl")
     plans_json = os.path.join(cross_val_path, "plans.json")
     slurm_content = f"""#!/bin/bash
