@@ -9,9 +9,8 @@ def write_slurm_file(dataset_id, trainer, filename):
 #SBATCH --account='b391'
 #SBATCH --partition=volta
 #SBATCH --gres=gpu:1
-#SBATCH --time=120:00:00
+#SBATCH --time=48:00:00
 #SBATCH -c 12
-#SBATCH --array=0-2   # Lance 3 jobs : fold 0 à 2
 #SBATCH -o training_longiseg_%j.out
 #SBATCH -e training_longiseg_%j.err
 
@@ -25,7 +24,7 @@ conda activate longiseg_new
 
 export PYTHONPATH=$PYTHONPATH:/scratch/lbaptiste/Babofet_T2w/LongiSeg
 
-LongiSeg_train {dataset_id} 3d_fullres $SLURM_ARRAY_TASK_ID -tr {trainer} --npz 
+LongiSeg_train {dataset_id} 3d_fullres all -tr {trainer} --npz 
 """
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
