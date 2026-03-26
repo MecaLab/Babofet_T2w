@@ -1,7 +1,7 @@
 {
   "train_subject_sessions": {
     "Borgne": ["ses07", "ses08"],
-    "Bibi": ["ses05", "ses06", "ses07"],
+    "Bibi": ["ses05", "ses06", "ses07", "ses09"],
     "Fabienne": ["ses05", "ses07"],
     "Filoutte": ["ses07", "ses08", "ses09"],
     "Formule": ["ses05", "ses06"]
