@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH_MESO, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
-    input_folder = os.path.join(cfg.LONGISEG_RAW_PATH_MESO, dataset_name, "imagesTs")
+    input_folder = os.path.join(cfg.LONGISEG_RAW_PATH_MESO, dataset_name, "imagesTr")
 
     test_pred_json = os.path.join(cfg.LONGISEG_RAW_PATH_MESO, dataset_name, "patientsTs.json")
     generate_patient_sessions_json(directory_path=input_folder, output_filename=test_pred_json)
