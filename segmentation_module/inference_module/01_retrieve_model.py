@@ -61,6 +61,8 @@ def unzip_file(zip_path, extract_to):
 if __name__ == "__main__":
     zip_server_path = sys.argv[1]
     dst_path = sys.argv[2]
+    print(dst_path)
+    print(os.path.basename(dst_path))
     # retrieve_zip(zip_server_path, dst_path)
     exit()
     output_longi = os.path.join(cfg.LONGISEG_RESULTS_PATH, )
