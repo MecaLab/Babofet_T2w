@@ -13,17 +13,17 @@ def write_slurm_file(subject, filename, sessions, output_path, trainer):
     sessions_str = " ".join(sorted_sessions)
 
     slurm_content = f"""#!/bin/bash
-
-#SBATCH --account='b391'
-#SBATCH --partition=volta
-#SBATCH --gres=gpu:1
-#SBATCH --time=2:00:00
-#SBATCH -c 12
-#SBATCH -o logs/pred_{trainer}_{subject}_%j.out
-#SBATCH -e logs/pred_{trainer}_{subject}_%j.err
+#SBATCH -J niftymic_pipeline
+#SBATCH -p batch
+#SBATCH -w niolon13
+#SBATCH --mem-per-cpu=48G
+#SBATCH --time=48:00:00
+#SBATCH -N 1
+#SBATCH -o logs/pred_longiseg_%j.out
+#SBATCH -e logs/pred_longiseg_%j.err
 
 source ~/.bashrc
-conda activate longiseg_new
+conda activate longiseg
 
 # --- CONFIGURATION ---
 INPUT_DIR="/scratch/lbaptiste/Babofet_T2w/results_seg/{trainer.lower()}/{subject}"
