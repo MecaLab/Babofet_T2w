@@ -267,6 +267,10 @@ if __name__ == "__main__":
         for model in models:
             dataset_id = int(model)
             input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/res_seg/pred_dataset_{dataset_id}")
+            if not os.path.exists(input_folder):
+                print(f"Error: input folder of predictions {input_folder} does not exist")
+                print("Make sure to run the previous script")
+                exit(1)
 
             dice_scores_list = []
             iou_scores_list = []
