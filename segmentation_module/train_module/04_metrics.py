@@ -273,6 +273,8 @@ if __name__ == "__main__":
 
     voxel_spacing = (0.5, 0.5, 0.5)
 
+    gt_dataset = os.path.join(cfg.BASE_PATH, "gt_dataset_2", "test_dataset")
+
     if not os.path.exists(results_seg_csv_path):
         for model in models:
             dataset_id = int(model)
@@ -294,17 +296,14 @@ if __name__ == "__main__":
                 4: "Ventricle"
             }
 
-            model_raw_path = get_folder_name(cfg.LONGISEG_RAW_PATH_MESO, dataset_number=model)
-            gt_path = os.path.join(model_raw_path, "imagesTs")
-
-            for file in os.listdir(input_folder):
+            for file in os.listdir(gt_dataset):
                 if file.endswith(".nii.gz"):
                     file_splitted = file.split("_")
                     subject = file_splitted[0]
-                    session = file_splitted[1].split(".")[0]  # sesXX
+                    session = file_splitted[1]  # sesXX.nii.gz
                     print(f"Processing {file}")
 
-                    gt_file_path = os.path.join(gt_path, f"{subject}_{session}_0000.nii.gz")
+                    gt_file_path = os.path.join(gt_dataset, file)
                     gt_img = nib.load(gt_file_path).get_fdata()
 
                     pred_path = os.path.join(input_folder, file)
