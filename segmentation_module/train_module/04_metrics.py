@@ -301,7 +301,7 @@ if __name__ == "__main__":
                 if file.endswith(".nii.gz"):
                     file_splitted = file.split("_")
                     subject = file_splitted[0]
-                    session = file_splitted[1]  # sesXX.nii.gz
+                    session = file_splitted[1].split(".")[0]  # sesXX
                     print(session)
                     exit()
                     print(f"Processing {file}")
