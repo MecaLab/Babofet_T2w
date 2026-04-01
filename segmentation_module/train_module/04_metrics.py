@@ -329,11 +329,12 @@ if __name__ == "__main__":
 
             plot_metrics_by_model(csv_path=results_seg_csv_path, dataset_id=model)
 
+    """
     df_wilcoxon = csv_to_wilcoxon(csv_path=results_seg_csv_path)
     print("\n--- Résultats des tests de Wilcoxon ---")
     print(df_wilcoxon)
 
-    """
+    
     10:
         CSF: Dice=0.9747±0.0036, IoU=0.9507±0.0069, Hausdorff=5.9535±0.8694
         WM: Dice=0.9840±0.0022, IoU=0.9686±0.0043, Hausdorff=7.8445±5.0856
