@@ -33,7 +33,7 @@ def write_patients_tr(path, patients):
 
 if __name__ == "__main__":
 
-    config_json = "segmentation_module/longiseg_module/config.json"
+    config_json = "segmentation_module/train_module/config.json"
     with open(config_json, "r") as file:
         data = json.load(file)
 
