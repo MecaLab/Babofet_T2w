@@ -7,6 +7,7 @@ from scipy.ndimage import distance_transform_edt
 from scipy.stats import wilcoxon
 import matplotlib.pyplot as plt
 import seaborn as sns
+import glob
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -250,9 +251,18 @@ def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
     plt.close()
 
 
-if __name__ == "__main__":
-    gt_dataset = os.path.join(cfg.DATA_PATH, "gt_dataset_2")
+def get_folder_name(directory_path, dataset_number):
+    # Create the search pattern: DatasetXXX*
+    pattern = os.path.join(directory_path, f"Dataset{dataset_number:03d}_*")
 
+    matching_folders = glob.glob(pattern)
+
+    if not matching_folders:
+        return None
+    return matching_folders[0]
+
+
+if __name__ == "__main__":
     if not os.path.exists(cfg.TABLE_DATA_PATH):
         os.makedirs(cfg.TABLE_DATA_PATH)
     if not os.path.exists("snapshots/res_seg"):
@@ -284,6 +294,10 @@ if __name__ == "__main__":
                 4: "Ventricle"
             }
 
+            model_raw_path = get_folder_name(cfg.LONGISEG_RAW_PATH_MESO, dataset_number=model)
+            print(model_raw_path)
+            exit()
+
             for file in os.listdir(input_folder):
                 if file.endswith(".nii.gz"):
                     file_splitted = file.split("_")
@@ -291,12 +305,14 @@ if __name__ == "__main__":
                     session = file_splitted[1]  # sesXX.nii.gz
                     print(f"Processing {file}")
 
-                    try:
+
+
+                    """try:
                         gt_path = os.path.join(gt_dataset, "test_dataset", f"{subject}_{session}")
                         gt_img = nib.load(gt_path).get_fdata()
                     except FileNotFoundError:
                         gt_path = os.path.join(gt_dataset, "test_dataset", f"{subject}_{session}.nii.gz")
-                        gt_img = nib.load(gt_path).get_fdata()
+                        gt_img = nib.load(gt_path).get_fdata()"""
 
                     pred_path = os.path.join(input_folder, file)
                     pred_img = nib.load(pred_path).get_fdata()
