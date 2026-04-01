@@ -66,5 +66,5 @@ if __name__ == "__main__":
 
     folder_name = os.path.basename(dst_path).split(".")[0]  # DatasetXXX_NAME.zip => DatasetXXX_NAME
 
-    output_longi = os.path.join(cfg.LONGISEG_RESULTS_PATH, folder_name)
-    unzip_file(dst_path, cfg.LONGISEG_RESULTS_PATH)
+    output_longi_folder = os.path.join(cfg.LONGISEG_RESULTS_PATH, folder_name)
+    unzip_file(dst_path, output_longi_folder)
