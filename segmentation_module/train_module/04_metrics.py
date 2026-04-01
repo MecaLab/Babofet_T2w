@@ -100,7 +100,7 @@ def save_results(dataset_id, moyennes_dice, stds_dice, moyennes_iou, stds_iou, m
         df.to_csv(csv_path, index=False)
 
 
-def plot_and_save_boxplots(csv_path, dataset_id, save_path="boxplots_metrics.png"):
+def plot_and_save_boxplots(csv_path, save_file="boxplots_metrics.png"):
     data = pd.read_csv(csv_path)
     # Convertir les listes de scores
     data['Dice_Scores'] = data['Dice_Scores'].apply(eval)
@@ -134,12 +134,12 @@ def plot_and_save_boxplots(csv_path, dataset_id, save_path="boxplots_metrics.png
 
     # Sauvegarder le graphique
     plt.tight_layout()
-    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/res_seg/pred_dataset_{dataset_id}/{save_path}")
+    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/res_seg/{save_file}")
     plt.savefig(output_path, dpi=200, bbox_inches='tight')
     plt.close()
 
 
-def plot_metrics_by_model(dataset_id, csv_path="resultats_segmentation.csv"):
+def plot_metrics_by_model(csv_path, save_file="metrics_by_model.png"):
     # Charger les données
     df = pd.read_csv(csv_path)
 
@@ -173,7 +173,7 @@ def plot_metrics_by_model(dataset_id, csv_path="resultats_segmentation.csv"):
         ax.legend()
 
     plt.tight_layout()
-    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/res_seg/pred_dataset_{dataset_id}/metrics_by_model.png")
+    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/res_seg/{save_file}")
     plt.savefig(output_path, dpi=200, bbox_inches='tight')
     plt.close()
 
@@ -181,7 +181,7 @@ def plot_metrics_by_model(dataset_id, csv_path="resultats_segmentation.csv"):
 if __name__ == "__main__":
     if not os.path.exists(cfg.TABLE_DATA_PATH):
         os.makedirs(cfg.TABLE_DATA_PATH)
-    if not os.path.exists("snapshots/res_seg"):
+    if not os.path.exists(os.path.join(cfg.CODE_PATH, "snapshots/res_seg")):
         os.makedirs("snapshots/res_seg")
 
     models = [int(x) for x in sys.argv[1].split(",")]
@@ -253,6 +253,6 @@ if __name__ == "__main__":
             save_results(dataset_id, mean_dice, stds_dice, mean_iou, stds_iou, mean_hausdorff,
                                       stds_hausdorff, dice_scores_list, iou_scores_list, hausdorff_scores_list, labels_map)
 
-            plot_and_save_boxplots(csv_path=results_seg_csv_path, dataset_id=model)
+            plot_and_save_boxplots(csv_path=results_seg_csv_path)
 
-            plot_metrics_by_model(csv_path=results_seg_csv_path, dataset_id=model)
+            plot_metrics_by_model(csv_path=results_seg_csv_path)
