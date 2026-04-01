@@ -304,8 +304,8 @@ if __name__ == "__main__":
                     session = file_splitted[1].split(".")[0]  # sesXX
                     print(f"Processing {file}")
 
-                    gt_path = os.path.join(gt_path, f"{subject}_{session}_0000.nii.gz")
-                    gt_img = nib.load(gt_path).get_fdata()
+                    gt_file_path = os.path.join(gt_path, f"{subject}_{session}_0000.nii.gz")
+                    gt_img = nib.load(gt_file_path).get_fdata()
 
                     pred_path = os.path.join(input_folder, file)
                     pred_img = nib.load(pred_path).get_fdata()
