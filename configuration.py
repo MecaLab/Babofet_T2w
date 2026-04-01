@@ -27,14 +27,9 @@ BOUNTI_NIOLON_PATH = os.path.join(BASE_NIOLON_PATH, "bounti", "svrtk_BOUNTI")
 SEG_INPUT_PATH_NIOLON = os.path.join(BOUNTI_NIOLON_PATH, "input_SRR_niftymic", "haste")
 SEG_OUTPUT_PATH_NIOLON = os.path.join(BOUNTI_NIOLON_PATH, "output_BOUNTI_seg", "haste")
 
-## NNUNET PATH
-NNUNET_RAW_PATH = os.path.join(BASE_NIOLON_PATH, "nnUNet_raw")
-NNUNET_RESULTS_PATH = os.path.join(BASE_NIOLON_PATH, "nnUNet_trained_models")
-NNUNET_PREPROCESSED_PATH = os.path.join(BASE_NIOLON_PATH, "nnUNet_preprocessed")
-
 ## LONGISEG PATH
 LONGISEG_RAW_PATH = os.path.join(BASE_NIOLON_PATH, "LongiSeg_raw")
-LONGISEG_RESULTS_PATH = os.path.join(BASE_NIOLON_PATH, "LongiSeg_results")
+LONGISEG_RESULTS_PATH = os.path.join(BASE_NIOLON_PATH, "LongiSeg_trained_models")
 LONGISEG_PREPROCESSED_PATH = os.path.join(BASE_NIOLON_PATH, "LongiSeg_preprocessed")
 
 ########################################################################################################################
