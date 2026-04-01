@@ -181,7 +181,7 @@ def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png"):
 
     # Définir l'ordre des labels
     label_order = ['CSF', 'WM', 'GM', 'Ventricle']
-    custom_palette = {10: "blue", 11: "orange", 12: "green"}
+    custom_palette = {10: "blue", 11: "orange", 12: "green", 13: "red"}
 
     fig, axes = plt.subplots(1, 3, figsize=(18, 6))
 
@@ -249,17 +249,6 @@ def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
     output_path = os.path.join(cfg.CODE_PATH, "snapshots/seg_res/metrics_by_model.png")
     plt.savefig(output_path, dpi=200, bbox_inches='tight')
     plt.close()
-
-
-def get_folder_name(directory_path, dataset_number):
-    # Create the search pattern: DatasetXXX*
-    pattern = os.path.join(directory_path, f"Dataset{dataset_number:03d}_*")
-
-    matching_folders = glob.glob(pattern)
-
-    if not matching_folders:
-        return None
-    return matching_folders[0]
 
 
 if __name__ == "__main__":
