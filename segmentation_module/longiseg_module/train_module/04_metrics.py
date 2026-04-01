@@ -97,7 +97,7 @@ def save_results(dataset_id, moyennes_dice, stds_dice, moyennes_iou, stds_iou, m
     df = pd.DataFrame(results)
 
     # Chemin du fichier CSV
-    csv_path = os.path.join(cfg.CODE_PATH, "table_data", "resultats_segmentation.csv")
+    csv_path = os.path.join(cfg.TABLE_DATA_PATH, "resultats_segmentation.csv")
 
     # Écrire dans le fichier CSV
     if os.path.exists(csv_path):
@@ -166,7 +166,7 @@ def csv_to_wilcoxon(csv_path="resultats_segmentation.csv"):
 
     # Sauvegarder les résultats des tests de Wilcoxon
     df_wilcoxon = pd.DataFrame(wilcoxon_results)
-    csv_path = os.path.join(cfg.CODE_PATH, "table_data", "resultats_wilcoxon.csv")
+    csv_path = os.path.join(cfg.TABLE_DATA_PATH, "resultats_wilcoxon.csv")
     df_wilcoxon.to_csv(csv_path, index=False)
     return df_wilcoxon
 
@@ -206,10 +206,9 @@ def plot_and_save_boxplots(csv_path, save_path="boxplots_metrics.png"):
 
     # Sauvegarder le graphique
     plt.tight_layout()
-    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/{save_path}")
+    output_path = os.path.join(cfg.CODE_PATH, f"snapshots/seg_res/{save_path}")
     plt.savefig(output_path, dpi=200, bbox_inches='tight')
     plt.close()
-
 
 
 def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
@@ -233,15 +232,12 @@ def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
             models = sorted(label_df['Model_ID'].unique())
             metric_values = label_df[metric].values
 
-            # Tracer les points
             ax.scatter([str(m) for m in models], metric_values, color=label_colors[label], marker='o', label=label)
 
-            # Annoter les points
             for m, val in zip(models, metric_values):
                 ax.text(str(m), val + 0.01 if metric != 'Hausdorff_Mean' else val + 0.5, f"{val:.3f}",
                         ha='center', va='bottom', fontsize=8, color=label_colors[label])
 
-        # Configurer les axes
         ax.set_xlabel('Modèle')
         ax.set_ylabel('Score')
         ax.set_xticks([str(m) for m in sorted(df['Model_ID'].unique())])
@@ -249,21 +245,28 @@ def plot_metrics_by_model(csv_path="resultats_segmentation.csv"):
         ax.legend()
 
     plt.tight_layout()
-    output_path = os.path.join(cfg.CODE_PATH, "snapshots/nnunet_res/metrics_by_model.png")
+    output_path = os.path.join(cfg.CODE_PATH, "snapshots/seg_res/metrics_by_model.png")
     plt.savefig(output_path, dpi=200, bbox_inches='tight')
     plt.close()
 
 
 if __name__ == "__main__":
+    gt_dataset = os.path.join(cfg.DATA_PATH, "gt_dataset_2")
+
+    if not os.path.exists(cfg.TABLE_DATA_PATH):
+        os.makedirs(cfg.TABLE_DATA_PATH)
+    if not os.path.exists("snapshots/res_seg"):
+        os.makedirs("snapshots/res_seg")
+
     models = [int(x) for x in sys.argv[1].split(",")]
-    results_seg_csv_path = os.path.join(cfg.CODE_PATH, "table_data", "resultats_segmentation.csv")
+    results_seg_csv_path = os.path.join(cfg.TABLE_DATA_PATH, "resultats_segmentation.csv")
 
     voxel_spacing = (0.5, 0.5, 0.5)
 
     if not os.path.exists(results_seg_csv_path):
         for model in models:
             dataset_id = int(model)
-            input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/nnunet_res/pred_dataset_{dataset_id}")
+            input_folder = os.path.join(cfg.CODE_PATH, f"snapshots/res_seg/pred_dataset_{dataset_id}")
 
             dice_scores_list = []
             iou_scores_list = []
@@ -285,10 +288,10 @@ if __name__ == "__main__":
                     print(f"Processing {file}")
 
                     try:
-                        gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}")
+                        gt_path = os.path.join(gt_dataset, "test_dataset", f"{subject}_{session}")
                         gt_img = nib.load(gt_path).get_fdata()
                     except FileNotFoundError:
-                        gt_path = os.path.join(cfg.BASE_PATH, "gt_dataset/test_dataset", f"{subject}_{session}.nii.gz")
+                        gt_path = os.path.join(gt_dataset, "test_dataset", f"{subject}_{session}.nii.gz")
                         gt_img = nib.load(gt_path).get_fdata()
 
                     pred_path = os.path.join(input_folder, file)
@@ -322,9 +325,9 @@ if __name__ == "__main__":
             save_results(dataset_id, mean_dice, stds_dice, mean_iou, stds_iou, mean_hausdorff,
                                       stds_hausdorff, dice_scores_list, iou_scores_list, hausdorff_scores_list, labels_map)
 
-    """df_wilcoxon = csv_to_wilcoxon(csv_path=results_seg_csv_path)
+    df_wilcoxon = csv_to_wilcoxon(csv_path=results_seg_csv_path)
     print("\n--- Résultats des tests de Wilcoxon ---")
-    print(df_wilcoxon)"""
+    print(df_wilcoxon)
 
     plot_and_save_boxplots(csv_path=results_seg_csv_path)
 

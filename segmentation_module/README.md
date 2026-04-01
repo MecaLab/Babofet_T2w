@@ -22,7 +22,7 @@ Script to calculate the Dice score, a common metric for evaluating segmentation 
 
 Usage :
 ```bash
-python segmentation_module/05_dice.py <session> <model_type>
+python segmentation_module/04_metrics.py <session> <model_type>
 ```
 
 ### 📄 05_fusion.py

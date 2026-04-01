@@ -185,12 +185,13 @@ if __name__ == "__main__":
     run_stats(df_stats)
 
     """
-    Avec AZIZA et FORME
-    
     Subject Session                        Pair     Dice
     Borgne   ses06    LongiSeg_vs_LongiSegDiff 0.999184
     Borgne   ses06     LongiSeg_vs_nnUNetLongi 0.998816
     Borgne   ses06 LongiSegDiff_vs_nnUNetLongi 0.998570
+    
+    
+    
     Borgne   ses07    LongiSeg_vs_LongiSegDiff 0.998887
     Borgne   ses07     LongiSeg_vs_nnUNetLongi 0.998783
     Borgne   ses07 LongiSegDiff_vs_nnUNetLongi 0.998371
@@ -248,6 +249,9 @@ if __name__ == "__main__":
     Formule   ses09    LongiSeg_vs_LongiSegDiff 0.989561
     Formule   ses09     LongiSeg_vs_nnUNetLongi 0.979439
     Formule   ses09 LongiSegDiff_vs_nnUNetLongi 0.973946
+    
+    
+    Avec AZIZA et FORME
     
     Comparaison (A vs B)        Moyenne  Médiane  Ecart_Type    Min     Max
     LongiSeg_vs_LongiSegDiff    0.9946   0.9986   0.0079        0.9716  0.9994
