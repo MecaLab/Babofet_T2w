@@ -84,8 +84,7 @@ if __name__ == "__main__":
     test_pred_json = os.path.join(cfg.LONGISEG_RAW_PATH_MESO, dataset_name, "patientsTs.json")
     generate_patient_sessions_json(directory_path=input_folder, output_filename=test_pred_json)
 
-    output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/longiseg_res/pred_dataset_{dataset_id}")
-
+    output_folder = os.path.join(cfg.CODE_PATH, f"snapshots/res_seg/pred_dataset_{dataset_id}")
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
