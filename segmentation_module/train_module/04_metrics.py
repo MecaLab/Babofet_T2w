@@ -302,6 +302,8 @@ if __name__ == "__main__":
                     file_splitted = file.split("_")
                     subject = file_splitted[0]
                     session = file_splitted[1]  # sesXX.nii.gz
+                    print(session)
+                    exit()
                     print(f"Processing {file}")
 
                     gt_path = os.path.join(gt_path, f"{subject}_{session}")
