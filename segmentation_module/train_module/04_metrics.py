@@ -295,8 +295,7 @@ if __name__ == "__main__":
             }
 
             model_raw_path = get_folder_name(cfg.LONGISEG_RAW_PATH_MESO, dataset_number=model)
-            print(model_raw_path)
-            exit()
+            gt_path = os.path.join(model_raw_path, "imagesTs")
 
             for file in os.listdir(input_folder):
                 if file.endswith(".nii.gz"):
@@ -305,14 +304,8 @@ if __name__ == "__main__":
                     session = file_splitted[1]  # sesXX.nii.gz
                     print(f"Processing {file}")
 
-
-
-                    """try:
-                        gt_path = os.path.join(gt_dataset, "test_dataset", f"{subject}_{session}")
-                        gt_img = nib.load(gt_path).get_fdata()
-                    except FileNotFoundError:
-                        gt_path = os.path.join(gt_dataset, "test_dataset", f"{subject}_{session}.nii.gz")
-                        gt_img = nib.load(gt_path).get_fdata()"""
+                    gt_path = os.path.join(gt_path, f"{subject}_{session}_0000.nii.gz")
+                    gt_img = nib.load(gt_path).get_fdata()
 
                     pred_path = os.path.join(input_folder, file)
                     pred_img = nib.load(pred_path).get_fdata()
