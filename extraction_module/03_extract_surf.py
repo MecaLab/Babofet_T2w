@@ -49,7 +49,7 @@ if __name__ == "__main__":
                     output_full_path = os.path.join(subject_dst_path, output_file)
 
                     subprocess.run([
-                        "python3", "surface_processing/generate_mesh.py",
+                        "python", "surface_processing/generate_mesh.py",
                         "-s", input_full_path,
                         "-l", str(label_val),
                         "-m", output_full_path,
