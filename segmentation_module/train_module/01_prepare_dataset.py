@@ -64,12 +64,16 @@ if __name__ == "__main__":
 
     print("Training files...")
     for subject, sessions in train_subject_sessions.items():
+        pre_subject = subject
         print(f"\tProcessing subject: {subject}")
         input_path_3d_segs = os.path.join(cfg.BASE_PATH, seg_dataset, "train_dataset")
 
+        if "_" in pre_subject:  # use to split the subject based on the session age to avoid the model to understand ses07 is after ses03 (for instance)
+            subject = subject.split("_")[0]
+
         input_path_3d_stacks = os.path.join(cfg.DATA_PATH, subject)
 
-        dico_subj[subject] = []
+        dico_subj[pre_subject] = []
 
         for session in sessions:
             print(f"\t\tProcessing session: {session}")

@@ -1,14 +1,19 @@
 {
   "train_subject_sessions": {
-    "Borgne": ["ses07", "ses08"],
-    "Bibi": ["ses05", "ses06", "ses07", "ses09"],
-    "Fabienne": ["ses05", "ses07"],
-    "Filoutte": ["ses07", "ses08", "ses09"],
-    "Formule": ["ses05", "ses06"]
+    "Bibi_1": ["ses01", "ses02", "ses03"],
+    "Bibi_2": ["ses06", "ses07", "ses09"],
+    "Borgne_1": ["ses04", "ses05", "ses06"],
+    "Borgne_2": ["ses07", "ses08", "ses09", "ses10"],
+    "Fabienne_1": ["ses04", "ses05", "ses07"],
+    "Fabienne_2": ["ses08", "ses09"],
+    "Filoutte_1": ["ses01", "ses02", "ses03", "ses04"],
+    "Filoutte_2": ["ses05", "ses06"],
+    "Formule": ["ses01", "ses02", "ses03", "ses05"]
   },
   "test_subject_sessions": {
-    "Borgne": ["ses05", "ses06"],
-    "Fabienne": ["ses08"],
-    "Filoutte": ["ses05", "ses06"]
+    "Bibi": ["ses04", "ses05"],
+    "Borgne": ["ses01", "ses03"],
+    "Fabienne": ["ses01", "ses02", "ses03"],
+    "Filoutte": ["ses07", "ses08", "ses09"]
   }
 }
