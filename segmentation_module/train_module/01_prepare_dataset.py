@@ -99,7 +99,7 @@ if __name__ == "__main__":
         for session in sessions:
             print(f"\t\tProcessing session: {session}")
 
-            # dico_subj[subject].append(f"{subject}_{session}")
+            dico_subj[pre_subject].append(f"{subject}_{session}")
 
             input_path_3d_stack = os.path.join(input_path_3d_stacks, session, "recons_rhesus/recon_template_space/srr_template.nii.gz")
 
