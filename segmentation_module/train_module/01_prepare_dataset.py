@@ -40,7 +40,7 @@ if __name__ == "__main__":
     train_subject_sessions = data["train_subject_sessions"]
     test_subject_sessions = data["test_subject_sessions"]
 
-    seg_dataset = os.path.join(cfg.BASE_PATH, "gt_dataset_2")
+    seg_dataset = os.path.join(cfg.BASE_PATH, "gt_dataset")
 
     id_dataset = int(sys.argv[1])  # should be integer, eg, 1, 2, 3, etc.
     name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
