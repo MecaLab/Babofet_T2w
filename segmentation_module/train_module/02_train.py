@@ -25,7 +25,7 @@ conda activate longiseg_new
 
 export PYTHONPATH=$PYTHONPATH:/scratch/lbaptiste/Babofet_T2w/LongiSeg
 
-LongiSeg_train {dataset_id} 3d_fullres $SLURM_ARRAY_TASK_ID {trainer} --npz 
+LongiSeg_train {dataset_id} 3d_fullres $SLURM_ARRAY_TASK_ID -tr {trainer} --npz 
 
 LongiSeg_find_best_configuration {dataset_id} -c 3d_fullres -tr {trainer}
 """
