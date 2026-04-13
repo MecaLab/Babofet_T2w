@@ -1,114 +1,95 @@
-import subprocess
 import os
+import subprocess
 import sys
+from collections import defaultdict
 import json
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-# ADAPTER CE SCRIPT POUR NIOLON
-
-def write_slurm_file(subject, filename, sessions, output_path, trainer):
-    sorted_sessions = sorted(sessions)
-    sessions_str = " ".join(sorted_sessions)
-
+def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path, patients_json_path):
+    cross_val_path = os.path.join(model_path, f"crossval_results_folds_0_1_2_3_4")
+    pkl_file = os.path.join(cross_val_path, "postprocessing.pkl")
+    plans_json = os.path.join(cross_val_path, "plans.json")
     slurm_content = f"""#!/bin/bash
-#SBATCH -J niftymic_pipeline
+
+#SBATCH -J nnunet_predict
 #SBATCH -p batch
 #SBATCH -w niolon13
 #SBATCH --mem-per-cpu=48G
-#SBATCH --time=48:00:00
-#SBATCH -N 1
-#SBATCH -o logs/pred_longiseg_%j.out
-#SBATCH -e logs/pred_longiseg_%j.err
+#SBATCH --time=2:00:00
+#SBATCH -c 1
+#SBATCH -o logs/predict_longiseg_%j.out
+#SBATCH -e logs/predict_longiseg_%j.err
 
 source ~/.bashrc
-conda activate longiseg
+conda activate longiseg_new
 
-# --- CONFIGURATION ---
-INPUT_DIR="/scratch/lbaptiste/Babofet_T2w/results_seg/{trainer.lower()}/{subject}"
-OUTPUT_DIR={output_path}
-PATIENT_JSON="${{OUTPUT_DIR}}/patientsTr.json"
+LongiSeg_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4 --save_probabilities -pat {patients_json_path}
 
-MODEL_FOLDER="/scratch/lbaptiste/data/LongiSeg_results/Dataset001_FirstTry/{trainer}__nnUNetPlans__3d_fullres"
-PKL_FILE="${{MODEL_FOLDER}}/crossval_results_folds_0_1_2_3_4/postprocessing.pkl"
-PLANS_JSON="${{MODEL_FOLDER}}/crossval_results_folds_0_1_2_3_4/plans.json"
+LongiSeg_apply_postprocessing -i {output_folder} -o {output_folder} -pp_pkl_file {pkl_file} -np 8 -plans_json {plans_json}
 
-mkdir -p "$OUTPUT_DIR"
-SESSIONS=({sessions_str})
-
-for t in "${{SESSIONS[@]}}"
-do
-    echo "--- Processing Timepoint $t ---"
-
-    TMP_IN="${{OUTPUT_DIR}}/tmp_in_$t"
-    TMP_OUT="${{OUTPUT_DIR}}/tmp_out_$t"
-    mkdir -p "$TMP_IN" "$TMP_OUT"
-
-    cp "${{INPUT_DIR}}/{subject}_${{t}}_0000.nii.gz" "${{TMP_IN}}/{subject}_${{t}}_0000.nii.gz"
-
-    LongiSeg_predict -i "$TMP_IN" \\
-                     -o "$TMP_OUT" \\
-                     -d 1 \\
-                     -c 3d_fullres \\
-                     -f 0 1 2 3 4 \\
-                     --save_probabilities \\
-                     -tr {trainer} \\
-                     -pat "$PATIENT_JSON"
-
-    LongiSeg_apply_postprocessing -i "$TMP_OUT" \\
-                                  -o "$TMP_OUT" \\
-                                  -pp_pkl_file "$PKL_FILE" \\
-                                  -np 8 \\
-                                  -plans_json "$PLANS_JSON"
-
-    mv "${{TMP_OUT}}/*" "${{OUTPUT_DIR}}/"
-done
-
-echo "Toutes les segmentations ont été générées dans $OUTPUT_DIR"
 """
-    os.makedirs(os.path.dirname(filename), exist_ok=True)
     with open(filename, "w", encoding="utf-8") as slurm_file:
         slurm_file.write(slurm_content)
-    os.chmod(filename, 0o755)
 
-def prepare_folder(subject, sessions, input_dir, output_dir):
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-    for session in sessions:
-        input_path = os.path.join(input_dir, f"{subject}_{session}_0000.nii.gz")
-        output_path = os.path.join(output_dir, f"{subject}_{session}_0000.nii.gz")
-        if not os.path.exists(input_path):
-            print(f"Warning: {input_path} does not exist. Please check the path.")
-        else:
-            os.system(f"cp {input_path} {output_path}")
+    os.chmod(filename, 0o700)
 
-    print("Input files have been copied to the output directory for prediction.")
 
-def write_patients_json(subject, sessions, filename):
-    data = {
-        subject: [f"{subject}_{s}" for s in sessions]
-    }
-    with open(filename, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+def generate_patient_sessions_json(directory_path, output_filename="patientsTs.json"):
+    # defaultdict handles the creation of lists for new keys automatically
+    patient_data = defaultdict(list)
+
+    if not os.path.exists(directory_path):
+        print(f"Error: The directory '{directory_path}' does not exist.")
+        return
+
+    files = os.listdir(directory_path)
+    files.sort()
+
+    for filename in files:
+        if filename.endswith(".nii.gz"):
+            # Format: "Borgne_ses-01_0000.nii.gz"
+            parts = filename.split('_')
+
+            if len(parts) >= 2:
+                patient_name = parts[0]
+                session_id = parts[1] # This will capture "ses-01"
+
+                session_entry = f"{patient_name}_{session_id}"
+
+                if session_entry not in patient_data[patient_name]:
+                    patient_data[patient_name].append(session_entry)
+
+    with open(output_filename, 'w', encoding='utf-8') as f:
+        json.dump(dict(patient_data), f, indent=4)
+
+    print(f"File '{output_filename}' has been created successfully.")
+
+
 
 if __name__ == "__main__":
+    dataset_id = int(sys.argv[1])
+    name = sys.argv[2]
+    trainer = sys.argv[3]  # LongiSegTrainerDiffWeighting  => 1000 epochs default
 
-    subject = sys.argv[1]
-    raw_sessions = sys.argv[2]
-    trainer = sys.argv[3]
+    dataset_name = f"Dataset{dataset_id:03d}_{name}"
 
-    sessions = [f"ses{item.strip()}" for item in raw_sessions.split(',')]
+    model_path = os.path.join(cfg.LONGISEG_RESULTS_PATH, dataset_name, f"{trainer}__nnUNetPlans__3d_fullres")
 
-    print(f"Computing predictions for subject {subject} and sessions: \n{sessions}")
-    input_dir = "inference_all"
-    output_dir = os.path.join(cfg.CODE_PATH, "results_seg", f"{trainer.lower()}", subject)
-    if not os.path.exists(input_dir):
-        os.makedirs(input_dir)
+    input_folder = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "nnunet", "inference_data")
+    if not os.path.exists(input_folder):
+        raise FileNotFoundError(f"Input folder '{input_folder}' does not exist. Please prepare the data first by running the previous script")
 
-    prepare_folder(subject, sessions, input_dir, output_dir)
-    write_patients_json(subject, sessions, os.path.join(output_dir, "patientsTr.json"))
+    test_pred_json = os.path.join(input_folder, "patientsTs.json")
+    generate_patient_sessions_json(directory_path=input_folder, output_filename=test_pred_json)
 
-    target_filename = f"slurm_files/predict_{subject}_{trainer}.slurm"
-    write_slurm_file(subject, target_filename, sessions, output_dir, trainer)
-    subprocess.run(["sbatch", target_filename])
+    output_folder = os.path.join(input_folder, "res_seg")
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    print("Starting inference")
+
+    filename = "longiseg_prediction.slurm"
+    write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer, model_path, test_pred_json)
+    subprocess.run(["sbatch", filename])
