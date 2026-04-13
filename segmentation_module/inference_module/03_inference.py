@@ -13,7 +13,7 @@ def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer,
     plans_json = os.path.join(cross_val_path, "plans.json")
     slurm_content = f"""#!/bin/bash
 
-#SBATCH -J nnunet_predict
+#SBATCH -J longiseg_predict
 #SBATCH -p batch
 #SBATCH -w niolon13
 #SBATCH --mem-per-cpu=48G
@@ -25,7 +25,7 @@ def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer,
 source ~/.bashrc
 conda activate longiseg
 
-LongiSeg_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4 --save_probabilities -pat {patients_json_path}
+LongiSeg_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4 --save_probabilities -pat {patients_json_path} -device cpu
 
 LongiSeg_apply_postprocessing -i {output_folder} -o {output_folder} -pp_pkl_file {pkl_file} -np 8 -plans_json {plans_json}
 
