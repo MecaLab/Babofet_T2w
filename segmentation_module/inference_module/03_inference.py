@@ -23,7 +23,7 @@ def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer,
 #SBATCH -e logs/predict_longiseg_%j.err
 
 source ~/.bashrc
-conda activate longiseg_new
+conda activate longiseg
 
 LongiSeg_predict -i {input_folder} -o {output_folder} -d {dataset_id} -c 3d_fullres -tr {trainer} -f 0 1 2 3 4 --save_probabilities -pat {patients_json_path}
 
