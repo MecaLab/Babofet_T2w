@@ -29,7 +29,8 @@ def mv_files(data, input_path, output_path):
 
 if __name__ == "__main__":
     subj_sess = {
-        "Borgne": ["ses-01", "ses-03"]
+        "Borgne": ["ses-01", "ses-03", "ses-04"],
+        "Filoutte": ["ses-05", "ses-06", "ses-07"]
     }
 
     input_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
