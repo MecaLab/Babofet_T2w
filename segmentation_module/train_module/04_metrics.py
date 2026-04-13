@@ -189,7 +189,7 @@ if __name__ == "__main__":
 
     voxel_spacing = (0.5, 0.5, 0.5)
 
-    gt_dataset = os.path.join(cfg.BASE_PATH, "gt_dataset_2", "test_dataset")
+    gt_dataset = os.path.join(cfg.BASE_PATH, "gt_dataset", "test_dataset")
 
     if not os.path.exists(results_seg_csv_path):
         for model in models:
