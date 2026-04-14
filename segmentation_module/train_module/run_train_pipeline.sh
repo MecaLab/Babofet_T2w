@@ -68,7 +68,7 @@ module load gcc/14.1.0
 module load cuda/12.4
 source ~/.bashrc
 conda activate longiseg_new
-export PYTHONPATH=$PYTHONPATH:\$(pwd)
+export PYTHONPATH=$PYTHONPATH:/scratch/lbaptiste/Babofet_T2w/LongiSeg
 
 echo "Training fold \$SLURM_ARRAY_TASK_ID for Dataset $DATASET_ID"
 LongiSeg_train $DATASET_ID 3d_fullres \$SLURM_ARRAY_TASK_ID -tr $TRAINER --npz
