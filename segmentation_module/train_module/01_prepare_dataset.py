@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import argparse
 sys.path.insert(0, os.path.abspath(os.curdir))
 from collections import defaultdict
 import configuration as cfg
@@ -61,6 +62,11 @@ def generate_patient_sessions_json(directory_path, output_filename="patientsTs.j
 
 if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser(description="Prepare the data for the nnUNet/LongiSeg format.")
+    parser.add_argument("--dataset_id", required=True, help="Dataset ID (e.g., 1, 2, 3, ...)")
+    parser.add_argument("--name", required=True, help="Dataset Name (e.g., MyFetalDataset)")
+    args = parser.parse_args()
+
     config_json = "segmentation_module/train_module/config.json"
     with open(config_json, "r") as file:
         data = json.load(file)
@@ -70,9 +76,8 @@ if __name__ == "__main__":
 
     seg_dataset = os.path.join(cfg.BASE_PATH, "gt_dataset")
 
-    id_dataset = int(sys.argv[1])  # should be integer, eg, 1, 2, 3, etc.
-    name = sys.argv[2]  # the dataset name, can be whatever you want, but you will need to use it later so remember it
-
+    id_dataset = args.dataset_id
+    name = args.name
     dataset_name = f"Dataset{id_dataset:03d}_{name}"
 
     output_path = os.path.join(cfg.LONGISEG_RAW_PATH_MESO, dataset_name)
