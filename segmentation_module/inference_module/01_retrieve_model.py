@@ -2,6 +2,7 @@ import subprocess
 import zipfile
 import sys
 import os
+import argparse
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
@@ -59,8 +60,23 @@ def unzip_file(zip_path, extract_to):
 
 
 if __name__ == "__main__":
-    zip_server_path = sys.argv[1]
-    dst_path = sys.argv[2]
+    parser = argparse.ArgumentParser(description="Export a trained model to a ZIP file")
+
+    parser.add_argument(
+        "--server_path",
+        help="Path to the zip file on the server (mesocentre)",
+        required=True
+    )
+    parser.add_argument(
+        "--dst_path",
+        help="Path to where save the zip file",
+        required=True
+    )
+    args = parser.parse_args()
+
+    zip_server_path = args.server_path
+    dst_path = args.dst_path
+
     if not os.path.exists(dst_path):
         retrieve_zip(zip_server_path, dst_path)
 
