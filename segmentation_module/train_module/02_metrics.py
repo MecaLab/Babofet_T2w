@@ -3,6 +3,7 @@ import sys
 import nibabel as nib
 import numpy as np
 import pandas as pd
+import argparse
 from scipy.ndimage import distance_transform_edt
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -140,21 +141,16 @@ def plot_and_save_boxplots(csv_path, save_file="boxplots_metrics.png"):
 
 
 def plot_metrics_by_model(csv_path, save_file="metrics_by_model.png"):
-    # Charger les données
     df = pd.read_csv(csv_path)
 
-    # Créer une figure avec trois sous-graphiques
     fig, axes = plt.subplots(1, 3, figsize=(18, 6))
 
-    # Couleurs pour chaque label
     label_colors = {'CSF': 'blue', 'WM': 'green', 'GM': 'purple', 'Ventricle': 'red'}
 
-    # Pour chaque métrique
     for i, metric in enumerate(['Dice_Mean', 'IoU_Mean', 'Hausdorff_Mean']):
         ax = axes[i]
         ax.set_title(metric.replace('_Mean', ''))
 
-        # Pour chaque label, tracer les points
         for label in df['Label'].unique():
             label_df = df[df['Label'] == label]
             models = sorted(label_df['Model_ID'].unique())
@@ -179,12 +175,23 @@ def plot_metrics_by_model(csv_path, save_file="metrics_by_model.png"):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Compute metrics for a list of model IDs.")
+
+    parser.add_argument(
+        "--models",
+        type=lambda s: [int(item) for item in s.split(',')],
+        help="Comma-separated list of integers representing model IDs (e.g., 1,2,3)",
+        required=True
+    )
+    args = parser.parse_args()
+
+    models = args.models
+
     if not os.path.exists(cfg.TABLE_DATA_PATH):
         os.makedirs(cfg.TABLE_DATA_PATH)
     if not os.path.exists(os.path.join(cfg.CODE_PATH, "snapshots/res_seg")):
         os.makedirs("snapshots/res_seg")
 
-    models = [int(x) for x in sys.argv[1].split(",")]
     results_seg_csv_path = os.path.join(cfg.TABLE_DATA_PATH, "resultats_segmentation.csv")
 
     voxel_spacing = (0.5, 0.5, 0.5)

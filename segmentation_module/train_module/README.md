@@ -88,7 +88,7 @@ This script evaluates the model's performance by comparing its predictions again
     -   Generates and saves boxplots and point plots to visualize the performance metrics, allowing for easy comparison between different models.
 -   **Usage**:
     ```bash
-    python 03_metrics.py <model_ids>
+    python 02_metrics.py <model_ids>
     ```
     -   `<model_ids>`: A comma-separated list of model IDs to evaluate (e.g., `1,2,3`).
 
@@ -100,6 +100,6 @@ A utility script to package a trained model or any specified directory into a ZI
     -   Compresses the specified file or directory into a `.zip` file. This is useful for archiving, sharing, or deploying a trained model.
 -   **Usage**:
     ```bash
-    python 04_export_model.py <path_to_zip>
+    python 03_export_model.py <path_to_zip>
     ```
     -   `<path_to_zip>`: The absolute or relative path to the file or directory you want to compress.

@@ -1,6 +1,7 @@
 import shutil
 import sys
 import os
+import argparse
 
 def compress_path(source_path):
     """
@@ -22,5 +23,14 @@ def compress_path(source_path):
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    path_to_zip = sys.argv[1]
+    parser = argparse.ArgumentParser(description="Export a trained model to a ZIP file")
+
+    parser.add_argument(
+        "--export_path",
+        help="Path to where save the zip file",
+        required=True
+    )
+    args = parser.parse_args()
+
+    path_to_zip = args.export_path
     compress_path(path_to_zip)

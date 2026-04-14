@@ -42,7 +42,7 @@ echo "=================================================================="
 echo "Step 1: Preparing dataset..."
 echo "=================================================================="
 # This step now also generates the patientsTs.json file directly.
-python segmentation_module/train_module/01_prepare_dataset.py $DATASET_ID "$DATASET_NAME"
+python segmentation_module/train_module/01_prepare_dataset.py --dataset_id $DATASET_ID --name "$DATASET_NAME"
 if [ $? -ne 0 ]; then echo "Error in Step 1: Prepare Dataset"; exit 1; fi
 
 echo "=================================================================="
@@ -128,14 +128,14 @@ echo "Prediction finished."
 echo "=================================================================="
 echo "Step 4: Calculating metrics..."
 echo "=================================================================="
-python segmentation_module/train_module/03_metrics.py $DATASET_ID
+python segmentation_module/train_module/02_metrics.py --models $DATASET_ID
 if [ $? -ne 0 ]; then echo "Error in Step 4: Metrics Calculation"; exit 1; fi
 
 echo "=================================================================="
 echo "Step 5: Exporting model..."
 echo "=================================================================="
 MODEL_TO_EXPORT_PATH="$LONGISEG_RESULTS_PATH_MESO/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}"
-python segmentation_module/train_module/04_export_model.py $MODEL_TO_EXPORT_PATH
+python segmentation_module/train_module/03_export_model.py --export_path $MODEL_TO_EXPORT_PATH
 if [ $? -ne 0 ]; then echo "Error in Step 5: Model Export"; exit 1; fi
 
 echo "=================================================================="
