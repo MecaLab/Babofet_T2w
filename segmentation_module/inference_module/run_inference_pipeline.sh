@@ -45,7 +45,7 @@ if [ $? -ne 0 ]; then echo "Error in Step 2: Data Preparation"; exit 1; fi
 echo "=================================================================="
 echo "Step 3: Predicting on test set (submitting CPU job and waiting)..."
 echo "=================================================================="
-INPUT_FOLDER="$DERIVATIVES_BIDS_PATH/intermediate/nnunet/inference_data"
+INPUT_FOLDER="$DERIVATIVES_BIDS_PATH/intermediate/longiseg/inference_data"
 PATIENTS_JSON_PATH="$INPUT_FOLDER/patientsTs.json"
 OUTPUT_FOLDER="$INPUT_FOLDER/res_seg"
 MODEL_PATH="$LONGISEG_RESULTS_PATH/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}/${TRAINER}__nnUNetPlans__3d_fullres"
