@@ -32,14 +32,14 @@ LONGISEG_RESULTS_PATH=$(python -c "import configuration as cfg; print(cfg.LONGIS
 echo "=================================================================="
 echo "Step 1: Retrieving and unzipping model..."
 echo "=================================================================="
-python 01_retrieve_model.py --server_path "$ZIP_SERVER_PATH" --dst_path "$LOCAL_ZIP_DST"
+python segmentation_module/inference_module/01_retrieve_model.py --server_path "$ZIP_SERVER_PATH" --dst_path "$LOCAL_ZIP_DST"
 if [ $? -ne 0 ]; then echo "Error in Step 1: Model Retrieval"; exit 1; fi
 
 echo "=================================================================="
 echo "Step 2: Preparing inference data..."
 echo "=================================================================="
 # This step now moves the NIfTI files AND generates patientsTs.json
-python 02_prepare_data.py
+python segmentation_module/inference_module/02_prepare_data.py
 if [ $? -ne 0 ]; then echo "Error in Step 2: Data Preparation"; exit 1; fi
 
 echo "=================================================================="
