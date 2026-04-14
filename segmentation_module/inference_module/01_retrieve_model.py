@@ -34,6 +34,7 @@ def retrieve_zip(zip_server_path, dst_path):
 
 
 def unzip_file(zip_path, extract_to):
+    print("Starting to unzip the file")
     """
     Unzips a ZIP archive to a specific destination.
     """
@@ -49,13 +50,11 @@ def unzip_file(zip_path, extract_to):
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(extract_to)
             print(f"Success: Extracted to {extract_to}")
-            return True
     except zipfile.BadZipFile:
         print("Error: The file is corrupted or not a zip file.")
-        return False
     except Exception as e:
         print(f"An error occurred: {e}")
-        return False
+
 
 
 
