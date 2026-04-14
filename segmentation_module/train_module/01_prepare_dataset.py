@@ -76,8 +76,8 @@ if __name__ == "__main__":
 
     seg_dataset = os.path.join(cfg.BASE_PATH, "gt_dataset")
 
-    id_dataset = args.dataset_id
-    name = args.name
+    id_dataset = int(args.dataset_id)
+    name = str(args.name)
     dataset_name = f"Dataset{id_dataset:03d}_{name}"
 
     output_path = os.path.join(cfg.LONGISEG_RAW_PATH_MESO, dataset_name)
