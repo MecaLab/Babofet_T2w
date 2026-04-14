@@ -17,6 +17,23 @@ The pipeline is managed by a main execution script that calls a series of helper
 ## Main Execution Script (`run_train_pipeline.sh`)
 
 This is the master script that drives the entire training pipeline. It should be executed from a login node on the cluster.
+For efficient computation, run the sh script within a `tmux` window when connected on the Meso with the following procedure:
+
+1) Connect to the meso and navigate to the repo
+2) run the command: 
+    ```bash
+    tmux
+    ```
+3) Once connected, run the command.
+4) To exit the tmux window, you need to press **Ctrl+B** then **D**
+5) To go in a tmux session you can do:
+    ```bash
+    tmux ls # this command list all the running sessions 
+    ``` 
+6) And then, you can run 
+   ```bash
+    tmux attach-session -t <session_id>
+   ```
 
 -   **Functionality**:
     -   Sets up the necessary environment, including modules and Conda environment.
@@ -30,6 +47,8 @@ This is the master script that drives the entire training pipeline. It should be
     -   `<dataset_name>`: A descriptive name for the dataset (e.g., `FetalBrainSeg`).
     -   `<trainer_class>`: The LongiSeg trainer to use (e.g., `LongiSegTrainerDiffWeighting`).
     -   `[train_partition]` / `[pred_partition]`: Optional Slurm partitions for training and prediction jobs (e.g, `volta`).
+
+
 
 ---
 

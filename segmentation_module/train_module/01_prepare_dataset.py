@@ -153,5 +153,3 @@ if __name__ == "__main__":
     generate_patient_sessions_json(directory_path=images_ts_path, output_filename=test_pred_json)
 
     print("Dataset preparation completed")
-    print("Running dataset check...")
-    os.system(f"LongiSeg_plan_and_preprocess -d {id_dataset} --verify_dataset_integrity")

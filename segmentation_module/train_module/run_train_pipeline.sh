@@ -41,9 +41,11 @@ LONGISEG_RESULTS_PATH_MESO=$(python -c "import configuration as cfg; print(cfg.L
 echo "=================================================================="
 echo "Step 1: Preparing dataset..."
 echo "=================================================================="
-# This step now also generates the patientsTs.json file directly.
 python segmentation_module/train_module/01_prepare_dataset.py --dataset_id $DATASET_ID --name "$DATASET_NAME"
 if [ $? -ne 0 ]; then echo "Error in Step 1: Prepare Dataset"; exit 1; fi
+
+echo "Running dataset check..."
+LongiSeg_plan_and_preprocess -d $DATASET_ID --verify_dataset_integrity
 
 echo "=================================================================="
 echo "Step 2: Training model (submitting job and waiting)..."
