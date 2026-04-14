@@ -1,105 +1,73 @@
 # Fetal Brain Segmentation Training Pipeline
 
-This module contains a set of scripts to train, evaluate, and manage a deep learning model for fetal brain tissue segmentation using the LongiSeg framework. The pipeline is designed to work with BIDS-formatted data and is executed as a series of sequential steps.
+This module contains a comprehensive pipeline for training, evaluating, and exporting a fetal brain tissue segmentation model using the LongiSeg framework. The entire process is orchestrated by a single shell script, `run_train_pipeline.sh`, which ensures a seamless workflow from data preparation to model deployment.
 
 ## Overview
 
-The pipeline is organized into five main scripts, each responsible for a specific stage of the machine learning lifecycle:
+The pipeline is managed by a main execution script that calls a series of helper scripts in sequence. The process is as follows:
 
-1.  **Dataset Preparation**: `01_prepare_dataset.py`
-2.  **Model Training**: `02_train.py`
-3.  **Inference on Test Set**: `03_pred_test.py`
-4.  **Performance Evaluation**: `04_metrics.py`
-5.  **Model Exporting**: `05_export_model.py`
-
-A `config.json` file is used to define the subject and session splits for training and testing.
-
-Make sure to have your data located, based on the scripts or update the code.
+1.  **Data Preparation**: Raw and ground truth data are organized for LongiSeg.
+2.  **Model Training**: A 5-fold cross-validation training is submitted as a Slurm job.
+3.  **Inference**: The trained model is used to predict segmentations on the test set.
+4.  **Evaluation**: Performance metrics are calculated by comparing predictions to ground truth.
+5.  **Export**: The final trained model is packaged into a ZIP archive.
 
 ---
 
-## Configuration (`config.json`)
+## Main Execution Script (`run_train_pipeline.sh`)
 
-This JSON file specifies which subjects and sessions are allocated to the training and testing datasets. This separation is crucial for ensuring that the model is evaluated on unseen data.
-
--   `train_subject_sessions`: A dictionary mapping subject identifiers to a list of session IDs for training.
--   `test_subject_sessions`: A dictionary mapping subject identifiers to a list of session IDs for testing.
-
----
-
-## Pipeline Scripts
-
-### 1. Prepare Dataset (`01_prepare_dataset.py`)
-
-This script organizes the raw and ground truth data into the specific directory structure required by the LongiSeg framework.
+This is the master script that drives the entire training pipeline. It should be executed from a login node on the cluster.
 
 -   **Functionality**:
-    -   Reads the `config.json` to determine the training/testing split.
-    -   Copies the T2w images and their corresponding segmentation masks into `imagesTr`, `labelsTr`, and `imagesTs` folders.
-    -   Generates a `dataset.json` file, which contains metadata about the dataset (e.g., channel names, labels, number of training examples).
-    -   Generates a `patientsTr.json` to map subjects to their respective timepoints, which is essential for longitudinal analysis.
-    -   Runs `LongiSeg_plan_and_preprocess` to verify dataset integrity and prepare the data for training.
+    -   Sets up the necessary environment, including modules and Conda environment.
+    -   Calls the Python helper scripts in the correct order.
+    -   Submits and waits for Slurm jobs for the training and prediction steps, ensuring the pipeline proceeds only after these computationally intensive tasks are complete.
 -   **Usage**:
     ```bash
-    python 01_prepare_dataset.py <dataset_id> <dataset_name>
+    ./run_train_pipeline.sh <dataset_id> <dataset_name> <trainer_class> [train_partition] [pred_partition]
     ```
     -   `<dataset_id>`: A unique integer ID for the dataset (e.g., `1`).
     -   `<dataset_name>`: A descriptive name for the dataset (e.g., `FetalBrainSeg`).
+    -   `<trainer_class>`: The LongiSeg trainer to use (e.g., `LongiSegTrainerDiffWeighting`).
+    -   `[train_partition]` / `[pred_partition]`: Optional Slurm partitions for training and prediction jobs (e.g, `volta`).
 
-### 2. Train Model (`02_train.py`)
+---
 
-This script initiates the model training process on a Slurm cluster.
+## Helper Scripts & Configuration
 
--   **Functionality**:
-    -   Generates a Slurm submission script (`longiseg_train.slurm`).
-    -   The script uses a 5-fold cross-validation strategy, submitted as a job array.
-    -   It activates the appropriate Conda environment and executes the `LongiSeg_train` command.
--   **Usage**:
-    ```bash
-    python 02_train.py <dataset_id> <trainer_class>
-    ```
-    -   `<dataset_id>`: The ID of the dataset to train on.
-    -   `<trainer_class>`: The nnU-Net trainer class to use (e.g., `LongiSegTrainerDiffWeighting`).
+### `config.json`
 
-### 3. Predict on Test Set (`03_pred_test.py`)
+This file defines the allocation of subjects and sessions to the training and testing datasets, which is critical for a valid model evaluation.
 
-After training, this script runs inference on the test set.
+-   `train_subject_sessions`: Specifies data for the training set.
+-   `test_subject_sessions`: Specifies data for the hold-out test set.
+
+### 1. Prepare Dataset (`01_prepare_dataset.py`)
+
+This script formats the data into the structure required by LongiSeg.
 
 -   **Functionality**:
-    -   Generates a Slurm submission script (`longiseg_prediction.slurm`).
-    -   Uses `LongiSeg_find_best_configuration` to determine the optimal model from the cross-validation folds.
-    -   Executes `LongiSeg_predict` to generate segmentations for the test images.
-    -   Applies post-processing to the predictions using `LongiSeg_apply_postprocessing`.
--   **Usage**:
-    ```bash
-    python 03_pred_test.py <dataset_id> <dataset_name> <trainer_class> [partition]
-    ```
-    -   Arguments match those from previous steps.
-    -   `[partition]`: Optional Slurm partition (defaults to `volta`).
+    -   Reads `config.json` to split data.
+    -   Copies and renames T2w images and segmentation masks into the appropriate `imagesTr`, `labelsTr`, and `imagesTs` directories.
+    -   Generates `dataset.json`, `patientsTr.json`, and `patientsTs.json` to provide metadata for the LongiSeg framework.
+    -   Runs `LongiSeg_plan_and_preprocess` to finalize data preparation.
+-   **Called by**: `run_train_pipeline.sh`
 
-### 4. Calculate Metrics (`04_metrics.py`)
+### 2. Calculate Metrics (`02_metrics.py`)
 
-This script evaluates the model's performance by comparing its predictions against the ground truth labels.
+This script evaluates the model's performance after inference is complete.
 
 -   **Functionality**:
-    -   Calculates key segmentation metrics: Dice Score, Intersection over Union (IoU), and Hausdorff Distance.
-    -   Computes mean and standard deviation for each metric across all test subjects and for each tissue label (CSF, WM, GM, Ventricle).
-    -   Saves the aggregated results to a CSV file (`resultats_segmentation.csv`).
-    -   Generates and saves boxplots and point plots to visualize the performance metrics, allowing for easy comparison between different models.
--   **Usage**:
-    ```bash
-    python 02_metrics.py <model_ids>
-    ```
-    -   `<model_ids>`: A comma-separated list of model IDs to evaluate (e.g., `1,2,3`).
+    -   Compares predicted segmentations against ground truth labels.
+    -   Calculates Dice Score, Intersection over Union (IoU), and Hausdorff Distance.
+    -   Aggregates results into a summary CSV file (`resultats_segmentation.csv`).
+    -   Generates and saves plots to visualize performance metrics across different models and labels.
+-   **Called by**: `run_train_pipeline.sh`
 
-### 5. Export Model (`05_export_model.py`)
+### 3. Export Model (`03_export_model.py`)
 
-A utility script to package a trained model or any specified directory into a ZIP archive.
+A utility to package the trained model for archiving or deployment.
 
 -   **Functionality**:
-    -   Compresses the specified file or directory into a `.zip` file. This is useful for archiving, sharing, or deploying a trained model.
--   **Usage**:
-    ```bash
-    python 03_export_model.py <path_to_zip>
-    ```
-    -   `<path_to_zip>`: The absolute or relative path to the file or directory you want to compress.
+    -   Compresses the entire trained model directory into a single `.zip` archive.
+-   **Called by**: `run_train_pipeline.sh`
