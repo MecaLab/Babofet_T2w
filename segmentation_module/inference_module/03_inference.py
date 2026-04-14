@@ -17,7 +17,7 @@ def write_slurm_file(input_folder, output_folder, filename, dataset_id, trainer,
 #SBATCH -p batch
 #SBATCH -w niolon13
 #SBATCH --mem-per-cpu=48G
-#SBATCH --time=3:00:00
+#SBATCH --time=10:00:00
 #SBATCH -c 1
 #SBATCH -o logs/predict_longiseg_%j.out
 #SBATCH -e logs/predict_longiseg_%j.err
