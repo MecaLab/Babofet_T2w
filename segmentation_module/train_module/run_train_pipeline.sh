@@ -139,5 +139,5 @@ python segmentation_module/train_module/03_export_model.py --export_path $MODEL_
 if [ $? -ne 0 ]; then echo "Error in Step 5: Model Export"; exit 1; fi
 
 echo "=================================================================="
-echo "Pipeline completed successfully!"
+echo "Pipeline completed successfully !"
 echo "=================================================================="
