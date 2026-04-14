@@ -2,6 +2,7 @@ import os
 import sys
 import json
 sys.path.insert(0, os.path.abspath(os.curdir))
+from collections import defaultdict
 import configuration as cfg
 
 
@@ -29,6 +30,33 @@ def write_json_file(path, num_training, dataset_name):
 def write_patients_tr(path, patients):
     with open(path, 'w') as f:
         json.dump(patients, f, indent=4)
+
+
+def generate_patient_sessions_json(directory_path, output_filename="patientsTs.json"):
+    # defaultdict handles the creation of lists for new keys automatically
+    patient_data = defaultdict(list)
+
+    files = os.listdir(directory_path)
+
+    files.sort()
+
+    for filename in files:
+        if filename.endswith(".nii.gz"):
+            # Example: "Borgne_ses05_0000.nii.gz" -> ["Borgne", "ses05", "0000.nii.gz"]
+            parts = filename.split('_')
+
+            if len(parts) >= 2:
+                patient_name = parts[0]
+                session_id = parts[1]
+
+                session_entry = f"{patient_name}_{session_id}"
+
+                if session_entry not in patient_data[patient_name]:
+                    patient_data[patient_name].append(session_entry)
+    with open(output_filename, 'w', encoding='utf-8') as f:
+        json.dump(dict(patient_data), f, indent=4)
+
+    print(f"File '{output_filename}' has been created successfully.")
 
 
 if __name__ == "__main__":
@@ -114,6 +142,10 @@ if __name__ == "__main__":
     num_training = len(os.listdir(labels_tr_path))
     write_json_file(dataset_json, num_training, dataset_name)
     write_patients_tr(patients_tr_json, dico_subj)
+
+    print("Generating patientsTs.json for testing...")
+    test_pred_json = os.path.join(output_path, "patientsTs.json")
+    generate_patient_sessions_json(directory_path=images_ts_path, output_filename=test_pred_json)
 
     print("Dataset preparation completed")
     print("Running dataset check...")
