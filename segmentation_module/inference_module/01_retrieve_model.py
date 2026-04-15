@@ -14,8 +14,6 @@ def retrieve_zip(zip_server_path, dst_path):
     # Construct the remote source string: user@host:path
     remote_source = f"{MESO_USER}@{MESO_HOST}:{zip_server_path}"
 
-    # Build the command list for subprocess
-    # -P (uppercase) is used for the port in scp
     command = [
         "scp",
         "-P", MESO_PORT,
@@ -34,10 +32,10 @@ def retrieve_zip(zip_server_path, dst_path):
 
 
 def unzip_file(zip_path, extract_to):
-    print("Starting to unzip the file")
     """
     Unzips a ZIP archive to a specific destination.
     """
+    print("Starting to unzip the file")
     if not os.path.exists(zip_path):
         print(f"Error: The file {zip_path} does not exist.")
         return False
@@ -82,4 +80,5 @@ if __name__ == "__main__":
     folder_name = os.path.basename(dst_path).split(".")[0]  # DatasetXXX_NAME.zip => DatasetXXX_NAME
 
     output_longi_folder = os.path.join(cfg.LONGISEG_RESULTS_PATH, folder_name)
-    unzip_file(dst_path, output_longi_folder)
+    if not os.path.exists(output_longi_folder):
+        unzip_file(dst_path, output_longi_folder)

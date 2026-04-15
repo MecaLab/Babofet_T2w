@@ -84,5 +84,5 @@ if [ $? -ne 0 ]; then echo "Error in Step 3: Inference"; exit 1; fi
 echo "Inference finished."
 
 echo "=================================================================="
-echo "Pipeline completed successfully!"
+echo "Pipeline completed successfully !"
 echo "=================================================================="
