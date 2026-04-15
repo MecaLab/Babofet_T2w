@@ -37,8 +37,6 @@ if __name__ == "__main__":
     if not os.path.exists(tsv_file):
         create_segmentation_mapping_tsv(tsv_file)
 
-    exit()
-
     for file in os.listdir(input_path):
         if file.endswith(".nii.gz"):
             print(f"Processing {file}")
