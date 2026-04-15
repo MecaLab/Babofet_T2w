@@ -68,7 +68,7 @@ if __name__ == "__main__":
     output_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "longiseg", "inference_data")
     if not os.path.exists(output_path):
         os.makedirs(output_path)
-    
+
     mv_files(subj_sess, input_path, output_path)
 
     test_pred_json = os.path.join(output_path, "patientsTs.json")
