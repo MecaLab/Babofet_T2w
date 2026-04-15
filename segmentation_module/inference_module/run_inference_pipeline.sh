@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script runs the full inference pipeline: model retrieval, data preparation, and CPU inference.
-# It should be run from the login node (e.g., inside a tmux or screen session).
+# It submits the job to SLURM and exits immediately. No tmux required.
 
 if [ "$#" -lt 5 ]; then
     echo "Usage: ./run_inference_pipeline.sh <zip_server_path> <local_zip_dst> <dataset_id> <dataset_name> <trainer_class>"
@@ -43,7 +43,7 @@ python segmentation_module/inference_module/02_prepare_data.py
 if [ $? -ne 0 ]; then echo "Error in Step 2: Data Preparation"; exit 1; fi
 
 echo "=================================================================="
-echo "Step 3: Predicting on test set (submitting CPU job and waiting)..."
+echo "Step 3: Predicting on test set (submitting CPU job)..."
 echo "=================================================================="
 
 INPUT_FOLDER="$DERIVATIVES_BIDS_PATH/intermediate/longiseg/inference_data"
@@ -79,10 +79,18 @@ echo "Applying post-processing..."
 LongiSeg_apply_postprocessing -i $OUTPUT_FOLDER -o $OUTPUT_FOLDER -pp_pkl_file $PKL_FILE -np 8 -plans_json $PLANS_JSON
 EOF
 
-sbatch --wait $PRED_SLURM_FILE
-if [ $? -ne 0 ]; then echo "Error in Step 3: Inference"; exit 1; fi
-echo "Inference finished."
+# Soumission à SLURM SANS bloquer le terminal
+JOB_ID=$(sbatch --parsable $PRED_SLURM_FILE)
+
+if [ $? -ne 0 ]; then
+    echo "Error in Step 3: Failed to submit inference job to SLURM";
+    exit 1;
+fi
+
+echo "✅ Inference job successfully submitted to SLURM! (Job ID: $JOB_ID)"
 
 echo "=================================================================="
-echo "Pipeline completed successfully !"
+echo "Pipeline successfully delegated to the cluster."
+echo "You can safely close this terminal."
+echo "Monitor your job with: squeue -u \$USER"
 echo "=================================================================="
