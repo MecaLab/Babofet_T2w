@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script runs the full inference pipeline: model retrieval, data preparation, and CPU inference.
+# This script runs the full inference pipeline: model retrieval, data preparation, CPU inference, and file organization.
 # It submits the job to SLURM and exits immediately. No tmux required.
 
 if [ "$#" -lt 5 ]; then
@@ -38,12 +38,11 @@ if [ $? -ne 0 ]; then echo "Error in Step 1: Model Retrieval"; exit 1; fi
 echo "=================================================================="
 echo "Step 2: Preparing inference data..."
 echo "=================================================================="
-# This step now moves the NIfTI files AND generates patientsTs.json
 python segmentation_module/inference_module/02_prepare_data.py
 if [ $? -ne 0 ]; then echo "Error in Step 2: Data Preparation"; exit 1; fi
 
 echo "=================================================================="
-echo "Step 3: Predicting on test set (submitting CPU job)..."
+echo "Step 3: Predicting on test set and moving files (submitting CPU job)..."
 echo "=================================================================="
 
 INPUT_FOLDER="$DERIVATIVES_BIDS_PATH/intermediate/longiseg/inference_data"
@@ -77,9 +76,13 @@ LongiSeg_predict -i $INPUT_FOLDER -o $OUTPUT_FOLDER -d $DATASET_ID -c 3d_fullres
 
 echo "Applying post-processing..."
 LongiSeg_apply_postprocessing -i $OUTPUT_FOLDER -o $OUTPUT_FOLDER -pp_pkl_file $PKL_FILE -np 8 -plans_json $PLANS_JSON
+
+echo "Moving and renaming prediction files..."
+python segmentation_module/inference_module/03_move_pred.py
+
+echo "Inference and file organization completed successfully."
 EOF
 
-# Soumission à SLURM SANS bloquer le terminal
 JOB_ID=$(sbatch --parsable $PRED_SLURM_FILE)
 
 if [ $? -ne 0 ]; then
@@ -87,7 +90,7 @@ if [ $? -ne 0 ]; then
     exit 1;
 fi
 
-echo "✅ Inference job successfully submitted to SLURM! (Job ID: $JOB_ID)"
+echo "Inference job successfully submitted to SLURM. Job ID: $JOB_ID"
 
 echo "=================================================================="
 echo "Pipeline successfully delegated to the cluster."

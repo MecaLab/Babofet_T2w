@@ -60,8 +60,7 @@ def generate_patient_sessions_json(directory_path, output_filename="patientsTs.j
 
 if __name__ == "__main__":
     subj_sess = {
-        "Borgne": ["ses-01", "ses-03", "ses-04"],
-        "Filoutte": ["ses-05", "ses-06", "ses-07"]
+        "Borgne": ["ses-01", "ses-03"]
     }
 
     input_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
