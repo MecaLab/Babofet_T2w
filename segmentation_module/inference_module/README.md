@@ -1,6 +1,6 @@
 # Fetal Brain Segmentation Inference Pipeline
 
-This module contains a streamlined pipeline to run inference using a pre-trained LongiSeg segmentation model. The entire process, from model retrieval to final prediction, is managed by a single shell script, `run_inference_pipeline.sh`.
+This module contains a streamlined pipeline to run inference using a pre-trained LongiSeg segmentation model. The entire process, from model retrieval to final file organization, is managed by a single shell script, `run_inference_pipeline.sh`.
 
 ## Overview
 
@@ -9,18 +9,20 @@ The inference pipeline is automated by a master script that executes a series of
 1.  **Model Retrieval**: A pre-trained model is downloaded from a remote server and unzipped.
 2.  **Data Preparation**: Input images are located and prepared in the format required by LongiSeg.
 3.  **Inference Execution**: A Slurm job is submitted to perform segmentation on the prepared data using the CPU.
+4.  **File Organization**: The final segmentation masks are moved and renamed to a BIDS-compliant directory structure.
 
 ---
 
 ## Main Execution Script (`run_inference_pipeline.sh`)
 
-This is the central script that orchestrates the entire inference workflow. It should be executed from a login node on the cluster.
+This is the central script that orchestrates the entire inference workflow. It submits the main computational tasks to the Slurm scheduler and exits, allowing you to safely close your terminal.
 
 -   **Functionality**:
     -   Sets up the necessary Conda environment.
-    -   Calls the helper Python scripts for model retrieval and data preparation.
-    -   Dynamically creates and submits a Slurm job for the inference step, waiting for its completion before finishing.
-    -   The inference is configured to run on a CPU, making it flexible for environments without available GPUs.
+    -   Calls helper scripts for model retrieval and data preparation.
+    -   Dynamically creates and submits a Slurm job that:
+        -   Runs `LongiSeg_predict` and `LongiSeg_apply_postprocessing` on a CPU.
+        -   Calls the `03_move_pred.py` script to organize the final outputs.
 -   **Usage**:
     ```bash
     ./run_inference_pipeline.sh <zip_server_path> <local_zip_dst> <dataset_id> <dataset_name> <trainer_class>
@@ -53,3 +55,13 @@ This script organizes the input data for the inference process.
     -   Renames the images to match the `Subject_Session_0000.nii.gz` format expected by LongiSeg.
     -   Generates a `patientsTs.json` file, which maps subjects to their sessions, a requirement for the longitudinal model.
 -   **Called by**: `run_inference_pipeline.sh`
+
+### 3. Move Predictions (`03_move_pred.py`)
+
+This script organizes the final output files into a clean, BIDS-compliant structure.
+
+-   **Functionality**:
+    -   Moves the generated segmentation masks from the temporary inference directory.
+    -   Renames the files to follow BIDS conventions (e.g., `sub-Borgne_ses-01_desc-longiseg_dseg.nii.gz`).
+    -   Places them in the final `derivatives/longiseg` directory under the corresponding subject and session.
+-   **Called by**: The Slurm job submitted by `run_inference_pipeline.sh`.
