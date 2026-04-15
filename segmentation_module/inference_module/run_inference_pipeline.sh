@@ -71,7 +71,6 @@ cat << EOF > $PRED_SLURM_FILE
 
 source ~/.bashrc
 conda activate longiseg
-export PYTHONPATH=\$PYTHONPATH:\$(pwd)
 
 echo "Running prediction on CPU..."
 LongiSeg_predict -i $INPUT_FOLDER -o $OUTPUT_FOLDER -d $DATASET_ID -c 3d_fullres -tr $TRAINER -f 0 1 2 3 4 --save_probabilities -pat $PATIENTS_JSON_PATH -device cpu
