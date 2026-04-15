@@ -42,6 +42,8 @@ echo "=================================================================="
 python segmentation_module/train_module/01_prepare_dataset.py --dataset_id $DATASET_ID --name "$DATASET_NAME"
 if [ $? -ne 0 ]; then echo "Error in Step 1: Prepare Dataset"; exit 1; fi
 
+LongiSeg_plan_and_preprocess -d $DATASET_ID --verify_dataset_integrity
+
 echo "=================================================================="
 echo "Step 2: Submitting Training Job Array..."
 echo "=================================================================="
