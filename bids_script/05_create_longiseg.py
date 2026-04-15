@@ -31,11 +31,13 @@ def create_segmentation_mapping_tsv(output_filename):
 
 if __name__ == "__main__":
     input_path = os.path.join(cfg.BASE_NIOLON_PATH, "pred_dataset_12")  # need to adapt this later
-    output_base_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "nnunet")
+    output_base_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "longiseg")
 
     tsv_file = os.path.join(output_base_path, "dseg.tsv")
     if not os.path.exists(tsv_file):
         create_segmentation_mapping_tsv(tsv_file)
+
+    exit()
 
     for file in os.listdir(input_path):
         if file.endswith(".nii.gz"):
