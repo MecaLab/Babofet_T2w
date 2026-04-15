@@ -41,15 +41,15 @@ def generate_patient_sessions_json(directory_path, output_filename="patientsTs.j
 
     for filename in files:
         if filename.endswith(".nii.gz"):
+            print(filename)
             # Format: "Borgne_ses-01_0000.nii.gz"
             parts = filename.split('_')
-
             if len(parts) >= 2:
                 patient_name = parts[0]
                 session_id = parts[1] # This will capture "ses-01"
 
                 session_entry = f"{patient_name}_{session_id}"
-
+                print("\t", session_entry)
                 if session_entry not in patient_data[patient_name]:
                     patient_data[patient_name].append(session_entry)
 

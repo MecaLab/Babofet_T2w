@@ -42,6 +42,9 @@ echo "=================================================================="
 python segmentation_module/inference_module/02_prepare_data.py
 if [ $? -ne 0 ]; then echo "Error in Step 2: Data Preparation"; exit 1; fi
 
+
+exit
+
 echo "=================================================================="
 echo "Step 3: Predicting on test set (submitting CPU job)..."
 echo "=================================================================="
