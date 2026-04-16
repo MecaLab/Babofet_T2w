@@ -117,12 +117,12 @@ def convert_fsl2ants(input_atlas_registered, best_atlas, subject, session, base_
     print("\t\tAffine conversion done")
 
 
-def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atlas, best_atlas_mask, filename):
-    ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
-    ref_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
+def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atlas, best_atlas_mask, subject, session):
+    ref = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_T2w.nii.gz")
+    ref_mask = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz")
 
     ants_prefix = f"{input_atlas_registered}/ants_"
-    ants_warped_image = filename
+    ants_warped_image = f"{subject}_{session}_warped_IMAGE.nii.gz"
 
     best_atlas_name = os.path.basename(best_atlas)
     initial_moving_transform = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
@@ -244,12 +244,19 @@ if __name__ == "__main__":
                 base_subj_path=recons_volumes_folder
             )
 
-            exit()
-
             mask_best_atlas = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "NFseg_bm"))
 
-            filename = f"{subject}_{session}_warped_IMAGE.nii.gz"
-            ants_nonlinear_registration(subject_output_split_seg_session, recons_rhesus_folder, best_atlas_path, mask_best_atlas, filename)
+            # input_atlas_registered, base_subj_path, best_atlas, best_atlas_mask, filename
+            ants_nonlinear_registration(
+                input_atlas_registered=subject_output_split_seg_session,
+                base_subj_path=recons_volumes_folder,
+                best_atlas=best_atlas_path,
+                best_atlas_mask=mask_best_atlas,
+                subject=subject,
+                session=session
+            )
+            exit()
+
             subj_seg = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "structures_dilated"))
 
             affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace("_affine.nii.gz", "_affine.txt"))
