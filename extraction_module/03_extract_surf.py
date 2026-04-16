@@ -70,13 +70,13 @@ if __name__ == "__main__":
                     # input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
                     # output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file_pattern}"
 
-                    input_full_path = f"/home/{session_file}"
-                    output_full_path = f"/output/{output_full_path}"
+                    """input_full_path = f"/home/{session_file}"
+                    output_full_path = f"/output/{output_full_path}""""
 
                     subprocess.run([
                         "singularity", "run",
                         "-B", f"{input_split_seg}:/home",
                         "-B", f"{dst_path}:/output",
                         surf_proc_soft_path,
-                        "generate_mesh", "-s", input_full_path, "-l", str(label_val), "-m", output_full_path
+                        "generate_mesh", "-s", session_file, "-l", str(label_val), "-m", output_full_path
                     ], check=True)
