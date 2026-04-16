@@ -39,20 +39,24 @@ if __name__ == "__main__":
                 continue
 
             print(f"\tProcessing session: {session}")
+            full_subject_dst_path = os.path.join(subject_dst_path, session, "anat")
+            if not os.path.exists(full_subject_dst_path):
+                os.makedirs(full_subject_dst_path)
 
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
-                output_file = hemi_split_basename.replace(f"_hemi.nii.gz", f".{label_name}.white.gii")
-                print(output_file)
-                exit()
 
-                if os.path.exists(os.path.join(subject_dst_path, output_file)):
-                    print(f"\t\t\tOutput file {output_file} already exists. Skipping.")
+                # sub-<sub>_ses-<ses>_hemi-L_white.surf.gii
+                output_file_pattern = f"{subject}_{session}_hemi-{label_name}_white.surf.gii"
+
+                if os.path.exists(os.path.join(full_subject_dst_path, output_file_pattern)):
+                    print(f"\t\t\tOutput file {output_file_pattern} already exists. Skipping.")
                     continue
+
 
                 if args_extraction == "viz":
                     input_full_path = os.path.join(subject_src_path, session, session_file)
-                    output_full_path = os.path.join(subject_dst_path, output_file)
+                    output_full_path = os.path.join(subject_dst_path, output_file_pattern)
 
                     subprocess.run([
                         "python3", "surface_processing/generate_mesh.py",
@@ -64,7 +68,7 @@ if __name__ == "__main__":
                     ], check=True)
                 elif args_extraction == "full":
                     input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
-                    output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file}"
+                    output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file_pattern}"
 
                     subprocess.run([
                         "singularity", "run", "-B", f"{atlas_path}:/home/atlas_fetal_rhesus_v2", "surf_proc_v0.0.2a.sif",
