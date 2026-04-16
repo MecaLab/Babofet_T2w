@@ -8,7 +8,6 @@ import subprocess
 
 
 def dilate_with_fsl(input_file, output_file):
-    """Dilate le masque de 2 voxels avec FSL."""
     subprocess.run([
         "fslmaths", input_file,
         "-dilM",
@@ -17,7 +16,6 @@ def dilate_with_fsl(input_file, output_file):
 
 
 def overlay_structure(base_path, structure_path, output_path, structure_label):
-    """Superpose une structure avec un label donné, en écrasant si nécessaire."""
     base_img = nib.load(base_path)
     structure_img = nib.load(structure_path)
     base_data = base_img.get_fdata()
@@ -30,8 +28,6 @@ def overlay_structure(base_path, structure_path, output_path, structure_label):
 
 
 if __name__ == "__main__":
-    print("coucou")
-    exit()
     atlas_folder = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
 
     seg_folder = os.path.join(atlas_folder, "Segmentations")
@@ -40,25 +36,26 @@ if __name__ == "__main__":
     label_cerebellum = 7
     label_tronc = 8
 
-    structure_dir = os.path.join(seg_folder, "structures_dilated")
+    # structure_dir = os.path.join(seg_folder, "structures_dilated")
+    output_structure_dir = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "surf-slam", "structures_dilated")
 
-    if not os.path.exists(structure_dir):
-        os.makedirs(structure_dir)
+    if not os.path.exists(output_structure_dir):
+        os.makedirs(output_structure_dir)
 
     for ts in atlas_timepoints:
 
         print(f"Processing timepoint: {ts}")
 
         sample_seg_input = os.path.join(seg_folder, f"ONPRC_G{ts}_NFseg.nii.gz")
-        sample_seg_hemi = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_hemi.nii.gz")
+        sample_seg_hemi = os.path.join(output_structure_dir, f"ONPRC_G{ts}_NFseg_hemi.nii.gz")
 
-        sample_seg_cervelet = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet.nii.gz")
-        sample_seg_tronc = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc.nii.gz")
+        sample_seg_cervelet = os.path.join(output_structure_dir, f"ONPRC_G{ts}_NFseg_cervelet.nii.gz")
+        sample_seg_tronc = os.path.join(output_structure_dir, f"ONPRC_G{ts}_NFseg_tronc.nii.gz")
 
-        sample_seg_cervelet_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
-        sample_seg_tronc_dilated = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
+        sample_seg_cervelet_dilated = os.path.join(output_structure_dir, f"ONPRC_G{ts}_NFseg_cervelet_dilated.nii.gz")
+        sample_seg_tronc_dilated = os.path.join(output_structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
 
-        sample_seg_bm = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_bm.nii.gz")
+        sample_seg_bm = os.path.join(output_structure_dir, f"ONPRC_G{ts}_NFseg_bm.nii.gz")
 
         should_del_files = [
             sample_seg_hemi,
@@ -66,7 +63,7 @@ if __name__ == "__main__":
             sample_seg_cervelet_dilated, sample_seg_tronc_dilated
         ]
 
-        # Charger l'image
+        # Load image
         img = nib.load(sample_seg_input)
         data = img.get_fdata()
         affine = img.affine
@@ -100,7 +97,6 @@ if __name__ == "__main__":
             nib.save(nib.Nifti1Image(mask_new, affine, header), sample_seg_hemi)
 
         # Create binary masks for cerebellum and brainstem
-
         print("\tCreating binary masks for cerebellum and brainstem...")
 
         if not os.path.exists(sample_seg_cervelet):
@@ -121,10 +117,10 @@ if __name__ == "__main__":
 
         # Combine dilated masks into a single structure file
         print("\tCombining dilated masks into a single structure file...")
-        tmp_step = os.path.join(structure_dir, f"ONPRC_G{ts}_NFseg_structures_tmp.nii.gz")
+        tmp_step = os.path.join(output_structure_dir, f"ONPRC_G{ts}_NFseg_structures_tmp.nii.gz")
 
         overlay_structure(sample_seg_hemi, sample_seg_tronc_dilated, tmp_step, structure_label=3)
-        final_output = os.path.join(structure_dir, f"ONPRC_G{ts}_structures_dilated.nii.gz")
+        final_output = os.path.join(output_structure_dir, f"ONPRC_G{ts}_structures_dilated.nii.gz")
         overlay_structure(tmp_step, sample_seg_cervelet_dilated, final_output, structure_label=4)
 
         should_del_files.append(tmp_step)
@@ -133,6 +129,8 @@ if __name__ == "__main__":
         for f in should_del_files:
             if os.path.exists(f):
                 os.remove(f)
+
+        exit()
 
 
 
