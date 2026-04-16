@@ -227,10 +227,11 @@ if __name__ == "__main__":
                 output_dir=subject_output_split_seg_session
             )
 
-            exit()
-            best_atlas = find_best_atlas(subject_output_split_seg_session, recons_rhesus_folder)
+            best_atlas = find_best_atlas(subject_output_split_seg_session, recons_volumes_folder)
 
             print(f"\t\tBest atlas: {best_atlas}")
+
+            exit()
 
             best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
 
