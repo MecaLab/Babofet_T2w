@@ -75,8 +75,8 @@ if __name__ == "__main__":
 
                     subprocess.run([
                         "singularity", "run",
-                        "-B", f"{input_split_seg}:/home/",
-                        "-B", f"{dst_path}:/output/",
+                        "-B", f"{input_split_seg}:/home",
+                        "-B", f"{dst_path}:/output",
                         surf_proc_soft_path,
                         "generate_mesh", "-s", input_full_path, "-l", str(label_val), "-m", output_full_path
                     ], check=True)
