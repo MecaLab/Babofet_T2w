@@ -57,7 +57,7 @@ def fsl_register(atlas_dir, base_subj_path, subject, session, output_dir):
     print("\t\tFLIRT registration done")
 
 
-def find_best_atlas(input_atlas_registered, , subject, session, base_subj_path):
+def find_best_atlas(input_atlas_registered, subject, session, base_subj_path):
     reference = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_T2w.nii.gz")
     reference_mask = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz")
 
@@ -227,7 +227,7 @@ if __name__ == "__main__":
                 output_dir=subject_output_split_seg_session
             )
 
-            best_atlas = find_best_atlas(subject_output_split_seg_session, recons_volumes_folder)
+            best_atlas = find_best_atlas(subject_output_split_seg_session, subject, session, recons_volumes_folder)
 
             print(f"\t\tBest atlas: {best_atlas}")
 
