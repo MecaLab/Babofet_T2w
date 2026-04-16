@@ -16,8 +16,8 @@ if __name__ == "__main__":
         os.makedirs(dst_path)
 
     labels_map = {
-        "right": 2,  # WM right
-        "left": 6,  # WM left
+        "R": 2,  # WM right
+        "L": 6,  # WM left
     }
 
     args_extraction = sys.argv[1]  # should be viz or full
