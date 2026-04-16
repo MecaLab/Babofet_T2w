@@ -16,7 +16,7 @@ The pipeline consists of four main steps, executed sequentially via the `run_pip
 The pipeline is designed to be run on a Slurm cluster.
 
 ```bash
-sbatch run_pipeline.slurm <subject> <session>
+sbatch run_pipeline_niftymic.slurm <subject> <session>
 ```
 
 **Arguments:**
@@ -27,7 +27,7 @@ sbatch run_pipeline.slurm <subject> <session>
 **Example:**
 
 ```bash
-sbatch run_pipeline.slurm sub-Aziza ses-01
+sbatch run_pipeline_niftymic.slurm sub-Aziza ses-01
 ```
 
 ## Detailed Steps
