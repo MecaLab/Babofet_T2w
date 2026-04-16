@@ -268,11 +268,8 @@ if __name__ == "__main__":
                 session=session
             )
 
-            print(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
-            print(warped_best_seg)
 
-            exit()
 
             fixed_seg = ants.image_read(t2_subj_seg)
 
@@ -302,3 +299,5 @@ if __name__ == "__main__":
             seg_out = fixed_seg.new_image_like(new_data)
             ants.image_write(seg_out, file_seg_out)
             print("\tSplitted segmentation saved as:", file_seg_out)
+
+            exit()
