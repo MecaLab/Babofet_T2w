@@ -6,9 +6,14 @@ import configuration as cfg
 
 
 if __name__ == "__main__":
-    base_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
-    src_path = os.path.join(base_path, "Seg_Hemi")
-    dst_path = os.path.join(base_path, "Surf_Hemi")
+    atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
+
+    intermediate_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "surf-slam")
+    input_split_seg = os.path.join(intermediate_path, "Seg_Hemi")
+
+    dst_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "surf-slam")
+    if not os.path.exists(dst_path):
+        os.makedirs(dst_path)
 
     labels_map = {
         "right": 2,  # WM right
@@ -16,13 +21,9 @@ if __name__ == "__main__":
     }
 
     args_extraction = sys.argv[1]  # should be viz or full
-    suffix = "_corrected"
 
-    if not os.path.exists(dst_path):
-        os.makedirs(dst_path)
-
-    for subject in os.listdir(src_path):
-        subject_src_path = os.path.join(src_path, subject)
+    for subject in os.listdir(input_split_seg):
+        subject_src_path = os.path.join(input_split_seg, subject)
         subject_dst_path = os.path.join(dst_path, subject)
 
         if not os.path.exists(subject_dst_path):
@@ -31,14 +32,18 @@ if __name__ == "__main__":
         print(f"Processing subject: {subject}")
 
         for session in os.listdir(subject_src_path):
-            session_file = f"{subject}_{session}_hemi{suffix}.nii.gz"
-            if not os.path.exists(os.path.join(subject_src_path, session, session_file)):
+            session_file = os.path.join(subject_src_path, session, f"{subject}_{session}_hemi.nii.gz")
+
+            if not os.path.exists(session_file):
                 continue
-            print(f"\tSession file: {session_file}")
+
+            print(f"\tProcessing session: {session}")
 
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
-                output_file = session_file.replace(f"_hemi{suffix}.nii.gz", f"{suffix}.{label_name}.white.gii")
+                output_file = session_file.replace(f"_hemi.nii.gz", f".{label_name}.white.gii")
+                print(output_file)
+                exit()
 
                 if os.path.exists(os.path.join(subject_dst_path, output_file)):
                     print(f"\t\t\tOutput file {output_file} already exists. Skipping.")
@@ -61,6 +66,6 @@ if __name__ == "__main__":
                     output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file}"
 
                     subprocess.run([
-                        "singularity", "run", "-B", f"{base_path}:/home/atlas_fetal_rhesus_v2", "surf_proc_v0.0.2a.sif",
+                        "singularity", "run", "-B", f"{atlas_path}:/home/atlas_fetal_rhesus_v2", "surf_proc_v0.0.2a.sif",
                         "generate_mesh", "-s", input_full_path, "-l", str(label_val), "-m", output_full_path
                     ], check=True)
