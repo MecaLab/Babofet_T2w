@@ -3,15 +3,20 @@ import os
 import sys
 import ants as ants
 import numpy as np
-import shutil
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def fsl_register(atlas_dir, base_subj_path, output_dir):
-    reference = os.path.join(base_subj_path, "srr_template_debiased.nii.gz")
-    reference_mask = os.path.join(base_subj_path, "srr_template_mask.nii.gz")
-    new_reference = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
+def fsl_register(atlas_dir, base_subj_path, subject, session, output_dir):
+
+    # SUBJECT_SESSION_rec-niftymic_desc-brainbg_T2w.nii.gz
+    reference = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz")
+
+    # SUBJECT_SESSION_rec-niftymic_desc-brain_mask.nii.gz
+    reference_mask = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz")
+
+    # SUBJECT_SESSION_rec-niftymic_desc-brain_T2w.nii.gz
+    new_reference = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_T2w.nii.gz")
 
     subprocess.run(
         ["fslmaths", reference, "-mul", reference_mask, new_reference],
@@ -170,58 +175,59 @@ def apply_ants_transformations(input_atlas_registered, base_subj_path, moving_se
 
 
 if __name__ == "__main__":
-    recons_folder = cfg.RECONS_FOLDER
+
+    input_volume_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
+    input_seg_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "longiseg")
+    intermediate_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "surf-slam")
+
     atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
-
     volumes_atlas_path = os.path.join(atlas_path, "Volumes")
-    segmentation_atlas_path = os.path.join(atlas_path, "Segmentations", "structures_dilated")
-    output_split_seg = os.path.join(atlas_path, "Seg_Hemi")
 
-    suffix = "_corrected"
-    seg_3d_folder = "pred_dataset_12_corrected"  # Change this folder name later !!!
+    segmentation_atlas_path = os.path.join(intermediate_path, "structures_dilated")
+    if not os.path.exists(segmentation_atlas_path):
+        print(f"Error ! {segmentation_atlas_path} does not exist. Run the previous script before")
+        exit()
 
+    output_split_seg = os.path.join(intermediate_path, "Seg_Hemi")
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
 
-    subjects = ["Fabienne", "Forme", "Aziza", "Filoutte", "Bibi", "Formule", "Filoutte", "Borgne"]
+    subjects = ["sub-Borgne"]
+    seg_3d_folder = os.path.join(cfg.BASE_NIOLON_PATH, "gt_seg")
 
-    for subject in os.listdir(recons_folder):
-        if subject not in subjects:
-            continue
-        print(f"Starting {subject}")
-
+    for subject in subjects:
+        subject_path = os.path.join(input_seg_path, subject)
         subject_output_split_seg = os.path.join(output_split_seg, subject)
 
-        if not os.path.exists(subject_output_split_seg):
-            os.makedirs(subject_output_split_seg)
-
-        subject_path = os.path.join(recons_folder, subject)
+        print(f"Processing {subject}")
         for session in os.listdir(subject_path):
-            print(f"\tSession: {session}")
+            print(f"\tProcessing {session}")
+            session_path = os.path.join(subject_path, session, "anat")
 
-            t2_subj_seg = os.path.join(cfg.BASE_NIOLON_PATH, seg_3d_folder, f"{subject}_{session}.nii.gz")
-            if not os.path.exists(t2_subj_seg):
-                print(f"\t\tSegmentation for {subject} {session} not found, skipping...")
-                continue
+            # SUBJECT_SESSION_desc-longiseg_dseg.nii.gz
+            t2_subj_seg = os.path.join(session_path, f"{subject}_{session}_desc-longiseg_dseg.nii.gz")
 
-            session_subject_path = os.path.join(subject_path, session)
+            # SUBJECT_SESSION_rec-niftymic_desc-brain_T2w.nii.gz
+            recons_volumes_folder = os.path.join(input_volume_path, subject, session, "anat")
+
             subject_output_split_seg_session = os.path.join(subject_output_split_seg, session)
             if not os.path.exists(subject_output_split_seg_session):
                 os.makedirs(subject_output_split_seg_session)
 
-            recons_rhesus_folder = os.path.join(session_subject_path, "recons_rhesus/recon_template_space")
-
-            if not os.path.exists(recons_rhesus_folder):
-                print(f"\t\trecons_rhesus folder not found for {subject} {session}, skipping...")
-                continue
-
-            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi{suffix}.nii.gz")
+            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi.nii.gz")
             if os.path.exists(file_seg_out):
                 print(f"\t\tSegmentation for {subject} {session} already exists, skipping...")
                 continue
 
-            fsl_register(volumes_atlas_path, recons_rhesus_folder, subject_output_split_seg_session)
+            fsl_register(
+                atlas_dir=volumes_atlas_path,
+                base_subj_path=recons_volumes_folder,
+                subject=subject,
+                session=session,
+                output_dir=subject_output_split_seg_session
+            )
 
+            exit()
             best_atlas = find_best_atlas(subject_output_split_seg_session, recons_rhesus_folder)
 
             print(f"\t\tBest atlas: {best_atlas}")
@@ -251,19 +257,17 @@ if __name__ == "__main__":
                 fixed_seg = ants.from_numpy(seg_array, origin=fixed_seg.origin, spacing=fixed_seg.spacing,
                                                 direction=fixed_seg.direction)
 
-                # ants.image_write(fixed_seg, os.path.join(cfg.BASE_NIOLON_PATH, "segmentations_nnunet_mattia", f"{subject}_{session}_corrected_3.nii.gz"))
-
             new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
 
-            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # CSF droit
-            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 2)] = 2  # WM droit
-            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 3)] = 3  # GM droit
-            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 4)] = 2  # merge ventricule droit into wm
+            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # Right CSF
+            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 2)] = 2  # Right WM
+            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 3)] = 3  # Right GM
+            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 4)] = 2  # merge right ventricule into wm
 
-            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 1)] = 5  # CSF gauche
-            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 2)] = 6  # WM gauche
-            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 3)] = 7  # GM gauche
-            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 4)] = 6  # merge Ventricule gauche into wm
+            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 1)] = 5  # Left CSF
+            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 2)] = 6  # Left WM
+            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 3)] = 7  # Left GM
+            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 4)] = 6  # merge left ventricule into wm
 
             new_data[(warped_best_seg.numpy() == 3)] = 9  # Tronc
             new_data[(warped_best_seg.numpy() == 4)] = 10  # Cervelet
