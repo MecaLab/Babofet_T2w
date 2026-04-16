@@ -44,11 +44,6 @@ DATA_PATH = os.path.join(BASE_PATH, "recons_folder")
 LONGISEG_PYTHON_PATH = os.path.join(CODE_PATH, "LongiSeg")
 TABLE_DATA_PATH = os.path.join(CODE_PATH, "table_data")
 
-# nnUNet path
-NNUNET_RAW_PATH_MESO = os.path.join(BASE_PATH, "nnUNet_raw")
-NNUNET_RESULTS_PATH_MESO = os.path.join(BASE_PATH, "nnUNet_trained_models")
-NNUNET_PREPROCESSED_PATH_MESO = os.path.join(BASE_PATH, "nnUNet_preprocessed")
-
 # LongiSeg path
 LONGISEG_RAW_PATH_MESO = os.path.join(BASE_PATH, "LongiSeg_raw")
 LONGISEG_RESULTS_PATH_MESO = os.path.join(BASE_PATH, "LongiSeg_results")
