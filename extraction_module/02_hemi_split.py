@@ -268,7 +268,9 @@ if __name__ == "__main__":
                 session=session
             )
 
+            print(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
+            print(warped_best_seg)
 
             exit()
 
