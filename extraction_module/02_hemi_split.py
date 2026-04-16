@@ -227,11 +227,22 @@ if __name__ == "__main__":
                 output_dir=subject_output_split_seg_session
             )
 
-            best_atlas = find_best_atlas(subject_output_split_seg_session, subject, session, recons_volumes_folder)
+            best_atlas = find_best_atlas(
+                input_atlas_registered=subject_output_split_seg_session,
+                subject=subject,
+                session=session,
+                base_subj_path=recons_volumes_folder
+            )
             print(f"\t\tBest atlas: {best_atlas}")
             best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
 
-            convert_fsl2ants(subject_output_split_seg_session, best_atlas_path, recons_volumes_folder)
+            convert_fsl2ants(
+                input_atlas_registered=subject_output_split_seg_session,
+                best_atlas=best_atlas_path,
+                subject=subject,
+                session=session,
+                base_subj_path=recons_volumes_folder
+            )
 
             exit()
 
