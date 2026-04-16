@@ -63,13 +63,13 @@ if __name__ == "__main__":
                         "-r", "0",
                         "-n", "10"
                     ], check=True)
-                
+
                 elif args_extraction == "full":
                     surf_proc_soft_path = os.path.join(cfg.SOFTS_PATH, "surf_proc_v0.0.2a.sif")
                     # input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
                     # output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file_pattern}"
 
-                    input_full_path = f"/home/Seg_Hemi/{subject}/{session}/{hemi_split_basename}"
+                    input_full_path = f"/home/{subject}/{session}/{hemi_split_basename}"
                     output_full_path = f"/output/{subject}/{session}/{output_file_pattern}"
 
                     subprocess.run([
