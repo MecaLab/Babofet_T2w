@@ -32,7 +32,8 @@ if __name__ == "__main__":
         print(f"Processing subject: {subject}")
 
         for session in os.listdir(subject_src_path):
-            session_file = os.path.join(subject_src_path, session, f"{subject}_{session}_hemi.nii.gz")
+            hemi_split_basename = f"{subject}_{session}_hemi.nii.gz"
+            session_file = os.path.join(subject_src_path, session, hemi_split_basename)
 
             if not os.path.exists(session_file):
                 continue
@@ -41,7 +42,7 @@ if __name__ == "__main__":
 
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
-                output_file = session_file.replace(f"_hemi.nii.gz", f".{label_name}.white.gii")
+                output_file = hemi_split_basename.replace(f"_hemi.nii.gz", f".{label_name}.white.gii")
                 print(output_file)
                 exit()
 
