@@ -1,3 +1,4 @@
+import argparse
 import subprocess
 import os
 import sys
@@ -177,6 +178,10 @@ def apply_ants_transformations(input_atlas_registered, base_subj_path, moving_se
 
 if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser(description="Split brain segmentation into hemispheres and register to atlas.")
+    parser.add_argument("--subject", type=str, help="Subject ID to process (e.g., sub-Borgne)")
+    args = parser.parse_args()
+
     input_volume_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
     input_seg_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "longiseg")
     intermediate_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "surf-slam")
@@ -193,7 +198,7 @@ if __name__ == "__main__":
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
 
-    subjects = ["sub-Borgne"]
+    subjects = [args.subject]
     seg_3d_folder = os.path.join(cfg.BASE_NIOLON_PATH, "gt_seg")
 
     for subject in subjects:

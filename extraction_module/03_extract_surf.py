@@ -1,3 +1,4 @@
+import argparse
 import os
 import sys
 import subprocess
@@ -6,6 +7,10 @@ import configuration as cfg
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Extract brain surfaces from hemisphere segmentations.")
+    parser.add_argument("--mode", type=str, choices=["viz", "full"], help="Surface extraction mode: 'viz' or 'full'")
+    args = parser.parse_args()
+
     intermediate_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "surf-slam")
     input_split_seg = os.path.join(intermediate_path, "Seg_Hemi")
 
@@ -18,7 +23,7 @@ if __name__ == "__main__":
         "L": 6,  # WM left
     }
 
-    args_extraction = sys.argv[1]  # should be viz or full
+    args_extraction = args.mode
 
     for subject in os.listdir(input_split_seg):
         subject_src_path = os.path.join(input_split_seg, subject)
@@ -44,7 +49,7 @@ if __name__ == "__main__":
             for label_name, label_val in labels_map.items():
                 print(f"\t\tProcessing {label_name}")
 
-                # sub-<sub>_ses-<ses>_hemi-L_white.surf.gii
+                # SUBJECT_SESSION_hemi-SIDE_white.surf.gii
                 output_file_pattern = f"{subject}_{session}_hemi-{label_name}_white.surf.gii"
 
                 if os.path.exists(os.path.join(full_subject_dst_path, output_file_pattern)):
@@ -66,8 +71,6 @@ if __name__ == "__main__":
 
                 elif args_extraction == "full":
                     surf_proc_soft_path = os.path.join(cfg.SOFTS_PATH, "surf_proc_v0.0.2a.sif")
-                    # input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
-                    # output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file_pattern}"
 
                     input_full_path = f"/home/{subject}/{session}/{hemi_split_basename}"
                     output_full_path = f"/output/{subject}/{session}/anat/{output_file_pattern}"

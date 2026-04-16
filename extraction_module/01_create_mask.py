@@ -56,6 +56,11 @@ if __name__ == "__main__":
         sample_seg_tronc_dilated = os.path.join(output_structure_dir, f"ONPRC_G{ts}_NFseg_tronc_dilated.nii.gz")
 
         sample_seg_bm = os.path.join(output_structure_dir, f"ONPRC_G{ts}_NFseg_bm.nii.gz")
+        final_output = os.path.join(output_structure_dir, f"ONPRC_G{ts}_structures_dilated.nii.gz")
+
+        if os.path.exists(sample_seg_bm) and os.path.exists(final_output):
+            print("\tFiles already exist, skipping...")
+            continue
 
         should_del_files = [
             sample_seg_hemi,
@@ -120,7 +125,7 @@ if __name__ == "__main__":
         tmp_step = os.path.join(output_structure_dir, f"ONPRC_G{ts}_NFseg_structures_tmp.nii.gz")
 
         overlay_structure(sample_seg_hemi, sample_seg_tronc_dilated, tmp_step, structure_label=3)
-        final_output = os.path.join(output_structure_dir, f"ONPRC_G{ts}_structures_dilated.nii.gz")
+
         overlay_structure(tmp_step, sample_seg_cervelet_dilated, final_output, structure_label=4)
 
         should_del_files.append(tmp_step)
