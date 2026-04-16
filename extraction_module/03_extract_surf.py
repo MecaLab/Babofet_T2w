@@ -70,7 +70,7 @@ if __name__ == "__main__":
                     # output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file_pattern}"
 
                     input_full_path = f"/home/{subject}/{session}/{hemi_split_basename}"
-                    output_full_path = f"/output/{subject}/{session}/{output_file_pattern}"
+                    output_full_path = f"/output/{subject}/{session}/anat/{output_file_pattern}"
 
                     subprocess.run([
                         "singularity", "run",
