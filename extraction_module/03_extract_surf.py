@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
                 if args_extraction == "viz":
                     input_full_path = os.path.join(subject_src_path, session, session_file)
-                    output_full_path = os.path.join(subject_dst_path, output_file_pattern)
+                    output_full_path = os.path.join(full_subject_dst_path, output_file_pattern)
 
                     subprocess.run([
                         "python", "surface_processing/generate_mesh.py",
