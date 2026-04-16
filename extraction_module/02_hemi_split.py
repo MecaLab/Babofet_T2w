@@ -231,7 +231,7 @@ if __name__ == "__main__":
             print(f"\t\tBest atlas: {best_atlas}")
             best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
 
-            convert_fsl2ants(subject_output_split_seg_session, best_atlas_path, recons_rhesus_folder)
+            convert_fsl2ants(subject_output_split_seg_session, best_atlas_path, recons_volumes_folder)
 
             exit()
 
