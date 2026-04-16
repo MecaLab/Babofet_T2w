@@ -153,8 +153,8 @@ def ants_nonlinear_registration(input_atlas_registered, base_subj_path, best_atl
         )
 
 
-def apply_ants_transformations(input_atlas_registered, base_subj_path, moving_seg, affine_file):
-    ref = os.path.join(base_subj_path, "masked_template_debiased.nii.gz")
+def apply_ants_transformations(input_atlas_registered, base_subj_path, moving_seg, affine_file, subject, session):
+    ref_mask = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz")
 
     output = os.path.join(input_atlas_registered, "warped_regionals.nii.gz")
     transform_file = os.path.join(input_atlas_registered, "ants_1Warp.nii.gz")
@@ -164,7 +164,7 @@ def apply_ants_transformations(input_atlas_registered, base_subj_path, moving_se
             "antsApplyTransforms",
             "--dimensionality", "3",
             "--input", f"{moving_seg}",
-            "--reference-image", f"{ref}",
+            "--reference-image", f"{ref_mask}",
             "--output", output,
             "--transform", transform_file,
             "--transform", affine_file,
@@ -246,7 +246,6 @@ if __name__ == "__main__":
 
             mask_best_atlas = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "NFseg_bm"))
 
-            # input_atlas_registered, base_subj_path, best_atlas, best_atlas_mask, filename
             ants_nonlinear_registration(
                 input_atlas_registered=subject_output_split_seg_session,
                 base_subj_path=recons_volumes_folder,
@@ -255,14 +254,23 @@ if __name__ == "__main__":
                 subject=subject,
                 session=session
             )
-            exit()
 
             subj_seg = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "structures_dilated"))
 
             affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace("_affine.nii.gz", "_affine.txt"))
-            apply_ants_transformations(subject_output_split_seg_session, recons_rhesus_folder, subj_seg, affine_file)
+
+            apply_ants_transformations(
+                input_atlas_registered=subject_output_split_seg_session,
+                base_subj_path=recons_volumes_folder,
+                moving_seg=subj_seg,
+                affine_file=affine_file,
+                subject=subject,
+                session=session
+            )
 
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
+
+            exit()
 
             fixed_seg = ants.image_read(t2_subj_seg)
 
