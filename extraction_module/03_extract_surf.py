@@ -6,8 +6,6 @@ import configuration as cfg
 
 
 if __name__ == "__main__":
-    atlas_path = os.path.join(cfg.BASE_NIOLON_PATH, "atlas_fetal_rhesus_v2")
-
     intermediate_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "surf-slam")
     input_split_seg = os.path.join(intermediate_path, "Seg_Hemi")
 
@@ -53,10 +51,11 @@ if __name__ == "__main__":
                     print(f"\t\t\tOutput file {output_file_pattern} already exists. Skipping.")
                     continue
 
+                output_full_path = os.path.join(full_subject_dst_path, output_file_pattern)
 
                 if args_extraction == "viz":
                     input_full_path = os.path.join(subject_src_path, session, session_file)
-                    output_full_path = os.path.join(full_subject_dst_path, output_file_pattern)
+
 
                     subprocess.run([
                         "python", "surface_processing/generate_mesh.py",
@@ -67,10 +66,17 @@ if __name__ == "__main__":
                         "-n", "10"
                     ], check=True)
                 elif args_extraction == "full":
-                    input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
-                    output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file_pattern}"
+                    surf_proc_soft_path = os.path.join(cfg.SOFTS_PATH, "surf_proc_v0.0.2a.sif")
+                    # input_full_path = f"/home/atlas_fetal_rhesus_v2/Seg_Hemi/{subject}/{session}/{session_file}"
+                    # output_full_path = f"/home/atlas_fetal_rhesus_v2/Surf_Hemi/{subject}/{output_file_pattern}"
+
+                    input_full_path = f"/home/{session_file}"
+                    output_full_path = f"/output/{output_full_path}"
 
                     subprocess.run([
-                        "singularity", "run", "-B", f"{atlas_path}:/home/atlas_fetal_rhesus_v2", "surf_proc_v0.0.2a.sif",
+                        "singularity", "run",
+                        "-B", f"{input_split_seg}:/home/",
+                        "-B", f"{dst_path}:/output/",
+                        surf_proc_soft_path,
                         "generate_mesh", "-s", input_full_path, "-l", str(label_val), "-m", output_full_path
                     ], check=True)
