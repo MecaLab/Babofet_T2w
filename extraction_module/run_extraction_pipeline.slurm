@@ -31,20 +31,20 @@ module load singularity
 
 # Step 1: Mask Creation
 echo "Step 1: Running 01_create_mask.py"
-python 01_create_mask.py
+python extraction_module/01_create_mask.py
 echo "Step 1 completed."
 echo "------------------------------------------------------------------------------"
 
 # Step 2: Hemisphere Splitting and Registration
 echo "Step 2: Running 02_hemi_split.py for ${SUBJECT}"
-python 02_hemi_split.py --subject "${SUBJECT}"
+python extraction_module/02_hemi_split.py --subject "${SUBJECT}"
 echo "Step 2 completed."
 echo "------------------------------------------------------------------------------"
 
 # Step 3: Surface Extraction
 # Note: The script automatically iterates over all subjects found in the input folder.
 echo "Step 3: Running 03_extract_surf.py with mode ${EXTRACTION_MODE}"
-python 03_extract_surf.py --mode "${EXTRACTION_MODE}"
+python extraction_module/03_extract_surf.py --mode "${EXTRACTION_MODE}"
 echo "Step 3 completed."
 echo "------------------------------------------------------------------------------"
 
