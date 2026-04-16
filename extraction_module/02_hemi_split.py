@@ -103,9 +103,10 @@ def convert_fsl2ants(input_atlas_registered, best_atlas, subject, session, base_
     affine_file = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.mat"))
     oitk = os.path.join(input_atlas_registered, best_atlas_name.replace(".nii.gz", "_affine.txt"))
 
+    tools_c3d_affine_tool_path = os.path.join(cfg.SOFTS_PATH, "c3d_affine_tool")
     subprocess.run(
         [
-            "tools/c3d_affine_tool",
+            tools_c3d_affine_tool_path,
             "-ref", os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz"),
             "-src", best_atlas,
             affine_file,
@@ -269,7 +270,6 @@ if __name__ == "__main__":
             )
 
             warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
-
 
             fixed_seg = ants.image_read(t2_subj_seg)
 
