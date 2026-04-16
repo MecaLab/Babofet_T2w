@@ -89,7 +89,7 @@ def find_best_atlas(input_atlas_registered, subject, session, base_subj_path):
     return best_atlas
 
 
-def convert_fsl2ants(input_atlas_registered, best_atlas, base_subj_path):
+def convert_fsl2ants(input_atlas_registered, best_atlas, subject, session, base_subj_path):
     """
     tools/c3d_affine_tool \
         -ref ${REFERENCE} \
@@ -106,7 +106,7 @@ def convert_fsl2ants(input_atlas_registered, best_atlas, base_subj_path):
     subprocess.run(
         [
             "tools/c3d_affine_tool",
-            "-ref", os.path.join(base_subj_path, "masked_template_debiased.nii.gz"),
+            "-ref", os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz"),
             "-src", best_atlas,
             affine_file,
             "-fsl2ras",
@@ -228,14 +228,12 @@ if __name__ == "__main__":
             )
 
             best_atlas = find_best_atlas(subject_output_split_seg_session, subject, session, recons_volumes_folder)
-
             print(f"\t\tBest atlas: {best_atlas}")
-
-            exit()
-
             best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
 
             convert_fsl2ants(subject_output_split_seg_session, best_atlas_path, recons_rhesus_folder)
+
+            exit()
 
             mask_best_atlas = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "NFseg_bm"))
 
