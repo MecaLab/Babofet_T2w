@@ -106,8 +106,9 @@ cat << EOF > $POST_TRAIN_SLURM_FILE
 #SBATCH --account='b391'
 #SBATCH --partition=$PRED_PARTITION
 #SBATCH --gres=gpu:1
+#SBATCH --mem=64G
+#SBATCH -c 4
 #SBATCH --time=01:30:00
-#SBATCH -c 1
 #SBATCH -o logs/post_training_%j.out
 #SBATCH -e logs/post_training_%j.err
 
@@ -121,8 +122,8 @@ conda activate longiseg_new
 
 echo "--- STEP 3: PREDICTION ---"
 LongiSeg_find_best_configuration $DATASET_ID -c 3d_fullres -tr $TRAINER -f 0 1 2 3 4
-LongiSeg_predict -i $INPUT_FOLDER -o $OUTPUT_FOLDER -d $DATASET_ID -c 3d_fullres -tr $TRAINER -f 0 1 2 3 4 --save_probabilities -pat $PATIENTS_JSON_PATH
-LongiSeg_apply_postprocessing -i $OUTPUT_FOLDER -o $OUTPUT_FOLDER -pp_pkl_file $PKL_FILE -np 8 -plans_json $PLANS_JSON
+LongiSeg_predict -i $INPUT_FOLDER -o $OUTPUT_FOLDER -d $DATASET_ID -c 3d_fullres -tr $TRAINER -f 0 1 2 3 4 -pat $PATIENTS_JSON_PATH
+LongiSeg_apply_postprocessing -i $OUTPUT_FOLDER -o $OUTPUT_FOLDER -pp_pkl_file $PKL_FILE -np 2 -plans_json $PLANS_JSON
 
 echo "--- STEP 4: METRICS ---"
 python segmentation_module/train_module/02_metrics.py --models $DATASET_ID
