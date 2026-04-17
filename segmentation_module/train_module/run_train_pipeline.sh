@@ -107,8 +107,7 @@ cat << EOF > $POST_TRAIN_SLURM_FILE
 #SBATCH --partition=$PRED_PARTITION
 #SBATCH --gres=gpu:1
 #SBATCH --time=01:30:00
-#SBATCH -c 4
-#SBATCH -J post_Dataset$DATASET_ID
+#SBATCH -c 1
 #SBATCH -o logs/post_training_%j.out
 #SBATCH -e logs/post_training_%j.err
 
@@ -116,6 +115,7 @@ module purge
 module load userspace/all
 module load gcc/14.1.0
 module load cuda/12.4
+
 source ~/.bashrc
 conda activate longiseg_new
 
