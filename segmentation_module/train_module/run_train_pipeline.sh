@@ -16,6 +16,7 @@ TRAIN_PARTITION=${4:-volta}
 PRED_PARTITION=${5:-volta}
 
 DATASET_ID_PADDED=$(printf "%03d" $DATASET_ID)
+PROJECT_DIR=$(pwd)
 
 echo "=================================================================="
 echo "Setting up environment..."
@@ -35,20 +36,37 @@ CODE_PATH=$(python -c "import configuration as cfg; print(cfg.CODE_PATH)")
 LONGISEG_RAW_PATH_MESO=$(python -c "import configuration as cfg; print(cfg.LONGISEG_RAW_PATH_MESO)")
 LONGISEG_RESULTS_PATH_MESO=$(python -c "import configuration as cfg; print(cfg.LONGISEG_RESULTS_PATH_MESO)")
 
+# Define paths early to check for model existence
+DATASET_DIR="$LONGISEG_RAW_PATH_MESO/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}"
+INPUT_FOLDER="$DATASET_DIR/imagesTs"
+PATIENTS_JSON_PATH="$DATASET_DIR/patientsTs.json"
+OUTPUT_FOLDER="$CODE_PATH/snapshots/res_seg/pred_dataset_${DATASET_ID}"
+MODEL_PATH="$LONGISEG_RESULTS_PATH_MESO/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}/${TRAINER}__nnUNetPlans__3d_fullres"
+CROSSVAL_PATH="$MODEL_PATH/crossval_results_folds_0_1_2_3_4"
+PKL_FILE="$CROSSVAL_PATH/postprocessing.pkl"
+PLANS_JSON="$CROSSVAL_PATH/plans.json"
+MODEL_TO_EXPORT_PATH="$LONGISEG_RESULTS_PATH_MESO/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}"
+
 echo "=================================================================="
 echo "Step 1: Preparing dataset (Local Execution)..."
 echo "=================================================================="
-# This step runs synchronously because it is fast and necessary to build the jobs
 python segmentation_module/train_module/01_prepare_dataset.py --dataset_id $DATASET_ID --name "$DATASET_NAME"
 if [ $? -ne 0 ]; then echo "Error in Step 1: Prepare Dataset"; exit 1; fi
 
 LongiSeg_plan_and_preprocess -d $DATASET_ID --verify_dataset_integrity
 
 echo "=================================================================="
-echo "Step 2: Submitting Training Job Array..."
+echo "Step 2: Training Job Array..."
 echo "=================================================================="
-TRAIN_SLURM_FILE="segmentation_module/train_module/slurm_files/run_training.slurm"
-cat << EOF > $TRAIN_SLURM_FILE
+TRAIN_JOB_ID=""
+
+if [ -d "$MODEL_PATH" ]; then
+    echo "Model directory already exists: $MODEL_PATH"
+    echo "Skipping Step 2 (Training) and proceeding directly to Post-Processing."
+else
+    echo "Submitting Training Job Array..."
+    TRAIN_SLURM_FILE="segmentation_module/train_module/slurm_files/run_training.slurm"
+    cat << EOF > $TRAIN_SLURM_FILE
 #!/bin/bash
 #SBATCH --account='b391'
 #SBATCH --partition=$TRAIN_PARTITION
@@ -71,24 +89,13 @@ echo "Training fold \$SLURM_ARRAY_TASK_ID for Dataset $DATASET_ID"
 LongiSeg_train $DATASET_ID 3d_fullres \$SLURM_ARRAY_TASK_ID -tr $TRAINER --npz
 EOF
 
-# Soumission du job d'entraînement et récupération de son ID
-# --parsable permet de ne retourner que le numéro (ex: 123456) au lieu de "Submitted batch job 123456"
-TRAIN_JOB_ID=$(sbatch --parsable $TRAIN_SLURM_FILE)
-echo "Training Job Array submitted successfully! Job ID: $TRAIN_JOB_ID"
-
+    TRAIN_JOB_ID=$(sbatch --parsable $TRAIN_SLURM_FILE)
+    echo "Training Job Array submitted successfully! Job ID: $TRAIN_JOB_ID"
+fi
 
 echo "=================================================================="
-echo "Step 3, 4 & 5: Submitting Post-Processing Job (Dependent on Training)..."
+echo "Step 3, 4 & 5: Submitting Post-Processing Job..."
 echo "=================================================================="
-DATASET_DIR="$LONGISEG_RAW_PATH_MESO/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}"
-INPUT_FOLDER="$DATASET_DIR/imagesTs"
-PATIENTS_JSON_PATH="$DATASET_DIR/patientsTs.json"
-OUTPUT_FOLDER="$CODE_PATH/snapshots/res_seg/pred_dataset_${DATASET_ID}"
-MODEL_PATH="$LONGISEG_RESULTS_PATH_MESO/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}/${TRAINER}__nnUNetPlans__3d_fullres"
-CROSSVAL_PATH="$MODEL_PATH/crossval_results_folds_0_1_2_3_4"
-PKL_FILE="$CROSSVAL_PATH/postprocessing.pkl"
-PLANS_JSON="$CROSSVAL_PATH/plans.json"
-MODEL_TO_EXPORT_PATH="$LONGISEG_RESULTS_PATH_MESO/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}"
 
 mkdir -p $OUTPUT_FOLDER
 
@@ -110,7 +117,6 @@ module load gcc/14.1.0
 module load cuda/12.4
 source ~/.bashrc
 conda activate longiseg_new
-export PYTHONPATH=\$PYTHONPATH:\$(pwd)
 
 echo "--- STEP 3: PREDICTION ---"
 LongiSeg_find_best_configuration $DATASET_ID -c 3d_fullres -tr $TRAINER -f 0 1 2 3 4
@@ -126,10 +132,17 @@ python segmentation_module/train_module/05_export_model.py --export_path "$MODEL
 echo "Post-training pipeline completed successfully!"
 EOF
 
-# Soumission du job de post-traitement avec dépendance stricte sur l'entraînement
-POST_JOB_ID=$(sbatch --parsable --dependency=afterok:$TRAIN_JOB_ID $POST_TRAIN_SLURM_FILE)
-echo "Post-Processing Job submitted successfully! Job ID: $POST_JOB_ID"
-echo "This job is queued and will ONLY start when Job $TRAIN_JOB_ID completes."
+if [ -z "$TRAIN_JOB_ID" ]; then
+    # No training job was submitted, run post-processing immediately
+    POST_JOB_ID=$(sbatch --parsable $POST_TRAIN_SLURM_FILE)
+    echo "Post-Processing Job submitted successfully! Job ID: $POST_JOB_ID"
+    echo "This job is queued and will start as soon as resources are available."
+else
+    # Training job was submitted, set dependency
+    POST_JOB_ID=$(sbatch --parsable --dependency=afterok:$TRAIN_JOB_ID $POST_TRAIN_SLURM_FILE)
+    echo "Post-Processing Job submitted successfully! Job ID: $POST_JOB_ID"
+    echo "This job is queued and will ONLY start when Job $TRAIN_JOB_ID completes."
+fi
 
 echo "=================================================================="
 echo "Pipeline is fully delegated to SLURM. You can now close your terminal."

@@ -13,7 +13,7 @@ def compress_path(source_path):
         return
 
     output_filename = os.path.basename(os.path.normpath(source_path))
-
+    print("Starting ZIP process")
     try:
         # shutil.make_archive handles both files and directories
         # format='zip' is specified here
