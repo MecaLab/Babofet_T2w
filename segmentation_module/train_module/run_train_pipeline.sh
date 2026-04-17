@@ -47,23 +47,24 @@ PKL_FILE="$CROSSVAL_PATH/postprocessing.pkl"
 PLANS_JSON="$CROSSVAL_PATH/plans.json"
 MODEL_TO_EXPORT_PATH="$LONGISEG_RESULTS_PATH_MESO/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}"
 
-echo "=================================================================="
-echo "Step 1: Preparing dataset (Local Execution)..."
-echo "=================================================================="
-python segmentation_module/train_module/01_prepare_dataset.py --dataset_id $DATASET_ID --name "$DATASET_NAME"
-if [ $? -ne 0 ]; then echo "Error in Step 1: Prepare Dataset"; exit 1; fi
-
-LongiSeg_plan_and_preprocess -d $DATASET_ID --verify_dataset_integrity
-
-echo "=================================================================="
-echo "Step 2: Training Job Array..."
-echo "=================================================================="
-TRAIN_JOB_ID=""
-
 if [ -d "$MODEL_PATH" ]; then
     echo "Model directory already exists: $MODEL_PATH"
-    echo "Skipping Step 2 (Training) and proceeding directly to Post-Processing."
+    echo "Skipping Step 1 & 2 (Training) and proceeding directly to Post-Processing."
 else
+    echo "=================================================================="
+    echo "Step 1: Preparing dataset (Local Execution)..."
+    echo "=================================================================="
+    python segmentation_module/train_module/01_prepare_dataset.py --dataset_id $DATASET_ID --name "$DATASET_NAME"
+    if [ $? -ne 0 ]; then echo "Error in Step 1: Prepare Dataset"; exit 1; fi
+
+    LongiSeg_plan_and_preprocess -d $DATASET_ID --verify_dataset_integrity
+
+    echo "=================================================================="
+    echo "Step 2: Training Job Array..."
+    echo "=================================================================="
+    TRAIN_JOB_ID=""
+
+
     echo "Submitting Training Job Array..."
     TRAIN_SLURM_FILE="segmentation_module/train_module/slurm_files/run_training.slurm"
     cat << EOF > $TRAIN_SLURM_FILE
