@@ -125,7 +125,7 @@ LongiSeg_predict -i $INPUT_FOLDER -o $OUTPUT_FOLDER -d $DATASET_ID -c 3d_fullres
 LongiSeg_apply_postprocessing -i $OUTPUT_FOLDER -o $OUTPUT_FOLDER -pp_pkl_file $PKL_FILE -np 8 -plans_json $PLANS_JSON
 
 echo "--- STEP 4: METRICS ---"
-python segmentation_module/train_module/02_metrics.py --dataset_id $DATASET_ID
+python segmentation_module/train_module/02_metrics.py --models $DATASET_ID
 
 echo "--- STEP 5: EXPORT ---"
 python segmentation_module/train_module/03_export_model.py --export_path "$MODEL_TO_EXPORT_PATH"
