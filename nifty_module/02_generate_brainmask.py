@@ -22,8 +22,6 @@ if __name__ == "__main__":
     # Construct the correct absolute path to the inference script
     current_script_dir = os.path.dirname(os.path.abspath(__file__))
     inference_script_path = os.path.join(current_script_dir, "fetalbet_module", "ensemble_inference.py")
-
-    print(f"\tProcessing {session}")
     subject_path = os.path.join(input_path, subject, session)
 
     output_subject_path = os.path.join(ouput_path, subject, session, "anat")
