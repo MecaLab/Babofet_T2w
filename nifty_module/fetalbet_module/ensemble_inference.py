@@ -28,6 +28,9 @@ def run_majority_voting_pipeline(image_path, output_folder):
     temp_dir = Path(f"tmp_{uuid.uuid4().hex}")
     temp_dir.mkdir(parents=True)
 
+    current_script_dir = os.path.dirname(os.path.abspath(__file__))
+    inference_script_path = os.path.join(current_script_dir, "inference.py")
+
     print("Running inference with each model...")
     for model in model_paths:
         fold_name = model.split("/")[-2]
@@ -35,7 +38,7 @@ def run_majority_voting_pipeline(image_path, output_folder):
         pred_dir.mkdir(parents=True, exist_ok=True)
 
         subprocess.run([
-            'python', 'inference.py',
+            'python', inference_script_path,
             '--saved_model_path', os.path.join(cfg.SOFTS_PATH, "weights", model),
             '--input_path', str(image_path),
             '--output_path', str(pred_dir)
