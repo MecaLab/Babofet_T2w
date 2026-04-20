@@ -31,8 +31,6 @@ echo "=================================================================="
 
 module purge
 module load all
-module load FSL
-module load singularity
 module load ANTS
 
 source ~/.bashrc
@@ -47,6 +45,14 @@ if [ $? -ne 0 ]; then echo "Error in Step 1"; exit 1; fi
 echo "Running Step 2: Brainmask generation using FetalBET"
 python nifty_module/02_generate_brainmask.py --subject "$SUBJECT" --session "$SESSION"
 if [ $? -ne 0 ]; then echo "Error in Step 2"; exit 1; fi
+
+module load FSL
+python nifty_module/02_bis_geometry_match.py --subject "$SUBJECT" --session "$SESSION"
+if [ $? -ne 0 ]; then echo "Error in Step 2 bis"; exit 1; fi
+
+module purge
+module load singularity
+module load ANTS
 
 echo "Test mode: Pipeline stopped successfully after Step 2."
 exit 0

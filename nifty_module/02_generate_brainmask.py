@@ -40,27 +40,4 @@ if __name__ == "__main__":
                 '--output_folder', output_file_path
             ])
 
-            print(f"\tResampling brain mask to T2 physical space using FLIRT...")
-
-            flirt_cmd = [
-                'flirt',
-                '-in', output_file_path,
-                '-ref', image_path,
-                '-out', output_file_path,
-                '-interp', 'nearestneighbour',
-                '-applyxfm',
-                '-usesqform'
-            ]
-            subprocess.run(flirt_cmd, check=True)
-
-            print(f"\tCopying exact geometry from T2 to brain mask using fslcpgeom...")
-
-            # Run fslcpgeom to ensure headers match perfectly
-            fslcpgeom_cmd = [
-                'fslcpgeom',
-                image_path,
-                output_file_path
-            ]
-            subprocess.run(fslcpgeom_cmd, check=True)
-
 
