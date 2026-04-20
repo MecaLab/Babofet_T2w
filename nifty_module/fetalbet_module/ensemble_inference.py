@@ -22,7 +22,7 @@ model_paths = [
     'weights/AttUNet_finetuned_fold_4_best.pth',
 ]
 
-def run_majority_voting_pipeline(image_path, output_folder):
+def run_majority_voting_pipeline(image_path, output_file_path):
     image_path = Path(image_path)
     image_filename = image_path.name
     temp_dir = Path(f"tmp_{uuid.uuid4().hex}")
@@ -66,9 +66,9 @@ def run_majority_voting_pipeline(image_path, output_folder):
     else:
         largest_component = closed
 
-    output_folder = Path(output_folder)
-    output_folder.mkdir(parents=True, exist_ok=True)
-    output_path = output_folder / image_filename.replace('.nii.gz', '_mask.nii.gz')
+    # Create the parent directory if it doesn't exist, but treat output_file_path as a file
+    output_path = Path(output_file_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     final_img = nib.Nifti1Image(largest_component, affine=pred_img.affine, header=pred_img.header)
     nib.save(final_img, output_path)

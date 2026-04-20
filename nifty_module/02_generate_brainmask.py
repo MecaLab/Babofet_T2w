@@ -38,12 +38,13 @@ if __name__ == "__main__":
             for file in os.listdir(subject_path):
                 if file.endswith(".nii.gz") and "denoised" in file:
                     image_path = os.path.join(subject_path, file)
-                    output_folder = os.path.join(output_subject_path, file)
+                    output_file_name = file.replace('.nii.gz', '_mask.nii.gz')
+                    output_file_path = os.path.join(output_subject_path, output_file_name)
 
                     subprocess.run([
                         'python', inference_script_path,
                         '--image_path', image_path,
-                        '--output_folder', output_folder
+                        '--output_folder', output_file_path
                     ])
 
 
