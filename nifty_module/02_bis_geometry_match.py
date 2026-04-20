@@ -24,15 +24,15 @@ if __name__ == "__main__":
             print(f"\tResampling brain mask to T2 physical space using FLIRT...")
 
             basename_bids_ext = file.replace('desc-brain_mask.nii.gz', 'T2w_denoised.nii.gz')
-            image_path = os.path.join(images_path, basename_bids_ext)
+            image_t2_path = os.path.join(images_path, basename_bids_ext)
 
-            file_path = os.path.join(input_subject_path, file)
+            brainmask_file_path = os.path.join(input_subject_path, file)
 
             flirt_cmd = [
                 'flirt',
-                '-in', file_path,
-                '-ref', image_path,
-                '-out', file_path,
+                '-in', brainmask_file_path,
+                '-ref', image_t2_path,
+                '-out', brainmask_file_path,
                 '-interp', 'nearestneighbour',
                 '-applyxfm',
                 '-usesqform'
@@ -44,7 +44,7 @@ if __name__ == "__main__":
             # Run fslcpgeom to ensure headers match perfectly
             fslcpgeom_cmd = [
                 'fslcpgeom',
-                image_path,
-                file_path
+                image_t2_path,
+                brainmask_file_path
             ]
             subprocess.run(fslcpgeom_cmd, check=True)

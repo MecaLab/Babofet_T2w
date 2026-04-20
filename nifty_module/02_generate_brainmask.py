@@ -34,10 +34,11 @@ if __name__ == "__main__":
             output_file_name = file.replace('T2w_denoised.nii.gz', 'desc-brain_mask.nii.gz')
             output_file_path = os.path.join(output_subject_path, output_file_name)
 
-            subprocess.run([
-                'python', inference_script_path,
-                '--image_path', image_path,
-                '--output_folder', output_file_path
-            ])
+            if not os.path.exist(output_file_path):
+                subprocess.run([
+                    'python', inference_script_path,
+                    '--image_path', image_path,
+                    '--output_folder', output_file_path
+                ])
 
 
