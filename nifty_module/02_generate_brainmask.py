@@ -23,7 +23,7 @@ if __name__ == "__main__":
             print(f"\tProcessing {session}")
             subject_path = os.path.join(input_path, subject, session)
 
-            output_subject_path = os.path.join(output_path, subject_path, session)
+            output_subject_path = os.path.join(output_path, subject, session)
             if not os.path.exists(output_subject_path):
                 os.makedirs(output_subject_path)
 
@@ -32,7 +32,6 @@ if __name__ == "__main__":
                     image_path = os.path.join(subject_path, file)
                     output_folder = os.path.join(output_subject_path, file)
 
-                    print(f"Processing {image_path}...")
                     subprocess.run([
                         'python', 'fetalbet_module/ensemble_inference.py',
                         '--image_path', image_path,
