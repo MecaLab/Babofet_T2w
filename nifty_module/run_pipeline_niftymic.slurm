@@ -32,7 +32,7 @@ echo "=================================================================="
 module purge
 module load all
 module load singularity
-module ANTS
+module load ANTS
 
 source ~/.bashrc
 conda activate longiseg  # needs tqdm, torch, monai for fetalbet inference
