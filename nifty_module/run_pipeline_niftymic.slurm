@@ -29,9 +29,13 @@ echo "Node: $SLURM_NODELIST"
 echo "Log file: $LOG_FILE"
 echo "=================================================================="
 
-conda activate longiseg  # needs tqdm, torch, monai for fetalbet inference
+module purge
+module load all
 module load singularity
-module load ANTS
+module ANTS
+
+source ~/.bashrc
+conda activate longiseg  # needs tqdm, torch, monai for fetalbet inference
 
 # Step 1: Denoising
 echo "Running Step 1: Denoising"
@@ -42,6 +46,9 @@ if [ $? -ne 0 ]; then echo "Error in Step 1"; exit 1; fi
 echo "Running Step 2: Brainmask generation using FetalBET"
 python nifty_module/02_generate_brainmask.py --subject "$SUBJECT" --session "$SESSION"
 if [ $? -ne 0 ]; then echo "Error in Step 2"; exit 1; fi
+
+echo "Test mode: Pipeline stopped successfully after Step 2."
+exit 0
 
 # Step 3: Image Reconstruction (Blocking call)
 echo "Running Step 3: Image Reconstruction"
