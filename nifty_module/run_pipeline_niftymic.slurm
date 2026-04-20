@@ -31,6 +31,7 @@ echo "=================================================================="
 
 module purge
 module load all
+module load FSL
 module load singularity
 module load ANTS
 
