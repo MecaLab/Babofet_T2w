@@ -39,7 +39,7 @@ def run_majority_voting_pipeline(image_path, output_folder):
 
         subprocess.run([
             'python', inference_script_path,
-            '--saved_model_path', os.path.join(cfg.SOFTS_PATH, "weights", model),
+            '--saved_model_path', os.path.join(cfg.SOFTS_PATH, model),
             '--input_path', str(image_path),
             '--output_path', str(pred_dir)
         ])
