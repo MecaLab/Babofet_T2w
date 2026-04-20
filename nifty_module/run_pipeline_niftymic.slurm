@@ -51,6 +51,7 @@ python nifty_module/02_bis_geometry_match.py --subject "$SUBJECT" --session "$SE
 if [ $? -ne 0 ]; then echo "Error in Step 2 bis"; exit 1; fi
 
 module purge
+module load all
 module load singularity
 module load ANTS
 
