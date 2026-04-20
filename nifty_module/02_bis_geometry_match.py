@@ -16,7 +16,7 @@ if __name__ == "__main__":
     subject = args.subject
     session = args.session
 
-    images_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "intermediate", "niftymic", subject, session)
+    images_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "niftymic", subject, session)
     input_subject_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic", subject, session, "anat")
 
     for file in os.listdir(input_subject_path):
