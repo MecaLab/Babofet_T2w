@@ -55,9 +55,6 @@ module load all
 module load singularity
 module load ANTS
 
-echo "Test mode: Pipeline stopped successfully after Step 2."
-exit 0
-
 # Step 3: Image Reconstruction (Blocking call)
 echo "Running Step 3: Image Reconstruction"
 python nifty_module/03_image_reconstruction.py --subject "$SUBJECT" --session "$SESSION"
