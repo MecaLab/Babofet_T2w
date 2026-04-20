@@ -20,7 +20,7 @@ if __name__ == "__main__":
     input_subject_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic", subject, session, "anat")
 
     for file in os.listdir(input_subject_path):
-        if file.endswith("desc-brain_mask.nii.gz"):
+        if file.endswith("desc-brain_mask.nii.gz") and "haste" in file:
             print(f"\tResampling brain mask to T2 physical space using FLIRT...")
 
             basename_bids_ext = file.replace('desc-brain_mask.nii.gz', 'T2w_denoised.nii.gz')
