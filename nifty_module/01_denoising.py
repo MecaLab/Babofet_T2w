@@ -9,8 +9,6 @@ import configuration as cfg
 def denoising_data_bids_format(input_path, output_path, subject, session):
     DENOISING_PATH_EXE = os.path.join(cfg.SOFTS_PATH, "DenoiseImage")
 
-    print(f"Processing {subject} {session}")
-
     input_session_path = os.path.join(input_path, subject, session, "anat")
     if not os.path.exists(input_session_path):
         print(f"\t\tNo anat folder for {subject} {session}, skipping.")
