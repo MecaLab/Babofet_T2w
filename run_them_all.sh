@@ -21,15 +21,15 @@ echo "Submitting pipeline jobs..."
 # Submit Step 1 and capture its Job ID using --parsable
 # --parsable forces sbatch to output ONLY the job ID
 JOB1_ID=$(sbatch --parsable nifty_module/run_pipeline_niftymic.slurm "$SUBJECT" "$SESSION")
-echo "Step 1 submitted with Job ID: $JOB1_ID"
+echo "Step 1, NiftyMIC 3D Reconstruction, submitted with Job ID: $JOB1_ID"
 
 # Submit Step 2, setting a dependency on Step 1
 # afterok means Step 2 will only start if Step 1 exits with code 0
 JOB2_ID=$(sbatch --parsable --dependency=afterok:$JOB1_ID segmentation_module/inference_module/run_inference_pipeline.sh "$SUBJECT" "$SESSION")
-echo "Step 2 submitted with Job ID: $JOB2_ID"
+echo "Step 2, LongiSeg Segmentation, submitted with Job ID: $JOB2_ID"
 
 # Submit Step 3, setting a dependency on Step 2
 JOB3_ID=$(sbatch --parsable --dependency=afterok:$JOB2_ID extraction_module/run_extraction_pipeline.slurm "$SUBJECT" "$SESSION")
-echo "Step 3 submitted with Job ID: $JOB3_ID"
+echo "Step 3, Surface Extraction, submitted with Job ID: $JOB3_ID"
 
 echo "All jobs submitted successfully."
