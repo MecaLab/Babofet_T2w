@@ -25,7 +25,7 @@ echo "Step 1 submitted with Job ID: $JOB1_ID"
 
 # Submit Step 2, setting a dependency on Step 1
 # afterok means Step 2 will only start if Step 1 exits with code 0
-JOB2_ID=$(sbatch --parsable --dependency=afterok:$JOB1_ID segmentation_module/inference_module/run_inference_pipeline.slurm "$SUBJECT" "$SESSION")
+JOB2_ID=$(sbatch --parsable --dependency=afterok:$JOB1_ID segmentation_module/inference_module/run_inference_pipeline.sh "$SUBJECT" "$SESSION")
 echo "Step 2 submitted with Job ID: $JOB2_ID"
 
 # Submit Step 3, setting a dependency on Step 2
