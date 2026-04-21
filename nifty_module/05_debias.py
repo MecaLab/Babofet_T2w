@@ -57,7 +57,7 @@ if __name__ == "__main__":
     # SUBJECT_SESSION_rec-niftymic_desc-brain_mask.nii
     out_filename = f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz"
     output_path = os.path.join(base_path, "niftymic", subject, session, "anat", out_filename)
-    shutil.copy(output_path, output_path)
+    shutil.copy(mask_path, output_path)
     print(f"Copied mask to {output_path}")
 
 
