@@ -199,7 +199,6 @@ if __name__ == "__main__":
         os.makedirs(output_split_seg)
 
     subjects = [args.subject]
-    seg_3d_folder = os.path.join(cfg.BASE_NIOLON_PATH, "gt_seg")
 
     for subject in subjects:
         subject_path = os.path.join(input_seg_path, subject)

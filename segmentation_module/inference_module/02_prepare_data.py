@@ -1,6 +1,6 @@
 import os
 import shutil
-import subprocess
+import argparse
 import sys
 from collections import defaultdict
 import json
@@ -59,14 +59,21 @@ def generate_patient_sessions_json(directory_path, output_filename="patientsTs.j
     print(f"File '{output_filename}' has been created successfully.")
 
 if __name__ == "__main__":
-    subj_sess = {
-        "Prisme": ["ses-01"]
-    }
+    parser = argparse.ArgumentParser(description="Denoise data for a specific subject and session.")
+    parser.add_argument("--subject", required=True, help="Subject ID (e.g., sub-Aziza)")
+    parser.add_argument("--session", required=True, help="Session ID (e.g., ses-01)")
+    args = parser.parse_args()
+
+    subject = args.subject
+    session = args.session
+    subj_sess = {subject: session}
 
     input_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
     output_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "longiseg", "inference_data")
     if not os.path.exists(output_path):
         os.makedirs(output_path)
+    else:
+        shutil.rmtree(output_path)
 
     mv_files(subj_sess, input_path, output_path)
 

@@ -48,11 +48,17 @@ if __name__ == "__main__":
     subprocess.run([bias_field_correction_path, "-d", "3", "-i", stack_path, "-x", mask_path, "-o", output_filename])
     print(f"N4BiasFieldCorrection done !")
 
-    # sub-Aziza_ses-02_rec-niftymic_desc-brainbg_T2w.nii.gz
+    # SUBJECT_SESSION_rec-niftymic_desc-brainbg_T2w.nii.gz
     out_filename = f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
     output_path = os.path.join(base_path, "niftymic", subject, session, "anat", out_filename)
     shutil.copy(output_filename, output_path)
-    print(f"Copied debiased image to {output_path}")
+    print(f"Copied debiased volume to {output_path}")
+
+    # SUBJECT_SESSION_rec-niftymic_desc-brain_mask.nii
+    out_filename = f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz"
+    output_path = os.path.join(base_path, "niftymic", subject, session, "anat", out_filename)
+    shutil.copy(output_path, output_path)
+    print(f"Copied mask to {output_path}")
 
 
 
