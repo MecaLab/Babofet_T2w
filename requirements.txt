@@ -20,7 +20,7 @@ scipy==1.17.1
 seaborn==0.13.2
 setuptools==80.10.2
 simpleitk==2.5.3
-skimage==0.0
+scikit-image
 threadpoolctl==3.6.0
 tifffile==2026.3.3
 torch==2.11.0
