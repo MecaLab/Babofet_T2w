@@ -1,6 +1,6 @@
 # Babofet_T2w: Fetal Brain MRI Processing Pipeline
 
-This project provides a complete, end-to-end pipeline for processing fetal rhesus macaque T2-weighted (T2w) MRI scans. The workflow starts with raw, multi-slice MRI data and produces high-resolution 3D brain volumes, tissue segmentations, and finally, 3D cortical surface models. The pipeline is built upon a BIDS dataset format.
+This project provides a complete, end-to-end pipeline for processing fetal baboons T2-weighted (T2w) MRI scans. The workflow starts with raw, multi-slice MRI data and produces high-resolution 3D brain volumes, tissue segmentations, and finally, 3D cortical surface models. The pipeline is built upon a BIDS dataset format.
 
 ## Pipeline Overview
 
