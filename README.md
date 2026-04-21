@@ -27,13 +27,9 @@ pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cpu 
 # or 
 pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126  # For Linux with GPU (Mesocentre)
 
-# 3. Clone the LongiSeg repository
+# 3. Clone the LongiSeg repository and install it
 git clone https://github.com/MIC-DKFZ/LongiSeg.git
-
-# 4. Navigate into the cloned directory
 cd LongiSeg
-
-# 5. Install the package in editable mode
 pip install -e .
 
 # 6. Set paths (Run these lines once to append to your .bashrc, make sur to replace the paths with the actual paths on your system)
@@ -41,13 +37,13 @@ echo 'export LongiSeg_raw="/path_to_data_dir/LongiSeg_raw"' >> ~/.bashrc
 echo 'export LongiSeg_preprocessed="/path_to_data_dir/LongiSeg_preprocessed"' >> ~/.bashrc
 echo 'export LongiSeg_results="/path_to_experiments_dir/LongiSeg_results"' >> ~/.bashrc
 
-source ~/.bashrc
-
 # 7. After editing the file, do
 source ~/.bashrc # to activate the new paths
 # an easy way to check if it works is to do:
 echo $LongiSeg_raw  # it will display the path you set 
 
+# 8. Install the required packages for this project
+cd .. # if you are still in the LongiSeg directory, go back to the root of the project
 pip install -r requirements.txt  # Install the required Python packages for the project
 ```
 
