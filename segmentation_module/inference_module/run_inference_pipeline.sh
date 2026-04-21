@@ -9,11 +9,13 @@ if [ "$#" -lt 5 ]; then
     exit 1
 fi
 
-ZIP_SERVER_PATH=$1
-LOCAL_ZIP_DST=$2
-DATASET_ID=$3
-DATASET_NAME=$4
-TRAINER=$5
+SUBJECT=$1
+SESSION=$2
+ZIP_SERVER_PATH=$3
+LOCAL_ZIP_DST=$4
+DATASET_ID=$5
+DATASET_NAME=$6
+TRAINER=$7
 
 DATASET_ID_PADDED=$(printf "%03d" $DATASET_ID)
 
@@ -38,7 +40,7 @@ if [ $? -ne 0 ]; then echo "Error in Step 1: Model Retrieval"; exit 1; fi
 echo "=================================================================="
 echo "Step 2: Preparing inference data..."
 echo "=================================================================="
-python segmentation_module/inference_module/02_prepare_data.py
+python segmentation_module/inference_module/02_prepare_data.py --subject "$SUBJECT" --session "$SESSION"
 if [ $? -ne 0 ]; then echo "Error in Step 2: Data Preparation"; exit 1; fi
 
 echo "=================================================================="
