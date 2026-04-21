@@ -1,12 +1,13 @@
 import os
 import sys
 import pandas as pd
-sys.path.insert(0, os.path.abspath(os.curdir))
-import configuration as cfg
 import argparse
 import subprocess
 import nibabel as nib
 import numpy as np
+import csv
+sys.path.insert(0, os.path.abspath(os.curdir))
+import configuration as cfg
 
 def get_gestational_info(female_name, session_id, tsv_file):
     # Atlas available timepoints
@@ -94,6 +95,23 @@ def run_niftymic_reconstruction(fullname_subj, stack_path, denoised_files, bm_pa
     print(f"Running NiftyMIC for {fullname_subj}...")
     subprocess.run(cmd, check=True) # This waits until NiftyMIC is finished
 
+
+def add_session_metadata(tsv_path, session_id, gestational_age):
+    fieldnames = ['session_id', 'gestational_age']
+
+    file_exists = os.path.isfile(tsv_path)
+
+    with open(tsv_path, mode='a', newline='', encoding='utf-8') as tsvfile:
+        writer = csv.DictWriter(tsvfile, fieldnames=fieldnames, delimiter='\t')
+
+        if not file_exists:
+            writer.writeheader()
+
+        writer.writerow({
+            'session_id': session_id,
+            'gestational_age': gestational_age
+        })
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Denoise data for a specific subject and session.")
     parser.add_argument("--subject", required=True, help="Subject ID (e.g., sub-Aziza)")
@@ -112,8 +130,7 @@ if __name__ == "__main__":
 
     tsv_file = os.path.join(raw_path, "raw", subject, f"{subject}_sessions.tsv")
     if not os.path.exists(tsv_file):
-        print(f"ERROR: tsv file does not exist at {tsv_file}")
-        exit()
+        add_session_metadata(tsv_file, session, gestational_age=91)
 
     stacks_path = os.path.join(derivative_path, "intermediate", "niftymic", subject, session)
     if not os.path.exists(stacks_path):
