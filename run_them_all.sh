@@ -16,40 +16,47 @@ DATASET_ID="3"
 DATASET_NAME="FullSessions"
 TRAINER="LongiSegTrainerDiffWeighting"
 
+# Define a log directory to avoid cluttering your root
+mkdir -p logs
+
 echo "Submitting pipeline jobs..."
 
 # --- Step 1: NiftyMIC ---
-if [ "$SKIP" == "skip-niftymic" ]; then
+if [ "$SKIP" == "niftymic" ]; then
     echo "Skipping Step 1: NiftyMIC"
-    JOB1_ID=""
+    PREVIOUS_JOB_ID=""
 else
-    JOB1_ID=$(sbatch --parsable nifty_module/run_pipeline_niftymic.slurm "$SUBJECT" "$SESSION")
+    JOB1_ID=$(sbatch --parsable --output="$LOG_DIR/niftymic-%j.out" nifty_module/run_pipeline_niftymic.slurm "$SUBJECT" "$SESSION")
     echo "Step 1, NiftyMIC 3D Reconstruction, submitted with Job ID: $JOB1_ID"
+    PREVIOUS_JOB_ID=$JOB1_ID
 fi
 
 # --- Step 2: Segmentation ---
-if [ "$SKIP" == "skip-segmentation" ]; then
+if [ "$SKIP" == "segmentation" ]; then
     echo "Skipping Step 2: LongiSeg"
-    JOB2_ID=$JOB1_ID
+    # PREVIOUS_JOB_ID remains whatever it was (either Job 1 or empty)
 else
-    # Build dependency string: only add it if JOB1_ID is not empty
-    DEP1=""
-    if [ ! -z "$JOB1_ID" ]; then DEP1="--dependency=afterok:$JOB1_ID"; fi
+    DEP=""
+    if [ ! -z "$PREVIOUS_JOB_ID" ]; then
+        DEP="--dependency=afterok:$PREVIOUS_JOB_ID"
+    fi
 
-    JOB2_ID=$(sbatch --parsable $DEP1 segmentation_module/inference_module/run_inference_pipeline.sh "$SUBJECT" "$SESSION" "$ZIP_SERVER_PATH" "$LOCAL_ZIP_DST" "$DATASET_ID" "$DATASET_NAME" "$TRAINER")
+    JOB2_ID=$(sbatch --parsable $DEP --output="$LOG_DIR/segmentation-%j.out" segmentation_module/inference_module/run_inference_pipeline.sh "$SUBJECT" "$SESSION" "$ZIP_SERVER_PATH" "$LOCAL_ZIP_DST" "$DATASET_ID" "$DATASET_NAME" "$TRAINER")
     echo "Step 2, LongiSeg Segmentation, submitted with Job ID: $JOB2_ID"
+    PREVIOUS_JOB_ID=$JOB2_ID
 fi
 
 # --- Step 3: Surface Extraction ---
-if [ "$SKIP" == "skip-extraction" ]; then
+if [ "$SKIP" == "extraction" ]; then
     echo "Skipping Step 3: Surface Extraction"
 else
-    # Build dependency string: use JOB2_ID if Step 2 ran, or JOB1_ID if Step 2 was skipped
-    DEP2=""
-    if [ ! -z "$JOB2_ID" ]; then DEP2="--dependency=afterok:$JOB2_ID"; fi
+    DEP=""
+    if [ ! -z "$PREVIOUS_JOB_ID" ]; then
+        DEP="--dependency=afterok:$PREVIOUS_JOB_ID"
+    fi
 
-    JOB3_ID=$(sbatch --parsable $DEP2 extraction_module/run_extraction_pipeline.slurm "$SUBJECT" "$SESSION")
+    JOB3_ID=$(sbatch --parsable $DEP --output="$LOG_DIR/extraction-%j.out" extraction_module/run_extraction_pipeline.slurm "$SUBJECT" "$SESSION")
     echo "Step 3, Surface Extraction, submitted with Job ID: $JOB3_ID"
 fi
 
-echo "All jobs submitted successfully."
+echo "All jobs submitted successfully. Logs are in $LOG_DIR"
