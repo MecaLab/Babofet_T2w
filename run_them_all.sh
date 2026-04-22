@@ -23,8 +23,7 @@ if [ -z "$JOB1_ID" ]; then echo "Failed to submit Step 1"; exit 1; fi
 echo "Step 1 submitted: $JOB1_ID"
 
 # Step 2: Inference (Will now wait for internal job because of --wait)
-JOB2_ID=$(sbatch --parsable --dependency=afterok:$JOB1_ID segmentation_module/inference_module/run_inference_pipeline.sh "$SUBJECT" "$SESSION" "$ZIP_SERVER_PATH" "$LOCAL_ZIP_DST" "$DATASET_ID" "$DATASET_NAME" "$TRAINER")
-if [ -z "$JOB2_ID" ]; then echo "Failed to submit Step 2"; exit 1; fi
+JOB2_ID=$(sbatch --parsable --dependency=afterok:$JOB1_ID segmentation_module/inference_module/run_inference_pipeline.slurm "$SUBJECT" "$SESSION" "$ZIP_SERVER_PATH" "$LOCAL_ZIP_DST" "$DATASET_ID" "$DATASET_NAME" "$TRAINER")if [ -z "$JOB2_ID" ]; then echo "Failed to submit Step 2"; exit 1; fi
 echo "Step 2 submitted: $JOB2_ID"
 
 # Step 3: Extraction (Will now wait for Step 2 correctly)
