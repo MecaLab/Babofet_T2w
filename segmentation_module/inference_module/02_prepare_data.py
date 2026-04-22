@@ -41,7 +41,6 @@ def generate_patient_sessions_json(directory_path, output_filename="patientsTs.j
 
     for filename in files:
         if filename.endswith(".nii.gz"):
-            print(filename)
             # Format: "Borgne_ses-01_0000.nii.gz"
             parts = filename.split('_')
             if len(parts) >= 2:
@@ -66,7 +65,7 @@ if __name__ == "__main__":
 
     subject = args.subject
     session = args.session
-    subj_sess = {subject: session}
+    subj_sess = {subject: [session]}
 
     input_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
     output_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "longiseg", "inference_data")
