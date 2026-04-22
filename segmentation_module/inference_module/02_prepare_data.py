@@ -75,6 +75,7 @@ if __name__ == "__main__":
         shutil.rmtree(output_path)
         os.makedirs(output_path)
 
+    print("here")
     mv_files(subj_sess, input_path, output_path)
 
     test_pred_json = os.path.join(output_path, "patientsTs.json")
