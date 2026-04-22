@@ -58,7 +58,9 @@ PLANS_JSON="$CROSSVAL_PATH/plans.json"
 
 mkdir -p "$OUTPUT_FOLDER"
 
-PRED_SLURM_FILE="longiseg_prediction.slurm"
+mkdir -p slurm_files
+
+PRED_SLURM_FILE="slurm_files/longiseg_prediction.slurm"
 cat << EOF > $PRED_SLURM_FILE
 #!/bin/bash
 #SBATCH -J longiseg_predict
