@@ -133,8 +133,8 @@ if __name__ == "__main__":
     fullname_subj = f"{subject}_{session}"
 
     tsv_file = os.path.join(raw_path, "raw", subject, f"{subject}_sessions.tsv")
-    if not os.path.exists(tsv_file):
-        add_session_metadata(tsv_file, session, gestational_age=95)
+    """if not os.path.exists(tsv_file):
+        add_session_metadata(tsv_file, session, gestational_age=95)"""
 
     stacks_path = os.path.join(derivative_path, "intermediate", "niftymic", subject, session)
     if not os.path.exists(stacks_path):
