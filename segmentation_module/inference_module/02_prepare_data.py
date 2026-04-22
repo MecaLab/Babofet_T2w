@@ -20,7 +20,7 @@ def mv_files(data, input_path, output_path):
 
             # sub-SUBJECT_SESS_rec-niftymic_desc-brainbg_T2w.nii
             vol_3d_filename = f"sub-{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
-            input_3d_path = os.path.join(input_path, f"sub-{subject}", session, "anat", vol_3d_filename)
+            input_3d_path = os.path.join(input_path, subject, session, "anat", vol_3d_filename)
 
             output_3d_path = os.path.join(output_path, f"{subject}_{session}_0000.nii.gz")
 
