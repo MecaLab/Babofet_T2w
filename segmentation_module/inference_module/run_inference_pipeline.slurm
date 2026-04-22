@@ -33,22 +33,27 @@ conda activate longiseg
 mkdir -p logs
 
 echo "Step 1: Retrieving and unzipping model..."
-python segmentation_module/inference_module/01_retrieve_and_unzip_model.py \
+python segmentation_module/inference_module/01_retrieve_model.py \
     --zip_server_path "$ZIP_SERVER_PATH" \
     --local_zip_dst "$LOCAL_ZIP_DST"
 
 echo "Step 2: Preparing data..."
-python segmentation_module/inference_module/02_prepare_data_for_inference.py \
+python segmentation_module/inference_module/02_prepare_data.py \
     --subject "$SUBJECT" \
     --session "$SESSION"
 
+DERIVATIVES_BIDS_PATH=$(python -c "import configuration as cfg; print(cfg.DERIVATIVES_BIDS_PATH)")
+LONGISEG_RESULTS_PATH=$(python -c "import configuration as cfg; print(cfg.LONGISEG_RESULTS_PATH)")
+
 # Chemins pour LongiSeg
-CROSSVAL_PATH="${LONGISEG_RESULTS_PATH}/nnUNet/3d_fullres/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}/${TRAINER}__nnUNetPlans__3d_fullres/fold_0"
-PATIENTS_JSON_PATH="${DERIVATIVES_BIDS_PATH}/LongiSeg/inference/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}/patients_inference.json"
-INPUT_FOLDER="${DERIVATIVES_BIDS_PATH}/LongiSeg/inference/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}/input"
-OUTPUT_FOLDER="${DERIVATIVES_BIDS_PATH}/LongiSeg/inference/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}/output"
-PKL_FILE="${CROSSVAL_PATH}/postprocessing.pkl"
-PLANS_JSON="${CROSSVAL_PATH}/plans.json"
+INPUT_FOLDER="$DERIVATIVES_BIDS_PATH/intermediate/longiseg/inference_data"
+PATIENTS_JSON_PATH="$INPUT_FOLDER/patientsTs.json"
+OUTPUT_FOLDER="$INPUT_FOLDER/res_seg"
+
+MODEL_PATH="$LONGISEG_RESULTS_PATH/Dataset${DATASET_ID_PADDED}_${DATASET_NAME}/${TRAINER}__nnUNetPlans__3d_fullres"
+CROSSVAL_PATH="$MODEL_PATH/crossval_results_folds_0_1_2_3_4"
+PKL_FILE="$CROSSVAL_PATH/postprocessing.pkl"
+PLANS_JSON="$CROSSVAL_PATH/plans.json"
 
 mkdir -p "$OUTPUT_FOLDER"
 
