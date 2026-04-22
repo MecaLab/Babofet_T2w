@@ -25,7 +25,7 @@ This is the central script that orchestrates the entire inference workflow. It s
         -   Calls the `03_move_pred.py` script to organize the final outputs.
 -   **Usage**:
     ```bash
-    ./run_inference_pipeline.sh <zip_server_path> <local_zip_dst> <dataset_id> <dataset_name> <trainer_class>
+    ./run_inference_pipeline.slurm <zip_server_path> <local_zip_dst> <dataset_id> <dataset_name> <trainer_class>
     ```
     -   `<zip_server_path>`: The full path to the model's `.zip` file on the remote server.
     -   `<local_zip_dst>`: The local path where the `.zip` file will be saved.
