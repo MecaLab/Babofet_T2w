@@ -20,7 +20,7 @@ if __name__ == "__main__":
         if file.endswith(".nii.gz"):
             # Borgne_ses-01.nii.gz
             file_splited = file.split(".")[0].split("_")  # [SUBJ, SESS]
-            sub_subject = f"sub-{file_splited[0]}"
+            sub_subject = file_splited[0]
             session = file_splited[1]
 
             input_seg_path = os.path.join(pred_seg, file)
