@@ -23,12 +23,12 @@ if [ -z "$JOB1_ID" ]; then echo "Failed to submit Step 1"; exit 1; fi
 echo "Step 1 submitted: $JOB1_ID"
 
 # Step 2 - Depends on Step 1
-JOB2_ID=$(sbatch --parsable --dependency=afterok:"$JOB1_ID" segmentation_module/inference_module/run_inference_pipeline.sh "$SUBJECT" "$SESSION" "$ZIP_SERVER_PATH" "$LOCAL_ZIP_DST" "$DATASET_ID" "$DATASET_NAME" "$TRAINER")
+JOB2_ID=$(sbatch --parsable --dependency=afterok:$JOB1_ID segmentation_module/inference_module/run_inference_pipeline.sh "$SUBJECT" "$SESSION" "$ZIP_SERVER_PATH" "$LOCAL_ZIP_DST" "$DATASET_ID" "$DATASET_NAME" "$TRAINER")
 if [ -z "$JOB2_ID" ]; then echo "Failed to submit Step 2"; exit 1; fi
 echo "Step 2 submitted: $JOB2_ID"
 
 # Step 3 - Depends on Step 2
-JOB3_ID=$(sbatch --parsable --dependency=afterok:"$JOB2_ID" extraction_module/run_extraction_pipeline.slurm "$SUBJECT" "$MODE_SURF_EXTRACTION")
+JOB3_ID=$(sbatch --parsable --dependency=afterok:$JOB2_ID extraction_module/run_extraction_pipeline.slurm "$SUBJECT" "$MODE_SURF_EXTRACTION")
 if [ -z "$JOB3_ID" ]; then echo "Failed to submit Step 3"; exit 1; fi
 echo "Step 3 submitted: $JOB3_ID"
 
