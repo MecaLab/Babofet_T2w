@@ -71,6 +71,10 @@ def run_niftymic_reconstruction(fullname_subj, stack_path, denoised_files, bm_pa
     output_path = os.path.join(stack_path, "reconstruction_niftymic")
     os.makedirs(output_path, exist_ok=True)
 
+    if os.path.exists(os.path.join(output_path, "recon_template_space", "srr_template.nii.gz")):
+        print(f"NiftyMIC reconstruction already exists for {fullname_subj}. Skipping.")
+        return
+
     input_stacks = ["/data/" + f for f in denoised_files]
     mask_stacks = ["/masks/" + f for f in bm_files]
 
