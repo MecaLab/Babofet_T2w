@@ -21,10 +21,8 @@ def mv_files(data, input_path, output_path):
             # sub-SUBJECT_SESS_rec-niftymic_desc-brainbg_T2w.nii
             vol_3d_filename = f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
             input_3d_path = os.path.join(input_path, subject, session, "anat", vol_3d_filename)
-            print(input_3d_path)
 
             output_3d_path = os.path.join(output_path, f"{subject}_{session}_0000.nii.gz")
-            print(output_3d_path)
 
             if os.path.exists(input_3d_path):
                 shutil.copy(input_3d_path, output_3d_path)
@@ -79,7 +77,6 @@ if __name__ == "__main__":
         shutil.rmtree(output_path)
         os.makedirs(output_path)
 
-    print("here")
     mv_files(subj_sess, input_path, output_path)
 
     test_pred_json = os.path.join(output_path, "patientsTs.json")
