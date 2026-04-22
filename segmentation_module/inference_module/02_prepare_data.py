@@ -19,7 +19,7 @@ def mv_files(data, input_path, output_path):
             print(f"\tProcessing {session}")
 
             # sub-SUBJECT_SESS_rec-niftymic_desc-brainbg_T2w.nii
-            vol_3d_filename = f"sub-{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
+            vol_3d_filename = f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz"
             input_3d_path = os.path.join(input_path, subject, session, "anat", vol_3d_filename)
             print(input_3d_path)
 
@@ -28,6 +28,8 @@ def mv_files(data, input_path, output_path):
 
             if os.path.exists(input_3d_path):
                 shutil.copy(input_3d_path, output_3d_path)
+            else:
+                print(f"Error: The file {input_3d_path} does not exist.")
 
 
 def generate_patient_sessions_json(directory_path, output_filename="patientsTs.json"):
