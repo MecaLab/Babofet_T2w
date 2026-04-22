@@ -87,17 +87,20 @@ python segmentation_module/inference_module/03_move_pred.py
 echo "Inference and file organization completed successfully."
 EOF
 
-JOB_ID=$(sbatch --parsable $PRED_SLURM_FILE)
+echo "Submitting inference job and waiting for completion..."
+
+# We use --wait so this script stays active until the internal job finishes.
+# This prevents Step 3 from starting prematurely.
+sbatch --wait $PRED_SLURM_FILE
 
 if [ $? -ne 0 ]; then
-    echo "Error in Step 3: Failed to submit inference job to SLURM";
-    exit 1;
+    echo "=================================================================="
+    echo "Error: The internal inference job failed."
+    echo "=================================================================="
+    exit 1
 fi
 
-echo "Inference job successfully submitted to SLURM. Job ID: $JOB_ID"
-
 echo "=================================================================="
-echo "Pipeline successfully delegated to the cluster."
-echo "You can safely close this terminal."
-echo "Monitor your job with: squeue -u \$USER"
+echo "Inference and file organization completed successfully."
+echo "Step 2 is now officially finished. Step 3 can now proceed."
 echo "=================================================================="
