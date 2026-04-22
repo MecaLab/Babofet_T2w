@@ -72,9 +72,8 @@ if __name__ == "__main__":
     if not os.path.exists(output_path):
         os.makedirs(output_path)
     else:
-        print(os.listdir(output_path))
         shutil.rmtree(output_path)
-        print(os.listdir(output_path))
+        os.makedirs(output_path)
 
     mv_files(subj_sess, input_path, output_path)
 
