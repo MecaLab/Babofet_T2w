@@ -18,7 +18,7 @@ To set up the environment for this project, you can follow the steps below. This
 
 ```bash
 # 1. Clone the repository and create virtual env using conda
-git clone git@github.com:MecaLab/Babofet_T2w.git
+git clone git@github.com:MecaLab/Babofet_T2w.git # or https://github.com/MecaLab/Babofet_T2w.git
 conda create -n longiseg python=3.12
 conda activate longiseg
 
