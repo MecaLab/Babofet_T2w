@@ -32,17 +32,23 @@ git clone https://github.com/MIC-DKFZ/LongiSeg.git
 cd LongiSeg
 pip install -e .
 
-# 6. Set paths (Run these lines once to append to your .bashrc, make sur to replace the paths with the actual paths on your system)
+# 4. Clone the Surface Processing repository and install it
+cd ..
+git clone https://github.com/fetpype/surface_processing
+cd surface_processing
+pip install -r requirements.txt
+
+# 5. Set paths (Run these lines once to append to your .bashrc, make sur to replace the paths with the actual paths on your system)
 echo 'export LongiSeg_raw="/path_to_data_dir/LongiSeg_raw"' >> ~/.bashrc
 echo 'export LongiSeg_preprocessed="/path_to_data_dir/LongiSeg_preprocessed"' >> ~/.bashrc
 echo 'export LongiSeg_results="/path_to_experiments_dir/LongiSeg_results"' >> ~/.bashrc
 
-# 7. After editing the file, do
+# 6. After editing the file, do
 source ~/.bashrc # to activate the new paths
 # an easy way to check if it works is to do:
 echo $LongiSeg_raw  # it will display the path you set 
 
-# 8. Install the required packages for this project
+# 7. Install the required packages for this project
 cd .. # if you are still in the LongiSeg directory, go back to the root of the project
 pip install -r requirements.txt  # Install the required Python packages for the project
 ```
