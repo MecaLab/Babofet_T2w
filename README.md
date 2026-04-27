@@ -17,7 +17,8 @@ Or if you want to run the modules one by one, you can follow the instructions in
 To set up the environment for this project, you can follow the steps below. This will ensure that you have all the necessary dependencies installed and that your paths are correctly configured.
 
 ```bash
-# 1. Create virtual env using conda
+# 1. Clone the repository and create virtual env using conda
+git clone git@github.com:MecaLab/Babofet_T2w.git
 conda create -n longiseg python=3.12
 conda activate longiseg
 
