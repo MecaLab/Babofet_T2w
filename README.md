@@ -42,7 +42,7 @@ pip install -r requirements.txt
 # 5. Set paths (Run these lines once to append to your .bashrc, make sur to replace the paths with the actual paths on your system)
 echo 'export LongiSeg_raw="/envau/work/meca/data/babofet_DB/2024_new_stuff/LongiSeg_raw"' >> ~/.bashrc
 echo 'export LongiSeg_preprocessed="/envau/work/meca/data/babofet_DB/2024_new_stuff/LongiSeg_preprocessed"' >> ~/.bashrc
-echo 'export LongiSeg_results="/envau/work/meca/data/babofet_DB/2024_new_stuff/LongiSeg_results"' >> ~/.bashrc
+echo 'export LongiSeg_results="/envau/work/meca/data/babofet_DB/2024_new_stuff/LongiSeg_trained_models"' >> ~/.bashrc
 
 # 6. After editing the file, do
 source ~/.bashrc # to activate the new paths
