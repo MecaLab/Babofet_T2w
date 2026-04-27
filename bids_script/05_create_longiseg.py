@@ -51,5 +51,3 @@ if __name__ == "__main__":
 
             output_full_path = os.path.join(output_path, output_file)
             shutil.copy(input_full_path, output_full_path)
-
-            exit()
