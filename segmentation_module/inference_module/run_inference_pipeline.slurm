@@ -1,7 +1,6 @@
 #!/bin/bash
 #SBATCH -J inference_pipeline
 #SBATCH -p batch
-#SBATCH -w niolon13
 #SBATCH --mem-per-cpu=48G
 #SBATCH --time=12:00:00
 #SBATCH -c 8

@@ -1,7 +1,6 @@
 #!/bin/bash
 #SBATCH -J surf_slam_pipelin
 #SBATCH -p batch
-#SBATCH -w niolon13
 #SBATCH --mem-per-cpu=48G
 #SBATCH --time=48:00:00
 #SBATCH -N 1
