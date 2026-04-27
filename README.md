@@ -9,7 +9,7 @@ The project is organized into three main modules that are designed to be run in 
 You can run each module independently, but they are designed to work together in sequence for a complete processing workflow.
 
 To do so, ensure that the output from one module is correctly placed in the expected input location for the next module, as defined in `configuration.py`.
-Then you can just run the `run_them_all.sh` script to execute the entire pipeline for that module.
+Then you can just run the `run_them_all.sh <SUBJECT> <SESSION>` (eg, `./run_them_all.sh sub-Borgne ses-01`) script to execute the entire pipeline for that module.
 Or if you want to run the modules one by one, you can follow the instructions in each module's `README.md` file.
 
 ## How to install ?
@@ -47,11 +47,13 @@ echo 'export LongiSeg_results="/envau/work/meca/data/babofet_DB/2024_new_stuff/L
 # 6. After editing the file, do
 source ~/.bashrc # to activate the new paths
 # an easy way to check if it works is to do:
+conda activate longiseg # MANDATORY
 echo $LongiSeg_raw  # it will display the path you set 
 
 # 7. Install the required packages for this project
 cd .. # if you are still in the LongiSeg directory, go back to the root of the project
 pip install -r requirements.txt  # Install the required Python packages for the project
+chmod u+x run_them_all.sh  # Make the main script executable
 ```
 
 **Workflow:**
