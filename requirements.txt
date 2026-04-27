@@ -2,7 +2,6 @@ acvl_utils==0.2.5
 adan_pytorch==0.1.0
 ants==0.0.7
 batchgenerators==0.25.1
-batchgeneratorsv2==0.3.0
 blosc2==4.1.2
 connected_components_3d==3.26.1
 difference_weighting==0.1.0
