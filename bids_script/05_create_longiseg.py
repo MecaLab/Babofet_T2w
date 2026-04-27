@@ -4,9 +4,6 @@ import sys
 import pandas as pd
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
-import subprocess
-import nibabel as nib
-import numpy as np
 
 
 def format_session_str(sess):
