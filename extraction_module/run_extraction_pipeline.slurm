@@ -10,10 +10,10 @@
 set -e
 
 # Check for arguments
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 3 ]; then
     echo "Error: Missing arguments."
-    echo "Usage: sbatch $0 <subject_id> <extraction_mode>"
-    echo "Example: sbatch $0 sub-Borgne full"
+    echo "Usage: sbatch $0 <subject_id> <session_id> <extraction_mode>"
+    echo "Example: sbatch $0 sub-Borgne ses-01 full"
     exit 1
 fi
 
