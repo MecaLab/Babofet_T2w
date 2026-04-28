@@ -7,8 +7,26 @@ import json
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
-def generate_patients_json():
-    pass
+
+def get_previous_session(session_str):
+    """
+    Calculates the previous session ID.
+    Example: 'ses-05' -> 'ses-04'
+    Returns None if session is 'ses-01' or cannot be parsed.
+    """
+    try:
+        # Assumes format 'ses-XX'
+        prefix, num_str = session_str.split('-')
+        current_val = int(num_str)
+
+        if current_val <= 1:
+            return None
+
+        # Maintains padding (e.g., 04 instead of 4)
+        prev_val = current_val - 1
+        return f"{prefix}-{prev_val:02d}"
+    except (ValueError, IndexError):
+        return None
 
 
 def mv_files(data, input_path, output_path):
@@ -16,6 +34,8 @@ def mv_files(data, input_path, output_path):
         print(f"Processing {subject}")
 
         for session in sessions:
+            if session is None:
+                continue
             print(f"\tProcessing {session}")
 
             # sub-SUBJECT_SESS_rec-niftymic_desc-brainbg_T2w.nii
@@ -66,8 +86,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     subject = args.subject
-    session = args.session
-    subj_sess = {subject: [session]}
+    target_session = args.session
+
+    # Logic to include t-1
+    sessions_to_process = []
+    prev_session = get_previous_session(target_session)
+
+    if prev_session:
+        sessions_to_process.append(prev_session)
+
+    sessions_to_process.append(target_session)
+
+    subj_sess = {subject: [sessions_to_process]}
 
     input_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
     output_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "longiseg", "inference_data")
