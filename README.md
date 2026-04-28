@@ -2,16 +2,6 @@
 
 This project provides a complete, end-to-end pipeline for processing fetal baboons T2-weighted (T2w) MRI scans. The workflow starts with raw, multi-slice MRI data and produces high-resolution 3D brain volumes, tissue segmentations, and finally, 3D cortical surface models. The pipeline is built upon a BIDS dataset format.
 
-## Pipeline Overview
-
-The project is organized into three main modules that are designed to be run in sequence. The output of one module serves as the input for the next.
-
-You can run each module independently, but they are designed to work together in sequence for a complete processing workflow.
-
-To do so, ensure that the output from one module is correctly placed in the expected input location for the next module, as defined in `configuration.py`.
-Then you can just run the `run_them_all.sh <SUBJECT> <SESSION>` (eg, `./run_them_all.sh sub-Borgne ses-01`) script to execute the entire pipeline for that module.
-Or if you want to run the modules one by one, you can follow the instructions in each module's `README.md` file.
-
 ## How to install ?
 
 To set up the environment for this project, you can follow the steps below. This will ensure that you have all the necessary dependencies installed and that your paths are correctly configured.
@@ -75,6 +65,19 @@ chmod u+x run_them_all.sh  # Make the main script executable
     -   **Output**: 3D surface files for each hemisphere (`..._hemi-L_white.surf.gii` and `..._hemi-R_white.surf.gii`).
 
 ---
+
+## Pipeline Overview
+
+The project is organized into three main modules that are designed to be run in sequence. The output of one module serves as the input for the next.
+
+You can run each module independently, but they are designed to work together in sequence for a complete processing workflow.
+
+To do so, ensure that the output from one module is correctly placed in the expected input location for the next module, as defined in `configuration.py`.
+Then you can just run the `run_them_all.sh <SUBJECT> <SESSION>` (eg, `./run_them_all.sh sub-Borgne ses-01`)  script to execute the entire pipeline for that module.
+Or if you want to run the modules one by one, you can follow the instructions in each module's `README.md` file.
+
+---
+
 ## Additional Scripts
 
 ### `bids_script/`
