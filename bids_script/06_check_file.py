@@ -8,6 +8,7 @@ def gather_dataset_info(root_folder):
     dataset_summary = []
 
     for sub_dir in sorted(root_path.glob('sub-*')):
+        print(sub_dir)
         if not sub_dir.is_dir(): continue
         subject_id = sub_dir.name
 
