@@ -33,8 +33,8 @@ mkdir -p logs
 
 echo "Step 1: Retrieving and unzipping model..."
 python segmentation_module/inference_module/01_retrieve_model.py \
-    --zip_server_path "$ZIP_SERVER_PATH" \
-    --local_zip_dst "$LOCAL_ZIP_DST"
+    --server_path "$ZIP_SERVER_PATH" \
+    --dst_path "$LOCAL_ZIP_DST"
 
 echo "Step 2: Preparing data..."
 python segmentation_module/inference_module/02_prepare_data.py \
