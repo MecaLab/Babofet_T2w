@@ -18,7 +18,8 @@ if [ "$#" -ne 2 ]; then
 fi
 
 SUBJECT=$1
-EXTRACTION_MODE=$2
+SESSION=$2
+EXTRACTION_MODE=$3
 
 echo "Starting Surface Extraction pipeline for subject: ${SUBJECT} with mode: ${EXTRACTION_MODE}"
 
@@ -36,7 +37,7 @@ echo "--------------------------------------------------------------------------
 
 # Step 2: Hemisphere Splitting and Registration
 echo "Step 2: Running 02_hemi_split.py for ${SUBJECT}"
-python extraction_module/02_hemi_split.py --subject "${SUBJECT}"
+python extraction_module/02_hemi_split.py --subject "${SUBJECT} --session "${SESSION}"
 echo "Step 2 completed."
 echo "------------------------------------------------------------------------------"
 

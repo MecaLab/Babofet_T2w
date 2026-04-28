@@ -43,7 +43,7 @@ echo "Step 2 submitted: $JOB2_ID"
 # ------------------------------------------------------------------------------
 # Step 3: Surface Extraction (Depends on Step 2)
 # ------------------------------------------------------------------------------
-JOB3_ID=$(sbatch --parsable --dependency=afterok:$JOB2_ID extraction_module/run_extraction_pipeline.slurm "$SUBJECT" "$MODE_SURF_EXTRACTION")
+JOB3_ID=$(sbatch --parsable --dependency=afterok:$JOB2_ID extraction_module/run_extraction_pipeline.slurm "$SUBJECT" "$SESSION" "$MODE_SURF_EXTRACTION")
 
 if [ -z "$JOB3_ID" ]; then
     echo "Failed to submit Step 3"

@@ -180,6 +180,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Split brain segmentation into hemispheres and register to atlas.")
     parser.add_argument("--subject", type=str, help="Subject ID to process (e.g., sub-Borgne)")
+    parser.add_argument("--session", required=True, help="Session ID (e.g., ses-01)")
     args = parser.parse_args()
 
     input_volume_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
@@ -198,110 +199,112 @@ if __name__ == "__main__":
     if not os.path.exists(output_split_seg):
         os.makedirs(output_split_seg)
 
-    subjects = [args.subject]
+    subject = args.subject
+    session = args.session
 
-    for subject in subjects:
-        subject_path = os.path.join(input_seg_path, subject)
-        subject_output_split_seg = os.path.join(output_split_seg, subject)
+    print(f"Processing {subject} {session}")
+    subject_path = os.path.join(input_seg_path, subject)
+    subject_output_split_seg = os.path.join(output_split_seg, subject)
 
-        print(f"Processing {subject}")
-        for session in os.listdir(subject_path):
-            print(f"\tProcessing {session}")
-            session_path = os.path.join(subject_path, session, "anat")
+    session_path = os.path.join(subject_path, session, "anat")
 
-            # SUBJECT_SESSION_desc-longiseg_dseg.nii.gz
-            t2_subj_seg = os.path.join(session_path, f"{subject}_{session}_desc-longiseg_dseg.nii.gz")
 
-            # SUBJECT_SESSION_rec-niftymic_desc-brain_T2w.nii.gz
-            recons_volumes_folder = os.path.join(input_volume_path, subject, session, "anat")
+    # SUBJECT_SESSION_desc-longiseg_dseg.nii.gz
 
-            subject_output_split_seg_session = os.path.join(subject_output_split_seg, session)
-            if not os.path.exists(subject_output_split_seg_session):
-                os.makedirs(subject_output_split_seg_session)
+    t2_subj_seg = os.path.join(session_path, f"{subject}_{session}_desc-longiseg_dseg.nii.gz")
+    try:
+        fixed_seg = ants.image_read(t2_subj_seg)
+    except ValueError:
+        t2_subj_seg = os.path.join(session_path, f"{subject}_{session}_desc-longiseg_dseg_gt.nii.gz")
+        fixed_seg = ants.image_read(t2_subj_seg)
 
-            file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi.nii.gz")
-            if os.path.exists(file_seg_out):
-                print(f"\t\tSegmentation for {subject} {session} already exists, skipping...")
-                continue
+    # SUBJECT_SESSION_rec-niftymic_desc-brain_T2w.nii.gz
+    recons_volumes_folder = os.path.join(input_volume_path, subject, session, "anat")
 
-            fsl_register(
-                atlas_dir=volumes_atlas_path,
-                base_subj_path=recons_volumes_folder,
-                subject=subject,
-                session=session,
-                output_dir=subject_output_split_seg_session
-            )
+    subject_output_split_seg_session = os.path.join(subject_output_split_seg, session)
+    if not os.path.exists(subject_output_split_seg_session):
+        os.makedirs(subject_output_split_seg_session)
 
-            best_atlas = find_best_atlas(
-                input_atlas_registered=subject_output_split_seg_session,
-                subject=subject,
-                session=session,
-                base_subj_path=recons_volumes_folder
-            )
-            print(f"\t\tBest atlas: {best_atlas}")
-            best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
+    file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi.nii.gz")
+    if os.path.exists(file_seg_out):
+        print(f"\t\tSegmentation for {subject} {session} already exists, skipping...")
+        exit(1)
 
-            convert_fsl2ants(
-                input_atlas_registered=subject_output_split_seg_session,
-                best_atlas=best_atlas_path,
-                subject=subject,
-                session=session,
-                base_subj_path=recons_volumes_folder
-            )
+    fsl_register(
+        atlas_dir=volumes_atlas_path,
+        base_subj_path=recons_volumes_folder,
+        subject=subject,
+        session=session,
+        output_dir=subject_output_split_seg_session
+    )
 
-            mask_best_atlas = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "NFseg_bm"))
+    best_atlas = find_best_atlas(
+        input_atlas_registered=subject_output_split_seg_session,
+        subject=subject,
+        session=session,
+        base_subj_path=recons_volumes_folder
+    )
+    print(f"\t\tBest atlas: {best_atlas}")
+    best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
 
-            ants_nonlinear_registration(
-                input_atlas_registered=subject_output_split_seg_session,
-                base_subj_path=recons_volumes_folder,
-                best_atlas=best_atlas_path,
-                best_atlas_mask=mask_best_atlas,
-                subject=subject,
-                session=session
-            )
+    convert_fsl2ants(
+        input_atlas_registered=subject_output_split_seg_session,
+        best_atlas=best_atlas_path,
+        subject=subject,
+        session=session,
+        base_subj_path=recons_volumes_folder
+    )
 
-            subj_seg = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "structures_dilated"))
+    mask_best_atlas = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "NFseg_bm"))
 
-            affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace("_affine.nii.gz", "_affine.txt"))
+    ants_nonlinear_registration(
+        input_atlas_registered=subject_output_split_seg_session,
+        base_subj_path=recons_volumes_folder,
+        best_atlas=best_atlas_path,
+        best_atlas_mask=mask_best_atlas,
+        subject=subject,
+        session=session
+    )
 
-            apply_ants_transformations(
-                input_atlas_registered=subject_output_split_seg_session,
-                base_subj_path=recons_volumes_folder,
-                moving_seg=subj_seg,
-                affine_file=affine_file,
-                subject=subject,
-                session=session
-            )
+    subj_seg = os.path.join(segmentation_atlas_path, best_atlas.replace("Norm_affine", "structures_dilated"))
 
-            warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
+    affine_file = os.path.join(subject_output_split_seg_session, best_atlas.replace("_affine.nii.gz", "_affine.txt"))
 
-            fixed_seg = ants.image_read(t2_subj_seg)
+    apply_ants_transformations(
+        input_atlas_registered=subject_output_split_seg_session,
+        base_subj_path=recons_volumes_folder,
+        moving_seg=subj_seg,
+        affine_file=affine_file,
+        subject=subject,
+        session=session
+    )
 
-            unique_label_t2 = np.unique(fixed_seg.numpy())
-            if 4 in unique_label_t2:
-                seg_array = fixed_seg.numpy()
-                seg_array[seg_array == 4] = 2
+    warped_best_seg = ants.image_read(os.path.join(subject_output_split_seg_session, "warped_regionals.nii.gz"))
 
-                fixed_seg = ants.from_numpy(seg_array, origin=fixed_seg.origin, spacing=fixed_seg.spacing,
-                                                direction=fixed_seg.direction)
 
-            new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
+    unique_label_t2 = np.unique(fixed_seg.numpy())
+    if 4 in unique_label_t2:
+        seg_array = fixed_seg.numpy()
+        seg_array[seg_array == 4] = 2
 
-            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # Right CSF
-            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 2)] = 2  # Right WM
-            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 3)] = 3  # Right GM
-            new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 4)] = 2  # merge right ventricule into wm
+        fixed_seg = ants.from_numpy(seg_array, origin=fixed_seg.origin, spacing=fixed_seg.spacing,
+                                        direction=fixed_seg.direction)
 
-            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 1)] = 5  # Left CSF
-            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 2)] = 6  # Left WM
-            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 3)] = 7  # Left GM
-            new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 4)] = 6  # merge left ventricule into wm
+    new_data = np.zeros_like(warped_best_seg.numpy(), dtype=np.uint8)
 
-            new_data[(warped_best_seg.numpy() == 3)] = 9  # Tronc
-            new_data[(warped_best_seg.numpy() == 4)] = 10  # Cervelet
+    new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 1)] = 1  # Right CSF
+    new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 2)] = 2  # Right WM
+    new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 3)] = 3  # Right GM
+    new_data[(warped_best_seg.numpy() == 1) & (fixed_seg.numpy() == 4)] = 2  # merge right ventricule into wm
 
-            seg_out = fixed_seg.new_image_like(new_data)
-            ants.image_write(seg_out, file_seg_out)
-            print("\tSplitted segmentation saved as:", file_seg_out)
+    new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 1)] = 5  # Left CSF
+    new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 2)] = 6  # Left WM
+    new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 3)] = 7  # Left GM
+    new_data[(warped_best_seg.numpy() == 2) & (fixed_seg.numpy() == 4)] = 6  # merge left ventricule into wm
 
-            exit()
+    new_data[(warped_best_seg.numpy() == 3)] = 9  # Tronc
+    new_data[(warped_best_seg.numpy() == 4)] = 10  # Cervelet
+
+    seg_out = fixed_seg.new_image_like(new_data)
+    ants.image_write(seg_out, file_seg_out)
+    print("\tSplitted segmentation saved as:", file_seg_out)
