@@ -100,7 +100,7 @@ if __name__ == "__main__":
     subj_sess = {subject: sessions_to_process}
 
     input_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
-    output_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "longiseg", "inference_data")
+    output_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "longiseg", f"inference_data_{subject}")
     if not os.path.exists(output_path):
         os.makedirs(output_path)
     else:
