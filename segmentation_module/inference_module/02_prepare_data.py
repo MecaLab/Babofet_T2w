@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     sessions_to_process.append(target_session)
 
-    subj_sess = {subject: [sessions_to_process]}
+    subj_sess = {subject: sessions_to_process}
 
     input_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "niftymic")
     output_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "longiseg", "inference_data")
