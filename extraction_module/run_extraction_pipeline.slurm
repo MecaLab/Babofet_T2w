@@ -37,7 +37,7 @@ echo "--------------------------------------------------------------------------
 
 # Step 2: Hemisphere Splitting and Registration
 echo "Step 2: Running 02_hemi_split.py for ${SUBJECT}"
-python extraction_module/02_hemi_split.py --subject "${SUBJECT} --session "${SESSION}"
+python extraction_module/02_hemi_split.py --subject "${SUBJECT}" --session "${SESSION}"
 echo "Step 2 completed."
 echo "------------------------------------------------------------------------------"
 
