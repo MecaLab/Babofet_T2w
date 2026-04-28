@@ -77,3 +77,5 @@ if __name__ == "__main__":
     if result_table is not None and not result_table.empty:
         print("--- NIfTI Files Count Summary ---")
         print(result_table)
+
+    result_table.to_csv("bids_summary_table.csv")
