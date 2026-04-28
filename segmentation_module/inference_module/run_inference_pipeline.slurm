@@ -45,7 +45,7 @@ DERIVATIVES_BIDS_PATH=$(python -c "import configuration as cfg; print(cfg.DERIVA
 LONGISEG_RESULTS_PATH=$(python -c "import configuration as cfg; print(cfg.LONGISEG_RESULTS_PATH)")
 
 # Chemins pour LongiSeg
-INPUT_FOLDER="$DERIVATIVES_BIDS_PATH/intermediate/longiseg/inference_data"
+INPUT_FOLDER="$DERIVATIVES_BIDS_PATH/intermediate/longiseg/inference_data_${SUBJECT}"
 PATIENTS_JSON_PATH="$INPUT_FOLDER/patientsTs.json"
 OUTPUT_FOLDER="$INPUT_FOLDER/res_seg"
 
