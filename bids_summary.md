@@ -2,158 +2,158 @@
 
 ## 👤 sub-Aziza ✨
 
-| Session   |   anat |   dwi | func                                                        | longiseg                                                    | mrtrix                                                      |   niftymic | surf-slam                                                   |
-|:----------|-------:|------:|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|-----------:|:------------------------------------------------------------|
-| 📅 ses-01 |      6 |     6 | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |          1 | 2.0                                                         |
-| 📅 ses-02 |      6 |     6 | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-03 |      6 |     5 | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-04 |      6 |     6 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-05 |      5 |     6 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-06 |      6 |     6 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-07 |      6 |     6 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-08 |      6 |     6 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-09 |      6 |     6 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-10 |      6 |     6 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         |          1 | <span style="background-color: red; color: white;">0</span> |
+| Session   |   anat |   dwi | func      | longiseg   | mrtrix    |   niftymic | surf-slam   |
+|:----------|-------:|------:|:----------|:-----------|:----------|-----------:|:------------|
+| 📅 ses-01 |      6 |     6 | **[ X ]** | 1.0        | **[ X ]** |          1 | 2.0         |
+| 📅 ses-02 |      6 |     6 | 1.0       | **[ X ]**  | 1.0       |          1 | **[ X ]**   |
+| 📅 ses-03 |      6 |     5 | 1.0       | **[ X ]**  | 1.0       |          1 | **[ X ]**   |
+| 📅 ses-04 |      6 |     6 | **[ X ]** | **[ X ]**  | 1.0       |          1 | **[ X ]**   |
+| 📅 ses-05 |      5 |     6 | **[ X ]** | **[ X ]**  | 1.0       |          1 | **[ X ]**   |
+| 📅 ses-06 |      6 |     6 | **[ X ]** | **[ X ]**  | 1.0       |          1 | **[ X ]**   |
+| 📅 ses-07 |      6 |     6 | **[ X ]** | **[ X ]**  | 1.0       |          1 | **[ X ]**   |
+| 📅 ses-08 |      6 |     6 | **[ X ]** | **[ X ]**  | 1.0       |          1 | **[ X ]**   |
+| 📅 ses-09 |      6 |     6 | **[ X ]** | **[ X ]**  | 1.0       |          1 | **[ X ]**   |
+| 📅 ses-10 |      6 |     6 | **[ X ]** | **[ X ]**  | 1.0       |          1 | **[ X ]**   |
 
 ---
 
 ## 👤 sub-Bibi ✨
 
-| Session   | anat                                                        | dwi                                                         | func                                                        | longiseg                                                    | mrtrix                                                      | niftymic                                                    | surf-slam                                                   |
-|:----------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|
-| 📅 ses-01 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-02 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-03 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-04 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-05 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-06 | 6.0                                                         | 6.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-07 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-08 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-09 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-10 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 2.0                                                         |
+| Session   | anat      | dwi       | func      | longiseg   | mrtrix    | niftymic   | surf-slam   |
+|:----------|:----------|:----------|:----------|:-----------|:----------|:-----------|:------------|
+| 📅 ses-01 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-02 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-03 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-04 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-05 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-06 | 6.0       | 6.0       | **[ X ]** | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-07 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-08 | **[ X ]** | **[ X ]** | **[ X ]** | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
+| 📅 ses-09 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-10 | 6.0       | 6.0       | 2.0       | 1.0        | **[ X ]** | 1.0        | 2.0         |
 
 ---
 
 ## 👤 sub-Borgne ✨
 
-| Session   | anat                                                        | dwi                                                         | func                                                        | longiseg                                                    | mrtrix                                                      | niftymic                                                    | surf-slam                                                   |
-|:----------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|
-| 📅 ses-01 | 6.0                                                         | 3.0                                                         | <span style="background-color: red; color: white;">0</span> | 2.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 2.0                                                         |
-| 📅 ses-02 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-03 | 6.0                                                         | 6.0                                                         | <span style="background-color: red; color: white;">0</span> | 2.0                                                         | 1.0                                                         | 1.0                                                         | 2.0                                                         |
-| 📅 ses-04 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-05 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-06 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-07 | 6.0                                                         | 6.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-08 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-09 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-10 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
+| Session   | anat      | dwi       | func      | longiseg   | mrtrix    | niftymic   | surf-slam   |
+|:----------|:----------|:----------|:----------|:-----------|:----------|:-----------|:------------|
+| 📅 ses-01 | 6.0       | 3.0       | **[ X ]** | 2.0        | **[ X ]** | 1.0        | 2.0         |
+| 📅 ses-02 | **[ X ]** | **[ X ]** | **[ X ]** | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
+| 📅 ses-03 | 6.0       | 6.0       | **[ X ]** | 2.0        | 1.0       | 1.0        | 2.0         |
+| 📅 ses-04 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-05 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-06 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-07 | 6.0       | 6.0       | **[ X ]** | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-08 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-09 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-10 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
 
 ---
 
 ## 👤 sub-Fabienne ✨
 
-| Session   | anat                                                        | dwi                                                         | func                                                        | longiseg                                                    | mrtrix                                                      | niftymic                                                    | surf-slam                                                   |
-|:----------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|
-| 📅 ses-01 | 3.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-02 | 3.0                                                         | 3.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-03 | 9.0                                                         | 3.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-04 | 6.0                                                         | 3.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-05 | 10.0                                                        | 3.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-06 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-07 | 6.0                                                         | 3.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-08 | 6.0                                                         | 3.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-09 | 6.0                                                         | 6.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-10 | 6.0                                                         | 4.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
+| Session   | anat      | dwi       | func      | longiseg   | mrtrix    | niftymic   | surf-slam   |
+|:----------|:----------|:----------|:----------|:-----------|:----------|:-----------|:------------|
+| 📅 ses-01 | 3.0       | **[ X ]** | **[ X ]** | 1.0        | **[ X ]** | 1.0        | **[ X ]**   |
+| 📅 ses-02 | 3.0       | 3.0       | **[ X ]** | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-03 | 9.0       | 3.0       | **[ X ]** | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-04 | 6.0       | 3.0       | **[ X ]** | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-05 | 10.0      | 3.0       | **[ X ]** | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-06 | **[ X ]** | **[ X ]** | **[ X ]** | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
+| 📅 ses-07 | 6.0       | 3.0       | **[ X ]** | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-08 | 6.0       | 3.0       | **[ X ]** | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-09 | 6.0       | 6.0       | **[ X ]** | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-10 | 6.0       | 4.0       | **[ X ]** | **[ X ]**  | **[ X ]** | 1.0        | **[ X ]**   |
 
 ---
 
 ## 👤 sub-Filletta ✨
 
-| Session   |   anat |   dwi |   func | longiseg                                                    | mrtrix                                                      | niftymic                                                    | surf-slam                                                   |
-|:----------|-------:|------:|-------:|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|
-| 📅 ses-01 |      6 |     6 |      2 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-02 |      6 |     6 |      2 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-03 |      6 |     6 |      2 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
+| Session   |   anat |   dwi |   func | longiseg   | mrtrix    | niftymic   | surf-slam   |
+|:----------|-------:|------:|-------:|:-----------|:----------|:-----------|:------------|
+| 📅 ses-01 |      6 |     6 |      2 | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
+| 📅 ses-02 |      6 |     6 |      2 | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
+| 📅 ses-03 |      6 |     6 |      2 | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
 
 ---
 
 ## 👤 sub-Filoutte ✨
 
-| Session   |   anat |   dwi | func                                                        | longiseg                                                    |   mrtrix |   niftymic | surf-slam                                                   |
-|:----------|-------:|------:|:------------------------------------------------------------|:------------------------------------------------------------|---------:|-----------:|:------------------------------------------------------------|
-| 📅 ses-01 |      6 |     6 | 2.0                                                         | 1.0                                                         |        1 |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-02 |      6 |     6 | <span style="background-color: red; color: white;">0</span> | 1.0                                                         |        1 |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-03 |      6 |     6 | 2.0                                                         | 1.0                                                         |        1 |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-04 |      6 |     6 | 2.0                                                         | 1.0                                                         |        1 |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-05 |      6 |     6 | 2.0                                                         | 1.0                                                         |        1 |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-06 |      6 |     6 | 2.0                                                         | 1.0                                                         |        1 |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-07 |      6 |     6 | 2.0                                                         | 1.0                                                         |        1 |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-08 |      6 |     6 | 2.0                                                         | 1.0                                                         |        1 |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-09 |      6 |     6 | 2.0                                                         | 1.0                                                         |        1 |          1 | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-10 |      6 |     6 | 2.0                                                         | <span style="background-color: red; color: white;">0</span> |        1 |          1 | <span style="background-color: red; color: white;">0</span> |
+| Session   |   anat |   dwi | func      | longiseg   |   mrtrix |   niftymic | surf-slam   |
+|:----------|-------:|------:|:----------|:-----------|---------:|-----------:|:------------|
+| 📅 ses-01 |      6 |     6 | 2.0       | 1.0        |        1 |          1 | **[ X ]**   |
+| 📅 ses-02 |      6 |     6 | **[ X ]** | 1.0        |        1 |          1 | **[ X ]**   |
+| 📅 ses-03 |      6 |     6 | 2.0       | 1.0        |        1 |          1 | **[ X ]**   |
+| 📅 ses-04 |      6 |     6 | 2.0       | 1.0        |        1 |          1 | **[ X ]**   |
+| 📅 ses-05 |      6 |     6 | 2.0       | 1.0        |        1 |          1 | **[ X ]**   |
+| 📅 ses-06 |      6 |     6 | 2.0       | 1.0        |        1 |          1 | **[ X ]**   |
+| 📅 ses-07 |      6 |     6 | 2.0       | 1.0        |        1 |          1 | **[ X ]**   |
+| 📅 ses-08 |      6 |     6 | 2.0       | 1.0        |        1 |          1 | **[ X ]**   |
+| 📅 ses-09 |      6 |     6 | 2.0       | 1.0        |        1 |          1 | **[ X ]**   |
+| 📅 ses-10 |      6 |     6 | 2.0       | **[ X ]**  |        1 |          1 | **[ X ]**   |
 
 ---
 
 ## 👤 sub-Forme ✨
 
-| Session   |   anat | dwi                                                         | func                                                        | longiseg                                                    | mrtrix                                                      | niftymic                                                    | surf-slam                                                   |
-|:----------|-------:|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|
-| 📅 ses-01 |      6 | 6.0                                                         | 2.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-02 |      6 | 6.0                                                         | 2.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-03 |      6 | 6.0                                                         | 2.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-04 |      2 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-05 |      6 | 6.0                                                         | 2.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-06 |      6 | 6.0                                                         | 2.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-07 |      6 | 6.0                                                         | 2.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-08 |      6 | 6.0                                                         | 2.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-09 |      6 | 6.0                                                         | 2.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-10 |      6 | 6.0                                                         | 2.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
+| Session   |   anat | dwi       | func      | longiseg   | mrtrix    | niftymic   | surf-slam   |
+|:----------|-------:|:----------|:----------|:-----------|:----------|:-----------|:------------|
+| 📅 ses-01 |      6 | 6.0       | 2.0       | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
+| 📅 ses-02 |      6 | 6.0       | 2.0       | 1.0        | **[ X ]** | 1.0        | **[ X ]**   |
+| 📅 ses-03 |      6 | 6.0       | 2.0       | 1.0        | **[ X ]** | 1.0        | **[ X ]**   |
+| 📅 ses-04 |      2 | **[ X ]** | **[ X ]** | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
+| 📅 ses-05 |      6 | 6.0       | 2.0       | **[ X ]**  | **[ X ]** | 1.0        | **[ X ]**   |
+| 📅 ses-06 |      6 | 6.0       | 2.0       | **[ X ]**  | **[ X ]** | 1.0        | **[ X ]**   |
+| 📅 ses-07 |      6 | 6.0       | 2.0       | **[ X ]**  | **[ X ]** | 1.0        | **[ X ]**   |
+| 📅 ses-08 |      6 | 6.0       | 2.0       | **[ X ]**  | **[ X ]** | 1.0        | **[ X ]**   |
+| 📅 ses-09 |      6 | 6.0       | 2.0       | **[ X ]**  | **[ X ]** | 1.0        | **[ X ]**   |
+| 📅 ses-10 |      6 | 6.0       | 2.0       | **[ X ]**  | **[ X ]** | 1.0        | **[ X ]**   |
 
 ---
 
 ## 👤 sub-Formule ✨
 
-| Session   | anat                                                        | dwi                                                         | func                                                        | longiseg                                                    | mrtrix                                                      | niftymic                                                    | surf-slam                                                   |
-|:----------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|
-| 📅 ses-01 | 6.0                                                         | 5.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-02 | 5.0                                                         | 6.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-03 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-04 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-05 | 6.0                                                         | 6.0                                                         | 2.0                                                         | 1.0                                                         | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-06 | 6.0                                                         | 6.0                                                         | 2.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-07 | 6.0                                                         | 6.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-08 | 6.0                                                         | 6.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-09 | 6.0                                                         | 6.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-10 | 6.0                                                         | 6.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> |
+| Session   | anat      | dwi       | func      | longiseg   | mrtrix    | niftymic   | surf-slam   |
+|:----------|:----------|:----------|:----------|:-----------|:----------|:-----------|:------------|
+| 📅 ses-01 | 6.0       | 5.0       | 1.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-02 | 5.0       | 6.0       | 1.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-03 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-04 | **[ X ]** | **[ X ]** | **[ X ]** | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
+| 📅 ses-05 | 6.0       | 6.0       | 2.0       | 1.0        | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-06 | 6.0       | 6.0       | 2.0       | **[ X ]**  | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-07 | 6.0       | 6.0       | 1.0       | **[ X ]**  | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-08 | 6.0       | 6.0       | 1.0       | **[ X ]**  | 1.0       | 1.0        | **[ X ]**   |
+| 📅 ses-09 | 6.0       | 6.0       | 1.0       | **[ X ]**  | **[ X ]** | 1.0        | **[ X ]**   |
+| 📅 ses-10 | 6.0       | 6.0       | 1.0       | **[ X ]**  | **[ X ]** | 1.0        | **[ X ]**   |
 
 ---
 
 ## 👤 sub-Hacienda ✨
 
-| Session   |   anat |   dwi |   func | longiseg                                                    | mrtrix                                                      | niftymic                                                    | surf-slam                                                   |
-|:----------|-------:|------:|-------:|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|
-| 📅 ses-01 |      6 |     6 |      2 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
+| Session   |   anat |   dwi |   func | longiseg   | mrtrix    | niftymic   | surf-slam   |
+|:----------|-------:|------:|-------:|:-----------|:----------|:-----------|:------------|
+| 📅 ses-01 |      6 |     6 |      2 | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
 
 ---
 
 ## 👤 sub-Olive ✨
 
-| Session   |   anat |   dwi |   func | longiseg                                                    | mrtrix                                                      | niftymic                                                    | surf-slam                                                   |
-|:----------|-------:|------:|-------:|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|
-| 📅 ses-01 |      6 |     6 |      1 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
+| Session   |   anat |   dwi |   func | longiseg   | mrtrix    | niftymic   | surf-slam   |
+|:----------|-------:|------:|-------:|:-----------|:----------|:-----------|:------------|
+| 📅 ses-01 |      6 |     6 |      1 | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
 
 ---
 
 ## 👤 sub-Prisme ✨
 
-| Session   |   anat |   dwi | func                                                        | longiseg                                                    | mrtrix                                                      | niftymic                                                    | surf-slam                                                   |
-|:----------|-------:|------:|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|:------------------------------------------------------------|
-| 📅 ses-01 |      6 |     6 | 2.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 2.0                                                         |
-| 📅 ses-02 |      6 |     3 | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 2.0                                                         |
-| 📅 ses-03 |      6 |     6 | 2.0                                                         | 1.0                                                         | <span style="background-color: red; color: white;">0</span> | 1.0                                                         | 2.0                                                         |
-| 📅 ses-04 |      6 |     3 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
-| 📅 ses-05 |     10 |     6 | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> | <span style="background-color: red; color: white;">0</span> |
+| Session   |   anat |   dwi | func      | longiseg   | mrtrix    | niftymic   | surf-slam   |
+|:----------|-------:|------:|:----------|:-----------|:----------|:-----------|:------------|
+| 📅 ses-01 |      6 |     6 | 2.0       | 1.0        | **[ X ]** | 1.0        | 2.0         |
+| 📅 ses-02 |      6 |     3 | **[ X ]** | 1.0        | **[ X ]** | 1.0        | 2.0         |
+| 📅 ses-03 |      6 |     6 | 2.0       | 1.0        | **[ X ]** | 1.0        | 2.0         |
+| 📅 ses-04 |      6 |     3 | **[ X ]** | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
+| 📅 ses-05 |     10 |     6 | **[ X ]** | **[ X ]**  | **[ X ]** | **[ X ]**  | **[ X ]**   |
 
 ---
 
