@@ -219,7 +219,7 @@ def generate_bids_reports(derivatives_file, sourcedata_file):
 
 # --- Execution ---
 if __name__ == "__main__":
-    DATABASE_PATH = "W:/meca/data/BaboFet_BIDS"
+    DATABASE_PATH = cfg.BASE_BIDS_PATH
 
     raw_csv_path = "bids_summary_sourcedata.csv"
     derivatives_csv_path = "bids_summary_derivatives.csv"
