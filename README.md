@@ -43,7 +43,7 @@ echo $LongiSeg_raw  # it will display the path you set
 
 # 7. Install the required packages for this project
 cd .. # if you are still in the surface_processing directory, go back to the root of the project (Babofet_T2w)
-pip install -r requirements.txt  # Install the required Python packages for the project
+pip install -r requirements.txt --no-cache-dir  # Install the required Python packages for the project from sources
 chmod u+x run_them_all.sh  # Make the main script executable
 ```
 
