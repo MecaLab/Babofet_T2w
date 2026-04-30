@@ -226,7 +226,7 @@ if __name__ == "__main__":
         os.makedirs(subject_output_split_seg_session)
 
     file_seg_out = os.path.join(subject_output_split_seg_session, f"{subject}_{session}_hemi.nii.gz")
-    if os.path.exists(file_seg_out):
+    if not os.path.exists(file_seg_out):
         print(f"\t\tSegmentation for {subject} {session} already exists, skipping...")
         exit(1)
 
