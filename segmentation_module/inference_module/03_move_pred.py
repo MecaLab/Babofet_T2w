@@ -1,12 +1,19 @@
 import os
 import sys
 import shutil
+import argparse
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
 if __name__ == "__main__":
-    pred_seg = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "longiseg", "inference_data", "res_seg")
+    parser = argparse.ArgumentParser(description="Denoise data for a specific subject and session.")
+    parser.add_argument("--subject", required=True, help="Subject ID (e.g., sub-Aziza)")
+    args = parser.parse_args()
+
+    subject = args.subject
+
+    pred_seg = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "intermediate", "longiseg", f"inference_data_{subject}", "res_seg")
     base_output_path = os.path.join(cfg.DERIVATIVES_BIDS_PATH, "longiseg")
 
     if not os.path.exists(pred_seg):
@@ -18,7 +25,6 @@ if __name__ == "__main__":
 
     for file in os.listdir(pred_seg):
         if file.endswith(".nii.gz"):
-            # Borgne_ses-01.nii.gz
             file_splited = file.split(".")[0].split("_")  # [SUBJ, SESS]
             sub_subject = file_splited[0]
             session = file_splited[1]

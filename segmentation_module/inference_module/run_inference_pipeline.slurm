@@ -63,7 +63,7 @@ echo "Step 4: Applying post-processing..."
 LongiSeg_apply_postprocessing -i "$OUTPUT_FOLDER" -o "$OUTPUT_FOLDER" -pp_pkl_file "$PKL_FILE" -np 8 -plans_json "$PLANS_JSON"
 
 echo "Step 5: Moving and renaming prediction files..."
-python segmentation_module/inference_module/03_move_pred.py
+python segmentation_module/inference_module/03_move_pred.py --subject "$SUBJECT"
 
 echo "=================================================================="
 echo "Inference pipeline completed successfully."
