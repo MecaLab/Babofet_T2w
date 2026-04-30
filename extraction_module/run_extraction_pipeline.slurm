@@ -41,6 +41,12 @@ python extraction_module/02_hemi_split.py --subject "${SUBJECT}" --session "${SE
 echo "Step 2 completed."
 echo "------------------------------------------------------------------------------"
 
+module purge
+module load all
+module load singularity
+
+conda activate longiseg
+
 # Step 3: Surface Extraction
 # Note: The script automatically iterates over all subjects found in the input folder.
 echo "Step 3: Running 03_extract_surf.py with mode ${EXTRACTION_MODE}"
