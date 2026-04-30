@@ -45,6 +45,7 @@ module purge
 module load all
 module load singularity
 
+source ~/.bashrc
 conda activate longiseg
 
 # Step 3: Surface Extraction
