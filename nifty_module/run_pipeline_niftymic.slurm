@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -J niftymic_pipeline
-#SBATCH -p batch
+#SBATCH -p interactive
 #SBATCH --mem-per-cpu=48G
 #SBATCH --time=48:00:00
 #SBATCH -N 1
@@ -34,6 +34,12 @@ module load ANTS
 
 source ~/.bashrc
 conda activate longiseg  # needs tqdm, torch, monai for fetalbet inference
+
+FINAL_OUTPUT="$(python -c "import configuration as cfg; print(cfg.DERIVATIVES_BIDS_PATH)")/niftymic/${SUBJECT}/${SESSION}/anat/${SUBJECT}_${SESSION}_rec-niftymic_desc-brainbg_T2w.nii.gz"  
+if [ -f "$FINAL_OUTPUT" ]; then  
+    echo "Final output already exists. Skipping pipeline."  
+    exit 0  
+fi
 
 # Step 1: Denoising
 echo "Running Step 1: Denoising"

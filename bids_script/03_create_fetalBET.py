@@ -71,4 +71,4 @@ if __name__ == "__main__":
                 if not os.path.exists(output_file_path):
                     os.makedirs(output_file_path)
                 output_file_path = os.path.join(output_file_path, filename_output)
-                shutil.copy(input_file_path, output_file_path)
+                shutil.copyfile(input_file_path, output_file_path)

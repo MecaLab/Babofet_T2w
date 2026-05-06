@@ -148,3 +148,5 @@ venv.bak/
 curv_py.py
 .gitignore
 slam/plot.py
+
+logs

@@ -88,6 +88,6 @@ if __name__ == "__main__":
                             try:
                                 output_filename = f"sub-{subject}_{session_formated}_acq-haste_run-{VIEW_MATCH[suffix_scans]}_T2w.{extension}"
                                 print(f"\t\t{folder} | {file} -> {output_filename}")
-                                shutil.copy(file_full_path, os.path.join(anat_dir, output_filename))
+                                shutil.copyfile(file_full_path, os.path.join(anat_dir, output_filename))
                             except KeyError:
                                 print(f"\t\tKeyError with {suffix_scans}")

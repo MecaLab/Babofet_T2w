@@ -45,7 +45,7 @@ def mv_files(data, input_path, output_path):
             output_3d_path = os.path.join(output_path, f"{subject}_{session}_0000.nii.gz")
 
             if os.path.exists(input_3d_path):
-                shutil.copy(input_3d_path, output_3d_path)
+                shutil.copyfile(input_3d_path, output_3d_path)
             else:
                 print(f"Error: The file {input_3d_path} does not exist.")
 

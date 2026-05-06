@@ -85,7 +85,7 @@ def map_transformation_files(motion_correction_dir, mask_files):
             dest_path = os.path.join(motion_correction_dir, dest_name)
 
             if not os.path.exists(dest_path):
-                shutil.copy(src_path, dest_path)
+                shutil.copyfile(src_path, dest_path)
 
 
 if __name__ == "__main__":

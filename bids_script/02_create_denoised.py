@@ -66,7 +66,7 @@ if __name__ == "__main__":
         for file in os.listdir(subject_input_path):
             input_file = os.path.join(subject_input_path, file)
             output_file = os.path.join(subject_output_path, file)
-            shutil.copy(input_file, output_file)
+            shutil.copyfile(input_file, output_file)
 
 
 

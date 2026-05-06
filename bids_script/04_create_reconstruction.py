@@ -64,4 +64,4 @@ if __name__ == "__main__":
             if not os.path.exists(output_folder):
                 os.makedirs(output_folder)
 
-            shutil.copy(reconstruction_t2w, output_full_path)
+            shutil.copyfile(reconstruction_t2w, output_full_path)

@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -J inference_pipeline
-#SBATCH -p batch
+#SBATCH -p interactive
 #SBATCH --mem-per-cpu=48G
 #SBATCH --time=12:00:00
 #SBATCH -c 8
@@ -41,8 +41,17 @@ python segmentation_module/inference_module/02_prepare_data.py \
     --subject "$SUBJECT" \
     --session "$SESSION"
 
+
 DERIVATIVES_BIDS_PATH=$(python -c "import configuration as cfg; print(cfg.DERIVATIVES_BIDS_PATH)")
 LONGISEG_RESULTS_PATH=$(python -c "import configuration as cfg; print(cfg.LONGISEG_RESULTS_PATH)")
+
+# Check if segmentation already exists  
+EXPECTED_SEG_PATH="$DERIVATIVES_BIDS_PATH/longiseg/$SUBJECT/$SESSION/anat/${SUBJECT}_${SESSION}_desc-longiseg_dseg.nii.gz"  
+if [ -f "$EXPECTED_SEG_PATH" ]; then  
+    echo "Segmentation already exists at $EXPECTED_SEG_PATH. Skipping inference pipeline."  
+    exit 0  
+fi
+
 
 # Chemins pour LongiSeg
 INPUT_FOLDER="$DERIVATIVES_BIDS_PATH/intermediate/longiseg/inference_data_${SUBJECT}"

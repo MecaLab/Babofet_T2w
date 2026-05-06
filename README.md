@@ -2,6 +2,8 @@
 
 This project provides a complete, end-to-end pipeline for processing fetal baboons T2-weighted (T2w) MRI scans. The workflow starts with raw, multi-slice MRI data and produces high-resolution 3D brain volumes, tissue segmentations, and finally, 3D cortical surface models. The pipeline is built upon a BIDS dataset format.
 
+Any doubt? ask DeepWiki : [https://deepwiki.com/MecaLab/Babofet_T2w](https://deepwiki.com/MecaLab/Babofet_T2w)
+
 ## How to install ?
 
 To set up the environment for this project, you can follow the steps below. This will ensure that you have all the necessary dependencies installed and that your paths are correctly configured.

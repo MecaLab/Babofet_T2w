@@ -37,5 +37,5 @@ if __name__ == "__main__":
             # SUBJ_SESS_desc-longiseg_dseg.nii
             output_name = f"{sub_subject}_{session}_desc-longiseg_dseg.nii.gz"
             output_seg_path = os.path.join(output_path, output_name)
-            shutil.copy(input_seg_path, output_seg_path)
+            shutil.copyfile(input_seg_path, output_seg_path)
 
