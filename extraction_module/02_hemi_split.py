@@ -4,90 +4,77 @@ import os
 import sys
 import ants as ants
 import numpy as np
+import pandas as pd
 sys.path.insert(0, os.path.abspath(os.curdir))
 import configuration as cfg
 
 
-def fsl_register(atlas_dir, base_subj_path, subject, session, output_dir):
+def get_gestational_info(female_name, session_id, tsv_file):
+    # Atlas available timepoints
+    atlas_timepoints = [85, 97, 110, 122, 135, 147, 155]
 
-    # SUBJECT_SESSION_rec-niftymic_desc-brainbg_T2w.nii.gz
-    reference = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz")
+    df = pd.read_csv(tsv_file, sep='\t')
 
-    # SUBJECT_SESSION_rec-niftymic_desc-brain_mask.nii.gz
-    reference_mask = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz")
+    session_data = df[df['session_id'].str.strip() == session_id]
 
-    # SUBJECT_SESSION_rec-niftymic_desc-brain_T2w.nii.gz
-    new_reference = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_T2w.nii.gz")
+    if session_data.empty:
+        print(f"Error: Session {session_id} not found for {female_name}.")
+        return None
 
-    subprocess.run(
-        ["fslmaths", reference, "-mul", reference_mask, new_reference],
-        check=True,
-    )
-    print("\t\tStarting registration with FLIRT")
-    for moving_file in os.listdir(atlas_dir):
-        if moving_file.endswith(".nii.gz") and "Norm" in moving_file:
-            moving = os.path.join(atlas_dir, moving_file)
+    gestational_age = session_data['gestational_age'].values[0]
 
-            print(f"\t\t\tProcessing {moving_file}")
-            moving_name = moving_file.replace(".nii.gz", "_affine.nii.gz")
-            moving_mat = moving_file.replace(".nii.gz", "_affine.mat")
+    adequate_atlas = min(atlas_timepoints, key=lambda x: abs(x - gestational_age))
 
-            out_nii = os.path.join(output_dir, moving_name)
+    return gestational_age, adequate_atlas
 
-            if os.path.exists(out_nii):
-                print(f"\t\t\t\t{moving_name} already exists, skipping...")
-                continue
-            out_mat = os.path.join(output_dir, moving_mat)
 
-            subprocess.run(
-                [
-                    "flirt",
-                    "-in", moving,
-                    "-ref", new_reference,
-                    "-out", out_nii,
-                    "-omat", out_mat,
-                    "-dof", "12",
-                    "-cost", "mutualinfo",
-                    "-searchrx", "-180", "180",
-                    "-searchry", "-180", "180",
-                    "-searchrz", "-180", "180",
-                    "-interp", "spline"
-                ],
-                check=True,
-            )
+
+
+def fsl_register_single(atlas_file, base_subj_path, subject, session, output_dir):  
+  
+    # SUBJECT_SESSION_rec-niftymic_desc-brainbg_T2w.nii.gz  
+    reference = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brainbg_T2w.nii.gz")  
+  
+    # SUBJECT_SESSION_rec-niftymic_desc-brain_mask.nii.gz  
+    reference_mask = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz")  
+  
+    # SUBJECT_SESSION_rec-niftymic_desc-brain_T2w.nii.gz  
+    new_reference = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_T2w.nii.gz")  
+  
+    subprocess.run(  
+        ["fslmaths", reference, "-mul", reference_mask, new_reference],  
+        check=True,  
+    )  
+  
+    moving_file = os.path.basename(atlas_file)  
+    moving_name = moving_file.replace(".nii.gz", "_affine.nii.gz")  
+    moving_mat = moving_file.replace(".nii.gz", "_affine.mat")  
+  
+    out_nii = os.path.join(output_dir, moving_name)  
+    out_mat = os.path.join(output_dir, moving_mat)  
+  
+    if os.path.exists(out_nii):  
+        print(f"\t\t\t{moving_name} already exists, skipping...")  
+        return  
+  
+    print(f"\t\tStarting registration with FLIRT for {moving_file}")  
+    subprocess.run(  
+        [  
+            "flirt",  
+            "-in", atlas_file,  
+            "-ref", new_reference,  
+            "-out", out_nii,  
+            "-omat", out_mat,  
+            "-dof", "12",  
+            "-cost", "mutualinfo",  
+            "-searchrx", "-180", "180",  
+            "-searchry", "-180", "180",  
+            "-searchrz", "-180", "180",  
+            "-interp", "spline"  
+        ],  
+        check=True,  
+    )  
     print("\t\tFLIRT registration done")
-
-
-def find_best_atlas(input_atlas_registered, subject, session, base_subj_path):
-    reference = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_T2w.nii.gz")
-    reference_mask = os.path.join(base_subj_path, f"{subject}_{session}_rec-niftymic_desc-brain_mask.nii.gz")
-
-    print("\t\tFinding best atlas with FSLCC")
-    dico_atlas_metric = {}
-    for atlas_file in os.listdir(input_atlas_registered):
-        if atlas_file.endswith(".nii.gz") and "affine" in atlas_file:
-            atlas_path = os.path.join(input_atlas_registered, atlas_file)
-
-            result = subprocess.run(
-                [
-                    "fslcc",
-                    "-m", reference_mask,
-                    "-p", "5",
-                    reference,
-                    atlas_path
-                ],
-                capture_output=True,
-                text=True,
-                check=True,
-            )
-            output = result.stdout.strip()
-            if output:
-                fslcc_value = float(output.split()[2])
-                dico_atlas_metric[atlas_file] = fslcc_value
-                print(f"\t\t\t{atlas_file}: {fslcc_value}")
-
-    best_atlas = max(dico_atlas_metric, key=dico_atlas_metric.get)
-    return best_atlas
 
 
 def convert_fsl2ants(input_atlas_registered, best_atlas, subject, session, base_subj_path):
@@ -230,22 +217,24 @@ if __name__ == "__main__":
         print(f"\t\tSegmentation for {subject} {session} already exists, skipping...")
         exit(0)
 
-    fsl_register(
-        atlas_dir=volumes_atlas_path,
-        base_subj_path=recons_volumes_folder,
-        subject=subject,
-        session=session,
-        output_dir=subject_output_split_seg_session
-    )
-
-    best_atlas = find_best_atlas(
-        input_atlas_registered=subject_output_split_seg_session,
-        subject=subject,
-        session=session,
-        base_subj_path=recons_volumes_folder
-    )
-    print(f"\t\tBest atlas: {best_atlas}")
-    best_atlas_path = os.path.join(volumes_atlas_path, best_atlas.replace("_affine.nii.gz", ".nii.gz"))
+    tsv_file = os.path.join(cfg.SOURCEDATA_BIDS_PATH, "raw", subject, f"{subject}_sessions.tsv")  
+    subject_ga, atlas_ga = get_gestational_info(subject, session, tsv_file)  
+    print(f"\t\tGestational age: {subject_ga} → using atlas G{atlas_ga}")  
+    
+    atlas_filename = f"ONPRC_G{atlas_ga}_Norm.nii.gz"  
+    best_atlas_path = os.path.join(volumes_atlas_path, atlas_filename)  
+    
+    fsl_register_single(  
+        atlas_file=best_atlas_path,  
+        base_subj_path=recons_volumes_folder,  
+        subject=subject,  
+        session=session,  
+        output_dir=subject_output_split_seg_session  
+    )  
+    
+    # best_atlas is the registered output filename, used by downstream .replace() calls  
+    best_atlas = atlas_filename.replace(".nii.gz", "_affine.nii.gz")  
+    print(f"\t\tSelected atlas: {best_atlas}")
 
     convert_fsl2ants(
         input_atlas_registered=subject_output_split_seg_session,
